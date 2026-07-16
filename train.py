@@ -59,8 +59,28 @@ def main():
     # Setup environment
     set_seed(cfg.get("seed", 83))
     prepare_dirs()
-    suffix = f"_{args.exp_name}" if args.exp_name else ""
     
+    if args.exp_name:
+        exp_dir = f"experiments/{args.exp_name}/fold_{args.fold}"
+        ckpt_dir = f"{exp_dir}/checkpoints"
+        os.makedirs(ckpt_dir, exist_ok=True)
+        
+        best_ckpt_path = f"{ckpt_dir}/tcam_fold_{args.fold}_best.pt"
+        history_path = f"{exp_dir}/history.json"
+        metrics_path = f"{exp_dir}/metrics.json"
+        predictions_path = f"{exp_dir}/predictions.json"
+        
+        def get_cycle_ckpt_path(cycle_id):
+            return f"{ckpt_dir}/tcam_fold_{args.fold}_cycle_{cycle_id}.pt"
+    else:
+        best_ckpt_path = f"checkpoints/tcam_fold_{args.fold}_best.pt"
+        history_path = f"logs/fold_{args.fold}_history.json"
+        metrics_path = f"results/metrics/fold_{args.fold}_metrics.json"
+        predictions_path = f"results/predictions/fold_{args.fold}_predictions.json"
+        
+        def get_cycle_ckpt_path(cycle_id):
+            return f"checkpoints/tcam_fold_{args.fold}_cycle_{cycle_id}.pt"
+            
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device designated for training: {device}")
 
@@ -185,19 +205,18 @@ def main():
                 "model_state_dict": model.state_dict(),
                 "epoch": epoch,
                 "val_acc": val_clip_acc
-            }, f"checkpoints/tcam_fold_{args.fold}{suffix}_best.pt")
+            }, best_ckpt_path)
             
         # Snapshot Ensemble saving
         if (epoch + 1) % epochs_per_cycle == 0:
             cycle_id = (epoch + 1) // epochs_per_cycle
-            snapshot_path = f"checkpoints/tcam_fold_{args.fold}{suffix}_cycle_{cycle_id}.pt"
+            snapshot_path = get_cycle_ckpt_path(cycle_id)
             torch.save(model.state_dict(), snapshot_path)
             snapshot_checkpoints.append(snapshot_path)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
     # Load and Evaluate Best Validation Model
     best_model = TCAM1DCNN(num_classes=10).to(device)
-    best_ckpt_path = f"checkpoints/tcam_fold_{args.fold}{suffix}_best.pt"
     if os.path.exists(best_ckpt_path):
         best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
         best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
@@ -221,20 +240,32 @@ def main():
     print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
     
     # Save training history logs
-    with open(f"logs/fold_{args.fold}{suffix}_history.json", "w") as fh:
+    with open(history_path, "w") as fh:
         json.dump(history, fh)
+
+    # Get git commit hash
+    import subprocess
+    try:
+        git_commit = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+    except Exception:
+        git_commit = "unknown"
 
     # Save metrics JSON
     metrics = {
         "fold": args.fold,
+        "val_fold": val_fold,
         "epochs": epochs,
         "cycles": cycles,
+        "seed": cfg.get("seed", 83),
+        "loss_type": loss_type,
+        "config_path": args.config,
+        "git_commit": git_commit,
         "best_val_clip_acc": best_acc,
         "test_acc_best_val_model": test_acc_best,
         "test_acc_last_snapshot": test_acc_last,
         "test_acc_ensemble": test_acc_ensemble
     }
-    with open(f"results/metrics/fold_{args.fold}{suffix}_metrics.json", "w") as fm:
+    with open(metrics_path, "w") as fm:
         json.dump(metrics, fm, indent=2)
 
     # Save predictions JSON
@@ -243,7 +274,7 @@ def main():
         "last_snapshot_predictions": preds_last,
         "ensemble_model_predictions": preds_ensemble
     }
-    with open(f"results/predictions/fold_{args.fold}{suffix}_predictions.json", "w") as fp:
+    with open(predictions_path, "w") as fp:
         json.dump(preds_data, fp, indent=2)
 
 if __name__ == "__main__":
