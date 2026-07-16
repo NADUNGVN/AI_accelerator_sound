@@ -6,11 +6,16 @@ import matplotlib.pyplot as plt
 def main():
     parser = argparse.ArgumentParser(description="Plot TCAM1DCNN Training Curves")
     parser.add_argument("--fold", type=int, default=1, help="Fold index to plot")
+    parser.add_argument("--exp_name", type=str, default="", help="Experiment name suffix (e.g. crossentropy, msle)")
     args = parser.parse_args()
     
-    json_path = f"logs/fold_{args.fold}_history.json"
+    if args.exp_name:
+        json_path = f"experiments/{args.exp_name}/fold_{args.fold}/history.json"
+    else:
+        json_path = f"logs/fold_{args.fold}_history.json"
+        
     if not os.path.exists(json_path):
-        print(f"Error: Log file '{json_path}' not found! Make sure training for Fold {args.fold} has completed.")
+        print(f"Error: Log file '{json_path}' not found!")
         return
         
     with open(json_path, "r") as f:
@@ -45,7 +50,10 @@ def main():
     ax2.legend(frameon=True, facecolor='white', edgecolor='none')
     
     plt.tight_layout()
-    output_path = f"results/figures/fold_{args.fold}_curves.png"
+    if args.exp_name:
+        output_path = f"experiments/{args.exp_name}/fold_{args.fold}/curves.png"
+    else:
+        output_path = f"results/figures/fold_{args.fold}_curves.png"
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     print(f"Successfully generated and saved training curves to: {output_path}")
 
