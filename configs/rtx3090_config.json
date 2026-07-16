@@ -3,7 +3,7 @@
   "accum_steps": 1,
   "epochs": 200,
   "lr": 2e-4,
-  "num_workers": 6,
+  "num_workers": 0,
   "sample_rate": 16000,
   "frame_length": 8000,
   "cycles": 4,
