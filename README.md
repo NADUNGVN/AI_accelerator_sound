@@ -1,6 +1,6 @@
 # TCAM1DCNN Training Project for RTX 3090 Server
 
-Dự án này triển khai mô hình mạng nơ-ron tích chập 1 chiều kết hợp cơ chế chú ý (TCAM1DCNN) đạt độ chính xác >91% trên tập dữ liệu UrbanSound8K, thiết kế mô-đun hóa chuyên nghiệp và tối ưu hóa tối đa hiệu năng cho cấu hình phần cứng server chứa **GPU NVIDIA RTX 3090 (24GB VRAM)**.
+Dự án này triển khai mô hình mạng nơ-ron tích chập 1 chiều kết hợp cơ chế chú ý (TCAM1DCNN) với mục tiêu tái tạo và tối ưu hóa hiệu năng mô hình nhận diện âm thanh môi trường trên tập dữ liệu UrbanSound8K, thiết kế mô-đun hóa chuyên nghiệp và tối ưu hóa tối đa hiệu năng cho cấu hình phần cứng server chứa **GPU NVIDIA RTX 3090 (24GB VRAM)**.
 
 ## 1. Cấu trúc thư mục dự án
 *   `configs/`: Chứa tệp cấu hình phần cứng `rtx3090_config.json`.
