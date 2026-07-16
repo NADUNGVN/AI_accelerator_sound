@@ -5,6 +5,8 @@ def backup_dir(src, dest):
     if os.path.exists(src):
         os.makedirs(dest, exist_ok=True)
         for item in os.listdir(src):
+            if item == "baseline_v1":
+                continue
             s = os.path.join(src, item)
             d = os.path.join(dest, item)
             if os.path.isdir(s):
