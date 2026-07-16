@@ -107,11 +107,20 @@ def main():
 
     # Dataloader
     train_dataset = CachedUrbanSoundFrameDataset(train_frames, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
-    train_loader = DataLoader(
-        train_dataset, batch_size=cfg.get("batch_size", 96), shuffle=True,
-        num_workers=cfg.get("num_workers", 6), pin_memory=True, persistent_workers=True,
-        prefetch_factor=2, drop_last=True
-    )
+    
+    num_workers = cfg.get("num_workers", 0)
+    loader_kwargs = {
+        "batch_size": cfg.get("batch_size", 96),
+        "shuffle": True,
+        "num_workers": num_workers,
+        "pin_memory": True,
+        "drop_last": True
+    }
+    if num_workers > 0:
+        loader_kwargs["persistent_workers"] = True
+        loader_kwargs["prefetch_factor"] = 2
+        
+    train_loader = DataLoader(train_dataset, **loader_kwargs)
 
     # Instantiate model, loss, optimizer, scaler
     model = TCAM1DCNN(num_classes=10).to(device)
