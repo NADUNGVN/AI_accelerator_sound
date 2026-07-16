@@ -2,14 +2,14 @@
 # 1. Project Large Files & Outputs
 # ==========================================
 # Exclude raw and processed datasets (5.6 GB+)
-data/
+/data/
 
 # Exclude trained model weights and checkpoints (can be very large)
-checkpoints/
+/checkpoints/
 
 # Exclude training logs and output results
-logs/
-results/
+/logs/
+/results/
 
 # ==========================================
 # 2. Python Environment & Cache
