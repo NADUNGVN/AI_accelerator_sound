@@ -88,7 +88,8 @@ class Trainer:
         with torch.no_grad():
             for path, frames in clips.items():
                 label = frames[0]["label"]
-                waveform = cached_waveforms[path]
+                waveform_np = cached_waveforms[path]
+                waveform = torch.from_numpy(waveform_np)
                     
                 # Extract all 15 frames
                 batch_frames = []
