@@ -6,6 +6,7 @@ import time
 import math
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from concurrent.futures import ThreadPoolExecutor
 
@@ -124,7 +125,23 @@ def main():
 
     # Instantiate model, loss, optimizer, scaler
     model = TCAM1DCNN(num_classes=10).to(device)
-    criterion = nn.CrossEntropyLoss()
+    
+    loss_type = cfg.get("loss", "crossentropy").lower()
+    if loss_type == "msle":
+        print("[Loss Setup] Using Mean Squared Logarithmic Error (MSLE) Loss.")
+        class MSLELoss(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.mse = nn.MSELoss()
+            def forward(self, logits, target):
+                probs = F.softmax(logits, dim=-1)
+                target_onehot = F.one_hot(target, num_classes=logits.size(-1)).float()
+                return self.mse(torch.log1p(probs), torch.log1p(target_onehot))
+        criterion = MSLELoss()
+    else:
+        print("[Loss Setup] Using Cross Entropy Loss.")
+        criterion = nn.CrossEntropyLoss()
+        
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4))
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu")
 
