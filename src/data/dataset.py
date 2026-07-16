@@ -111,5 +111,6 @@ def load_audio_to_ram(path, sample_rate=16000):
             waveform = waveform[:, :target_len]
         return path, waveform.numpy()  # Convert to numpy array to prevent PyTorch shared memory leaks
     except Exception as e:
+        print(f"Warning: Failed to load '{path}' due to error: {e}. Substituting with silence.")
         import numpy as np
         return path, np.zeros((1, sample_rate * 4), dtype=np.float32)

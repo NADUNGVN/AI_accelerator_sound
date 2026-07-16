@@ -88,16 +88,16 @@ def main():
             
     print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
 
-    # 3. Setup Fold split
+    # 3. Setup Fold split (using strict predefined fold partitions to prevent source-level data leakage)
     print(f"\n=================== TRAINING OFFICIAL FOLD {args.fold} (RTX 3090 Configuration) ===================")
-    train_records = [r for r in clip_records if r["fold"] != args.fold]
+    val_fold = (args.fold % 10) + 1
+    
+    train_clips = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
+    val_clips = [r for r in clip_records if r["fold"] == val_fold]
     test_records = [r for r in clip_records if r["fold"] == args.fold]
     
     import random
-    random.shuffle(train_records)
-    val_split = int(len(train_records) * 0.9)
-    train_clips = train_records[:val_split]
-    val_clips = train_records[val_split:]
+    random.shuffle(train_clips)
     
     train_frames = generate_frame_records(train_clips)
     val_frames = generate_frame_records(val_clips)
@@ -176,6 +176,16 @@ def main():
             snapshot_checkpoints.append(snapshot_path)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
+    # Load and Evaluate Best Validation Model
+    best_model = TCAM1DCNN(num_classes=10).to(device)
+    best_ckpt_path = f"checkpoints/tcam_fold_{args.fold}_best.pt"
+    if os.path.exists(best_ckpt_path):
+        best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
+        best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
+        test_acc_best, preds_best = trainer.evaluate_clips([best_model], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
+    else:
+        test_acc_best, preds_best = 0.0, []
+
     # Ensemble Evaluation
     ensemble_models = []
     for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
@@ -183,11 +193,12 @@ def main():
         m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
         ensemble_models.append(m)
         
-    test_acc_single, preds_single = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
+    test_acc_last, preds_last = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
     test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(ensemble_models, test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
     
     print(f"\n=================== FOLD {args.fold} FINAL EVALUATION RESULTS ===================")
-    print(f"  Single Model Test Accuracy: {test_acc_single*100:.2f}%")
+    print(f"  Best Validation Model Test Accuracy: {test_acc_best*100:.2f}%")
+    print(f"  Last Snapshot (Epoch 200) Test Accuracy: {test_acc_last*100:.2f}%")
     print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
     
     # Save training history logs
@@ -200,7 +211,8 @@ def main():
         "epochs": epochs,
         "cycles": cycles,
         "best_val_clip_acc": best_acc,
-        "test_acc_single": test_acc_single,
+        "test_acc_best_val_model": test_acc_best,
+        "test_acc_last_snapshot": test_acc_last,
         "test_acc_ensemble": test_acc_ensemble
     }
     with open(f"results/metrics/fold_{args.fold}_metrics.json", "w") as fm:
@@ -208,7 +220,8 @@ def main():
 
     # Save predictions JSON
     preds_data = {
-        "single_model_predictions": preds_single,
+        "best_val_model_predictions": preds_best,
+        "last_snapshot_predictions": preds_last,
         "ensemble_model_predictions": preds_ensemble
     }
     with open(f"results/predictions/fold_{args.fold}_predictions.json", "w") as fp:
