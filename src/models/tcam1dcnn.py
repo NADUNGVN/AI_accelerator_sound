@@ -64,7 +64,7 @@ class TCAM1DCNN(nn.Module):
         super().__init__()
         
         # Stage 1: input 8000 x 1 -> output 8000 x 32
-        self.conv1 = nn.Conv1d(1, 32, kernel_size=32, stride=1, padding=15)
+        self.conv1 = nn.Conv1d(1, 32, kernel_size=32, stride=1, padding='same')
         self.tcam1 = TCAMBlock(32)
         
         # Stage 2: input 8000 x 32 -> output 4000 x 32
