@@ -18,7 +18,7 @@ class TimeAttentionModule(nn.Module):
         s = self.f_triple_prime(x)        # (batch, 1, length)
         s_prime = torch.sigmoid(s)        # (batch, 1, length)
         
-        n = self.f_s(x) * s_prime         # (batch, channels, length)
+        n = F.relu(self.f_s(x)) * s_prime  # (batch, channels, length)
         return x + n
 
 class ChannelAttentionModule(nn.Module):
@@ -92,6 +92,20 @@ class TCAM1DCNN(nn.Module):
         
         # Final classifier
         self.fc = nn.Linear(256, num_classes)
+        
+        # Apply Glorot (Xavier) weight initialization
+        self._initialize_weights()
+
+    def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv1d):
+                nn.init.xavier_uniform_(m.weight)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.xavier_uniform_(m.weight)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
 
     def forward(self, x):
         # Input shape: (batch, 1, 8000)
