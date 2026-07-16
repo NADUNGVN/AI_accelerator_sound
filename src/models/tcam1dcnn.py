@@ -27,7 +27,7 @@ class ChannelAttentionModule(nn.Module):
     Squeezes temporal info, passes through a bottleneck MLP (Squeeze-and-Excitation),
     and scales channels adaptively.
     """
-    def __init__(self, channels, reduction_ratio=16):
+    def __init__(self, channels, reduction_ratio=2):
         super().__init__()
         reduction = max(1, channels // reduction_ratio)
         self.fc1 = nn.Conv1d(channels, reduction, kernel_size=1)
