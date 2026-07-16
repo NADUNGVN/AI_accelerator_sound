@@ -24,10 +24,13 @@ class CachedUrbanSoundFrameDataset(Dataset):
         label = record["label"]
         frame_start = record["frame_start"]
 
-        waveform = self.cached_waveforms[path]
+        waveform_np = self.cached_waveforms[path]
         
         # Extract frame
-        frame = waveform[:, frame_start:frame_start + self.frame_length]
+        frame_np = waveform_np[:, frame_start:frame_start + self.frame_length]
+        
+        # Convert to tensor
+        frame = torch.from_numpy(frame_np)
         
         # Verify length (failsafe)
         if frame.shape[-1] < self.frame_length:
@@ -106,6 +109,7 @@ def load_audio_to_ram(path, sample_rate=16000):
             waveform = F.pad(waveform, (0, target_len - waveform.shape[-1]), mode='constant')
         else:
             waveform = waveform[:, :target_len]
-        return path, waveform
+        return path, waveform.numpy()  # Convert to numpy array to prevent PyTorch shared memory leaks
     except Exception as e:
-        return path, torch.zeros((1, sample_rate * 4))
+        import numpy as np
+        return path, np.zeros((1, sample_rate * 4), dtype=np.float32)
