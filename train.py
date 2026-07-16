@@ -180,7 +180,7 @@ def main():
     ensemble_models = []
     for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
         m = TCAM1DCNN(num_classes=10).to(device)
-        m.load_state_dict(torch.load(snapshot_checkpoints[i]))
+        m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
         ensemble_models.append(m)
         
     test_acc_single = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
