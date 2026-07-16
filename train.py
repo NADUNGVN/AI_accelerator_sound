@@ -26,6 +26,7 @@ def main():
     parser.add_argument("--epochs", type=int, default=None, help="Number of training epochs (overrides config)")
     parser.add_argument("--batch_size", type=int, default=None, help="Physical batch size (overrides config)")
     parser.add_argument("--lr", type=float, default=None, help="Learning rate (overrides config)")
+    parser.add_argument("--exp_name", type=str, default="", help="Experiment name suffix (e.g. crossentropy, msle)")
     args = parser.parse_args()
 
     # Load configuration
@@ -58,6 +59,7 @@ def main():
     # Setup environment
     set_seed(cfg.get("seed", 83))
     prepare_dirs()
+    suffix = f"_{args.exp_name}" if args.exp_name else ""
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device designated for training: {device}")
@@ -183,19 +185,19 @@ def main():
                 "model_state_dict": model.state_dict(),
                 "epoch": epoch,
                 "val_acc": val_clip_acc
-            }, f"checkpoints/tcam_fold_{args.fold}_best.pt")
+            }, f"checkpoints/tcam_fold_{args.fold}{suffix}_best.pt")
             
         # Snapshot Ensemble saving
         if (epoch + 1) % epochs_per_cycle == 0:
             cycle_id = (epoch + 1) // epochs_per_cycle
-            snapshot_path = f"checkpoints/tcam_fold_{args.fold}_cycle_{cycle_id}.pt"
+            snapshot_path = f"checkpoints/tcam_fold_{args.fold}{suffix}_cycle_{cycle_id}.pt"
             torch.save(model.state_dict(), snapshot_path)
             snapshot_checkpoints.append(snapshot_path)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
     # Load and Evaluate Best Validation Model
     best_model = TCAM1DCNN(num_classes=10).to(device)
-    best_ckpt_path = f"checkpoints/tcam_fold_{args.fold}_best.pt"
+    best_ckpt_path = f"checkpoints/tcam_fold_{args.fold}{suffix}_best.pt"
     if os.path.exists(best_ckpt_path):
         best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
         best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
@@ -219,7 +221,7 @@ def main():
     print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
     
     # Save training history logs
-    with open(f"logs/fold_{args.fold}_history.json", "w") as fh:
+    with open(f"logs/fold_{args.fold}{suffix}_history.json", "w") as fh:
         json.dump(history, fh)
 
     # Save metrics JSON
@@ -232,7 +234,7 @@ def main():
         "test_acc_last_snapshot": test_acc_last,
         "test_acc_ensemble": test_acc_ensemble
     }
-    with open(f"results/metrics/fold_{args.fold}_metrics.json", "w") as fm:
+    with open(f"results/metrics/fold_{args.fold}{suffix}_metrics.json", "w") as fm:
         json.dump(metrics, fm, indent=2)
 
     # Save predictions JSON
@@ -241,7 +243,7 @@ def main():
         "last_snapshot_predictions": preds_last,
         "ensemble_model_predictions": preds_ensemble
     }
-    with open(f"results/predictions/fold_{args.fold}_predictions.json", "w") as fp:
+    with open(f"results/predictions/fold_{args.fold}{suffix}_predictions.json", "w") as fp:
         json.dump(preds_data, fp, indent=2)
 
 if __name__ == "__main__":
