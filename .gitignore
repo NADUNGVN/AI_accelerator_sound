@@ -1,0 +1,36 @@
+# ==========================================
+# 1. Project Large Files & Outputs
+# ==========================================
+# Exclude raw and processed datasets (5.6 GB+)
+data/
+
+# Exclude trained model weights and checkpoints (can be very large)
+checkpoints/
+
+# Exclude training logs and output results
+logs/
+results/
+
+# ==========================================
+# 2. Python Environment & Cache
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+bin/
+lib/
+include/
+pyvenv.cfg
+
+# ==========================================
+# 3. IDEs and System files
+# ==========================================
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
