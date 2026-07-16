@@ -183,16 +183,36 @@ def main():
         m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
         ensemble_models.append(m)
         
-    test_acc_single = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
-    test_acc_ensemble = trainer.evaluate_clips(ensemble_models, test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+    test_acc_single, preds_single = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
+    test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(ensemble_models, test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
     
     print(f"\n=================== FOLD {args.fold} FINAL EVALUATION RESULTS ===================")
     print(f"  Single Model Test Accuracy: {test_acc_single*100:.2f}%")
     print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
     
-    # Save logs
+    # Save training history logs
     with open(f"logs/fold_{args.fold}_history.json", "w") as fh:
         json.dump(history, fh)
+
+    # Save metrics JSON
+    metrics = {
+        "fold": args.fold,
+        "epochs": epochs,
+        "cycles": cycles,
+        "best_val_clip_acc": best_acc,
+        "test_acc_single": test_acc_single,
+        "test_acc_ensemble": test_acc_ensemble
+    }
+    with open(f"results/metrics/fold_{args.fold}_metrics.json", "w") as fm:
+        json.dump(metrics, fm, indent=2)
+
+    # Save predictions JSON
+    preds_data = {
+        "single_model_predictions": preds_single,
+        "ensemble_model_predictions": preds_ensemble
+    }
+    with open(f"results/predictions/fold_{args.fold}_predictions.json", "w") as fp:
+        json.dump(preds_data, fp, indent=2)
 
 if __name__ == "__main__":
     main()

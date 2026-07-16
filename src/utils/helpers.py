@@ -18,8 +18,10 @@ def set_seed(seed=83):
 
 def prepare_dirs():
     """
-    Ensures that checkpoints, logs, and results directories exist.
+    Ensures that checkpoints, logs, and results subdirectories exist.
     """
     os.makedirs("checkpoints", exist_ok=True)
     os.makedirs("logs", exist_ok=True)
-    os.makedirs("results", exist_ok=True)
+    os.makedirs("results/metrics", exist_ok=True)
+    os.makedirs("results/predictions", exist_ok=True)
+    os.makedirs("results/figures", exist_ok=True)

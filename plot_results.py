@@ -45,7 +45,7 @@ def main():
     ax2.legend(frameon=True, facecolor='white', edgecolor='none')
     
     plt.tight_layout()
-    output_path = f"results/fold_{args.fold}_curves.png"
+    output_path = f"results/figures/fold_{args.fold}_curves.png"
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     print(f"Successfully generated and saved training curves to: {output_path}")
 

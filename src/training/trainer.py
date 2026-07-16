@@ -66,7 +66,7 @@ class Trainer:
         lr = max_lr / 2.0 * (math.cos(math.pi * cycle_epoch / epochs_per_cycle) + 1.0)
         return max(lr, 1e-6)
 
-    def evaluate_clips(self, models, records, cached_waveforms, frame_length=8000):
+    def evaluate_clips(self, models, records, cached_waveforms, frame_length=8000, return_predictions=False):
         """
         Evaluates whole 4-second audio clips using the SUM rule on all 15 overlapping frames
         retrieved directly from RAM. Supports ensembling.
@@ -81,6 +81,7 @@ class Trainer:
             
         correct = 0
         total = len(clips)
+        predictions = []
         
         # Pre-generate frame offsets
         offsets = [i * 4000 for i in range(15)] # 50% overlap of 8000 frames
@@ -116,7 +117,17 @@ class Trainer:
                 clip_prob = torch.sum(sum_probs, dim=0) # (10,)
                 predicted_class = torch.argmax(clip_prob).item()
                 
+                if return_predictions:
+                    predictions.append({
+                        "path": path,
+                        "label": label,
+                        "predicted": predicted_class
+                    })
+                
                 if predicted_class == label:
                     correct += 1
                     
-        return correct / total
+        if return_predictions:
+            return correct / total, predictions
+        else:
+            return correct / total
