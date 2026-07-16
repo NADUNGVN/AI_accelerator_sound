@@ -22,6 +22,9 @@ def main():
     parser.add_argument("--data_dir", type=str, default="data/raw/UrbanSound8K", help="Path to UrbanSound8K folder")
     parser.add_argument("--config", type=str, default="configs/rtx3090_config.json", help="Path to RTX 3090 config JSON")
     parser.add_argument("--fold", type=int, default=1, help="Test fold for 10-fold CV (1-10)")
+    parser.add_argument("--epochs", type=int, default=None, help="Number of training epochs (overrides config)")
+    parser.add_argument("--batch_size", type=int, default=None, help="Physical batch size (overrides config)")
+    parser.add_argument("--lr", type=float, default=None, help="Learning rate (overrides config)")
     args = parser.parse_args()
 
     # Load configuration
@@ -42,6 +45,14 @@ def main():
             "cycles": 4,
             "seed": 83
         }
+
+    # CLI Overrides
+    if args.epochs is not None:
+        cfg["epochs"] = args.epochs
+    if args.batch_size is not None:
+        cfg["batch_size"] = args.batch_size
+    if args.lr is not None:
+        cfg["lr"] = args.lr
 
     # Setup environment
     set_seed(cfg.get("seed", 83))
