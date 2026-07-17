@@ -6,6 +6,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import torch
+import torch.nn.functional as F
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -125,6 +126,111 @@ def evaluate_split(name, trainer, models, records, cached_waveforms, frame_lengt
     }
 
 
+def grouped_clips(records):
+    clips = collections.defaultdict(list)
+    for record in records:
+        clips[record["path"]].append(record)
+    return clips
+
+
+def predict_modes_for_clip(models, waveform_np, frame_length, device, zero_threshold):
+    waveform = torch.from_numpy(waveform_np)
+    frames = []
+    valid = []
+    for idx in range(15):
+        offset = idx * (frame_length // 2)
+        frame = waveform[:, offset : offset + frame_length]
+        if frame.shape[-1] < frame_length:
+            frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
+        frames.append(frame)
+        valid.append(float(frame.abs().max().item()) > zero_threshold)
+
+    if not any(valid):
+        valid = [True for _ in frames]
+
+    batch_tensor = torch.stack(frames).to(device)
+    probs_sum = torch.zeros((len(frames), len(CLASS_NAMES)), device=device)
+    with torch.no_grad():
+        for model in models:
+            logits = model(batch_tensor)
+            probs_sum += F.softmax(logits, dim=-1)
+    probs = probs_sum / len(models)
+
+    valid_mask = torch.tensor(valid, dtype=torch.bool, device=device)
+    all_frame_preds = probs.argmax(dim=1)
+    valid_frame_preds = probs[valid_mask].argmax(dim=1)
+
+    return {
+        "sum_all": int(probs.sum(dim=0).argmax().item()),
+        "majority_all": int(torch.bincount(all_frame_preds, minlength=len(CLASS_NAMES)).argmax().item()),
+        "sum_nonzero": int(probs[valid_mask].sum(dim=0).argmax().item()),
+        "majority_nonzero": int(torch.bincount(valid_frame_preds, minlength=len(CLASS_NAMES)).argmax().item()),
+        "max_frame_conf": int(probs.reshape(-1).argmax().item() % len(CLASS_NAMES)),
+        "valid_frame_count": int(valid_mask.sum().item()),
+    }
+
+
+def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, device, zero_threshold):
+    clips = grouped_clips(records)
+    mode_predictions = {
+        "sum_all": [],
+        "majority_all": [],
+        "sum_nonzero": [],
+        "majority_nonzero": [],
+        "max_frame_conf": [],
+    }
+    valid_frame_counts = []
+
+    for path, frames in clips.items():
+        label = frames[0]["label"]
+        result = predict_modes_for_clip(
+            models,
+            cached_waveforms[path],
+            frame_length,
+            device,
+            zero_threshold,
+        )
+        valid_frame_counts.append(result["valid_frame_count"])
+        for mode in mode_predictions:
+            mode_predictions[mode].append(
+                {
+                    "path": path,
+                    "label": label,
+                    "predicted": result[mode],
+                }
+            )
+
+    print(f"\n{name} aggregation-mode comparison")
+    print("mode              acc%    correct/total")
+    report = {}
+    total = len(clips)
+    for mode, predictions in mode_predictions.items():
+        correct = sum(1 for item in predictions if item["label"] == item["predicted"])
+        matrix, rows = confusion_from_predictions(predictions)
+        acc = correct / total if total else 0.0
+        report[mode] = {
+            "accuracy": acc,
+            "clip_count": total,
+            "correct": correct,
+            "confusion_matrix": matrix,
+            "per_class": rows,
+        }
+        print(f"{mode:<17} {acc * 100:6.2f}  {correct}/{total}")
+
+    avg_valid = sum(valid_frame_counts) / len(valid_frame_counts) if valid_frame_counts else 0.0
+    report["valid_frame_count"] = {
+        "average": avg_valid,
+        "min": min(valid_frame_counts) if valid_frame_counts else None,
+        "max": max(valid_frame_counts) if valid_frame_counts else None,
+        "zero_threshold": zero_threshold,
+    }
+    print(
+        f"nonzero-frame count per clip: avg={avg_valid:.2f}, "
+        f"min={report['valid_frame_count']['min']}, max={report['valid_frame_count']['max']}"
+    )
+    return report
+
+
 def main():
     parser = argparse.ArgumentParser(description="Analyze a completed TCAM1DCNN experiment without retraining.")
     parser.add_argument("--exp_dir", required=True, help="Experiment fold directory, e.g. experiments/paper9_msle_fp32/fold_1")
@@ -134,6 +240,8 @@ def main():
     parser.add_argument("--checkpoint", default=None, help="Checkpoint path. Defaults to cycle 4 inside exp_dir.")
     parser.add_argument("--eval_train", action="store_true", help="Also evaluate train clips with the selected checkpoint.")
     parser.add_argument("--ensemble_last2", action="store_true", help="Analyze ensemble of cycle 3 and cycle 4.")
+    parser.add_argument("--eval_modes", action="store_true", help="Compare SUM, majority, and nonzero-frame aggregation modes.")
+    parser.add_argument("--zero_threshold", type=float, default=1e-8, help="Frame max-abs threshold used by nonzero-frame aggregation.")
     args = parser.parse_args()
 
     cfg = read_json(args.config) or {}
@@ -228,6 +336,26 @@ def main():
             cached_waveforms,
             cfg.get("frame_length", 8000),
         )
+    if args.eval_modes:
+        report["test_modes"] = evaluate_split_modes(
+            "TEST",
+            models,
+            test_records,
+            cached_waveforms,
+            cfg.get("frame_length", 8000),
+            device,
+            args.zero_threshold,
+        )
+        if args.eval_train:
+            report["train_modes"] = evaluate_split_modes(
+                "TRAIN",
+                models,
+                train_records,
+                cached_waveforms,
+                cfg.get("frame_length", 8000),
+                device,
+                args.zero_threshold,
+            )
 
     output_path = os.path.join(args.exp_dir, f"analysis_{model_name}.json")
     with open(output_path, "w", encoding="utf-8") as f:
