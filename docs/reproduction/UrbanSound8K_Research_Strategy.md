@@ -82,3 +82,35 @@ Use a staged approach:
 5. Only after UrbanSound8K has a defensible protocol, port the exact pipeline to ESC-10.
 
 For thesis reporting, do not claim `>90%` without naming the split. A strong result should be phrased as `>90% under source-independent official/source-group evaluation`; a random clip result should be labeled as a leakage control.
+
+## Proposed Improvement Track
+
+The reproduction track is no longer the main optimization target. The proposed track can change loss, optimizer, augmentation, and architecture as long as each result reports params and MACs.
+
+Two configs are available:
+
+| Config | Purpose | Params/MAC profile |
+|---|---|---|
+| `configs/proposed_tcam_aug_ce.json` | Accuracy-first, keeps TCAM architecture but adds CE, AdamW, class weights, label smoothing, AMP, gradient clipping, and waveform augmentation | About 409K params, about 230M MAC/input frame, 15 frames/clip |
+| `configs/proposed_efficient_fullclip.json` | Efficiency-first full-clip 1D-CNN with depthwise-separable residual blocks and SE | About 149K params, about 98.7M MAC/clip |
+
+Run fast checks first:
+
+```bash
+python train.py --fold 1 --config configs/proposed_efficient_fullclip.json --exp_name smoke_efficient_fullclip --epochs 1 --batch_size 4 --max_train_clips 12 --max_test_clips 8
+python train.py --fold 1 --config configs/proposed_tcam_aug_ce.json --exp_name smoke_tcam_aug_ce --epochs 1 --batch_size 8 --max_train_clips 20 --max_test_clips 10
+```
+
+Run 50-epoch comparisons before committing to long runs:
+
+```bash
+python train.py --fold 1 --config configs/proposed_tcam_aug_ce.json --exp_name proposed_tcam_aug_ce_50ep --epochs 50 --batch_size 100
+python train.py --fold 1 --config configs/proposed_efficient_fullclip.json --exp_name proposed_efficient_fullclip_50ep --epochs 50 --batch_size 128
+```
+
+Analyze:
+
+```bash
+python tools/analyze_experiment.py --exp_dir experiments/proposed_tcam_aug_ce_50ep/fold_1 --fold 1 --config configs/proposed_tcam_aug_ce.json --eval_all_cycles --eval_modes --eval_train
+python tools/analyze_experiment.py --exp_dir experiments/proposed_efficient_fullclip_50ep/fold_1 --fold 1 --config configs/proposed_efficient_fullclip.json --eval_all_cycles --eval_modes --eval_train
+```

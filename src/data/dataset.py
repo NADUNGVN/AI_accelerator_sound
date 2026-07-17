@@ -1,19 +1,82 @@
 import os
 import csv
+import math
+import random
 import torch
 import torchaudio
 import torch.nn.functional as F
 from torch.utils.data import Dataset
+
+
+def _db_to_amplitude(db):
+    return 10.0 ** (db / 20.0)
+
+
+class WaveformAugment:
+    """
+    Lightweight raw-waveform augmentation for proposed models. It intentionally
+    avoids expensive transforms so it remains suitable for low-latency 1D-CNN
+    experiments and server-side sweeps.
+    """
+    def __init__(self, cfg=None):
+        cfg = cfg or {}
+        self.enabled = bool(cfg.get("enabled", False))
+        self.gain_db = float(cfg.get("gain_db", 0.0))
+        self.noise_prob = float(cfg.get("noise_prob", 0.0))
+        self.noise_snr_db_min = float(cfg.get("noise_snr_db_min", 20.0))
+        self.noise_snr_db_max = float(cfg.get("noise_snr_db_max", 35.0))
+        self.shift_prob = float(cfg.get("shift_prob", 0.0))
+        self.shift_max_fraction = float(cfg.get("shift_max_fraction", 0.0))
+        self.polarity_prob = float(cfg.get("polarity_prob", 0.0))
+        self.time_mask_prob = float(cfg.get("time_mask_prob", 0.0))
+        self.time_mask_max_fraction = float(cfg.get("time_mask_max_fraction", 0.0))
+
+    def __call__(self, x):
+        if not self.enabled:
+            return x
+
+        if self.gain_db > 0.0:
+            db = random.uniform(-self.gain_db, self.gain_db)
+            x = x * _db_to_amplitude(db)
+
+        if self.polarity_prob > 0.0 and random.random() < self.polarity_prob:
+            x = -x
+
+        if self.shift_prob > 0.0 and self.shift_max_fraction > 0.0 and random.random() < self.shift_prob:
+            max_shift = int(x.shape[-1] * self.shift_max_fraction)
+            if max_shift > 0:
+                shift = random.randint(-max_shift, max_shift)
+                if shift > 0:
+                    x = F.pad(x[..., :-shift], (shift, 0))
+                elif shift < 0:
+                    x = F.pad(x[..., -shift:], (0, -shift))
+
+        if self.time_mask_prob > 0.0 and self.time_mask_max_fraction > 0.0 and random.random() < self.time_mask_prob:
+            max_width = int(x.shape[-1] * self.time_mask_max_fraction)
+            if max_width > 0:
+                width = random.randint(1, max_width)
+                start = random.randint(0, max(0, x.shape[-1] - width))
+                x = x.clone()
+                x[..., start:start + width] = 0.0
+
+        if self.noise_prob > 0.0 and random.random() < self.noise_prob:
+            rms = torch.sqrt(torch.mean(x * x).clamp_min(1e-12))
+            snr_db = random.uniform(self.noise_snr_db_min, self.noise_snr_db_max)
+            noise_rms = rms / _db_to_amplitude(snr_db)
+            x = x + torch.randn_like(x) * noise_rms
+
+        return torch.clamp(x, -1.0, 1.0)
 
 class CachedUrbanSoundFrameDataset(Dataset):
     """
     Retrieves waveforms directly from pre-loaded RAM dictionary,
     extracting 8000-sample frames on-the-fly. No Disk I/O during training.
     """
-    def __init__(self, records, cached_waveforms, frame_length=8000):
+    def __init__(self, records, cached_waveforms, frame_length=8000, augment_cfg=None):
         self.records = records
         self.cached_waveforms = cached_waveforms
         self.frame_length = frame_length
+        self.augment = WaveformAugment(augment_cfg)
 
     def __len__(self):
         return len(self.records)
@@ -36,6 +99,8 @@ class CachedUrbanSoundFrameDataset(Dataset):
         if frame.shape[-1] < self.frame_length:
             padding = self.frame_length - frame.shape[-1]
             frame = F.pad(frame, (0, padding), mode='constant')
+
+        frame = self.augment(frame.float())
             
         return frame, label
 
@@ -60,6 +125,8 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
         class_idx = header.index("class")
         fsid_idx = header.index("fsID") if "fsID" in header else None
         class_id_idx = header.index("classID") if "classID" in header else None
+        start_idx = header.index("start") if "start" in header else None
+        end_idx = header.index("end") if "end" in header else None
         
         for row in r:
             filename = row[file_idx]
@@ -91,6 +158,12 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
                 record["fsID"] = row[fsid_idx]
             if class_id_idx is not None:
                 record["classID"] = int(row[class_id_idx])
+            if start_idx is not None and end_idx is not None:
+                start_s = float(row[start_idx])
+                end_s = float(row[end_idx])
+                record["start"] = start_s
+                record["end"] = end_s
+                record["duration"] = max(0.0, end_s - start_s)
             records.append(record)
 
     if unknown_classes:
@@ -120,18 +193,39 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
     print(f"Parsed {len(records)} standard audio clips (10 classes, rail_vehicle excluded).")
     return records
 
-def generate_frame_records(clip_records):
+def generate_frame_records(
+    clip_records,
+    frame_length=8000,
+    frame_hop=None,
+    sample_rate=16000,
+    clip_seconds=4.0,
+    frames_per_clip=None,
+    drop_silent_tail_frames=False,
+):
     """
-    Expands clip records into frame records (15 frames per 4s clip with 50% overlap).
+    Expands clip records into frame records. Defaults preserve the paper-style
+    15 frames per 4s clip with 50% overlap for 8000-sample frames.
     """
+    if frame_hop is None:
+        frame_hop = frame_length // 2
+    if frames_per_clip is None:
+        target_len = int(sample_rate * clip_seconds)
+        frames_per_clip = max(1, math.floor((target_len - frame_length) / frame_hop) + 1)
+
     frame_records = []
     for r in clip_records:
-        for i in range(15):
+        duration_samples = None
+        if drop_silent_tail_frames and "duration" in r:
+            duration_samples = int(float(r["duration"]) * sample_rate)
+        for i in range(frames_per_clip):
+            frame_start = i * frame_hop
+            if duration_samples is not None and frame_start >= duration_samples:
+                continue
             frame_records.append({
                 "path": r["path"],
                 "label": r["label"],
                 "fold": r["fold"],
-                "frame_start": i * 4000
+                "frame_start": frame_start
             })
     return frame_records
 

@@ -15,7 +15,7 @@ from collections import defaultdict
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src.models import TCAM1DCNN
+from src.models import TCAM1DCNN, EfficientAudioCNN1D
 from src.data import CachedUrbanSoundFrameDataset, parse_dataset, generate_frame_records, load_audio_to_ram
 from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
@@ -184,6 +184,72 @@ def source_label_overlap_summary(train_clips, test_records, limit=10):
     }
 
 
+def build_model(cfg, num_classes):
+    model_name = cfg.get("model_name", "tcam1dcnn").lower()
+    if model_name == "tcam1dcnn":
+        model = TCAM1DCNN(num_classes=num_classes)
+    elif model_name == "efficient_audio_cnn1d":
+        model = EfficientAudioCNN1D(
+            num_classes=num_classes,
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.25)),
+        )
+    else:
+        raise ValueError(f"Unsupported model_name '{model_name}'. Use 'tcam1dcnn' or 'efficient_audio_cnn1d'.")
+    return model_name, model
+
+
+def count_parameters(model):
+    return {
+        "params_with_bias": sum(p.numel() for p in model.parameters()),
+        "params_trainable": sum(p.numel() for p in model.parameters() if p.requires_grad),
+        "params_no_bias": sum(
+            p.numel()
+            for name, p in model.named_parameters()
+            if not name.endswith("bias")
+        ),
+    }
+
+
+def estimate_conv_linear_macs(model, input_length, device):
+    hooks = []
+    macs = 0
+
+    def hook(module, inputs, output):
+        nonlocal macs
+        if isinstance(module, nn.Conv1d):
+            batch, out_channels, out_length = output.shape
+            kernel = module.kernel_size[0]
+            in_channels = module.in_channels // module.groups
+            macs += int(batch * out_channels * out_length * in_channels * kernel)
+        elif isinstance(module, nn.Linear):
+            batch = output.shape[0]
+            macs += int(batch * module.in_features * module.out_features)
+
+    for module in model.modules():
+        if isinstance(module, (nn.Conv1d, nn.Linear)):
+            hooks.append(module.register_forward_hook(hook))
+
+    was_training = model.training
+    model.eval()
+    with torch.no_grad():
+        model(torch.zeros(1, 1, input_length, device=device))
+    if was_training:
+        model.train()
+    for h in hooks:
+        h.remove()
+    return macs
+
+
+def balanced_class_weights(records, num_classes, device):
+    counts = torch.zeros(num_classes, dtype=torch.float32)
+    for record in records:
+        counts[int(record["label"])] += 1.0
+    counts = counts.clamp_min(1.0)
+    weights = counts.sum() / (num_classes * counts)
+    return weights.to(device)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Train SOTA TCAM1DCNN on RTX 3090 (Modular Structure)")
     parser.add_argument("--data_dir", type=str, default=default_data_dir(), help="Path to UrbanSound8K folder")
@@ -338,9 +404,37 @@ def main():
         print(f"Source-label overlap (fsID+classID) between train/test: {source_overlap['count']}")
     
     random.shuffle(train_clips)
+
+    frame_length = int(cfg.get("frame_length", 8000))
+    frame_hop = int(cfg.get("frame_hop", frame_length // 2))
+    frames_per_clip = cfg.get("frames_per_clip", None)
+    if frames_per_clip is not None:
+        frames_per_clip = int(frames_per_clip)
+    clip_seconds = float(cfg.get("clip_seconds", 4.0))
+    drop_silent_tail_frames = bool(cfg.get("drop_silent_tail_frames", False))
+    target_len = int(cfg.get("sample_rate", 16000) * clip_seconds)
+    effective_frames_per_clip = frames_per_clip
+    if effective_frames_per_clip is None:
+        effective_frames_per_clip = max(1, math.floor((target_len - frame_length) / frame_hop) + 1)
     
-    train_frames = generate_frame_records(train_clips)
-    val_frames = generate_frame_records(val_clips) if uses_validation else []
+    train_frames = generate_frame_records(
+        train_clips,
+        frame_length=frame_length,
+        frame_hop=frame_hop,
+        sample_rate=cfg.get("sample_rate", 16000),
+        clip_seconds=clip_seconds,
+        frames_per_clip=frames_per_clip,
+        drop_silent_tail_frames=drop_silent_tail_frames,
+    )
+    val_frames = generate_frame_records(
+        val_clips,
+        frame_length=frame_length,
+        frame_hop=frame_hop,
+        sample_rate=cfg.get("sample_rate", 16000),
+        clip_seconds=clip_seconds,
+        frames_per_clip=frames_per_clip,
+        drop_silent_tail_frames=drop_silent_tail_frames,
+    ) if uses_validation else []
     
     print(f"Clips: Train={len(train_clips)}, Val={len(val_clips)}, Test={len(test_records)}")
     print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)}")
@@ -361,7 +455,12 @@ def main():
     print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
 
     # Dataloader
-    train_dataset = CachedUrbanSoundFrameDataset(train_frames, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+    train_dataset = CachedUrbanSoundFrameDataset(
+        train_frames,
+        cached_waveforms,
+        frame_length=frame_length,
+        augment_cfg=cfg.get("augment", None),
+    )
     
     num_workers = cfg.get("num_workers", 0)
     loader_kwargs = {
@@ -384,7 +483,14 @@ def main():
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
     # Instantiate model, loss, optimizer, scaler
-    model = TCAM1DCNN(num_classes=10).to(device)
+    model_name, model = build_model(cfg, num_classes=10)
+    model = model.to(device)
+    model_params = count_parameters(model)
+    model_macs = estimate_conv_linear_macs(model, frame_length, device)
+    print(
+        f"[Model Setup] model={model_name} | params={model_params['params_with_bias']:,} | "
+        f"MACs/input={model_macs:,} | frame_length={frame_length} | frames_per_clip={effective_frames_per_clip}"
+    )
     
     loss_type = cfg.get("loss", "crossentropy").lower()
     if loss_type == "msle":
@@ -400,7 +506,15 @@ def main():
         criterion = MSLELoss()
     else:
         print("[Loss Setup] Using Cross Entropy Loss.")
-        criterion = nn.CrossEntropyLoss()
+        label_smoothing = float(cfg.get("label_smoothing", 0.0))
+        class_weighting = cfg.get("class_weighting", "none").lower()
+        ce_weights = None
+        if class_weighting == "balanced":
+            ce_weights = balanced_class_weights(train_clips, num_classes=10, device=device)
+            print(f"[Loss Setup] Balanced class weights: {[round(float(w), 4) for w in ce_weights.cpu()]}")
+        elif class_weighting != "none":
+            raise ValueError(f"Unsupported class_weighting '{class_weighting}'. Use 'none' or 'balanced'.")
+        criterion = nn.CrossEntropyLoss(weight=ce_weights, label_smoothing=label_smoothing)
 
     use_amp = bool(cfg.get("amp", True))
     gradient_clip = cfg.get("gradient_clip", 5.0)
@@ -408,9 +522,30 @@ def main():
         gradient_clip = float(gradient_clip)
     adam_eps = float(cfg.get("adam_eps", 1e-8))
 
-    print(f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | Adam eps={adam_eps:g}")
+    weight_decay = float(cfg.get("weight_decay", 0.0))
+    optimizer_name = cfg.get("optimizer", "adam").lower()
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4), eps=adam_eps)
+    print(
+        f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | "
+        f"Optimizer={optimizer_name} | Weight Decay={weight_decay:g} | Adam eps={adam_eps:g}"
+    )
+
+    if optimizer_name == "adamw":
+        optimizer = torch.optim.AdamW(
+            model.parameters(),
+            lr=cfg.get("lr", 2e-4),
+            eps=adam_eps,
+            weight_decay=weight_decay,
+        )
+    elif optimizer_name == "adam":
+        optimizer = torch.optim.Adam(
+            model.parameters(),
+            lr=cfg.get("lr", 2e-4),
+            eps=adam_eps,
+            weight_decay=weight_decay,
+        )
+    else:
+        raise ValueError(f"Unsupported optimizer '{optimizer_name}'. Use 'adam' or 'adamw'.")
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
 
     trainer = Trainer(
@@ -437,7 +572,14 @@ def main():
         loss, train_acc = trainer.train_epoch(train_loader)
         
         if uses_validation:
-            val_clip_acc = trainer.evaluate_clips([model], val_clips, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+            val_clip_acc = trainer.evaluate_clips(
+                [model],
+                val_clips,
+                cached_waveforms,
+                frame_length=frame_length,
+                frame_hop=frame_hop,
+                frames_per_clip=effective_frames_per_clip,
+            )
         else:
             val_clip_acc = None
         
@@ -469,10 +611,19 @@ def main():
 
     # Load and evaluate the best validation model only when the protocol has a validation fold.
     if uses_validation and os.path.exists(best_ckpt_path):
-        best_model = TCAM1DCNN(num_classes=10).to(device)
+        _, best_model = build_model(cfg, num_classes=10)
+        best_model = best_model.to(device)
         best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
         best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
-        test_acc_best, preds_best = trainer.evaluate_clips([best_model], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
+        test_acc_best, preds_best = trainer.evaluate_clips(
+            [best_model],
+            test_records,
+            cached_waveforms,
+            frame_length=frame_length,
+            frame_hop=frame_hop,
+            frames_per_clip=effective_frames_per_clip,
+            return_predictions=True,
+        )
     else:
         test_acc_best, preds_best = None, []
 
@@ -482,12 +633,29 @@ def main():
 
     ensemble_models = []
     for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
-        m = TCAM1DCNN(num_classes=10).to(device)
+        _, m = build_model(cfg, num_classes=10)
+        m = m.to(device)
         m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
         ensemble_models.append(m)
         
-    test_acc_last, preds_last = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
-    test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(ensemble_models, test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
+    test_acc_last, preds_last = trainer.evaluate_clips(
+        [ensemble_models[0]],
+        test_records,
+        cached_waveforms,
+        frame_length=frame_length,
+        frame_hop=frame_hop,
+        frames_per_clip=effective_frames_per_clip,
+        return_predictions=True,
+    )
+    test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(
+        ensemble_models,
+        test_records,
+        cached_waveforms,
+        frame_length=frame_length,
+        frame_hop=frame_hop,
+        frames_per_clip=effective_frames_per_clip,
+        return_predictions=True,
+    )
     
     print(f"\n=================== FOLD {args.fold} FINAL EVALUATION RESULTS ===================")
     if uses_validation:
@@ -525,12 +693,24 @@ def main():
         "test_clip_count": len(test_records),
         "train_frame_count": len(train_frames),
         "val_frame_count": len(val_frames),
+        "model_name": model_name,
+        "model_params": model_params,
+        "model_conv_linear_macs_per_input": model_macs,
+        "model_conv_linear_macs_per_clip_eval": model_macs * effective_frames_per_clip,
+        "frame_length": frame_length,
+        "frame_hop": frame_hop,
+        "frames_per_clip": effective_frames_per_clip,
+        "drop_silent_tail_frames": drop_silent_tail_frames,
         "epochs": epochs,
         "cycles": cycles,
         "seed": cfg.get("seed", 83),
         "loss_type": loss_type,
+        "label_smoothing": float(cfg.get("label_smoothing", 0.0)),
+        "class_weighting": cfg.get("class_weighting", "none"),
         "amp": use_amp,
         "gradient_clip": gradient_clip,
+        "optimizer": optimizer_name,
+        "weight_decay": weight_decay,
         "adam_eps": adam_eps,
         "batch_size": cfg.get("batch_size", 96),
         "accum_steps": cfg.get("accum_steps", 1),

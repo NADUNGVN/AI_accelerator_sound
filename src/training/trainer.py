@@ -82,7 +82,16 @@ class Trainer:
         lr = max_lr / 2.0 * (math.cos(math.pi * cycle_epoch / epochs_per_cycle) + 1.0)
         return max(lr, 1e-6)
 
-    def evaluate_clips(self, models, records, cached_waveforms, frame_length=8000, return_predictions=False):
+    def evaluate_clips(
+        self,
+        models,
+        records,
+        cached_waveforms,
+        frame_length=8000,
+        frame_hop=None,
+        frames_per_clip=15,
+        return_predictions=False,
+    ):
         """
         Evaluates whole 4-second audio clips using the SUM rule on all 15 overlapping frames
         retrieved directly from RAM. Supports ensembling.
@@ -99,8 +108,11 @@ class Trainer:
         total = len(clips)
         predictions = []
         
+        if frame_hop is None:
+            frame_hop = frame_length // 2
+
         # Pre-generate frame offsets
-        offsets = [i * 4000 for i in range(15)] # 50% overlap of 8000 frames
+        offsets = [i * frame_hop for i in range(frames_per_clip)]
         
         with torch.no_grad():
             for path, frames in clips.items():
@@ -116,11 +128,11 @@ class Trainer:
                         frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
                     batch_frames.append(frame)
                     
-                # Shape: (15, 1, 8000)
+                # Shape: (frames_per_clip, 1, frame_length)
                 batch_tensor = torch.stack(batch_frames).to(self.device)
                 
                 # Forward pass through all ensembled models
-                sum_probs = torch.zeros((15, 10), device=self.device)
+                sum_probs = None
                 for m in models:
                     with torch.amp.autocast(
                         device_type="cuda" if "cuda" in self.device.type else "cpu",
@@ -129,6 +141,8 @@ class Trainer:
                     ):
                         logits = m(batch_tensor)
                         probs = F.softmax(logits, dim=-1)
+                        if sum_probs is None:
+                            sum_probs = torch.zeros_like(probs)
                         sum_probs += probs
                 
                 sum_probs /= len(models)

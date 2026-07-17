@@ -13,7 +13,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
 from src.data import load_audio_to_ram, parse_dataset
-from src.models import TCAM1DCNN
+from src.models import TCAM1DCNN, EfficientAudioCNN1D
 from src.training import Trainer
 
 
@@ -53,10 +53,30 @@ def read_json(path):
         return json.load(f)
 
 
-def load_model(checkpoint_path, device):
+def build_model(cfg, metrics, num_classes):
+    model_name = (metrics or {}).get("model_name", cfg.get("model_name", "tcam1dcnn")).lower()
+    if model_name == "tcam1dcnn":
+        return TCAM1DCNN(num_classes=num_classes)
+    if model_name == "efficient_audio_cnn1d":
+        return EfficientAudioCNN1D(
+            num_classes=num_classes,
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.25)),
+        )
+    raise ValueError(f"Unsupported model_name '{model_name}'.")
+
+
+def frame_settings(cfg, metrics):
+    frame_length = int((metrics or {}).get("frame_length", cfg.get("frame_length", 8000)))
+    frame_hop = int((metrics or {}).get("frame_hop", cfg.get("frame_hop", frame_length // 2)))
+    frames_per_clip = int((metrics or {}).get("frames_per_clip", cfg.get("frames_per_clip", 15)))
+    return frame_length, frame_hop, frames_per_clip
+
+
+def load_model(checkpoint_path, device, cfg, metrics):
     if not os.path.exists(checkpoint_path):
         raise FileNotFoundError(checkpoint_path)
-    model = TCAM1DCNN(num_classes=len(CLASS_NAMES)).to(device)
+    model = build_model(cfg, metrics, num_classes=len(CLASS_NAMES)).to(device)
     state = torch.load(checkpoint_path, map_location=device, weights_only=True)
     if isinstance(state, dict) and "model_state_dict" in state:
         state = state["model_state_dict"]
@@ -85,6 +105,36 @@ def random_split_sort_key(record, algorithm):
         str(record.get("fsID", "")),
         int(record.get("classID", -1)),
     )
+
+
+def make_stratified_clip_subset(records, max_clips, seed, algorithm=RANDOM_SPLIT_ALGORITHM):
+    if max_clips is None or max_clips >= len(records):
+        return records
+    if max_clips <= 0:
+        raise ValueError(f"max_clips must be positive when provided, got {max_clips}")
+
+    rng = random.Random(seed)
+    by_label = collections.defaultdict(list)
+    for record in records:
+        by_label[record["label"]].append(record)
+
+    for label in by_label:
+        by_label[label] = sorted(by_label[label], key=lambda r: random_split_sort_key(r, algorithm))
+        rng.shuffle(by_label[label])
+
+    selected = []
+    label_order = sorted(by_label)
+    while len(selected) < max_clips:
+        progressed = False
+        for label in label_order:
+            if by_label[label]:
+                selected.append(by_label[label].pop())
+                progressed = True
+                if len(selected) == max_clips:
+                    break
+        if not progressed:
+            break
+    return selected
 
 
 def make_stratified_random_clip_split(clip_records, test_bucket, seed, algorithm=RANDOM_SPLIT_ALGORITHM, num_buckets=10):
@@ -205,12 +255,14 @@ def print_class_table(title, rows):
         )
 
 
-def evaluate_split(name, trainer, models, records, cached_waveforms, frame_length):
+def evaluate_split(name, trainer, models, records, cached_waveforms, frame_length, frame_hop, frames_per_clip):
     acc, predictions = trainer.evaluate_clips(
         models,
         records,
         cached_waveforms,
         frame_length=frame_length,
+        frame_hop=frame_hop,
+        frames_per_clip=frames_per_clip,
         return_predictions=True,
     )
     matrix, rows = confusion_from_predictions(predictions)
@@ -231,12 +283,12 @@ def grouped_clips(records):
     return clips
 
 
-def predict_modes_for_clip(models, waveform_np, frame_length, device, zero_threshold):
+def predict_modes_for_clip(models, waveform_np, frame_length, frame_hop, frames_per_clip, device, zero_threshold):
     waveform = torch.from_numpy(waveform_np)
     frames = []
     valid = []
-    for idx in range(15):
-        offset = idx * (frame_length // 2)
+    for idx in range(frames_per_clip):
+        offset = idx * frame_hop
         frame = waveform[:, offset : offset + frame_length]
         if frame.shape[-1] < frame_length:
             frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
@@ -268,7 +320,7 @@ def predict_modes_for_clip(models, waveform_np, frame_length, device, zero_thres
     }
 
 
-def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, device, zero_threshold):
+def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, frame_hop, frames_per_clip, device, zero_threshold):
     clips = grouped_clips(records)
     mode_predictions = {
         "sum_all": [],
@@ -285,6 +337,8 @@ def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, 
             models,
             cached_waveforms[path],
             frame_length,
+            frame_hop,
+            frames_per_clip,
             device,
             zero_threshold,
         )
@@ -410,6 +464,31 @@ def main():
         train_records = [r for r in clip_records if r["fold"] != args.fold]
         print(f"Reconstructed paper_9_1 official split with test fold={args.fold}.")
 
+    if metrics and (
+        metrics.get("max_train_clips") is not None
+        or metrics.get("max_val_clips") is not None
+        or metrics.get("max_test_clips") is not None
+    ):
+        seed = metrics.get("seed", cfg.get("seed", 83))
+        original_counts = (len(train_records), len(test_records))
+        train_records = make_stratified_clip_subset(
+            train_records,
+            metrics.get("max_train_clips"),
+            seed + 101,
+            algorithm=(metrics.get("random_split_algorithm") or RANDOM_SPLIT_ALGORITHM),
+        )
+        test_records = make_stratified_clip_subset(
+            test_records,
+            metrics.get("max_test_clips"),
+            seed + 303,
+            algorithm=(metrics.get("random_split_algorithm") or RANDOM_SPLIT_ALGORITHM),
+        )
+        print(
+            "Reapplied smoke subset from metrics | "
+            f"Train {original_counts[0]}->{len(train_records)}, "
+            f"Test {original_counts[1]}->{len(test_records)}."
+        )
+
     print("\n=== Split counts ===")
     print(f"train clips: {len(train_records)}")
     print(f"test clips : {len(test_records)}")
@@ -430,6 +509,11 @@ def main():
         use_amp=bool(cfg.get("amp", False)),
         gradient_clip=cfg.get("gradient_clip", None),
     )
+    frame_length, frame_hop, frames_per_clip = frame_settings(cfg, metrics)
+    print(
+        f"Frame settings: frame_length={frame_length}, "
+        f"frame_hop={frame_hop}, frames_per_clip={frames_per_clip}"
+    )
 
     if args.eval_all_cycles:
         cycle_paths = [
@@ -449,7 +533,7 @@ def main():
             if not os.path.exists(checkpoint_path):
                 print(f"\nCycle {cycle_id}: checkpoint missing, skipped: {checkpoint_path}")
                 continue
-            models = [load_model(checkpoint_path, device)]
+            models = [load_model(checkpoint_path, device, cfg, metrics)]
             print(f"\n--- Cycle {cycle_id}: {os.path.basename(checkpoint_path)} ---")
             cycle_report = {
                 "cycle": cycle_id,
@@ -460,7 +544,9 @@ def main():
                     models,
                     test_records,
                     cached_waveforms,
-                    cfg.get("frame_length", 8000),
+                    frame_length,
+                    frame_hop,
+                    frames_per_clip,
                 ),
             }
             if args.eval_modes:
@@ -469,7 +555,9 @@ def main():
                     models,
                     test_records,
                     cached_waveforms,
-                    cfg.get("frame_length", 8000),
+                    frame_length,
+                    frame_hop,
+                    frames_per_clip,
                     device,
                     args.zero_threshold,
                 )
@@ -486,7 +574,7 @@ def main():
             os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_3.pt"),
             os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_4.pt"),
         ]
-        models = [load_model(path, device) for path in checkpoint_paths]
+        models = [load_model(path, device, cfg, metrics) for path in checkpoint_paths]
         model_name = "ensemble_last2"
     else:
         checkpoint_path = args.checkpoint or os.path.join(
@@ -494,7 +582,7 @@ def main():
             "checkpoints",
             f"tcam_fold_{args.fold}_cycle_4.pt",
         )
-        models = [load_model(checkpoint_path, device)]
+        models = [load_model(checkpoint_path, device, cfg, metrics)]
         model_name = os.path.basename(checkpoint_path)
 
     print(f"\n=== Evaluating {model_name} on {device} ===")
@@ -511,7 +599,9 @@ def main():
         models,
         test_records,
         cached_waveforms,
-        cfg.get("frame_length", 8000),
+        frame_length,
+        frame_hop,
+        frames_per_clip,
     )
     if args.eval_train:
         report["train"] = evaluate_split(
@@ -520,7 +610,9 @@ def main():
             models,
             train_records,
             cached_waveforms,
-            cfg.get("frame_length", 8000),
+            frame_length,
+            frame_hop,
+            frames_per_clip,
         )
     if args.eval_modes:
         report["test_modes"] = evaluate_split_modes(
@@ -528,7 +620,9 @@ def main():
             models,
             test_records,
             cached_waveforms,
-            cfg.get("frame_length", 8000),
+            frame_length,
+            frame_hop,
+            frames_per_clip,
             device,
             args.zero_threshold,
         )
@@ -538,7 +632,9 @@ def main():
                 models,
                 train_records,
                 cached_waveforms,
-                cfg.get("frame_length", 8000),
+                frame_length,
+                frame_hop,
+                frames_per_clip,
                 device,
                 args.zero_threshold,
             )

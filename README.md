@@ -62,6 +62,18 @@ python train.py --fold 1 --config configs/random_clip_msle.json --exp_name rando
 python train.py --fold 1 --config configs/source_group_msle.json --exp_name sourcegroup_msle_fp32
 ```
 
+Nhánh đề xuất không còn bám sát paper, dùng augmentation/regularization để tối ưu accuracy nguồn độc lập:
+
+```bash
+python train.py --fold 1 --config configs/proposed_tcam_aug_ce.json --exp_name proposed_tcam_aug_ce
+```
+
+Nhánh đề xuất hiệu quả hơn về tham số/MAC dùng full-clip 1D-CNN depthwise-separable:
+
+```bash
+python train.py --fold 1 --config configs/proposed_efficient_fullclip.json --exp_name proposed_efficient_fullclip
+```
+
 Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.
 
 Các thư mục `experiments/`, `checkpoints/`, `logs/`, `results/` và `data/` là artifact/local data sinh ra trong quá trình chạy, không track trong Git; phần kết luận nghiên cứu được giữ trong `docs/`.
