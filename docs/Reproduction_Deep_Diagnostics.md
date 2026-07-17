@@ -51,6 +51,16 @@
 - To reach 40M MACs with the current architecture by scaling input length alone, the input would need to be about 1390.14 samples, not 8000.
 - Even counting only the main backbone and classifier, the model is about 144.02M MACs.
 
+### Paper 40M Hypothesis
+
+- The paper's 40M figure is numerically consistent with `reported params * training batch size`, not with standard Conv1D FLOPs.
+- Paper reported params approx: 406,000
+- Paper reported FLOPs approx: 40,000,000
+- Paper FLOPs / paper params: 98.5222
+- Paper batch size: 100
+- Current params without bias * batch: 40,748,800
+- Current params with bias * batch: 40,932,800
+
 | Layer | Expected shape | Found shape | Match |
 |---|---|---|---|
 | conv1 | [1, 32, 8000] | [1, 32, 8000] | True |

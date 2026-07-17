@@ -322,8 +322,31 @@ def model_diagnostics():
         "tcam_block_params": block_params,
         "complexity_groups": complexity_groups,
         "complexity_variants": complexity_variants,
+        "paper_40m_hypothesis": paper_40m_hypothesis(
+            params_with_bias=sum(p.numel() for p in model.parameters()),
+            params_no_bias=sum(
+                p.numel()
+                for name, p in model.named_parameters()
+                if not name.endswith("bias")
+            ),
+        ),
         "paper_reported_params": "406 K",
         "paper_reported_flops": "40 M",
+    }
+
+
+def paper_40m_hypothesis(params_with_bias, params_no_bias, batch_size=100):
+    paper_params_approx = 406_000
+    paper_flops_approx = 40_000_000
+    return {
+        "hypothesis": "reported_40m_is_params_times_training_batch_size_not_standard_conv_flops",
+        "training_batch_size_in_paper": batch_size,
+        "paper_reported_params_approx": paper_params_approx,
+        "paper_reported_flops_approx": paper_flops_approx,
+        "paper_flops_div_paper_params": round(paper_flops_approx / paper_params_approx, 4),
+        "current_params_with_bias_times_batch": params_with_bias * batch_size,
+        "current_params_no_bias_times_batch": params_no_bias * batch_size,
+        "paper_params_times_batch": paper_params_approx * batch_size,
     }
 
 
@@ -533,6 +556,20 @@ def write_markdown(report, path):
         "- Even counting only the main backbone and classifier, the model is about "
         f"{model['complexity_variants']['main_backbone_only']['macs_m']:.2f}M MACs."
     )
+    lines.append("")
+    hyp = model["paper_40m_hypothesis"]
+    lines.append("### Paper 40M Hypothesis")
+    lines.append("")
+    lines.append(
+        "- The paper's 40M figure is numerically consistent with `reported params * training batch size`, "
+        "not with standard Conv1D FLOPs."
+    )
+    lines.append(f"- Paper reported params approx: {hyp['paper_reported_params_approx']:,}")
+    lines.append(f"- Paper reported FLOPs approx: {hyp['paper_reported_flops_approx']:,}")
+    lines.append(f"- Paper FLOPs / paper params: {hyp['paper_flops_div_paper_params']}")
+    lines.append(f"- Paper batch size: {hyp['training_batch_size_in_paper']}")
+    lines.append(f"- Current params without bias * batch: {hyp['current_params_no_bias_times_batch']:,}")
+    lines.append(f"- Current params with bias * batch: {hyp['current_params_with_bias_times_batch']:,}")
     lines.append("")
     lines.append("| Layer | Expected shape | Found shape | Match |")
     lines.append("|---|---|---|---|")
