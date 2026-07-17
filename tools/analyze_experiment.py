@@ -32,6 +32,18 @@ CLASS_NAMES = [
 
 
 RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
+SOURCE_GROUP_SPLIT_ALGORITHM = "fsid_classid_balanced_v1"
+
+
+def default_data_dir():
+    candidates = [
+        os.path.join(REPO_ROOT, "data", "raw", "UrbanSound8K"),
+        os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "UrbanSound8K")),
+    ]
+    for candidate in candidates:
+        if os.path.exists(os.path.join(candidate, "metadata", "UrbanSound8K.csv")):
+            return candidate
+    return candidates[0]
 
 
 def read_json(path):
@@ -95,6 +107,51 @@ def make_stratified_random_clip_split(clip_records, test_bucket, seed, algorithm
                 test_records.append(record)
             else:
                 train_records.append(record)
+
+    return train_records, test_records
+
+
+def make_stratified_source_group_split(clip_records, test_bucket, seed, num_buckets=10):
+    if not 1 <= test_bucket <= num_buckets:
+        raise ValueError(f"test_bucket must be in [1, {num_buckets}], got {test_bucket}")
+    if not clip_records or "fsID" not in clip_records[0] or "classID" not in clip_records[0]:
+        raise ValueError("source_group_9_1 requires fsID and classID metadata fields.")
+
+    rng = random.Random(seed)
+    groups_by_class = collections.defaultdict(dict)
+    for record in clip_records:
+        key = (str(record["fsID"]), int(record["classID"]))
+        groups_by_class[record["label"]].setdefault(key, []).append(record)
+
+    train_records = []
+    test_records = []
+    for label in sorted(groups_by_class):
+        groups = sorted(
+            groups_by_class[label].items(),
+            key=lambda item: (
+                min(r["fold"] for r in item[1]),
+                item[0][0],
+                item[0][1],
+                min(r.get("slice_file_name", os.path.basename(r["path"])) for r in item[1]),
+            ),
+        )
+        rng.shuffle(groups)
+        groups.sort(key=lambda item: len(item[1]), reverse=True)
+
+        buckets = [[] for _ in range(num_buckets)]
+        bucket_counts = [0 for _ in range(num_buckets)]
+        for _, records in groups:
+            min_count = min(bucket_counts)
+            candidates = [idx for idx, count in enumerate(bucket_counts) if count == min_count]
+            bucket_idx = rng.choice(candidates)
+            buckets[bucket_idx].extend(records)
+            bucket_counts[bucket_idx] += len(records)
+
+        for idx, records in enumerate(buckets, start=1):
+            if idx == test_bucket:
+                test_records.extend(records)
+            else:
+                train_records.extend(records)
 
     return train_records, test_records
 
@@ -275,7 +332,7 @@ def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, 
 def main():
     parser = argparse.ArgumentParser(description="Analyze a completed TCAM1DCNN experiment without retraining.")
     parser.add_argument("--exp_dir", required=True, help="Experiment fold directory, e.g. experiments/paper9_msle_fp32/fold_1")
-    parser.add_argument("--data_dir", default="data/raw/UrbanSound8K")
+    parser.add_argument("--data_dir", default=default_data_dir())
     parser.add_argument("--config", default="configs/rtx3090_config.json")
     parser.add_argument("--fold", type=int, default=1)
     parser.add_argument("--checkpoint", default=None, help="Checkpoint path. Defaults to cycle 4 inside exp_dir.")
@@ -330,6 +387,18 @@ def main():
         print(
             f"Reconstructed random_clip_9_1 split with test bucket={split_fold}, "
             f"seed={split_seed}, split_algorithm={split_algorithm}."
+        )
+    elif protocol == "source_group_9_1":
+        split_seed = (metrics or {}).get("seed", cfg.get("seed", 83))
+        split_fold = (metrics or {}).get("test_fold", args.fold)
+        train_records, test_records = make_stratified_source_group_split(
+            clip_records,
+            test_bucket=split_fold,
+            seed=split_seed,
+        )
+        print(
+            f"Reconstructed source_group_9_1 split with test bucket={split_fold}, "
+            f"seed={split_seed}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
         )
     elif protocol == "clean_8_1_1":
         val_fold = (metrics or {}).get("val_fold", (args.fold % 10) + 1)

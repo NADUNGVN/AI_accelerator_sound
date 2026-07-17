@@ -22,6 +22,23 @@ from src.utils import set_seed, prepare_dirs
 
 
 RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
+SOURCE_GROUP_SPLIT_ALGORITHM = "fsid_classid_balanced_v1"
+
+
+def default_data_dir():
+    """
+    Prefer the repo-local layout, but also support the shared research dataset
+    layout used by this workspace.
+    """
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.join(repo_root, "data", "raw", "UrbanSound8K"),
+        os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "UrbanSound8K")),
+    ]
+    for candidate in candidates:
+        if os.path.exists(os.path.join(candidate, "metadata", "UrbanSound8K.csv")):
+            return candidate
+    return candidates[0]
 
 
 def random_split_sort_key(record):
@@ -32,6 +49,42 @@ def random_split_sort_key(record):
         str(record.get("fsID", "")),
         int(record.get("classID", -1)),
     )
+
+
+def make_stratified_clip_subset(records, max_clips, seed):
+    """
+    Deterministically limits a split for smoke tests while keeping class coverage
+    roughly balanced. Sampling happens after the real split, so it cannot create
+    leakage that was not already present.
+    """
+    if max_clips is None or max_clips >= len(records):
+        return records
+    if max_clips <= 0:
+        raise ValueError(f"max_clips must be positive when provided, got {max_clips}")
+
+    rng = random.Random(seed)
+    by_label = defaultdict(list)
+    for record in records:
+        by_label[record["label"]].append(record)
+
+    for label in by_label:
+        by_label[label] = sorted(by_label[label], key=random_split_sort_key)
+        rng.shuffle(by_label[label])
+
+    selected = []
+    label_order = sorted(by_label)
+    while len(selected) < max_clips:
+        progressed = False
+        for label in label_order:
+            if by_label[label]:
+                selected.append(by_label[label].pop())
+                progressed = True
+                if len(selected) == max_clips:
+                    break
+        if not progressed:
+            break
+
+    return selected
 
 
 def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_buckets=10):
@@ -64,6 +117,58 @@ def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_bucke
     return train_clips, test_records
 
 
+def make_stratified_source_group_split(clip_records, test_bucket, seed, num_buckets=10):
+    """
+    Creates a reproducible stratified random split at source-label group level.
+    All clips sharing the same (fsID, classID) stay on the same side of the
+    train/test boundary, preventing the source-label leakage seen in random
+    clip-level splitting.
+    """
+    if not 1 <= test_bucket <= num_buckets:
+        raise ValueError(f"test_bucket must be in [1, {num_buckets}], got {test_bucket}")
+
+    if not clip_records or "fsID" not in clip_records[0] or "classID" not in clip_records[0]:
+        raise ValueError("source_group_9_1 requires fsID and classID metadata fields.")
+
+    rng = random.Random(seed)
+    groups_by_class = defaultdict(dict)
+    for record in clip_records:
+        key = (str(record["fsID"]), int(record["classID"]))
+        groups_by_class[record["label"]].setdefault(key, []).append(record)
+
+    train_clips = []
+    test_records = []
+    for label in sorted(groups_by_class):
+        groups = sorted(
+            groups_by_class[label].items(),
+            key=lambda item: (
+                min(r["fold"] for r in item[1]),
+                item[0][0],
+                item[0][1],
+                min(r.get("slice_file_name", os.path.basename(r["path"])) for r in item[1]),
+            ),
+        )
+        rng.shuffle(groups)
+        groups.sort(key=lambda item: len(item[1]), reverse=True)
+
+        buckets = [[] for _ in range(num_buckets)]
+        bucket_counts = [0 for _ in range(num_buckets)]
+        for _, records in groups:
+            min_count = min(bucket_counts)
+            candidates = [idx for idx, count in enumerate(bucket_counts) if count == min_count]
+            bucket_idx = rng.choice(candidates)
+            buckets[bucket_idx].extend(records)
+            bucket_counts[bucket_idx] += len(records)
+
+        for idx, records in enumerate(buckets, start=1):
+            if idx == test_bucket:
+                test_records.extend(records)
+            else:
+                train_clips.extend(records)
+
+    return train_clips, test_records
+
+
 def source_label_overlap_summary(train_clips, test_records, limit=10):
     if not train_clips or not test_records:
         return {"count": 0, "examples": []}
@@ -81,19 +186,22 @@ def source_label_overlap_summary(train_clips, test_records, limit=10):
 
 def main():
     parser = argparse.ArgumentParser(description="Train SOTA TCAM1DCNN on RTX 3090 (Modular Structure)")
-    parser.add_argument("--data_dir", type=str, default="data/raw/UrbanSound8K", help="Path to UrbanSound8K folder")
+    parser.add_argument("--data_dir", type=str, default=default_data_dir(), help="Path to UrbanSound8K folder")
     parser.add_argument("--config", type=str, default="configs/rtx3090_config.json", help="Path to RTX 3090 config JSON")
     parser.add_argument("--fold", type=int, default=1, help="Test fold for 10-fold CV (1-10)")
     parser.add_argument("--epochs", type=int, default=None, help="Number of training epochs (overrides config)")
     parser.add_argument("--batch_size", type=int, default=None, help="Physical batch size (overrides config)")
     parser.add_argument("--lr", type=float, default=None, help="Learning rate (overrides config)")
     parser.add_argument("--exp_name", type=str, default="", help="Experiment name suffix (e.g. crossentropy, msle)")
+    parser.add_argument("--max_train_clips", type=int, default=None, help="Limit train clips for smoke tests after splitting")
+    parser.add_argument("--max_val_clips", type=int, default=None, help="Limit validation clips for smoke tests after splitting")
+    parser.add_argument("--max_test_clips", type=int, default=None, help="Limit test clips for smoke tests after splitting")
     parser.add_argument(
         "--protocol",
         type=str,
         default=None,
-        choices=["paper_9_1", "clean_8_1_1", "random_clip_9_1"],
-        help="Evaluation protocol. paper_9_1 uses official folds; clean_8_1_1 keeps a validation fold; random_clip_9_1 is a stratified random clip-level control."
+        choices=["paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1"],
+        help="Evaluation protocol. paper_9_1 uses official folds; clean_8_1_1 keeps a validation fold; random_clip_9_1 is a stratified random clip-level control; source_group_9_1 is a source-label-grouped random control."
     )
     args = parser.parse_args()
 
@@ -127,8 +235,11 @@ def main():
         cfg["protocol"] = args.protocol
 
     protocol = cfg.get("protocol", "paper_9_1").lower()
-    if protocol not in {"paper_9_1", "clean_8_1_1", "random_clip_9_1"}:
-        raise ValueError(f"Unsupported protocol '{protocol}'. Use 'paper_9_1', 'clean_8_1_1', or 'random_clip_9_1'.")
+    if protocol not in {"paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1"}:
+        raise ValueError(
+            f"Unsupported protocol '{protocol}'. Use 'paper_9_1', 'clean_8_1_1', "
+            "'random_clip_9_1', or 'source_group_9_1'."
+        )
     if not 1 <= args.fold <= 10:
         raise ValueError(f"--fold must be in [1, 10], got {args.fold}")
 
@@ -172,22 +283,7 @@ def main():
     # 1. Parse dataset (8732 standard clips, rail_vehicle filtered)
     clip_records = parse_dataset(csv_path, audio_base, class_names)
 
-    # 2. Preload waveforms to RAM (eliminating Disk I/O bottlenecks)
-    print("\nPre-loading and resampling all audio clips to RAM (~2.2 GB memory)...")
-    cached_waveforms = {}
-    start_preload = time.time()
-    
-    paths = [r["path"] for r in clip_records]
-    # Limit worker count to protect CPU overhead
-    max_workers = min(os.cpu_count() or 4, 8)
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        results = executor.map(lambda p: load_audio_to_ram(p, cfg.get("sample_rate", 16000)), paths)
-        for path, w in results:
-            cached_waveforms[path] = w
-            
-    print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
-
-    # 3. Setup split.
+    # 2. Setup split.
     print(f"\n=================== TRAINING FOLD {args.fold} ({protocol}) ===================")
     val_fold = None
     val_clips = []
@@ -204,7 +300,7 @@ def main():
         val_clips = [r for r in clip_records if r["fold"] == val_fold]
         uses_validation = True
         print(f"Protocol: clean_8_1_1 | Train=8 folds, Val=fold {val_fold}, Test=fold {args.fold}.")
-    else:
+    elif protocol == "random_clip_9_1":
         train_clips, test_records = make_stratified_random_clip_split(
             clip_records,
             test_bucket=args.fold,
@@ -213,6 +309,28 @@ def main():
         print(
             "Protocol: random_clip_9_1 | Stratified random clip-level 9/1 control, "
             f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={RANDOM_SPLIT_ALGORITHM}."
+        )
+    else:
+        train_clips, test_records = make_stratified_source_group_split(
+            clip_records,
+            test_bucket=args.fold,
+            seed=cfg.get("seed", 83),
+        )
+        print(
+            "Protocol: source_group_9_1 | Stratified random source-label-group 9/1 control, "
+            f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
+        )
+
+    if args.max_train_clips is not None or args.max_val_clips is not None or args.max_test_clips is not None:
+        original_counts = (len(train_clips), len(val_clips), len(test_records))
+        train_clips = make_stratified_clip_subset(train_clips, args.max_train_clips, cfg.get("seed", 83) + 101)
+        val_clips = make_stratified_clip_subset(val_clips, args.max_val_clips, cfg.get("seed", 83) + 202)
+        test_records = make_stratified_clip_subset(test_records, args.max_test_clips, cfg.get("seed", 83) + 303)
+        print(
+            "Smoke subset active | "
+            f"Train {original_counts[0]}->{len(train_clips)}, "
+            f"Val {original_counts[1]}->{len(val_clips)}, "
+            f"Test {original_counts[2]}->{len(test_records)}."
         )
 
     source_overlap = source_label_overlap_summary(train_clips, test_records)
@@ -226,6 +344,21 @@ def main():
     
     print(f"Clips: Train={len(train_clips)}, Val={len(val_clips)}, Test={len(test_records)}")
     print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)}")
+
+    # 3. Preload waveforms to RAM after optional smoke subsetting.
+    selected_clip_records = train_clips + val_clips + test_records
+    print(f"\nPre-loading and resampling {len({r['path'] for r in selected_clip_records})} audio clips to RAM...")
+    cached_waveforms = {}
+    start_preload = time.time()
+
+    paths = sorted({r["path"] for r in selected_clip_records})
+    max_workers = min(os.cpu_count() or 4, 8)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        results = executor.map(lambda p: load_audio_to_ram(p, cfg.get("sample_rate", 16000)), paths)
+        for path, w in results:
+            cached_waveforms[path] = w
+
+    print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
 
     # Dataloader
     train_dataset = CachedUrbanSoundFrameDataset(train_frames, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
@@ -241,6 +374,12 @@ def main():
     if num_workers > 0:
         loader_kwargs["persistent_workers"] = True
         loader_kwargs["prefetch_factor"] = 2
+    if len(train_dataset) < loader_kwargs["batch_size"]:
+        loader_kwargs["drop_last"] = False
+        print(
+            "Train frame count is smaller than batch size; disabling drop_last "
+            "to keep smoke-test DataLoader non-empty."
+        )
         
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
@@ -374,6 +513,7 @@ def main():
         "fold": args.fold,
         "protocol": protocol,
         "random_split_algorithm": RANDOM_SPLIT_ALGORITHM if protocol == "random_clip_9_1" else None,
+        "source_group_split_algorithm": SOURCE_GROUP_SPLIT_ALGORITHM if protocol == "source_group_9_1" else None,
         "uses_validation": uses_validation,
         "official_train_folds": sorted({r["fold"] for r in train_clips}),
         "val_fold": val_fold,
@@ -394,6 +534,9 @@ def main():
         "adam_eps": adam_eps,
         "batch_size": cfg.get("batch_size", 96),
         "accum_steps": cfg.get("accum_steps", 1),
+        "max_train_clips": args.max_train_clips,
+        "max_val_clips": args.max_val_clips,
+        "max_test_clips": args.max_test_clips,
         "config_path": args.config,
         "git_commit": git_commit,
         "best_val_clip_acc": best_acc,

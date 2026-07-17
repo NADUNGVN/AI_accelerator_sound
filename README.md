@@ -56,6 +56,12 @@ python train.py --fold 1 --config configs/reproduce_msle.json --protocol clean_8
 python train.py --fold 1 --config configs/random_clip_msle.json --exp_name randomclip_msle_fp32
 ```
 
+Để kiểm tra split ngẫu nhiên nhưng không cho trùng nguồn `fsID+classID` giữa train/test:
+
+```bash
+python train.py --fold 1 --config configs/source_group_msle.json --exp_name sourcegroup_msle_fp32
+```
+
 Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.
 
 Các thư mục `experiments/`, `checkpoints/`, `logs/`, `results/` và `data/` là artifact/local data sinh ra trong quá trình chạy, không track trong Git; phần kết luận nghiên cứu được giữ trong `docs/`.

@@ -1,0 +1,17 @@
+{
+  "batch_size": 100,
+  "accum_steps": 1,
+  "epochs": 200,
+  "lr": 2e-4,
+  "num_workers": 0,
+  "sample_rate": 16000,
+  "frame_length": 8000,
+  "cycles": 4,
+  "seed": 83,
+  "protocol": "source_group_9_1",
+  "source_group_split_algorithm": "fsid_classid_balanced_v1",
+  "amp": false,
+  "gradient_clip": null,
+  "adam_eps": 1e-7,
+  "loss": "msle"
+}
