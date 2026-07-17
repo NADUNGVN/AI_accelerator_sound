@@ -8,5 +8,9 @@
   "frame_length": 8000,
   "cycles": 4,
   "seed": 83,
+  "protocol": "paper_9_1",
+  "amp": false,
+  "gradient_clip": null,
+  "adam_eps": 1e-7,
   "loss": "crossentropy"
 }

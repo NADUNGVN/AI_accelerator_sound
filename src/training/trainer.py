@@ -8,15 +8,27 @@ from collections import defaultdict
 class Trainer:
     """
     Manages the training epoch loop, evaluation, learning rate schedules,
-    and Mixed Precision optimization.
+    and optional mixed precision optimization.
     """
-    def __init__(self, model, optimizer, criterion, scaler, device, accumulation_steps=1):
+    def __init__(
+        self,
+        model,
+        optimizer,
+        criterion,
+        scaler,
+        device,
+        accumulation_steps=1,
+        use_amp=True,
+        gradient_clip=5.0,
+    ):
         self.model = model
         self.optimizer = optimizer
         self.criterion = criterion
         self.scaler = scaler
         self.device = device
         self.accumulation_steps = accumulation_steps
+        self.use_amp = use_amp
+        self.gradient_clip = gradient_clip
 
     def train_epoch(self, loader):
         self.model.train()
@@ -30,8 +42,11 @@ class Trainer:
             inputs = inputs.to(self.device, non_blocking=True)
             targets = targets.to(self.device, non_blocking=True)
             
-            # Mixed Precision autocasting
-            with torch.amp.autocast(device_type="cuda" if "cuda" in self.device.type else "cpu", dtype=torch.float16):
+            with torch.amp.autocast(
+                device_type="cuda" if "cuda" in self.device.type else "cpu",
+                dtype=torch.float16,
+                enabled=self.use_amp,
+            ):
                 logits = self.model(inputs)
                 raw_loss = self.criterion(logits, targets)
                 loss = raw_loss / self.accumulation_steps
@@ -44,7 +59,8 @@ class Trainer:
             
             if is_accumulation_boundary or is_last_batch:
                 self.scaler.unscale_(self.optimizer)
-                nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=5.0)
+                if self.gradient_clip is not None:
+                    nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=self.gradient_clip)
                 self.scaler.step(self.optimizer)
                 self.scaler.update()
                 self.optimizer.zero_grad(set_to_none=True)
@@ -106,7 +122,11 @@ class Trainer:
                 # Forward pass through all ensembled models
                 sum_probs = torch.zeros((15, 10), device=self.device)
                 for m in models:
-                    with torch.amp.autocast(device_type="cuda" if "cuda" in self.device.type else "cpu", dtype=torch.float16):
+                    with torch.amp.autocast(
+                        device_type="cuda" if "cuda" in self.device.type else "cpu",
+                        dtype=torch.float16,
+                        enabled=self.use_amp,
+                    ):
                         logits = m(batch_tensor)
                         probs = F.softmax(logits, dim=-1)
                         sum_probs += probs

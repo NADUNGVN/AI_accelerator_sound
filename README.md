@@ -40,7 +40,13 @@ data/raw/
 ### Bước 3: Chạy huấn luyện (Official 10-Fold CV)
 Để huấn luyện mô hình cho một fold cụ thể (ví dụ Fold 1):
 ```bash
-python train.py --fold 1 --config configs/rtx3090_config.json
+python train.py --fold 1 --config configs/reproduce_msle.json --exp_name paper9_msle
 ```
 
-Kết quả huấn luyện (Log chi tiết và Checkpoint mô hình tốt nhất) sẽ được lưu tự động tại các thư mục `logs/` và `checkpoints/`.
+Mặc định các config reproduce dùng protocol `paper_9_1`: train trên 9 fold và test trên 1 fold, không chọn checkpoint theo validation. Các config này cũng dùng baseline FP32 (`amp: false`), không gradient clipping (`gradient_clip: null`) và `adam_eps: 1e-7` để gần cấu hình paper hơn trước khi bật tối ưu hiệu năng. Nếu cần thí nghiệm sạch có validation riêng, gọi rõ:
+
+```bash
+python train.py --fold 1 --config configs/reproduce_msle.json --protocol clean_8_1_1 --exp_name cleanval_msle
+```
+
+Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.

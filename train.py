@@ -27,6 +27,13 @@ def main():
     parser.add_argument("--batch_size", type=int, default=None, help="Physical batch size (overrides config)")
     parser.add_argument("--lr", type=float, default=None, help="Learning rate (overrides config)")
     parser.add_argument("--exp_name", type=str, default="", help="Experiment name suffix (e.g. crossentropy, msle)")
+    parser.add_argument(
+        "--protocol",
+        type=str,
+        default=None,
+        choices=["paper_9_1", "clean_8_1_1"],
+        help="Evaluation protocol. paper_9_1 trains on 9 folds and tests on 1 fold; clean_8_1_1 keeps a validation fold."
+    )
     args = parser.parse_args()
 
     # Load configuration
@@ -55,6 +62,14 @@ def main():
         cfg["batch_size"] = args.batch_size
     if args.lr is not None:
         cfg["lr"] = args.lr
+    if args.protocol is not None:
+        cfg["protocol"] = args.protocol
+
+    protocol = cfg.get("protocol", "paper_9_1").lower()
+    if protocol not in {"paper_9_1", "clean_8_1_1"}:
+        raise ValueError(f"Unsupported protocol '{protocol}'. Use 'paper_9_1' or 'clean_8_1_1'.")
+    if not 1 <= args.fold <= 10:
+        raise ValueError(f"--fold must be in [1, 10], got {args.fold}")
 
     # Setup environment
     set_seed(cfg.get("seed", 83))
@@ -111,19 +126,28 @@ def main():
             
     print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
 
-    # 3. Setup Fold split (using strict predefined fold partitions to prevent source-level data leakage)
-    print(f"\n=================== TRAINING OFFICIAL FOLD {args.fold} (RTX 3090 Configuration) ===================")
-    val_fold = (args.fold % 10) + 1
-    
-    train_clips = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
-    val_clips = [r for r in clip_records if r["fold"] == val_fold]
+    # 3. Setup fold split using predefined UrbanSound8K partitions.
+    print(f"\n=================== TRAINING OFFICIAL FOLD {args.fold} ({protocol}) ===================")
     test_records = [r for r in clip_records if r["fold"] == args.fold]
+    val_fold = None
+    val_clips = []
+    uses_validation = False
+
+    if protocol == "paper_9_1":
+        train_clips = [r for r in clip_records if r["fold"] != args.fold]
+        print("Protocol: paper_9_1 | Train=9 folds, Test=1 fold, no validation-based model selection.")
+    else:
+        val_fold = (args.fold % 10) + 1
+        train_clips = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
+        val_clips = [r for r in clip_records if r["fold"] == val_fold]
+        uses_validation = True
+        print(f"Protocol: clean_8_1_1 | Train=8 folds, Val=fold {val_fold}, Test=fold {args.fold}.")
     
     import random
     random.shuffle(train_clips)
     
     train_frames = generate_frame_records(train_clips)
-    val_frames = generate_frame_records(val_clips)
+    val_frames = generate_frame_records(val_clips) if uses_validation else []
     
     print(f"Clips: Train={len(train_clips)}, Val={len(val_clips)}, Test={len(test_records)}")
     print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)}")
@@ -163,16 +187,25 @@ def main():
     else:
         print("[Loss Setup] Using Cross Entropy Loss.")
         criterion = nn.CrossEntropyLoss()
-        
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4))
-    scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu")
+
+    use_amp = bool(cfg.get("amp", True))
+    gradient_clip = cfg.get("gradient_clip", 5.0)
+    if gradient_clip is not None:
+        gradient_clip = float(gradient_clip)
+    adam_eps = float(cfg.get("adam_eps", 1e-8))
+
+    print(f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | Adam eps={adam_eps:g}")
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4), eps=adam_eps)
+    scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
 
     trainer = Trainer(
         model=model, optimizer=optimizer, criterion=criterion, scaler=scaler,
-        device=device, accumulation_steps=cfg.get("accum_steps", 1)
+        device=device, accumulation_steps=cfg.get("accum_steps", 1),
+        use_amp=use_amp, gradient_clip=gradient_clip
     )
 
-    best_acc = 0.0
+    best_acc = None
     history = {"train_loss": [], "train_acc": [], "val_clip_acc": []}
     
     cycles = cfg.get("cycles", 4)
@@ -189,17 +222,22 @@ def main():
         epoch_start = time.time()
         loss, train_acc = trainer.train_epoch(train_loader)
         
-        # Periodic validation at the end of each epoch
-        val_clip_acc = trainer.evaluate_clips([model], val_clips, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+        if uses_validation:
+            val_clip_acc = trainer.evaluate_clips([model], val_clips, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+        else:
+            val_clip_acc = None
         
         history["train_loss"].append(loss)
         history["train_acc"].append(train_acc)
         history["val_clip_acc"].append(val_clip_acc)
         
-        print(f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | Train Acc={train_acc*100:.2f}% | Val Clip Acc={val_clip_acc*100:.2f}% | Time={time.time() - epoch_start:.2f}s")
+        if uses_validation:
+            print(f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | Train Acc={train_acc*100:.2f}% | Val Clip Acc={val_clip_acc*100:.2f}% | Time={time.time() - epoch_start:.2f}s")
+        else:
+            print(f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | Train Acc={train_acc*100:.2f}% | Time={time.time() - epoch_start:.2f}s")
         
-        # Save best model checkpoint
-        if val_clip_acc > best_acc:
+        # Save best validation checkpoint only for the clean validation protocol.
+        if uses_validation and (best_acc is None or val_clip_acc > best_acc):
             best_acc = val_clip_acc
             torch.save({
                 "model_state_dict": model.state_dict(),
@@ -215,16 +253,19 @@ def main():
             snapshot_checkpoints.append(snapshot_path)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
-    # Load and Evaluate Best Validation Model
-    best_model = TCAM1DCNN(num_classes=10).to(device)
-    if os.path.exists(best_ckpt_path):
+    # Load and evaluate the best validation model only when the protocol has a validation fold.
+    if uses_validation and os.path.exists(best_ckpt_path):
+        best_model = TCAM1DCNN(num_classes=10).to(device)
         best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
         best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
         test_acc_best, preds_best = trainer.evaluate_clips([best_model], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
     else:
-        test_acc_best, preds_best = 0.0, []
+        test_acc_best, preds_best = None, []
 
     # Ensemble Evaluation
+    if not snapshot_checkpoints:
+        raise RuntimeError("No snapshot checkpoints were saved; cannot evaluate final snapshot or ensemble.")
+
     ensemble_models = []
     for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
         m = TCAM1DCNN(num_classes=10).to(device)
@@ -235,8 +276,11 @@ def main():
     test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(ensemble_models, test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
     
     print(f"\n=================== FOLD {args.fold} FINAL EVALUATION RESULTS ===================")
-    print(f"  Best Validation Model Test Accuracy: {test_acc_best*100:.2f}%")
-    print(f"  Last Snapshot (Epoch 200) Test Accuracy: {test_acc_last*100:.2f}%")
+    if uses_validation:
+        print(f"  Best Validation Model Test Accuracy: {test_acc_best*100:.2f}%")
+    else:
+        print("  Best Validation Model Test Accuracy: N/A (paper_9_1 uses no validation fold)")
+    print(f"  Last Snapshot (Epoch {epochs}) Test Accuracy: {test_acc_last*100:.2f}%")
     print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
     
     # Save training history logs
@@ -253,11 +297,25 @@ def main():
     # Save metrics JSON
     metrics = {
         "fold": args.fold,
+        "protocol": protocol,
+        "uses_validation": uses_validation,
+        "train_folds": sorted({r["fold"] for r in train_clips}),
         "val_fold": val_fold,
+        "test_fold": args.fold,
+        "train_clip_count": len(train_clips),
+        "val_clip_count": len(val_clips),
+        "test_clip_count": len(test_records),
+        "train_frame_count": len(train_frames),
+        "val_frame_count": len(val_frames),
         "epochs": epochs,
         "cycles": cycles,
         "seed": cfg.get("seed", 83),
         "loss_type": loss_type,
+        "amp": use_amp,
+        "gradient_clip": gradient_clip,
+        "adam_eps": adam_eps,
+        "batch_size": cfg.get("batch_size", 96),
+        "accum_steps": cfg.get("accum_steps", 1),
         "config_path": args.config,
         "git_commit": git_commit,
         "best_val_clip_acc": best_acc,
