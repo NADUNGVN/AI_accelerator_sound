@@ -1,0 +1,14 @@
+{
+  "fold": 1,
+  "val_fold": 2,
+  "epochs": 200,
+  "cycles": 4,
+  "seed": 83,
+  "loss_type": "crossentropy",
+  "config_path": "configs/reproduce_crossentropy.json",
+  "git_commit": "e4922637c664afc058ce5d6cdd918453347139fd",
+  "best_val_clip_acc": 0.5585585585585585,
+  "test_acc_best_val_model": 0.56815578465063,
+  "test_acc_last_snapshot": 0.5246277205040092,
+  "test_acc_ensemble": 0.5349369988545246
+}
