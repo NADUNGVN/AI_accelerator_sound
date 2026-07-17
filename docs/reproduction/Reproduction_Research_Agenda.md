@@ -157,7 +157,7 @@ python train.py --fold 2 --config configs/rtx3090_config.json --exp_name paper9_
 Analyze fold 2:
 
 ```bash
-python analyze_experiment.py --exp_dir experiments/paper9_msle_fp32/fold_2 --fold 2 --config configs/rtx3090_config.json --eval_all_cycles --eval_modes --eval_train
+python tools/analyze_experiment.py --exp_dir experiments/paper9_msle_fp32/fold_2 --fold 2 --config configs/rtx3090_config.json --eval_all_cycles --eval_modes --eval_train
 ```
 
 If fold 2 is also low while random split is high, the main reproduction fork is confirmed as split protocol/source leakage.

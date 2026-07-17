@@ -11,7 +11,8 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 from src.models import TCAM1DCNN, TCAMBlock
 
@@ -43,10 +44,9 @@ EXPECTED_TABLE2_SHAPES = {
 
 
 def default_data_dir():
-    repo_dir = Path(__file__).resolve().parent
     candidates = [
-        repo_dir / "data" / "raw" / "UrbanSound8K",
-        repo_dir.parents[2] / "data" / "UrbanSound8K",
+        REPO_ROOT / "data" / "raw" / "UrbanSound8K",
+        REPO_ROOT.parents[2] / "data" / "UrbanSound8K",
     ]
     for candidate in candidates:
         if (candidate / "metadata" / "UrbanSound8K.csv").exists():
@@ -589,7 +589,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Research diagnostics for TCAM1DCNN reproduction.")
     parser.add_argument("--data_dir", default=str(default_data_dir()))
     parser.add_argument("--output_json", default="results/diagnostics/research_diagnostics.json")
-    parser.add_argument("--output_md", default="docs/Reproduction_Deep_Diagnostics.md")
+    parser.add_argument("--output_md", default="docs/reproduction/Reproduction_Deep_Diagnostics.md")
     parser.add_argument("--random_seed", type=int, default=83)
     parser.add_argument("--random_test_bucket", type=int, default=1)
     return parser.parse_args()

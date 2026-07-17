@@ -3,12 +3,13 @@
 Dự án này triển khai mô hình mạng nơ-ron tích chập 1 chiều kết hợp cơ chế chú ý (TCAM1DCNN) với mục tiêu tái tạo và tối ưu hóa hiệu năng mô hình nhận diện âm thanh môi trường trên tập dữ liệu UrbanSound8K, thiết kế mô-đun hóa chuyên nghiệp và tối ưu hóa tối đa hiệu năng cho cấu hình phần cứng server chứa **GPU NVIDIA RTX 3090 (24GB VRAM)**.
 
 ## 1. Cấu trúc thư mục dự án
-*   `configs/`: Chứa tệp cấu hình phần cứng `rtx3090_config.json`.
-*   `src/models/`: Định nghĩa mô hình mạng `TCAM1DCNN`, Time Attention Module (TAM) và Channel Attention Module (CAM).
-*   `src/data/`: Xử lý tập dữ liệu, nạp âm thanh thô, resample 16kHz và RAM Caching.
-*   `src/training/`: Mã nguồn lớp `Trainer` điều khiển vòng lặp huấn luyện, mixed precision và đánh giá.
-*   `src/utils/`: Chứa các hàm phụ trợ thiết lập seed ngẫu nhiên và chuẩn bị thư mục.
-*   `train.py`: Tệp kích hoạt chạy huấn luyện chính từ dòng lệnh.
+*   `train.py`: entrypoint train chính, giữ ở root để các lệnh server hiện tại không cần đổi.
+*   `configs/`: cấu hình thí nghiệm và cấu hình phần cứng/server.
+*   `src/`: package nguồn chính, gồm `data/`, `models/`, `training/`, `evaluation/`, `utils/`.
+*   `tools/`: script phân tích, kiểm thử reproduction và kiểm tra FLOPs.
+*   `docs/architecture/`: ghi chú kiến trúc, tham số và FLOPs.
+*   `docs/reproduction/`: kế hoạch tái lập, diagnostic report và kết luận thí nghiệm.
+*   `docs/hardware/`: thông tin phần cứng server/workstation.
 
 ## 2. Điểm tối ưu hóa đặc biệt dành riêng cho RTX 3090 (24GB VRAM)
 1.  **Batch Size trực tiếp:** Vì RTX 3090 sở hữu dung lượng VRAM lớn lên tới 24 GB, chúng ta thiết lập kích thước lô vật lý trực tiếp bằng **96** (`batch_size: 96`), loại bỏ sự cần thiết của Gradient Accumulation như trên các dòng card laptop (RTX 5060/4060). Điều này giúp tối đa hóa khả năng tính toán song song của Tensor Cores trên GPU.

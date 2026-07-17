@@ -9,7 +9,8 @@ from concurrent.futures import ThreadPoolExecutor
 import torch
 import torch.nn.functional as F
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, REPO_ROOT)
 
 from src.data import load_audio_to_ram, parse_dataset
 from src.models import TCAM1DCNN
