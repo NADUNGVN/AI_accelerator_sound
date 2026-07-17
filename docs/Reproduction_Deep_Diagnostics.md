@@ -28,6 +28,29 @@
 - Approx Conv/Linear MACs: 230192128
 - Paper reported params/FLOPs: 406 K / 40 M
 
+### Complexity Groups
+
+| Group | MACs | Params with bias |
+|---|---:|---:|
+| main_backbone_fc | 144,017,920 | 235,722 |
+| tam_time_projection | 606,720 | 454 |
+| tam_fs_full_conv | 85,524,480 | 129,472 |
+| cam_gate | 43,008 | 43,680 |
+
+### Complexity Variants
+
+| Variant | MACs | FLOPs if MAC=2 FLOPs | Params with bias |
+|---|---:|---:|---:|
+| current_full_count | 230.19M | 460.38M | 409.33K |
+| main_backbone_only | 144.02M | 288.04M | 235.72K |
+| main_plus_projection_cam_half_no_fs | 144.67M | 289.34M | 279.86K |
+| main_plus_projection_cam_half_fs_k1 | 173.18M | 346.35M | 323.31K |
+| main_plus_projection_cam_half_fs_depthwise_k3 | 146.49M | 292.98M | 281.65K |
+| current_but_cam_bottleneck1 | 230.15M | 460.30M | 367.00K |
+
+- To reach 40M MACs with the current architecture by scaling input length alone, the input would need to be about 1390.14 samples, not 8000.
+- Even counting only the main backbone and classifier, the model is about 144.02M MACs.
+
 | Layer | Expected shape | Found shape | Match |
 |---|---|---|---|
 | conv1 | [1, 32, 8000] | [1, 32, 8000] | True |

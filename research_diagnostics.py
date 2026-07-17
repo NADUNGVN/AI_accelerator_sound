@@ -305,6 +305,9 @@ def model_diagnostics():
                 ),
             }
 
+    complexity_groups = group_complexity(layer_rows)
+    complexity_variants = architecture_complexity_variants()
+
     return {
         "output_shape": list(logits.shape),
         "total_params_with_bias": sum(p.numel() for p in model.parameters()),
@@ -317,9 +320,109 @@ def model_diagnostics():
         "top_level_shape_checks": top_level_shape_checks,
         "layers": layer_rows,
         "tcam_block_params": block_params,
+        "complexity_groups": complexity_groups,
+        "complexity_variants": complexity_variants,
         "paper_reported_params": "406 K",
         "paper_reported_flops": "40 M",
     }
+
+
+def group_complexity(layer_rows):
+    groups = {
+        "main_backbone_fc": {"macs": 0, "params_with_bias": 0, "layers": []},
+        "tam_time_projection": {"macs": 0, "params_with_bias": 0, "layers": []},
+        "tam_fs_full_conv": {"macs": 0, "params_with_bias": 0, "layers": []},
+        "cam_gate": {"macs": 0, "params_with_bias": 0, "layers": []},
+    }
+
+    for row in layer_rows:
+        name = row["name"]
+        if name.startswith("conv") or name == "fc":
+            group_name = "main_backbone_fc"
+        elif ".tam.f_triple_prime" in name:
+            group_name = "tam_time_projection"
+        elif ".tam.f_s" in name:
+            group_name = "tam_fs_full_conv"
+        elif ".cam." in name:
+            group_name = "cam_gate"
+        else:
+            continue
+        groups[group_name]["macs"] += row["macs"] or 0
+        groups[group_name]["params_with_bias"] += row["params_with_bias"] or 0
+        groups[group_name]["layers"].append(name)
+    return groups
+
+
+def architecture_complexity_variants():
+    channels = [32, 32, 64, 64, 128, 128]
+    lengths = [8000, 4000, 2000, 1000, 200, 40]
+    main_layers = [
+        ("conv1", 1, 32, 8000, 32),
+        ("conv2", 32, 32, 4000, 16),
+        ("conv3", 32, 64, 2000, 9),
+        ("conv4", 64, 64, 1000, 6),
+        ("conv5", 64, 128, 200, 3),
+        ("conv6", 128, 128, 40, 3),
+        ("conv7", 128, 256, 20, 3),
+    ]
+
+    main_macs = sum(in_ch * out_ch * length * kernel for _, in_ch, out_ch, length, kernel in main_layers) + 256 * 10
+    main_params = sum(in_ch * out_ch * kernel + out_ch for _, in_ch, out_ch, _, kernel in main_layers) + 256 * 10 + 10
+    tam_projection_macs = sum(ch * length for ch, length in zip(channels, lengths))
+    tam_projection_params = sum(ch + 1 for ch in channels)
+    tam_fs_full_k3_macs = sum(ch * ch * 3 * length for ch, length in zip(channels, lengths))
+    tam_fs_full_k3_params = sum(ch * ch * 3 + ch for ch in channels)
+    tam_fs_full_k1_macs = sum(ch * ch * length for ch, length in zip(channels, lengths))
+    tam_fs_full_k1_params = sum(ch * ch + ch for ch in channels)
+    tam_fs_depthwise_k3_macs = sum(ch * 3 * length for ch, length in zip(channels, lengths))
+    tam_fs_depthwise_k3_params = sum(ch * 3 + ch for ch in channels)
+    cam_half_macs = sum(ch * (ch // 2) + (ch // 2) * ch for ch in channels)
+    cam_half_params = sum((ch * (ch // 2) + (ch // 2)) + ((ch // 2) * ch + ch) for ch in channels)
+    cam_bottleneck1_macs = sum(2 * ch for ch in channels)
+    cam_bottleneck1_params = sum((ch + 1) + (ch + ch) for ch in channels)
+
+    def item(macs, params):
+        return {
+            "macs": macs,
+            "macs_m": round(macs / 1_000_000, 4),
+            "flops_if_multiply_add_is_2_flops": macs * 2,
+            "flops_2x_m": round(macs * 2 / 1_000_000, 4),
+            "params_with_bias": params,
+            "params_k": round(params / 1000, 4),
+        }
+
+    variants = {
+        "current_full_count": item(
+            main_macs + tam_projection_macs + tam_fs_full_k3_macs + cam_half_macs,
+            main_params + tam_projection_params + tam_fs_full_k3_params + cam_half_params,
+        ),
+        "main_backbone_only": item(main_macs, main_params),
+        "main_plus_projection_cam_half_no_fs": item(
+            main_macs + tam_projection_macs + cam_half_macs,
+            main_params + tam_projection_params + cam_half_params,
+        ),
+        "main_plus_projection_cam_half_fs_k1": item(
+            main_macs + tam_projection_macs + tam_fs_full_k1_macs + cam_half_macs,
+            main_params + tam_projection_params + tam_fs_full_k1_params + cam_half_params,
+        ),
+        "main_plus_projection_cam_half_fs_depthwise_k3": item(
+            main_macs + tam_projection_macs + tam_fs_depthwise_k3_macs + cam_half_macs,
+            main_params + tam_projection_params + tam_fs_depthwise_k3_params + cam_half_params,
+        ),
+        "current_but_cam_bottleneck1": item(
+            main_macs + tam_projection_macs + tam_fs_full_k3_macs + cam_bottleneck1_macs,
+            main_params + tam_projection_params + tam_fs_full_k3_params + cam_bottleneck1_params,
+        ),
+    }
+    variants["input_length_needed_for_current_to_be_40m_macs"] = round(
+        8000 * 40_000_000 / variants["current_full_count"]["macs"],
+        2,
+    )
+    variants["input_length_needed_for_main_only_to_be_40m_macs"] = round(
+        8000 * 40_000_000 / variants["main_backbone_only"]["macs"],
+        2,
+    )
+    return variants
 
 
 def artifact_summary(repo_dir):
@@ -401,6 +504,35 @@ def write_markdown(report, path):
     lines.append(f"- Params without bias: {model['total_params_no_bias']}")
     lines.append(f"- Approx Conv/Linear MACs: {model['approx_conv_linear_macs']}")
     lines.append(f"- Paper reported params/FLOPs: {model['paper_reported_params']} / {model['paper_reported_flops']}")
+    lines.append("")
+    lines.append("### Complexity Groups")
+    lines.append("")
+    lines.append("| Group | MACs | Params with bias |")
+    lines.append("|---|---:|---:|")
+    for group_name, item in model["complexity_groups"].items():
+        lines.append(f"| {group_name} | {item['macs']:,} | {item['params_with_bias']:,} |")
+    lines.append("")
+    lines.append("### Complexity Variants")
+    lines.append("")
+    lines.append("| Variant | MACs | FLOPs if MAC=2 FLOPs | Params with bias |")
+    lines.append("|---|---:|---:|---:|")
+    for variant_name, item in model["complexity_variants"].items():
+        if not isinstance(item, dict):
+            continue
+        lines.append(
+            f"| {variant_name} | {item['macs_m']:.2f}M | "
+            f"{item['flops_2x_m']:.2f}M | {item['params_k']:.2f}K |"
+        )
+    lines.append("")
+    lines.append(
+        "- To reach 40M MACs with the current architecture by scaling input length alone, "
+        f"the input would need to be about {model['complexity_variants']['input_length_needed_for_current_to_be_40m_macs']} samples, "
+        "not 8000."
+    )
+    lines.append(
+        "- Even counting only the main backbone and classifier, the model is about "
+        f"{model['complexity_variants']['main_backbone_only']['macs_m']:.2f}M MACs."
+    )
     lines.append("")
     lines.append("| Layer | Expected shape | Found shape | Match |")
     lines.append("|---|---|---|---|")
