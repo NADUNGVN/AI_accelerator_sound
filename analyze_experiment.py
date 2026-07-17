@@ -2,6 +2,7 @@ import argparse
 import collections
 import json
 import os
+import random
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
@@ -56,6 +57,30 @@ def preload_waveforms(records, sample_rate):
         for path, waveform in executor.map(lambda p: load_audio_to_ram(p, sample_rate), paths):
             cached[path] = waveform
     return cached
+
+
+def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_buckets=10):
+    if not 1 <= test_bucket <= num_buckets:
+        raise ValueError(f"test_bucket must be in [1, {num_buckets}], got {test_bucket}")
+
+    rng = random.Random(seed)
+    by_class = collections.defaultdict(list)
+    for record in clip_records:
+        by_class[record["label"]].append(record)
+
+    train_records = []
+    test_records = []
+    for label in sorted(by_class):
+        records = sorted(by_class[label], key=lambda r: r["path"])
+        rng.shuffle(records)
+        for idx, record in enumerate(records):
+            bucket = (idx % num_buckets) + 1
+            if bucket == test_bucket:
+                test_records.append(record)
+            else:
+                train_records.append(record)
+
+    return train_records, test_records
 
 
 def confusion_from_predictions(predictions):
@@ -272,8 +297,25 @@ def main():
     csv_path = os.path.join(args.data_dir, "metadata", "UrbanSound8K.csv")
     audio_base = os.path.join(args.data_dir, "audio")
     clip_records = parse_dataset(csv_path, audio_base, CLASS_NAMES)
-    test_records = [r for r in clip_records if r["fold"] == args.fold]
-    train_records = [r for r in clip_records if r["fold"] != args.fold]
+    protocol = (metrics or {}).get("protocol", cfg.get("protocol", "paper_9_1"))
+    if protocol == "random_clip_9_1":
+        split_seed = (metrics or {}).get("seed", cfg.get("seed", 83))
+        split_fold = (metrics or {}).get("test_fold", args.fold)
+        train_records, test_records = make_stratified_random_clip_split(
+            clip_records,
+            test_bucket=split_fold,
+            seed=split_seed,
+        )
+        print(f"Reconstructed random_clip_9_1 split with test bucket={split_fold}, seed={split_seed}.")
+    elif protocol == "clean_8_1_1":
+        val_fold = (metrics or {}).get("val_fold", (args.fold % 10) + 1)
+        test_records = [r for r in clip_records if r["fold"] == args.fold]
+        train_records = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
+        print(f"Reconstructed clean_8_1_1 split with test fold={args.fold}, val fold={val_fold}.")
+    else:
+        test_records = [r for r in clip_records if r["fold"] == args.fold]
+        train_records = [r for r in clip_records if r["fold"] != args.fold]
+        print(f"Reconstructed paper_9_1 official split with test fold={args.fold}.")
 
     print("\n=== Split counts ===")
     print(f"train clips: {len(train_records)}")

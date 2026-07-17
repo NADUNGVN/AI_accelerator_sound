@@ -49,4 +49,10 @@ Mặc định các config reproduce dùng protocol `paper_9_1`: train trên 9 fo
 python train.py --fold 1 --config configs/reproduce_msle.json --protocol clean_8_1_1 --exp_name cleanval_msle
 ```
 
+Để kiểm tra đối chứng xem kết quả paper có thể đến từ random clip split thay vì official UrbanSound8K fold split hay không:
+
+```bash
+python train.py --fold 1 --config configs/random_clip_msle.json --exp_name randomclip_msle_fp32
+```
+
 Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.

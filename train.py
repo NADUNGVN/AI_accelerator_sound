@@ -4,11 +4,13 @@ import argparse
 import json
 import time
 import math
+import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from concurrent.futures import ThreadPoolExecutor
+from collections import defaultdict
 
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -17,6 +19,52 @@ from src.models import TCAM1DCNN
 from src.data import CachedUrbanSoundFrameDataset, parse_dataset, generate_frame_records, load_audio_to_ram
 from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
+
+
+def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_buckets=10):
+    """
+    Creates a reproducible stratified random clip split.
+    Frames are generated only after this split, so frames from the same clip
+    cannot appear in both train and test. Official source-level grouping is not
+    preserved; source overlap is reported separately for interpretation.
+    """
+    if not 1 <= test_bucket <= num_buckets:
+        raise ValueError(f"test_bucket must be in [1, {num_buckets}], got {test_bucket}")
+
+    rng = random.Random(seed)
+    by_class = defaultdict(list)
+    for record in clip_records:
+        by_class[record["label"]].append(record)
+
+    train_clips = []
+    test_records = []
+    for label in sorted(by_class):
+        records = sorted(by_class[label], key=lambda r: r["path"])
+        rng.shuffle(records)
+        for idx, record in enumerate(records):
+            bucket = (idx % num_buckets) + 1
+            if bucket == test_bucket:
+                test_records.append(record)
+            else:
+                train_clips.append(record)
+
+    return train_clips, test_records
+
+
+def source_label_overlap_summary(train_clips, test_records, limit=10):
+    if not train_clips or not test_records:
+        return {"count": 0, "examples": []}
+    if "fsID" not in train_clips[0] or "classID" not in train_clips[0]:
+        return {"count": None, "examples": []}
+
+    train_keys = {(r["fsID"], r["classID"]) for r in train_clips}
+    test_keys = {(r["fsID"], r["classID"]) for r in test_records}
+    overlap = sorted(train_keys & test_keys)
+    return {
+        "count": len(overlap),
+        "examples": [{"fsID": fsid, "classID": class_id} for fsid, class_id in overlap[:limit]],
+    }
+
 
 def main():
     parser = argparse.ArgumentParser(description="Train SOTA TCAM1DCNN on RTX 3090 (Modular Structure)")
@@ -31,8 +79,8 @@ def main():
         "--protocol",
         type=str,
         default=None,
-        choices=["paper_9_1", "clean_8_1_1"],
-        help="Evaluation protocol. paper_9_1 trains on 9 folds and tests on 1 fold; clean_8_1_1 keeps a validation fold."
+        choices=["paper_9_1", "clean_8_1_1", "random_clip_9_1"],
+        help="Evaluation protocol. paper_9_1 uses official folds; clean_8_1_1 keeps a validation fold; random_clip_9_1 is a stratified random clip-level control."
     )
     args = parser.parse_args()
 
@@ -66,8 +114,8 @@ def main():
         cfg["protocol"] = args.protocol
 
     protocol = cfg.get("protocol", "paper_9_1").lower()
-    if protocol not in {"paper_9_1", "clean_8_1_1"}:
-        raise ValueError(f"Unsupported protocol '{protocol}'. Use 'paper_9_1' or 'clean_8_1_1'.")
+    if protocol not in {"paper_9_1", "clean_8_1_1", "random_clip_9_1"}:
+        raise ValueError(f"Unsupported protocol '{protocol}'. Use 'paper_9_1', 'clean_8_1_1', or 'random_clip_9_1'.")
     if not 1 <= args.fold <= 10:
         raise ValueError(f"--fold must be in [1, 10], got {args.fold}")
 
@@ -126,24 +174,38 @@ def main():
             
     print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
 
-    # 3. Setup fold split using predefined UrbanSound8K partitions.
-    print(f"\n=================== TRAINING OFFICIAL FOLD {args.fold} ({protocol}) ===================")
-    test_records = [r for r in clip_records if r["fold"] == args.fold]
+    # 3. Setup split.
+    print(f"\n=================== TRAINING FOLD {args.fold} ({protocol}) ===================")
     val_fold = None
     val_clips = []
     uses_validation = False
 
     if protocol == "paper_9_1":
+        test_records = [r for r in clip_records if r["fold"] == args.fold]
         train_clips = [r for r in clip_records if r["fold"] != args.fold]
         print("Protocol: paper_9_1 | Train=9 folds, Test=1 fold, no validation-based model selection.")
-    else:
+    elif protocol == "clean_8_1_1":
+        test_records = [r for r in clip_records if r["fold"] == args.fold]
         val_fold = (args.fold % 10) + 1
         train_clips = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
         val_clips = [r for r in clip_records if r["fold"] == val_fold]
         uses_validation = True
         print(f"Protocol: clean_8_1_1 | Train=8 folds, Val=fold {val_fold}, Test=fold {args.fold}.")
+    else:
+        train_clips, test_records = make_stratified_random_clip_split(
+            clip_records,
+            test_bucket=args.fold,
+            seed=cfg.get("seed", 83),
+        )
+        print(
+            "Protocol: random_clip_9_1 | Stratified random clip-level 9/1 control, "
+            f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}."
+        )
+
+    source_overlap = source_label_overlap_summary(train_clips, test_records)
+    if source_overlap["count"] is not None:
+        print(f"Source-label overlap (fsID+classID) between train/test: {source_overlap['count']}")
     
-    import random
     random.shuffle(train_clips)
     
     train_frames = generate_frame_records(train_clips)
@@ -299,9 +361,11 @@ def main():
         "fold": args.fold,
         "protocol": protocol,
         "uses_validation": uses_validation,
-        "train_folds": sorted({r["fold"] for r in train_clips}),
+        "official_train_folds": sorted({r["fold"] for r in train_clips}),
         "val_fold": val_fold,
         "test_fold": args.fold,
+        "official_test_folds": sorted({r["fold"] for r in test_records}),
+        "source_label_overlap_train_test": source_overlap,
         "train_clip_count": len(train_clips),
         "val_clip_count": len(val_clips),
         "test_clip_count": len(test_records),
