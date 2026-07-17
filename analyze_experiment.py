@@ -240,6 +240,7 @@ def main():
     parser.add_argument("--checkpoint", default=None, help="Checkpoint path. Defaults to cycle 4 inside exp_dir.")
     parser.add_argument("--eval_train", action="store_true", help="Also evaluate train clips with the selected checkpoint.")
     parser.add_argument("--ensemble_last2", action="store_true", help="Analyze ensemble of cycle 3 and cycle 4.")
+    parser.add_argument("--eval_all_cycles", action="store_true", help="Evaluate every cycle checkpoint found in exp_dir.")
     parser.add_argument("--eval_modes", action="store_true", help="Compare SUM, majority, and nonzero-frame aggregation modes.")
     parser.add_argument("--zero_threshold", type=float, default=1e-8, help="Frame max-abs threshold used by nonzero-frame aggregation.")
     args = parser.parse_args()
@@ -294,6 +295,56 @@ def main():
         use_amp=bool(cfg.get("amp", False)),
         gradient_clip=cfg.get("gradient_clip", None),
     )
+
+    if args.eval_all_cycles:
+        cycle_paths = [
+            os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_{cycle_id}.pt")
+            for cycle_id in range(1, int(cfg.get("cycles", 4)) + 1)
+        ]
+        print(f"\n=== Evaluating all cycle checkpoints on {device} ===")
+        report = {
+            "exp_dir": args.exp_dir,
+            "fold": args.fold,
+            "model": "all_cycles",
+            "metrics": metrics,
+            "final_train_frame_acc": history["train_acc"][-1] if history and history.get("train_acc") else None,
+            "cycles": [],
+        }
+        for cycle_id, checkpoint_path in enumerate(cycle_paths, 1):
+            if not os.path.exists(checkpoint_path):
+                print(f"\nCycle {cycle_id}: checkpoint missing, skipped: {checkpoint_path}")
+                continue
+            models = [load_model(checkpoint_path, device)]
+            print(f"\n--- Cycle {cycle_id}: {os.path.basename(checkpoint_path)} ---")
+            cycle_report = {
+                "cycle": cycle_id,
+                "checkpoint": checkpoint_path,
+                "test": evaluate_split(
+                    "TEST",
+                    trainer,
+                    models,
+                    test_records,
+                    cached_waveforms,
+                    cfg.get("frame_length", 8000),
+                ),
+            }
+            if args.eval_modes:
+                cycle_report["test_modes"] = evaluate_split_modes(
+                    "TEST",
+                    models,
+                    test_records,
+                    cached_waveforms,
+                    cfg.get("frame_length", 8000),
+                    device,
+                    args.zero_threshold,
+                )
+            report["cycles"].append(cycle_report)
+
+        output_path = os.path.join(args.exp_dir, "analysis_all_cycles.json")
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2)
+        print(f"\nAnalysis written: {output_path}")
+        return
 
     if args.ensemble_last2:
         checkpoint_paths = [
