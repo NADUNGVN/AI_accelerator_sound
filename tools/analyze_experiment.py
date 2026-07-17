@@ -13,7 +13,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
 from src.data import load_audio_to_ram, parse_dataset
-from src.models import TCAM1DCNN, EfficientAudioCNN1D
+from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D
 from src.training import Trainer
 
 
@@ -62,6 +62,12 @@ def build_model(cfg, metrics, num_classes):
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.25)),
+        )
+    if model_name == "kv260_audio_net_ds1d":
+        return KV260AudioNetDS1D(
+            num_classes=num_classes,
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.15)),
         )
     raise ValueError(f"Unsupported model_name '{model_name}'.")
 

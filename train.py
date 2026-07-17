@@ -15,7 +15,7 @@ from collections import defaultdict
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src.models import TCAM1DCNN, EfficientAudioCNN1D
+from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D
 from src.data import CachedUrbanSoundFrameDataset, parse_dataset, generate_frame_records, load_audio_to_ram
 from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
@@ -194,8 +194,17 @@ def build_model(cfg, num_classes):
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.25)),
         )
+    elif model_name == "kv260_audio_net_ds1d":
+        model = KV260AudioNetDS1D(
+            num_classes=num_classes,
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.15)),
+        )
     else:
-        raise ValueError(f"Unsupported model_name '{model_name}'. Use 'tcam1dcnn' or 'efficient_audio_cnn1d'.")
+        raise ValueError(
+            f"Unsupported model_name '{model_name}'. Use 'tcam1dcnn', "
+            "'efficient_audio_cnn1d', or 'kv260_audio_net_ds1d'."
+        )
     return model_name, model
 
 
@@ -222,12 +231,17 @@ def estimate_conv_linear_macs(model, input_length, device):
             kernel = module.kernel_size[0]
             in_channels = module.in_channels // module.groups
             macs += int(batch * out_channels * out_length * in_channels * kernel)
+        elif isinstance(module, nn.Conv2d):
+            batch, out_channels, out_height, out_width = output.shape
+            kernel_h, kernel_w = module.kernel_size
+            in_channels = module.in_channels // module.groups
+            macs += int(batch * out_channels * out_height * out_width * in_channels * kernel_h * kernel_w)
         elif isinstance(module, nn.Linear):
             batch = output.shape[0]
             macs += int(batch * module.in_features * module.out_features)
 
     for module in model.modules():
-        if isinstance(module, (nn.Conv1d, nn.Linear)):
+        if isinstance(module, (nn.Conv1d, nn.Conv2d, nn.Linear)):
             hooks.append(module.register_forward_hook(hook))
 
     was_training = model.training
