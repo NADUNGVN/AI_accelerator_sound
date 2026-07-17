@@ -9,6 +9,7 @@
   "cycles": 4,
   "seed": 83,
   "protocol": "random_clip_9_1",
+  "random_split_algorithm": "stable_metadata_v2",
   "amp": false,
   "gradient_clip": null,
   "adam_eps": 1e-7,

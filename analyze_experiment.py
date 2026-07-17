@@ -30,6 +30,9 @@ CLASS_NAMES = [
 ]
 
 
+RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
+
+
 def read_json(path):
     if not os.path.exists(path):
         return None
@@ -59,7 +62,19 @@ def preload_waveforms(records, sample_rate):
     return cached
 
 
-def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_buckets=10):
+def random_split_sort_key(record, algorithm):
+    if algorithm == "path_v1":
+        return record["path"]
+    return (
+        record["label"],
+        record["fold"],
+        record.get("slice_file_name", os.path.basename(record["path"])),
+        str(record.get("fsID", "")),
+        int(record.get("classID", -1)),
+    )
+
+
+def make_stratified_random_clip_split(clip_records, test_bucket, seed, algorithm=RANDOM_SPLIT_ALGORITHM, num_buckets=10):
     if not 1 <= test_bucket <= num_buckets:
         raise ValueError(f"test_bucket must be in [1, {num_buckets}], got {test_bucket}")
 
@@ -71,7 +86,7 @@ def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_bucke
     train_records = []
     test_records = []
     for label in sorted(by_class):
-        records = sorted(by_class[label], key=lambda r: r["path"])
+        records = sorted(by_class[label], key=lambda r: random_split_sort_key(r, algorithm))
         rng.shuffle(records)
         for idx, record in enumerate(records):
             bucket = (idx % num_buckets) + 1
@@ -301,12 +316,20 @@ def main():
     if protocol == "random_clip_9_1":
         split_seed = (metrics or {}).get("seed", cfg.get("seed", 83))
         split_fold = (metrics or {}).get("test_fold", args.fold)
+        if metrics and "random_split_algorithm" not in metrics:
+            split_algorithm = "path_v1"
+        else:
+            split_algorithm = (metrics or {}).get("random_split_algorithm", cfg.get("random_split_algorithm", RANDOM_SPLIT_ALGORITHM))
         train_records, test_records = make_stratified_random_clip_split(
             clip_records,
             test_bucket=split_fold,
             seed=split_seed,
+            algorithm=split_algorithm,
         )
-        print(f"Reconstructed random_clip_9_1 split with test bucket={split_fold}, seed={split_seed}.")
+        print(
+            f"Reconstructed random_clip_9_1 split with test bucket={split_fold}, "
+            f"seed={split_seed}, split_algorithm={split_algorithm}."
+        )
     elif protocol == "clean_8_1_1":
         val_fold = (metrics or {}).get("val_fold", (args.fold % 10) + 1)
         test_records = [r for r in clip_records if r["fold"] == args.fold]

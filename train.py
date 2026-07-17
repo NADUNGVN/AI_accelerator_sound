@@ -21,6 +21,19 @@ from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
 
 
+RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
+
+
+def random_split_sort_key(record):
+    return (
+        record["label"],
+        record["fold"],
+        record.get("slice_file_name", os.path.basename(record["path"])),
+        str(record.get("fsID", "")),
+        int(record.get("classID", -1)),
+    )
+
+
 def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_buckets=10):
     """
     Creates a reproducible stratified random clip split.
@@ -39,7 +52,7 @@ def make_stratified_random_clip_split(clip_records, test_bucket, seed, num_bucke
     train_clips = []
     test_records = []
     for label in sorted(by_class):
-        records = sorted(by_class[label], key=lambda r: r["path"])
+        records = sorted(by_class[label], key=random_split_sort_key)
         rng.shuffle(records)
         for idx, record in enumerate(records):
             bucket = (idx % num_buckets) + 1
@@ -199,7 +212,7 @@ def main():
         )
         print(
             "Protocol: random_clip_9_1 | Stratified random clip-level 9/1 control, "
-            f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}."
+            f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={RANDOM_SPLIT_ALGORITHM}."
         )
 
     source_overlap = source_label_overlap_summary(train_clips, test_records)
@@ -360,6 +373,7 @@ def main():
     metrics = {
         "fold": args.fold,
         "protocol": protocol,
+        "random_split_algorithm": RANDOM_SPLIT_ALGORITHM if protocol == "random_clip_9_1" else None,
         "uses_validation": uses_validation,
         "official_train_folds": sorted({r["fold"] for r in train_clips}),
         "val_fold": val_fold,

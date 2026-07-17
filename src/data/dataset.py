@@ -82,6 +82,7 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
                 
             record = {
                 "path": path,
+                "slice_file_name": filename,
                 "label": class_map[cls_name],
                 "fold": fold,
                 "cls_name": cls_name
