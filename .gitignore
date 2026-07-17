@@ -6,10 +6,14 @@
 
 # Exclude trained model weights and checkpoints (can be very large)
 /checkpoints/
+/experiments/
+*.pt
 
 # Exclude training logs and output results
 /logs/
 /results/
+*.log
+train_fold_*.log
 
 # ==========================================
 # 2. Python Environment & Cache

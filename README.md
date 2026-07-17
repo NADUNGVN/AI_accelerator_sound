@@ -56,3 +56,5 @@ python train.py --fold 1 --config configs/random_clip_msle.json --exp_name rando
 ```
 
 Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.
+
+Các thư mục `experiments/`, `checkpoints/`, `logs/`, `results/` và `data/` là artifact/local data sinh ra trong quá trình chạy, không track trong Git; phần kết luận nghiên cứu được giữ trong `docs/`.

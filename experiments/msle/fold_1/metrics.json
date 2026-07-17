@@ -1,9 +1,0 @@
-{
-  "fold": 1,
-  "epochs": 200,
-  "cycles": 4,
-  "best_val_clip_acc": 0.5495495495495496,
-  "test_acc_best_val_model": 0.579610538373425,
-  "test_acc_last_snapshot": 0.561282932416953,
-  "test_acc_ensemble": 0.570446735395189
-}
