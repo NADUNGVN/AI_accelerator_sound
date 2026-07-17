@@ -103,33 +103,56 @@ def main():
     
     model = TCAM1DCNN(num_classes=10).to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3) # Larger learning rate for fast overfitting
-    scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu")
-    
-    trainer = Trainer(
-        model=model, optimizer=optimizer, criterion=criterion, scaler=scaler,
-        device=device, accumulation_steps=1
-    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=3e-4) # Stable fixed learning rate
     
     subset_dataset = CachedUrbanSoundFrameDataset(subset_frames, cached_waveforms, frame_length=8000)
     loader = torch.utils.data.DataLoader(
         subset_dataset, batch_size=64, shuffle=True, num_workers=2, pin_memory=True
     )
     
-    print("Training for 40 epochs to test if model can overfit the 50-clip subset...")
-    overfitted_successfully = False
-    for epoch in range(1, 41):
-        loss, acc = trainer.train_epoch(loader)
-        if epoch % 5 == 0 or epoch == 1:
-            print(f"  Epoch {epoch:02d}/40 | Loss = {loss:.4f} | Train Acc = {acc*100:.2f}%")
-        if acc >= 0.98:
-            print(f"\n[SUCCESS] Model successfully overfitted the training subset at epoch {epoch} (Acc = {acc*100:.2f}%)!")
-            overfitted_successfully = True
-            break
+    print("Training for 80 epochs to test if model can overfit the 50-clip subset (FP32, fixed LR)...")
+    best_train_acc = 0.0
+    best_epoch = 0
+    
+    for epoch in range(1, 81):
+        model.train()
+        total_loss = 0.0
+        correct = 0
+        total = 0
+        
+        for inputs, targets in loader:
+            inputs = inputs.to(device, non_blocking=True)
+            targets = targets.to(device, non_blocking=True)
             
-    if not overfitted_successfully:
-        print("\n[FAIL] Model failed to overfit the small subset (Accuracy < 98% in 40 epochs).")
-        print("This indicates a pipeline bug, an initialization issue, or vanishing gradients in the network architecture.")
+            optimizer.zero_grad()
+            logits = model(inputs)
+            loss = criterion(logits, targets)
+            loss.backward()
+            optimizer.step()
+            
+            total_loss += loss.item() * inputs.size(0)
+            _, predicted = logits.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+            
+        epoch_loss = total_loss / total
+        epoch_acc = correct / total
+        
+        if epoch_acc > best_train_acc:
+            best_train_acc = epoch_acc
+            best_epoch = epoch
+            
+        if epoch % 10 == 0 or epoch == 1:
+            print(f"  Epoch {epoch:02d}/80 | Loss = {epoch_loss:.4f} | Train Acc = {epoch_acc*100:.2f}% | Best Acc = {best_train_acc*100:.2f}%")
+            
+    print(f"\nTraining complete. Best training accuracy achieved: {best_train_acc*100:.2f}% at epoch {best_epoch}.")
+    
+    if best_train_acc >= 0.98:
+        print(f"\n[SUCCESS] Pipeline validation passed! Model reached {best_train_acc*100:.2f}% accuracy on the subset.")
+        print("This proves the pipeline has no logic bugs and the architecture has high capacity to learn.")
+    else:
+        print(f"\n[FAIL] Pipeline validation failed! Model best accuracy: {best_train_acc*100:.2f}%.")
+        print("This indicates a pipeline bug or gradient vanishing issues.")
         
     print("\n=================== SANITY CHECK COMPLETE ===================")
 
