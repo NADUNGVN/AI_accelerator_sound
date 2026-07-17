@@ -55,8 +55,12 @@ class KV260AudioNetDS1D(nn.Module):
     internally to [B, 1, 1, T] so every convolution has kernel (1, k), i.e. it
     only slides along time.
     """
-    def __init__(self, num_classes=10, width_mult=1.0, dropout=0.15):
+    def __init__(self, num_classes=10, width_mult=1.0, dropout=0.15, pool_type="avg"):
         super().__init__()
+        pool_type = pool_type.lower()
+        if pool_type not in {"avg", "avgmax"}:
+            raise ValueError(f"Unsupported pool_type '{pool_type}'. Use 'avg' or 'avgmax'.")
+        self.pool_type = pool_type
 
         def c(channels):
             return max(8, int(round(channels * width_mult)))
@@ -72,9 +76,11 @@ class KV260AudioNetDS1D(nn.Module):
             DSBlock2dH1(channels[5], channels[6], kernel_size=7, stride=2),
             DSBlock2dH1(channels[6], channels[6], kernel_size=15, stride=1),
         )
-        self.pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.max_pool = nn.AdaptiveMaxPool2d((1, 1)) if pool_type == "avgmax" else None
         self.dropout = nn.Dropout(dropout)
-        self.fc = nn.Linear(channels[-1], num_classes)
+        head_features = channels[-1] * (2 if pool_type == "avgmax" else 1)
+        self.fc = nn.Linear(head_features, num_classes)
 
         self._initialize_weights()
 
@@ -97,6 +103,9 @@ class KV260AudioNetDS1D(nn.Module):
 
         x = self.stem(x)
         x = self.blocks(x)
-        x = self.pool(x).flatten(1)
+        if self.pool_type == "avgmax":
+            x = torch.cat([self.avg_pool(x).flatten(1), self.max_pool(x).flatten(1)], dim=1)
+        else:
+            x = self.avg_pool(x).flatten(1)
         x = self.dropout(x)
         return self.fc(x)

@@ -68,6 +68,7 @@ def build_model(cfg, metrics, num_classes):
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
+            pool_type=cfg.get("pool_type", "avg"),
         )
     raise ValueError(f"Unsupported model_name '{model_name}'.")
 

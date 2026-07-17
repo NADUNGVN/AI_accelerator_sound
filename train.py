@@ -8,7 +8,7 @@ import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 
@@ -199,6 +199,7 @@ def build_model(cfg, num_classes):
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
+            pool_type=cfg.get("pool_type", "avg"),
         )
     else:
         raise ValueError(
@@ -262,6 +263,30 @@ def balanced_class_weights(records, num_classes, device):
     counts = counts.clamp_min(1.0)
     weights = counts.sum() / (num_classes * counts)
     return weights.to(device)
+
+
+def apply_class_multipliers(weights, multipliers, device):
+    if multipliers is None:
+        return weights
+    if len(multipliers) != weights.numel():
+        raise ValueError(f"Expected {weights.numel()} class multipliers, got {len(multipliers)}")
+    multiplier_tensor = torch.tensor(multipliers, dtype=torch.float32, device=device)
+    return weights * multiplier_tensor
+
+
+def make_weighted_sampler(frame_records, num_classes, multipliers=None):
+    counts = torch.zeros(num_classes, dtype=torch.float32)
+    labels = []
+    for record in frame_records:
+        label = int(record["label"])
+        labels.append(label)
+        counts[label] += 1.0
+    counts = counts.clamp_min(1.0)
+    class_weights = counts.sum() / (num_classes * counts)
+    if multipliers is not None:
+        class_weights = apply_class_multipliers(class_weights, multipliers, device=torch.device("cpu"))
+    sample_weights = torch.tensor([float(class_weights[label]) for label in labels], dtype=torch.double)
+    return WeightedRandomSampler(sample_weights, num_samples=len(sample_weights), replacement=True)
 
 
 def main():
@@ -493,6 +518,19 @@ def main():
             "Train frame count is smaller than batch size; disabling drop_last "
             "to keep smoke-test DataLoader non-empty."
         )
+    weighted_sampler_cfg = cfg.get("weighted_sampler", {})
+    if weighted_sampler_cfg.get("enabled", False):
+        sampler = make_weighted_sampler(
+            train_frames,
+            num_classes=10,
+            multipliers=weighted_sampler_cfg.get("class_multipliers"),
+        )
+        loader_kwargs["sampler"] = sampler
+        loader_kwargs["shuffle"] = False
+        print(
+            "[DataLoader Setup] WeightedRandomSampler enabled | "
+            f"class_multipliers={weighted_sampler_cfg.get('class_multipliers')}"
+        )
         
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
@@ -525,6 +563,11 @@ def main():
         ce_weights = None
         if class_weighting == "balanced":
             ce_weights = balanced_class_weights(train_clips, num_classes=10, device=device)
+            ce_weights = apply_class_multipliers(
+                ce_weights,
+                cfg.get("class_weight_multipliers"),
+                device=device,
+            )
             print(f"[Loss Setup] Balanced class weights: {[round(float(w), 4) for w in ce_weights.cpu()]}")
         elif class_weighting != "none":
             raise ValueError(f"Unsupported class_weighting '{class_weighting}'. Use 'none' or 'balanced'.")
@@ -733,6 +776,9 @@ def main():
         "loss_type": loss_type,
         "label_smoothing": float(cfg.get("label_smoothing", 0.0)),
         "class_weighting": cfg.get("class_weighting", "none"),
+        "class_weight_multipliers": cfg.get("class_weight_multipliers"),
+        "weighted_sampler": cfg.get("weighted_sampler"),
+        "pool_type": cfg.get("pool_type", "avg"),
         "amp": use_amp,
         "gradient_clip": gradient_clip,
         "optimizer": optimizer_name,
