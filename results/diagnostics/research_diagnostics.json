@@ -1,0 +1,2128 @@
+{
+  "data_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound/data/raw/UrbanSound8K",
+  "dataset": {
+    "raw_class_counts": {
+      "dog_bark": 1000,
+      "children_playing": 1000,
+      "car_horn": 429,
+      "air_conditioner": 1000,
+      "street_music": 1000,
+      "gun_shot": 374,
+      "siren": 929,
+      "engine_idling": 1000,
+      "jackhammer": 1000,
+      "drilling": 1000
+    },
+    "filtered_clip_count": 8732,
+    "class_counts": {
+      "dog_bark": 1000,
+      "children_playing": 1000,
+      "car_horn": 429,
+      "air_conditioner": 1000,
+      "street_music": 1000,
+      "gun_shot": 374,
+      "siren": 929,
+      "engine_idling": 1000,
+      "jackhammer": 1000,
+      "drilling": 1000
+    },
+    "fold_stats": {
+      "1": {
+        "clips": 873,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 36,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 96,
+          "gun_shot": 35,
+          "jackhammer": 120,
+          "siren": 86,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.6283,
+        "duration_min_s": 0.0545,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 13095,
+          "full_audio_frames": 11732,
+          "partial_tail_frames": 256,
+          "all_zero_padded_frames": 1107,
+          "all_zero_padded_percent": 8.45,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 6,
+              "all_zero_padded_percent": 0.4,
+              "partial_tail_frames": 4
+            },
+            "car_horn": {
+              "total_frames": 540,
+              "all_zero_padded_frames": 276,
+              "all_zero_padded_percent": 51.11,
+              "partial_tail_frames": 38
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 13,
+              "all_zero_padded_percent": 0.87,
+              "partial_tail_frames": 6
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 299,
+              "all_zero_padded_percent": 19.93,
+              "partial_tail_frames": 67
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 168,
+              "all_zero_padded_percent": 11.2,
+              "partial_tail_frames": 35
+            },
+            "engine_idling": {
+              "total_frames": 1440,
+              "all_zero_padded_frames": 7,
+              "all_zero_padded_percent": 0.49,
+              "partial_tail_frames": 4
+            },
+            "gun_shot": {
+              "total_frames": 525,
+              "all_zero_padded_frames": 243,
+              "all_zero_padded_percent": 46.29,
+              "partial_tail_frames": 70
+            },
+            "jackhammer": {
+              "total_frames": 1800,
+              "all_zero_padded_frames": 95,
+              "all_zero_padded_percent": 5.28,
+              "partial_tail_frames": 32
+            },
+            "siren": {
+              "total_frames": 1290,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            }
+          }
+        }
+      },
+      "2": {
+        "clips": 888,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 42,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 100,
+          "gun_shot": 35,
+          "jackhammer": 120,
+          "siren": 91,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.5407,
+        "duration_min_s": 0.0616,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 13320,
+          "full_audio_frames": 11598,
+          "partial_tail_frames": 319,
+          "all_zero_padded_frames": 1403,
+          "all_zero_padded_percent": 10.53,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 5,
+              "all_zero_padded_percent": 0.33,
+              "partial_tail_frames": 2
+            },
+            "car_horn": {
+              "total_frames": 630,
+              "all_zero_padded_frames": 266,
+              "all_zero_padded_percent": 42.22,
+              "partial_tail_frames": 48
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 6,
+              "all_zero_padded_percent": 0.4,
+              "partial_tail_frames": 5
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 377,
+              "all_zero_padded_percent": 25.13,
+              "partial_tail_frames": 75
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 303,
+              "all_zero_padded_percent": 20.2,
+              "partial_tail_frames": 66
+            },
+            "engine_idling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 6,
+              "all_zero_padded_percent": 0.4,
+              "partial_tail_frames": 9
+            },
+            "gun_shot": {
+              "total_frames": 525,
+              "all_zero_padded_frames": 279,
+              "all_zero_padded_percent": 53.14,
+              "partial_tail_frames": 65
+            },
+            "jackhammer": {
+              "total_frames": 1800,
+              "all_zero_padded_frames": 161,
+              "all_zero_padded_percent": 8.94,
+              "partial_tail_frames": 38
+            },
+            "siren": {
+              "total_frames": 1365,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 8
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 3
+            }
+          }
+        }
+      },
+      "3": {
+        "clips": 925,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 43,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 107,
+          "gun_shot": 36,
+          "jackhammer": 120,
+          "siren": 119,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.673,
+        "duration_min_s": 0.0969,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 13875,
+          "full_audio_frames": 12584,
+          "partial_tail_frames": 262,
+          "all_zero_padded_frames": 1029,
+          "all_zero_padded_percent": 7.42,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 5
+            },
+            "car_horn": {
+              "total_frames": 645,
+              "all_zero_padded_frames": 256,
+              "all_zero_padded_percent": 39.69,
+              "partial_tail_frames": 41
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 8,
+              "all_zero_padded_percent": 0.53,
+              "partial_tail_frames": 3
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 261,
+              "all_zero_padded_percent": 17.4,
+              "partial_tail_frames": 58
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 61,
+              "all_zero_padded_percent": 4.07,
+              "partial_tail_frames": 24
+            },
+            "engine_idling": {
+              "total_frames": 1605,
+              "all_zero_padded_frames": 33,
+              "all_zero_padded_percent": 2.06,
+              "partial_tail_frames": 17
+            },
+            "gun_shot": {
+              "total_frames": 540,
+              "all_zero_padded_frames": 294,
+              "all_zero_padded_percent": 54.44,
+              "partial_tail_frames": 72
+            },
+            "jackhammer": {
+              "total_frames": 1800,
+              "all_zero_padded_frames": 107,
+              "all_zero_padded_percent": 5.94,
+              "partial_tail_frames": 35
+            },
+            "siren": {
+              "total_frames": 1785,
+              "all_zero_padded_frames": 9,
+              "all_zero_padded_percent": 0.5,
+              "partial_tail_frames": 3
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 4
+            }
+          }
+        }
+      },
+      "4": {
+        "clips": 990,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 59,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 107,
+          "gun_shot": 38,
+          "jackhammer": 120,
+          "siren": 166,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.5732,
+        "duration_min_s": 0.269,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 14850,
+          "full_audio_frames": 13042,
+          "partial_tail_frames": 380,
+          "all_zero_padded_frames": 1428,
+          "all_zero_padded_percent": 9.62,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 1
+            },
+            "car_horn": {
+              "total_frames": 885,
+              "all_zero_padded_frames": 205,
+              "all_zero_padded_percent": 23.16,
+              "partial_tail_frames": 45
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 18,
+              "all_zero_padded_percent": 1.2,
+              "partial_tail_frames": 6
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 296,
+              "all_zero_padded_percent": 19.73,
+              "partial_tail_frames": 72
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 74,
+              "all_zero_padded_percent": 4.93,
+              "partial_tail_frames": 20
+            },
+            "engine_idling": {
+              "total_frames": 1605,
+              "all_zero_padded_frames": 20,
+              "all_zero_padded_percent": 1.25,
+              "partial_tail_frames": 9
+            },
+            "gun_shot": {
+              "total_frames": 570,
+              "all_zero_padded_frames": 300,
+              "all_zero_padded_percent": 52.63,
+              "partial_tail_frames": 69
+            },
+            "jackhammer": {
+              "total_frames": 1800,
+              "all_zero_padded_frames": 428,
+              "all_zero_padded_percent": 23.78,
+              "partial_tail_frames": 121
+            },
+            "siren": {
+              "total_frames": 2490,
+              "all_zero_padded_frames": 87,
+              "all_zero_padded_percent": 3.49,
+              "partial_tail_frames": 34
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 3
+            }
+          }
+        }
+      },
+      "5": {
+        "clips": 936,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 98,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 107,
+          "gun_shot": 40,
+          "jackhammer": 120,
+          "siren": 71,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.5532,
+        "duration_min_s": 0.1793,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 14040,
+          "full_audio_frames": 12271,
+          "partial_tail_frames": 346,
+          "all_zero_padded_frames": 1423,
+          "all_zero_padded_percent": 10.14,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 5,
+              "all_zero_padded_percent": 0.33,
+              "partial_tail_frames": 2
+            },
+            "car_horn": {
+              "total_frames": 1470,
+              "all_zero_padded_frames": 238,
+              "all_zero_padded_percent": 16.19,
+              "partial_tail_frames": 49
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 17,
+              "all_zero_padded_percent": 1.13,
+              "partial_tail_frames": 6
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 302,
+              "all_zero_padded_percent": 20.13,
+              "partial_tail_frames": 70
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 308,
+              "all_zero_padded_percent": 20.53,
+              "partial_tail_frames": 72
+            },
+            "engine_idling": {
+              "total_frames": 1605,
+              "all_zero_padded_frames": 44,
+              "all_zero_padded_percent": 2.74,
+              "partial_tail_frames": 17
+            },
+            "gun_shot": {
+              "total_frames": 600,
+              "all_zero_padded_frames": 363,
+              "all_zero_padded_percent": 60.5,
+              "partial_tail_frames": 80
+            },
+            "jackhammer": {
+              "total_frames": 1800,
+              "all_zero_padded_frames": 106,
+              "all_zero_padded_percent": 5.89,
+              "partial_tail_frames": 30
+            },
+            "siren": {
+              "total_frames": 1065,
+              "all_zero_padded_frames": 40,
+              "all_zero_padded_percent": 3.76,
+              "partial_tail_frames": 20
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            }
+          }
+        }
+      },
+      "6": {
+        "clips": 823,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 28,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 107,
+          "gun_shot": 46,
+          "jackhammer": 68,
+          "siren": 74,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.6004,
+        "duration_min_s": 0.106,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 12345,
+          "full_audio_frames": 10955,
+          "partial_tail_frames": 257,
+          "all_zero_padded_frames": 1133,
+          "all_zero_padded_percent": 9.18,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            },
+            "car_horn": {
+              "total_frames": 420,
+              "all_zero_padded_frames": 210,
+              "all_zero_padded_percent": 50.0,
+              "partial_tail_frames": 32
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 11,
+              "all_zero_padded_percent": 0.73,
+              "partial_tail_frames": 4
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 331,
+              "all_zero_padded_percent": 22.07,
+              "partial_tail_frames": 78
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 135,
+              "all_zero_padded_percent": 9.0,
+              "partial_tail_frames": 35
+            },
+            "engine_idling": {
+              "total_frames": 1605,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 3
+            },
+            "gun_shot": {
+              "total_frames": 690,
+              "all_zero_padded_frames": 435,
+              "all_zero_padded_percent": 63.04,
+              "partial_tail_frames": 92
+            },
+            "jackhammer": {
+              "total_frames": 1020,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 4
+            },
+            "siren": {
+              "total_frames": 1110,
+              "all_zero_padded_frames": 11,
+              "all_zero_padded_percent": 0.99,
+              "partial_tail_frames": 2
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 7
+            }
+          }
+        }
+      },
+      "7": {
+        "clips": 838,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 28,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 106,
+          "gun_shot": 51,
+          "jackhammer": 76,
+          "siren": 77,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.6588,
+        "duration_min_s": 0.1041,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 12570,
+          "full_audio_frames": 11346,
+          "partial_tail_frames": 264,
+          "all_zero_padded_frames": 960,
+          "all_zero_padded_percent": 7.64,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 2
+            },
+            "car_horn": {
+              "total_frames": 420,
+              "all_zero_padded_frames": 198,
+              "all_zero_padded_percent": 47.14,
+              "partial_tail_frames": 45
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 11,
+              "all_zero_padded_percent": 0.73,
+              "partial_tail_frames": 5
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 203,
+              "all_zero_padded_percent": 13.53,
+              "partial_tail_frames": 53
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 18,
+              "all_zero_padded_percent": 1.2,
+              "partial_tail_frames": 15
+            },
+            "engine_idling": {
+              "total_frames": 1590,
+              "all_zero_padded_frames": 13,
+              "all_zero_padded_percent": 0.82,
+              "partial_tail_frames": 9
+            },
+            "gun_shot": {
+              "total_frames": 765,
+              "all_zero_padded_frames": 344,
+              "all_zero_padded_percent": 44.97,
+              "partial_tail_frames": 80
+            },
+            "jackhammer": {
+              "total_frames": 1140,
+              "all_zero_padded_frames": 115,
+              "all_zero_padded_percent": 10.09,
+              "partial_tail_frames": 44
+            },
+            "siren": {
+              "total_frames": 1155,
+              "all_zero_padded_frames": 58,
+              "all_zero_padded_percent": 5.02,
+              "partial_tail_frames": 10
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 1
+            }
+          }
+        }
+      },
+      "8": {
+        "clips": 806,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 30,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 88,
+          "gun_shot": 30,
+          "jackhammer": 78,
+          "siren": 80,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.5831,
+        "duration_min_s": 0.2683,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 12090,
+          "full_audio_frames": 10634,
+          "partial_tail_frames": 325,
+          "all_zero_padded_frames": 1131,
+          "all_zero_padded_percent": 9.35,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            },
+            "car_horn": {
+              "total_frames": 450,
+              "all_zero_padded_frames": 220,
+              "all_zero_padded_percent": 48.89,
+              "partial_tail_frames": 49
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 6,
+              "all_zero_padded_percent": 0.4,
+              "partial_tail_frames": 2
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 298,
+              "all_zero_padded_percent": 19.87,
+              "partial_tail_frames": 75
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 143,
+              "all_zero_padded_percent": 9.53,
+              "partial_tail_frames": 66
+            },
+            "engine_idling": {
+              "total_frames": 1320,
+              "all_zero_padded_frames": 60,
+              "all_zero_padded_percent": 4.55,
+              "partial_tail_frames": 31
+            },
+            "gun_shot": {
+              "total_frames": 450,
+              "all_zero_padded_frames": 283,
+              "all_zero_padded_percent": 62.89,
+              "partial_tail_frames": 60
+            },
+            "jackhammer": {
+              "total_frames": 1170,
+              "all_zero_padded_frames": 112,
+              "all_zero_padded_percent": 9.57,
+              "partial_tail_frames": 36
+            },
+            "siren": {
+              "total_frames": 1200,
+              "all_zero_padded_frames": 9,
+              "all_zero_padded_percent": 0.75,
+              "partial_tail_frames": 6
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            }
+          }
+        }
+      },
+      "9": {
+        "clips": 816,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 32,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 89,
+          "gun_shot": 31,
+          "jackhammer": 82,
+          "siren": 82,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.6458,
+        "duration_min_s": 0.1728,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 12240,
+          "full_audio_frames": 11004,
+          "partial_tail_frames": 262,
+          "all_zero_padded_frames": 974,
+          "all_zero_padded_percent": 7.96,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            },
+            "car_horn": {
+              "total_frames": 480,
+              "all_zero_padded_frames": 289,
+              "all_zero_padded_percent": 60.21,
+              "partial_tail_frames": 49
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 16,
+              "all_zero_padded_percent": 1.07,
+              "partial_tail_frames": 9
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 246,
+              "all_zero_padded_percent": 16.4,
+              "partial_tail_frames": 71
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 181,
+              "all_zero_padded_percent": 12.07,
+              "partial_tail_frames": 46
+            },
+            "engine_idling": {
+              "total_frames": 1335,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 2
+            },
+            "gun_shot": {
+              "total_frames": 465,
+              "all_zero_padded_frames": 197,
+              "all_zero_padded_percent": 42.37,
+              "partial_tail_frames": 61
+            },
+            "jackhammer": {
+              "total_frames": 1230,
+              "all_zero_padded_frames": 21,
+              "all_zero_padded_percent": 1.71,
+              "partial_tail_frames": 12
+            },
+            "siren": {
+              "total_frames": 1230,
+              "all_zero_padded_frames": 24,
+              "all_zero_padded_percent": 1.95,
+              "partial_tail_frames": 10
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 2
+            }
+          }
+        }
+      },
+      "10": {
+        "clips": 837,
+        "class_counts": {
+          "air_conditioner": 100,
+          "car_horn": 33,
+          "children_playing": 100,
+          "dog_bark": 100,
+          "drilling": 100,
+          "engine_idling": 93,
+          "gun_shot": 32,
+          "jackhammer": 96,
+          "siren": 83,
+          "street_music": 100
+        },
+        "duration_mean_s": 3.6316,
+        "duration_min_s": 0.2387,
+        "duration_max_s": 4.0,
+        "padding": {
+          "total_frames": 12555,
+          "full_audio_frames": 11198,
+          "partial_tail_frames": 320,
+          "all_zero_padded_frames": 1037,
+          "all_zero_padded_percent": 8.26,
+          "by_class": {
+            "air_conditioner": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 0
+            },
+            "car_horn": {
+              "total_frames": 495,
+              "all_zero_padded_frames": 163,
+              "all_zero_padded_percent": 32.93,
+              "partial_tail_frames": 33
+            },
+            "children_playing": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 12,
+              "all_zero_padded_percent": 0.8,
+              "partial_tail_frames": 7
+            },
+            "dog_bark": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 309,
+              "all_zero_padded_percent": 20.6,
+              "partial_tail_frames": 72
+            },
+            "drilling": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 121,
+              "all_zero_padded_percent": 8.07,
+              "partial_tail_frames": 47
+            },
+            "engine_idling": {
+              "total_frames": 1395,
+              "all_zero_padded_frames": 16,
+              "all_zero_padded_percent": 1.15,
+              "partial_tail_frames": 13
+            },
+            "gun_shot": {
+              "total_frames": 480,
+              "all_zero_padded_frames": 242,
+              "all_zero_padded_percent": 50.42,
+              "partial_tail_frames": 64
+            },
+            "jackhammer": {
+              "total_frames": 1440,
+              "all_zero_padded_frames": 127,
+              "all_zero_padded_percent": 8.82,
+              "partial_tail_frames": 47
+            },
+            "siren": {
+              "total_frames": 1245,
+              "all_zero_padded_frames": 47,
+              "all_zero_padded_percent": 3.78,
+              "partial_tail_frames": 34
+            },
+            "street_music": {
+              "total_frames": 1500,
+              "all_zero_padded_frames": 0,
+              "all_zero_padded_percent": 0.0,
+              "partial_tail_frames": 3
+            }
+          }
+        }
+      }
+    },
+    "padding": {
+      "total_frames": 130980,
+      "full_audio_frames": 116364,
+      "partial_tail_frames": 2991,
+      "all_zero_padded_frames": 11625,
+      "all_zero_padded_percent": 8.88,
+      "by_class": {
+        "air_conditioner": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 16,
+          "all_zero_padded_percent": 0.11,
+          "partial_tail_frames": 16
+        },
+        "car_horn": {
+          "total_frames": 6435,
+          "all_zero_padded_frames": 2321,
+          "all_zero_padded_percent": 36.07,
+          "partial_tail_frames": 429
+        },
+        "children_playing": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 118,
+          "all_zero_padded_percent": 0.79,
+          "partial_tail_frames": 53
+        },
+        "dog_bark": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 2922,
+          "all_zero_padded_percent": 19.48,
+          "partial_tail_frames": 691
+        },
+        "drilling": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 1512,
+          "all_zero_padded_percent": 10.08,
+          "partial_tail_frames": 426
+        },
+        "engine_idling": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 199,
+          "all_zero_padded_percent": 1.33,
+          "partial_tail_frames": 114
+        },
+        "gun_shot": {
+          "total_frames": 5610,
+          "all_zero_padded_frames": 2980,
+          "all_zero_padded_percent": 53.12,
+          "partial_tail_frames": 713
+        },
+        "jackhammer": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 1272,
+          "all_zero_padded_percent": 8.48,
+          "partial_tail_frames": 399
+        },
+        "siren": {
+          "total_frames": 13935,
+          "all_zero_padded_frames": 285,
+          "all_zero_padded_percent": 2.05,
+          "partial_tail_frames": 127
+        },
+        "street_music": {
+          "total_frames": 15000,
+          "all_zero_padded_frames": 0,
+          "all_zero_padded_percent": 0.0,
+          "partial_tail_frames": 23
+        }
+      }
+    },
+    "official_overlap": {
+      "1": {
+        "train_clips": 7859,
+        "test_clips": 873,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 4
+      },
+      "2": {
+        "train_clips": 7844,
+        "test_clips": 888,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 1
+      },
+      "3": {
+        "train_clips": 7807,
+        "test_clips": 925,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 0
+      },
+      "4": {
+        "train_clips": 7742,
+        "test_clips": 990,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 2
+      },
+      "5": {
+        "train_clips": 7796,
+        "test_clips": 936,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 0
+      },
+      "6": {
+        "train_clips": 7909,
+        "test_clips": 823,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 0
+      },
+      "7": {
+        "train_clips": 7894,
+        "test_clips": 838,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 1
+      },
+      "8": {
+        "train_clips": 7926,
+        "test_clips": 806,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 1
+      },
+      "9": {
+        "train_clips": 7916,
+        "test_clips": 816,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 1
+      },
+      "10": {
+        "train_clips": 7895,
+        "test_clips": 837,
+        "fsID_classID_overlap": 0,
+        "fsID_only_overlap": 0
+      }
+    },
+    "random_clip_split_control": {
+      "random_split_algorithm": "stable_metadata_v2",
+      "train_clips": 7858,
+      "test_clips": 874,
+      "fsID_classID_overlap": 489,
+      "fsID_only_overlap": 487,
+      "test_class_counts": {
+        "air_conditioner": 100,
+        "car_horn": 43,
+        "children_playing": 100,
+        "dog_bark": 100,
+        "drilling": 100,
+        "engine_idling": 100,
+        "gun_shot": 38,
+        "jackhammer": 100,
+        "siren": 93,
+        "street_music": 100
+      },
+      "official_folds_in_test": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    }
+  },
+  "model": {
+    "output_shape": [
+      1,
+      10
+    ],
+    "total_params_with_bias": 409328,
+    "total_params_no_bias": 407488,
+    "approx_conv_linear_macs": 230192128,
+    "top_level_shape_checks": {
+      "conv1": {
+        "expected": [
+          1,
+          32,
+          8000
+        ],
+        "found": [
+          1,
+          32,
+          8000
+        ],
+        "matches": true
+      },
+      "conv2": {
+        "expected": [
+          1,
+          32,
+          4000
+        ],
+        "found": [
+          1,
+          32,
+          4000
+        ],
+        "matches": true
+      },
+      "conv3": {
+        "expected": [
+          1,
+          64,
+          2000
+        ],
+        "found": [
+          1,
+          64,
+          2000
+        ],
+        "matches": true
+      },
+      "conv4": {
+        "expected": [
+          1,
+          64,
+          1000
+        ],
+        "found": [
+          1,
+          64,
+          1000
+        ],
+        "matches": true
+      },
+      "conv5": {
+        "expected": [
+          1,
+          128,
+          200
+        ],
+        "found": [
+          1,
+          128,
+          200
+        ],
+        "matches": true
+      },
+      "conv6": {
+        "expected": [
+          1,
+          128,
+          40
+        ],
+        "found": [
+          1,
+          128,
+          40
+        ],
+        "matches": true
+      },
+      "conv7": {
+        "expected": [
+          1,
+          256,
+          20
+        ],
+        "found": [
+          1,
+          256,
+          20
+        ],
+        "matches": true
+      }
+    },
+    "layers": [
+      {
+        "name": "conv1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          1,
+          8000
+        ],
+        "output_shape": [
+          1,
+          32,
+          8000
+        ],
+        "kernel_size": [
+          32
+        ],
+        "stride": [
+          1
+        ],
+        "padding": "same",
+        "params_with_bias": 1056,
+        "params_no_bias": 1024,
+        "macs": 8192000
+      },
+      {
+        "name": "tcam1.tam.f_triple_prime",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          8000
+        ],
+        "output_shape": [
+          1,
+          1,
+          8000
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 33,
+        "params_no_bias": 32,
+        "macs": 256000
+      },
+      {
+        "name": "tcam1.tam.f_s",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          8000
+        ],
+        "output_shape": [
+          1,
+          32,
+          8000
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 3104,
+        "params_no_bias": 3072,
+        "macs": 24576000
+      },
+      {
+        "name": "tcam1.cam.fc1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          1
+        ],
+        "output_shape": [
+          1,
+          16,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 528,
+        "params_no_bias": 512,
+        "macs": 512
+      },
+      {
+        "name": "tcam1.cam.fc2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          16,
+          1
+        ],
+        "output_shape": [
+          1,
+          32,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 544,
+        "params_no_bias": 512,
+        "macs": 512
+      },
+      {
+        "name": "conv2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          8000
+        ],
+        "output_shape": [
+          1,
+          32,
+          4000
+        ],
+        "kernel_size": [
+          16
+        ],
+        "stride": [
+          2
+        ],
+        "padding": [
+          7
+        ],
+        "params_with_bias": 16416,
+        "params_no_bias": 16384,
+        "macs": 65536000
+      },
+      {
+        "name": "tcam2.tam.f_triple_prime",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          4000
+        ],
+        "output_shape": [
+          1,
+          1,
+          4000
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 33,
+        "params_no_bias": 32,
+        "macs": 128000
+      },
+      {
+        "name": "tcam2.tam.f_s",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          4000
+        ],
+        "output_shape": [
+          1,
+          32,
+          4000
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 3104,
+        "params_no_bias": 3072,
+        "macs": 12288000
+      },
+      {
+        "name": "tcam2.cam.fc1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          1
+        ],
+        "output_shape": [
+          1,
+          16,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 528,
+        "params_no_bias": 512,
+        "macs": 512
+      },
+      {
+        "name": "tcam2.cam.fc2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          16,
+          1
+        ],
+        "output_shape": [
+          1,
+          32,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 544,
+        "params_no_bias": 512,
+        "macs": 512
+      },
+      {
+        "name": "conv3",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          4000
+        ],
+        "output_shape": [
+          1,
+          64,
+          2000
+        ],
+        "kernel_size": [
+          9
+        ],
+        "stride": [
+          2
+        ],
+        "padding": [
+          4
+        ],
+        "params_with_bias": 18496,
+        "params_no_bias": 18432,
+        "macs": 36864000
+      },
+      {
+        "name": "tcam3.tam.f_triple_prime",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          2000
+        ],
+        "output_shape": [
+          1,
+          1,
+          2000
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 65,
+        "params_no_bias": 64,
+        "macs": 128000
+      },
+      {
+        "name": "tcam3.tam.f_s",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          2000
+        ],
+        "output_shape": [
+          1,
+          64,
+          2000
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 12352,
+        "params_no_bias": 12288,
+        "macs": 24576000
+      },
+      {
+        "name": "tcam3.cam.fc1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1
+        ],
+        "output_shape": [
+          1,
+          32,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 2080,
+        "params_no_bias": 2048,
+        "macs": 2048
+      },
+      {
+        "name": "tcam3.cam.fc2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          1
+        ],
+        "output_shape": [
+          1,
+          64,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 2112,
+        "params_no_bias": 2048,
+        "macs": 2048
+      },
+      {
+        "name": "conv4",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          2000
+        ],
+        "output_shape": [
+          1,
+          64,
+          1000
+        ],
+        "kernel_size": [
+          6
+        ],
+        "stride": [
+          2
+        ],
+        "padding": [
+          2
+        ],
+        "params_with_bias": 24640,
+        "params_no_bias": 24576,
+        "macs": 24576000
+      },
+      {
+        "name": "tcam4.tam.f_triple_prime",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1000
+        ],
+        "output_shape": [
+          1,
+          1,
+          1000
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 65,
+        "params_no_bias": 64,
+        "macs": 64000
+      },
+      {
+        "name": "tcam4.tam.f_s",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1000
+        ],
+        "output_shape": [
+          1,
+          64,
+          1000
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 12352,
+        "params_no_bias": 12288,
+        "macs": 12288000
+      },
+      {
+        "name": "tcam4.cam.fc1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1
+        ],
+        "output_shape": [
+          1,
+          32,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 2080,
+        "params_no_bias": 2048,
+        "macs": 2048
+      },
+      {
+        "name": "tcam4.cam.fc2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          32,
+          1
+        ],
+        "output_shape": [
+          1,
+          64,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 2112,
+        "params_no_bias": 2048,
+        "macs": 2048
+      },
+      {
+        "name": "conv5",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1000
+        ],
+        "output_shape": [
+          1,
+          128,
+          200
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          5
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 24704,
+        "params_no_bias": 24576,
+        "macs": 4915200
+      },
+      {
+        "name": "tcam5.tam.f_triple_prime",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          200
+        ],
+        "output_shape": [
+          1,
+          1,
+          200
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 129,
+        "params_no_bias": 128,
+        "macs": 25600
+      },
+      {
+        "name": "tcam5.tam.f_s",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          200
+        ],
+        "output_shape": [
+          1,
+          128,
+          200
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 49280,
+        "params_no_bias": 49152,
+        "macs": 9830400
+      },
+      {
+        "name": "tcam5.cam.fc1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          1
+        ],
+        "output_shape": [
+          1,
+          64,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 8256,
+        "params_no_bias": 8192,
+        "macs": 8192
+      },
+      {
+        "name": "tcam5.cam.fc2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1
+        ],
+        "output_shape": [
+          1,
+          128,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 8320,
+        "params_no_bias": 8192,
+        "macs": 8192
+      },
+      {
+        "name": "conv6",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          200
+        ],
+        "output_shape": [
+          1,
+          128,
+          40
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          5
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 49280,
+        "params_no_bias": 49152,
+        "macs": 1966080
+      },
+      {
+        "name": "tcam6.tam.f_triple_prime",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          40
+        ],
+        "output_shape": [
+          1,
+          1,
+          40
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 129,
+        "params_no_bias": 128,
+        "macs": 5120
+      },
+      {
+        "name": "tcam6.tam.f_s",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          40
+        ],
+        "output_shape": [
+          1,
+          128,
+          40
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 49280,
+        "params_no_bias": 49152,
+        "macs": 1966080
+      },
+      {
+        "name": "tcam6.cam.fc1",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          1
+        ],
+        "output_shape": [
+          1,
+          64,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 8256,
+        "params_no_bias": 8192,
+        "macs": 8192
+      },
+      {
+        "name": "tcam6.cam.fc2",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          64,
+          1
+        ],
+        "output_shape": [
+          1,
+          128,
+          1
+        ],
+        "kernel_size": [
+          1
+        ],
+        "stride": [
+          1
+        ],
+        "padding": [
+          0
+        ],
+        "params_with_bias": 8320,
+        "params_no_bias": 8192,
+        "macs": 8192
+      },
+      {
+        "name": "conv7",
+        "type": "Conv1d",
+        "input_shape": [
+          1,
+          128,
+          40
+        ],
+        "output_shape": [
+          1,
+          256,
+          20
+        ],
+        "kernel_size": [
+          3
+        ],
+        "stride": [
+          2
+        ],
+        "padding": [
+          1
+        ],
+        "params_with_bias": 98560,
+        "params_no_bias": 98304,
+        "macs": 1966080
+      },
+      {
+        "name": "fc",
+        "type": "Linear",
+        "input_shape": [
+          1,
+          256
+        ],
+        "output_shape": [
+          1,
+          10
+        ],
+        "kernel_size": null,
+        "stride": null,
+        "padding": null,
+        "params_with_bias": 2570,
+        "params_no_bias": 2560,
+        "macs": 2560
+      }
+    ],
+    "tcam_block_params": {
+      "tcam1": {
+        "params_with_bias": 4209,
+        "params_no_bias": 4128
+      },
+      "tcam2": {
+        "params_with_bias": 4209,
+        "params_no_bias": 4128
+      },
+      "tcam3": {
+        "params_with_bias": 16609,
+        "params_no_bias": 16448
+      },
+      "tcam4": {
+        "params_with_bias": 16609,
+        "params_no_bias": 16448
+      },
+      "tcam5": {
+        "params_with_bias": 65985,
+        "params_no_bias": 65664
+      },
+      "tcam6": {
+        "params_with_bias": 65985,
+        "params_no_bias": 65664
+      }
+    },
+    "paper_reported_params": "406 K",
+    "paper_reported_flops": "40 M"
+  },
+  "artifacts": {
+    "official_fold1": {
+      "exists": true,
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound/experiments/paper9_msle_fp32/fold_1",
+      "protocol": "paper_9_1",
+      "train_clip_count": 7859,
+      "test_clip_count": 873,
+      "test_acc_last_snapshot": 0.5567010309278351,
+      "test_acc_ensemble": 0.5589919816723941,
+      "source_label_overlap_train_test": null,
+      "cycles": [
+        {
+          "cycle": 1,
+          "test_accuracy": 0.5567010309278351,
+          "sum_nonzero_accuracy": 0.5601374570446735
+        },
+        {
+          "cycle": 2,
+          "test_accuracy": 0.5761741122565864,
+          "sum_nonzero_accuracy": 0.5761741122565864
+        },
+        {
+          "cycle": 3,
+          "test_accuracy": 0.5418098510882016,
+          "sum_nonzero_accuracy": 0.5463917525773195
+        },
+        {
+          "cycle": 4,
+          "test_accuracy": 0.5567010309278351,
+          "sum_nonzero_accuracy": 0.5601374570446735
+        }
+      ]
+    },
+    "random_clip_fold1": {
+      "exists": true,
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound/experiments/randomclip_msle_fp32/fold_1",
+      "protocol": "random_clip_9_1",
+      "train_clip_count": 7858,
+      "test_clip_count": 874,
+      "test_acc_last_snapshot": 0.9324942791762014,
+      "test_acc_ensemble": 0.9336384439359268,
+      "source_label_overlap_train_test": {
+        "count": 492,
+        "examples": [
+          {
+            "fsID": "100648",
+            "classID": 1
+          },
+          {
+            "fsID": "100852",
+            "classID": 0
+          },
+          {
+            "fsID": "101382",
+            "classID": 2
+          },
+          {
+            "fsID": "101415",
+            "classID": 3
+          },
+          {
+            "fsID": "101729",
+            "classID": 0
+          },
+          {
+            "fsID": "102842",
+            "classID": 3
+          },
+          {
+            "fsID": "102857",
+            "classID": 5
+          },
+          {
+            "fsID": "102871",
+            "classID": 8
+          },
+          {
+            "fsID": "103074",
+            "classID": 7
+          },
+          {
+            "fsID": "103199",
+            "classID": 4
+          }
+        ]
+      },
+      "cycles": [
+        {
+          "cycle": 1,
+          "test_accuracy": 0.9267734553775744,
+          "sum_nonzero_accuracy": 0.9290617848970252
+        },
+        {
+          "cycle": 2,
+          "test_accuracy": 0.9359267734553776,
+          "sum_nonzero_accuracy": 0.9336384439359268
+        },
+        {
+          "cycle": 3,
+          "test_accuracy": 0.9359267734553776,
+          "sum_nonzero_accuracy": 0.931350114416476
+        },
+        {
+          "cycle": 4,
+          "test_accuracy": 0.9324942791762014,
+          "sum_nonzero_accuracy": 0.9279176201372997
+        }
+      ]
+    }
+  }
+}
