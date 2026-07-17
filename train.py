@@ -575,6 +575,7 @@ def main():
     epochs = cfg.get("epochs", 200)
     epochs_per_cycle = math.ceil(epochs / cycles)
     snapshot_checkpoints = []
+    snapshot_epochs = []
 
     # Training Loop
     for epoch in range(epochs):
@@ -621,7 +622,15 @@ def main():
             snapshot_path = get_cycle_ckpt_path(cycle_id)
             torch.save(model.state_dict(), snapshot_path)
             snapshot_checkpoints.append(snapshot_path)
+            snapshot_epochs.append(epoch + 1)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
+
+    if not snapshot_epochs or snapshot_epochs[-1] != epochs:
+        snapshot_path = get_cycle_ckpt_path("final")
+        torch.save(model.state_dict(), snapshot_path)
+        snapshot_checkpoints.append(snapshot_path)
+        snapshot_epochs.append(epochs)
+        print("--> Saved Final Epoch checkpoint.")
 
     # Load and evaluate the best validation model only when the protocol has a validation fold.
     if uses_validation and os.path.exists(best_ckpt_path):
@@ -652,6 +661,7 @@ def main():
         m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
         ensemble_models.append(m)
         
+    last_snapshot_epoch = snapshot_epochs[-1]
     test_acc_last, preds_last = trainer.evaluate_clips(
         [ensemble_models[0]],
         test_records,
@@ -676,7 +686,7 @@ def main():
         print(f"  Best Validation Model Test Accuracy: {test_acc_best*100:.2f}%")
     else:
         print("  Best Validation Model Test Accuracy: N/A (paper_9_1 uses no validation fold)")
-    print(f"  Last Snapshot (Epoch {epochs}) Test Accuracy: {test_acc_last*100:.2f}%")
+    print(f"  Last Snapshot (Epoch {last_snapshot_epoch}) Test Accuracy: {test_acc_last*100:.2f}%")
     print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
     
     # Save training history logs
@@ -717,6 +727,8 @@ def main():
         "drop_silent_tail_frames": drop_silent_tail_frames,
         "epochs": epochs,
         "cycles": cycles,
+        "snapshot_epochs": snapshot_epochs,
+        "last_snapshot_epoch": last_snapshot_epoch,
         "seed": cfg.get("seed", 83),
         "loss_type": loss_type,
         "label_smoothing": float(cfg.get("label_smoothing", 0.0)),

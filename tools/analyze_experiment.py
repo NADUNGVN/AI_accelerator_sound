@@ -523,9 +523,15 @@ def main():
 
     if args.eval_all_cycles:
         cycle_paths = [
-            os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_{cycle_id}.pt")
+            (
+                cycle_id,
+                os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_{cycle_id}.pt"),
+            )
             for cycle_id in range(1, int(cfg.get("cycles", 4)) + 1)
         ]
+        final_path = os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_final.pt")
+        if os.path.exists(final_path):
+            cycle_paths.append(("final", final_path))
         print(f"\n=== Evaluating all cycle checkpoints on {device} ===")
         report = {
             "exp_dir": args.exp_dir,
@@ -535,7 +541,7 @@ def main():
             "final_train_frame_acc": history["train_acc"][-1] if history and history.get("train_acc") else None,
             "cycles": [],
         }
-        for cycle_id, checkpoint_path in enumerate(cycle_paths, 1):
+        for cycle_id, checkpoint_path in cycle_paths:
             if not os.path.exists(checkpoint_path):
                 print(f"\nCycle {cycle_id}: checkpoint missing, skipped: {checkpoint_path}")
                 continue
