@@ -20,6 +20,7 @@ class Trainer:
         accumulation_steps=1,
         use_amp=True,
         gradient_clip=5.0,
+        input_transform=None,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -29,6 +30,12 @@ class Trainer:
         self.accumulation_steps = accumulation_steps
         self.use_amp = use_amp
         self.gradient_clip = gradient_clip
+        self.input_transform = input_transform
+
+    def transform_inputs(self, inputs):
+        if self.input_transform is None:
+            return inputs
+        return self.input_transform(inputs.float())
 
     def train_epoch(self, loader):
         self.model.train()
@@ -41,6 +48,7 @@ class Trainer:
         for batch_idx, (inputs, targets) in enumerate(loader):
             inputs = inputs.to(self.device, non_blocking=True)
             targets = targets.to(self.device, non_blocking=True)
+            inputs = self.transform_inputs(inputs)
             
             with torch.amp.autocast(
                 device_type="cuda" if "cuda" in self.device.type else "cpu",
@@ -90,6 +98,8 @@ class Trainer:
         frame_length=8000,
         frame_hop=None,
         frames_per_clip=15,
+        drop_silent_tail_frames=False,
+        sample_rate=16000,
         return_predictions=False,
     ):
         """
@@ -119,17 +129,29 @@ class Trainer:
                 label = frames[0]["label"]
                 waveform_np = cached_waveforms[path]
                 waveform = torch.from_numpy(waveform_np)
+                duration_samples = None
+                if drop_silent_tail_frames and "duration" in frames[0]:
+                    duration_samples = int(float(frames[0]["duration"]) * sample_rate)
                     
-                # Extract all 15 frames
+                # Extract clip frames. Duration-aware eval avoids summing padding-only
+                # frames for short events such as car horns.
                 batch_frames = []
                 for offset in offsets:
+                    if duration_samples is not None and offset >= duration_samples:
+                        continue
                     frame = waveform[:, offset:offset + frame_length]
                     if frame.shape[-1] < frame_length:
                         frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
                     batch_frames.append(frame)
+                if not batch_frames:
+                    frame = waveform[:, :frame_length]
+                    if frame.shape[-1] < frame_length:
+                        frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
+                    batch_frames.append(frame)
                     
-                # Shape: (frames_per_clip, 1, frame_length)
+                # Shape: (valid_frames, 1, frame_length)
                 batch_tensor = torch.stack(batch_frames).to(self.device)
+                batch_tensor = self.transform_inputs(batch_tensor)
                 
                 # Forward pass through all ensembled models
                 sum_probs = None

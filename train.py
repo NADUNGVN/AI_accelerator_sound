@@ -15,8 +15,14 @@ from collections import defaultdict
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D
-from src.data import CachedUrbanSoundFrameDataset, parse_dataset, generate_frame_records, load_audio_to_ram
+from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260LogMelNetDS1D
+from src.data import (
+    CachedUrbanSoundFrameDataset,
+    LogMelFeatureExtractor,
+    parse_dataset,
+    generate_frame_records,
+    load_audio_to_ram,
+)
 from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
 
@@ -130,14 +136,30 @@ def make_stratified_source_group_split(clip_records, test_bucket, seed, num_buck
     if not clip_records or "fsID" not in clip_records[0] or "classID" not in clip_records[0]:
         raise ValueError("source_group_9_1 requires fsID and classID metadata fields.")
 
+    buckets_by_class = make_stratified_source_group_buckets(clip_records, seed, num_buckets=num_buckets)
+    train_clips = []
+    test_records = []
+    for label_buckets in buckets_by_class.values():
+        for idx, records in enumerate(label_buckets, start=1):
+            if idx == test_bucket:
+                test_records.extend(records)
+            else:
+                train_clips.extend(records)
+
+    return train_clips, test_records
+
+
+def make_stratified_source_group_buckets(clip_records, seed, num_buckets=10):
+    if not clip_records or "fsID" not in clip_records[0] or "classID" not in clip_records[0]:
+        raise ValueError("source-group split requires fsID and classID metadata fields.")
+
     rng = random.Random(seed)
     groups_by_class = defaultdict(dict)
     for record in clip_records:
         key = (str(record["fsID"]), int(record["classID"]))
         groups_by_class[record["label"]].setdefault(key, []).append(record)
 
-    train_clips = []
-    test_records = []
+    buckets_by_class = {}
     for label in sorted(groups_by_class):
         groups = sorted(
             groups_by_class[label].items(),
@@ -160,13 +182,31 @@ def make_stratified_source_group_split(clip_records, test_bucket, seed, num_buck
             buckets[bucket_idx].extend(records)
             bucket_counts[bucket_idx] += len(records)
 
-        for idx, records in enumerate(buckets, start=1):
+        buckets_by_class[label] = buckets
+
+    return buckets_by_class
+
+
+def make_stratified_source_group_train_val_test_split(clip_records, test_bucket, seed, num_buckets=10):
+    if not 1 <= test_bucket <= num_buckets:
+        raise ValueError(f"test_bucket must be in [1, {num_buckets}], got {test_bucket}")
+
+    val_bucket = (test_bucket % num_buckets) + 1
+    buckets_by_class = make_stratified_source_group_buckets(clip_records, seed, num_buckets=num_buckets)
+
+    train_clips = []
+    val_clips = []
+    test_records = []
+    for label_buckets in buckets_by_class.values():
+        for idx, records in enumerate(label_buckets, start=1):
             if idx == test_bucket:
                 test_records.extend(records)
+            elif idx == val_bucket:
+                val_clips.extend(records)
             else:
                 train_clips.extend(records)
 
-    return train_clips, test_records
+    return train_clips, val_clips, test_records, val_bucket
 
 
 def source_label_overlap_summary(train_clips, test_records, limit=10):
@@ -201,12 +241,39 @@ def build_model(cfg, num_classes):
             dropout=float(cfg.get("dropout", 0.15)),
             pool_type=cfg.get("pool_type", "avg"),
         )
+    elif model_name == "kv260_logmel_net_ds1d":
+        model = KV260LogMelNetDS1D(
+            num_classes=num_classes,
+            input_channels=int(cfg.get("n_mels", 64)),
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.20)),
+            pool_type=cfg.get("pool_type", "avgmax"),
+        )
     else:
         raise ValueError(
             f"Unsupported model_name '{model_name}'. Use 'tcam1dcnn', "
-            "'efficient_audio_cnn1d', or 'kv260_audio_net_ds1d'."
+            "'efficient_audio_cnn1d', 'kv260_audio_net_ds1d', or 'kv260_logmel_net_ds1d'."
         )
     return model_name, model
+
+
+def build_input_transform(cfg, device):
+    input_features = cfg.get("input_features", "waveform").lower()
+    if input_features == "waveform":
+        return None
+    if input_features == "logmel":
+        return LogMelFeatureExtractor(
+            sample_rate=cfg.get("sample_rate", 16000),
+            n_fft=cfg.get("n_fft", 1024),
+            hop_length=cfg.get("mel_hop_length", 256),
+            win_length=cfg.get("win_length", cfg.get("n_fft", 1024)),
+            n_mels=cfg.get("n_mels", 64),
+            f_min=cfg.get("f_min", 40.0),
+            f_max=cfg.get("f_max", None),
+            eps=cfg.get("logmel_eps", 1e-6),
+            normalize=cfg.get("logmel_normalize", True),
+        ).to(device)
+    raise ValueError(f"Unsupported input_features '{input_features}'. Use 'waveform' or 'logmel'.")
 
 
 def count_parameters(model):
@@ -221,7 +288,7 @@ def count_parameters(model):
     }
 
 
-def estimate_conv_linear_macs(model, input_length, device):
+def estimate_conv_linear_macs(model, input_length, device, input_channels=1):
     hooks = []
     macs = 0
 
@@ -248,7 +315,7 @@ def estimate_conv_linear_macs(model, input_length, device):
     was_training = model.training
     model.eval()
     with torch.no_grad():
-        model(torch.zeros(1, 1, input_length, device=device))
+        model(torch.zeros(1, input_channels, input_length, device=device))
     if was_training:
         model.train()
     for h in hooks:
@@ -305,8 +372,8 @@ def main():
         "--protocol",
         type=str,
         default=None,
-        choices=["paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1"],
-        help="Evaluation protocol. paper_9_1 uses official folds; clean_8_1_1 keeps a validation fold; random_clip_9_1 is a stratified random clip-level control; source_group_9_1 is a source-label-grouped random control."
+        choices=["paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1", "source_group_8_1_1"],
+        help="Evaluation protocol. paper_9_1 uses official folds; clean_8_1_1 keeps a validation fold; random_clip_9_1 is a stratified random clip-level control; source_group_9_1 is a source-label-grouped random control; source_group_8_1_1 adds a source-label grouped validation bucket."
     )
     args = parser.parse_args()
 
@@ -340,10 +407,10 @@ def main():
         cfg["protocol"] = args.protocol
 
     protocol = cfg.get("protocol", "paper_9_1").lower()
-    if protocol not in {"paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1"}:
+    if protocol not in {"paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1", "source_group_8_1_1"}:
         raise ValueError(
             f"Unsupported protocol '{protocol}'. Use 'paper_9_1', 'clean_8_1_1', "
-            "'random_clip_9_1', or 'source_group_9_1'."
+            "'random_clip_9_1', 'source_group_9_1', or 'source_group_8_1_1'."
         )
     if not 1 <= args.fold <= 10:
         raise ValueError(f"--fold must be in [1, 10], got {args.fold}")
@@ -415,7 +482,7 @@ def main():
             "Protocol: random_clip_9_1 | Stratified random clip-level 9/1 control, "
             f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={RANDOM_SPLIT_ALGORITHM}."
         )
-    else:
+    elif protocol == "source_group_9_1":
         train_clips, test_records = make_stratified_source_group_split(
             clip_records,
             test_bucket=args.fold,
@@ -424,6 +491,18 @@ def main():
         print(
             "Protocol: source_group_9_1 | Stratified random source-label-group 9/1 control, "
             f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
+        )
+    else:
+        train_clips, val_clips, test_records, val_fold = make_stratified_source_group_train_val_test_split(
+            clip_records,
+            test_bucket=args.fold,
+            seed=cfg.get("seed", 83),
+        )
+        uses_validation = True
+        print(
+            "Protocol: source_group_8_1_1 | Stratified random source-label-group split, "
+            f"Train=8 buckets, Val=bucket {val_fold}, Test=bucket {args.fold}, "
+            f"seed={cfg.get('seed', 83)}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
         )
 
     if args.max_train_clips is not None or args.max_val_clips is not None or args.max_test_clips is not None:
@@ -441,6 +520,11 @@ def main():
     source_overlap = source_label_overlap_summary(train_clips, test_records)
     if source_overlap["count"] is not None:
         print(f"Source-label overlap (fsID+classID) between train/test: {source_overlap['count']}")
+    if uses_validation:
+        train_val_overlap = source_label_overlap_summary(train_clips, val_clips)
+        val_test_overlap = source_label_overlap_summary(val_clips, test_records)
+        print(f"Source-label overlap (fsID+classID) between train/val: {train_val_overlap['count']}")
+        print(f"Source-label overlap (fsID+classID) between val/test: {val_test_overlap['count']}")
     
     random.shuffle(train_clips)
 
@@ -451,6 +535,7 @@ def main():
         frames_per_clip = int(frames_per_clip)
     clip_seconds = float(cfg.get("clip_seconds", 4.0))
     drop_silent_tail_frames = bool(cfg.get("drop_silent_tail_frames", False))
+    eval_drop_silent_tail_frames = bool(cfg.get("eval_drop_silent_tail_frames", drop_silent_tail_frames))
     target_len = int(cfg.get("sample_rate", 16000) * clip_seconds)
     effective_frames_per_clip = frames_per_clip
     if effective_frames_per_clip is None:
@@ -537,12 +622,31 @@ def main():
     # Instantiate model, loss, optimizer, scaler
     model_name, model = build_model(cfg, num_classes=10)
     model = model.to(device)
+    input_transform = build_input_transform(cfg, device)
+    model_input_channels = 1
+    model_input_length = frame_length
+    if input_transform is not None:
+        input_transform.eval()
+        with torch.no_grad():
+            feature_sample = input_transform(torch.zeros(1, 1, frame_length, device=device))
+        model_input_channels = int(feature_sample.shape[1])
+        model_input_length = int(feature_sample.shape[-1])
     model_params = count_parameters(model)
-    model_macs = estimate_conv_linear_macs(model, frame_length, device)
+    model_macs = estimate_conv_linear_macs(
+        model,
+        model_input_length,
+        device,
+        input_channels=model_input_channels,
+    )
     print(
         f"[Model Setup] model={model_name} | params={model_params['params_with_bias']:,} | "
         f"MACs/input={model_macs:,} | frame_length={frame_length} | frames_per_clip={effective_frames_per_clip}"
     )
+    if input_transform is not None:
+        print(
+            f"[Feature Setup] input_features={cfg.get('input_features')} | "
+            f"classifier_input_channels={model_input_channels} | classifier_input_length={model_input_length}"
+        )
     
     loss_type = cfg.get("loss", "crossentropy").lower()
     if loss_type == "msle":
@@ -608,7 +712,7 @@ def main():
     trainer = Trainer(
         model=model, optimizer=optimizer, criterion=criterion, scaler=scaler,
         device=device, accumulation_steps=cfg.get("accum_steps", 1),
-        use_amp=use_amp, gradient_clip=gradient_clip
+        use_amp=use_amp, gradient_clip=gradient_clip, input_transform=input_transform
     )
 
     best_acc = None
@@ -637,6 +741,8 @@ def main():
                 frame_length=frame_length,
                 frame_hop=frame_hop,
                 frames_per_clip=effective_frames_per_clip,
+                drop_silent_tail_frames=eval_drop_silent_tail_frames,
+                sample_rate=cfg.get("sample_rate", 16000),
             )
         else:
             val_clip_acc = None
@@ -688,6 +794,8 @@ def main():
             frame_length=frame_length,
             frame_hop=frame_hop,
             frames_per_clip=effective_frames_per_clip,
+            drop_silent_tail_frames=eval_drop_silent_tail_frames,
+            sample_rate=cfg.get("sample_rate", 16000),
             return_predictions=True,
         )
     else:
@@ -712,6 +820,8 @@ def main():
         frame_length=frame_length,
         frame_hop=frame_hop,
         frames_per_clip=effective_frames_per_clip,
+        drop_silent_tail_frames=eval_drop_silent_tail_frames,
+        sample_rate=cfg.get("sample_rate", 16000),
         return_predictions=True,
     )
     test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(
@@ -721,6 +831,8 @@ def main():
         frame_length=frame_length,
         frame_hop=frame_hop,
         frames_per_clip=effective_frames_per_clip,
+        drop_silent_tail_frames=eval_drop_silent_tail_frames,
+        sample_rate=cfg.get("sample_rate", 16000),
         return_predictions=True,
     )
     
@@ -748,7 +860,7 @@ def main():
         "fold": args.fold,
         "protocol": protocol,
         "random_split_algorithm": RANDOM_SPLIT_ALGORITHM if protocol == "random_clip_9_1" else None,
-        "source_group_split_algorithm": SOURCE_GROUP_SPLIT_ALGORITHM if protocol == "source_group_9_1" else None,
+        "source_group_split_algorithm": SOURCE_GROUP_SPLIT_ALGORITHM if protocol in {"source_group_9_1", "source_group_8_1_1"} else None,
         "uses_validation": uses_validation,
         "official_train_folds": sorted({r["fold"] for r in train_clips}),
         "val_fold": val_fold,
@@ -764,10 +876,14 @@ def main():
         "model_params": model_params,
         "model_conv_linear_macs_per_input": model_macs,
         "model_conv_linear_macs_per_clip_eval": model_macs * effective_frames_per_clip,
+        "input_features": cfg.get("input_features", "waveform"),
+        "classifier_input_channels": model_input_channels,
+        "classifier_input_length": model_input_length,
         "frame_length": frame_length,
         "frame_hop": frame_hop,
         "frames_per_clip": effective_frames_per_clip,
         "drop_silent_tail_frames": drop_silent_tail_frames,
+        "eval_drop_silent_tail_frames": eval_drop_silent_tail_frames,
         "epochs": epochs,
         "cycles": cycles,
         "snapshot_epochs": snapshot_epochs,

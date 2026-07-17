@@ -12,8 +12,8 @@ import torch.nn.functional as F
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
-from src.data import load_audio_to_ram, parse_dataset
-from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D
+from src.data import LogMelFeatureExtractor, load_audio_to_ram, parse_dataset
+from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260LogMelNetDS1D
 from src.training import Trainer
 
 
@@ -70,7 +70,34 @@ def build_model(cfg, metrics, num_classes):
             dropout=float(cfg.get("dropout", 0.15)),
             pool_type=cfg.get("pool_type", "avg"),
         )
+    if model_name == "kv260_logmel_net_ds1d":
+        return KV260LogMelNetDS1D(
+            num_classes=num_classes,
+            input_channels=int(cfg.get("n_mels", 64)),
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.20)),
+            pool_type=cfg.get("pool_type", "avgmax"),
+        )
     raise ValueError(f"Unsupported model_name '{model_name}'.")
+
+
+def build_input_transform(cfg, device):
+    input_features = cfg.get("input_features", "waveform").lower()
+    if input_features == "waveform":
+        return None
+    if input_features == "logmel":
+        return LogMelFeatureExtractor(
+            sample_rate=cfg.get("sample_rate", 16000),
+            n_fft=cfg.get("n_fft", 1024),
+            hop_length=cfg.get("mel_hop_length", 256),
+            win_length=cfg.get("win_length", cfg.get("n_fft", 1024)),
+            n_mels=cfg.get("n_mels", 64),
+            f_min=cfg.get("f_min", 40.0),
+            f_max=cfg.get("f_max", None),
+            eps=cfg.get("logmel_eps", 1e-6),
+            normalize=cfg.get("logmel_normalize", True),
+        ).to(device).eval()
+    raise ValueError(f"Unsupported input_features '{input_features}'. Use 'waveform' or 'logmel'.")
 
 
 def frame_settings(cfg, metrics):
@@ -78,6 +105,11 @@ def frame_settings(cfg, metrics):
     frame_hop = int((metrics or {}).get("frame_hop", cfg.get("frame_hop", frame_length // 2)))
     frames_per_clip = int((metrics or {}).get("frames_per_clip", cfg.get("frames_per_clip", 15)))
     return frame_length, frame_hop, frames_per_clip
+
+
+def eval_drop_silent_tail_frames(cfg, metrics):
+    default_value = cfg.get("eval_drop_silent_tail_frames", cfg.get("drop_silent_tail_frames", False))
+    return bool((metrics or {}).get("eval_drop_silent_tail_frames", default_value))
 
 
 def load_model(checkpoint_path, device, cfg, metrics):
@@ -174,14 +206,30 @@ def make_stratified_source_group_split(clip_records, test_bucket, seed, num_buck
     if not clip_records or "fsID" not in clip_records[0] or "classID" not in clip_records[0]:
         raise ValueError("source_group_9_1 requires fsID and classID metadata fields.")
 
+    buckets_by_class = make_stratified_source_group_buckets(clip_records, seed, num_buckets=num_buckets)
+    train_records = []
+    test_records = []
+    for label_buckets in buckets_by_class.values():
+        for idx, records in enumerate(label_buckets, start=1):
+            if idx == test_bucket:
+                test_records.extend(records)
+            else:
+                train_records.extend(records)
+
+    return train_records, test_records
+
+
+def make_stratified_source_group_buckets(clip_records, seed, num_buckets=10):
+    if not clip_records or "fsID" not in clip_records[0] or "classID" not in clip_records[0]:
+        raise ValueError("source-group split requires fsID and classID metadata fields.")
+
     rng = random.Random(seed)
     groups_by_class = collections.defaultdict(dict)
     for record in clip_records:
         key = (str(record["fsID"]), int(record["classID"]))
         groups_by_class[record["label"]].setdefault(key, []).append(record)
 
-    train_records = []
-    test_records = []
+    buckets_by_class = {}
     for label in sorted(groups_by_class):
         groups = sorted(
             groups_by_class[label].items(),
@@ -204,13 +252,28 @@ def make_stratified_source_group_split(clip_records, test_bucket, seed, num_buck
             buckets[bucket_idx].extend(records)
             bucket_counts[bucket_idx] += len(records)
 
-        for idx, records in enumerate(buckets, start=1):
+        buckets_by_class[label] = buckets
+
+    return buckets_by_class
+
+
+def make_stratified_source_group_train_val_test_split(clip_records, test_bucket, seed, num_buckets=10):
+    val_bucket = (test_bucket % num_buckets) + 1
+    buckets_by_class = make_stratified_source_group_buckets(clip_records, seed, num_buckets=num_buckets)
+
+    train_records = []
+    val_records = []
+    test_records = []
+    for label_buckets in buckets_by_class.values():
+        for idx, records in enumerate(label_buckets, start=1):
             if idx == test_bucket:
                 test_records.extend(records)
+            elif idx == val_bucket:
+                val_records.extend(records)
             else:
                 train_records.extend(records)
 
-    return train_records, test_records
+    return train_records, val_records, test_records, val_bucket
 
 
 def confusion_from_predictions(predictions):
@@ -262,7 +325,18 @@ def print_class_table(title, rows):
         )
 
 
-def evaluate_split(name, trainer, models, records, cached_waveforms, frame_length, frame_hop, frames_per_clip):
+def evaluate_split(
+    name,
+    trainer,
+    models,
+    records,
+    cached_waveforms,
+    frame_length,
+    frame_hop,
+    frames_per_clip,
+    drop_silent_tail_frames=False,
+    sample_rate=16000,
+):
     acc, predictions = trainer.evaluate_clips(
         models,
         records,
@@ -270,6 +344,8 @@ def evaluate_split(name, trainer, models, records, cached_waveforms, frame_lengt
         frame_length=frame_length,
         frame_hop=frame_hop,
         frames_per_clip=frames_per_clip,
+        drop_silent_tail_frames=drop_silent_tail_frames,
+        sample_rate=sample_rate,
         return_predictions=True,
     )
     matrix, rows = confusion_from_predictions(predictions)
@@ -290,13 +366,37 @@ def grouped_clips(records):
     return clips
 
 
-def predict_modes_for_clip(models, waveform_np, frame_length, frame_hop, frames_per_clip, device, zero_threshold):
+def predict_modes_for_clip(
+    models,
+    waveform_np,
+    frame_length,
+    frame_hop,
+    frames_per_clip,
+    device,
+    zero_threshold,
+    duration_seconds=None,
+    drop_silent_tail_frames=False,
+    sample_rate=16000,
+    input_transform=None,
+):
     waveform = torch.from_numpy(waveform_np)
     frames = []
     valid = []
+    duration_samples = None
+    if drop_silent_tail_frames and duration_seconds is not None:
+        duration_samples = int(float(duration_seconds) * sample_rate)
     for idx in range(frames_per_clip):
         offset = idx * frame_hop
+        if duration_samples is not None and offset >= duration_samples:
+            continue
         frame = waveform[:, offset : offset + frame_length]
+        if frame.shape[-1] < frame_length:
+            frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
+        frames.append(frame)
+        valid.append(float(frame.abs().max().item()) > zero_threshold)
+
+    if not frames:
+        frame = waveform[:, :frame_length]
         if frame.shape[-1] < frame_length:
             frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
         frames.append(frame)
@@ -306,6 +406,8 @@ def predict_modes_for_clip(models, waveform_np, frame_length, frame_hop, frames_
         valid = [True for _ in frames]
 
     batch_tensor = torch.stack(frames).to(device)
+    if input_transform is not None:
+        batch_tensor = input_transform(batch_tensor.float())
     probs_sum = torch.zeros((len(frames), len(CLASS_NAMES)), device=device)
     with torch.no_grad():
         for model in models:
@@ -327,7 +429,20 @@ def predict_modes_for_clip(models, waveform_np, frame_length, frame_hop, frames_
     }
 
 
-def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, frame_hop, frames_per_clip, device, zero_threshold):
+def evaluate_split_modes(
+    name,
+    models,
+    records,
+    cached_waveforms,
+    frame_length,
+    frame_hop,
+    frames_per_clip,
+    device,
+    zero_threshold,
+    drop_silent_tail_frames=False,
+    sample_rate=16000,
+    input_transform=None,
+):
     clips = grouped_clips(records)
     mode_predictions = {
         "sum_all": [],
@@ -348,6 +463,10 @@ def evaluate_split_modes(name, models, records, cached_waveforms, frame_length, 
             frames_per_clip,
             device,
             zero_threshold,
+            duration_seconds=frames[0].get("duration"),
+            drop_silent_tail_frames=drop_silent_tail_frames,
+            sample_rate=sample_rate,
+            input_transform=input_transform,
         )
         valid_frame_counts.append(result["valid_frame_count"])
         for mode in mode_predictions:
@@ -432,6 +551,7 @@ def main():
     audio_base = os.path.join(args.data_dir, "audio")
     clip_records = parse_dataset(csv_path, audio_base, CLASS_NAMES)
     protocol = (metrics or {}).get("protocol", cfg.get("protocol", "paper_9_1"))
+    val_records = []
     if protocol == "random_clip_9_1":
         split_seed = (metrics or {}).get("seed", cfg.get("seed", 83))
         split_fold = (metrics or {}).get("test_fold", args.fold)
@@ -461,10 +581,23 @@ def main():
             f"Reconstructed source_group_9_1 split with test bucket={split_fold}, "
             f"seed={split_seed}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
         )
+    elif protocol == "source_group_8_1_1":
+        split_seed = (metrics or {}).get("seed", cfg.get("seed", 83))
+        split_fold = (metrics or {}).get("test_fold", args.fold)
+        train_records, val_records, test_records, val_bucket = make_stratified_source_group_train_val_test_split(
+            clip_records,
+            test_bucket=split_fold,
+            seed=split_seed,
+        )
+        print(
+            f"Reconstructed source_group_8_1_1 split with test bucket={split_fold}, "
+            f"val bucket={val_bucket}, seed={split_seed}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
+        )
     elif protocol == "clean_8_1_1":
         val_fold = (metrics or {}).get("val_fold", (args.fold % 10) + 1)
         test_records = [r for r in clip_records if r["fold"] == args.fold]
         train_records = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
+        val_records = [r for r in clip_records if r["fold"] == val_fold]
         print(f"Reconstructed clean_8_1_1 split with test fold={args.fold}, val fold={val_fold}.")
     else:
         test_records = [r for r in clip_records if r["fold"] == args.fold]
@@ -490,6 +623,12 @@ def main():
             seed + 303,
             algorithm=(metrics.get("random_split_algorithm") or RANDOM_SPLIT_ALGORITHM),
         )
+        val_records = make_stratified_clip_subset(
+            val_records,
+            metrics.get("max_val_clips"),
+            seed + 202,
+            algorithm=(metrics.get("random_split_algorithm") or RANDOM_SPLIT_ALGORITHM),
+        )
         print(
             "Reapplied smoke subset from metrics | "
             f"Train {original_counts[0]}->{len(train_records)}, "
@@ -498,15 +637,18 @@ def main():
 
     print("\n=== Split counts ===")
     print(f"train clips: {len(train_records)}")
+    print(f"val clips  : {len(val_records)}")
     print(f"test clips : {len(test_records)}")
 
     selected_records = list(test_records)
     if args.eval_train:
         selected_records.extend(train_records)
+        selected_records.extend(val_records)
     print(f"\nPreloading {len({r['path'] for r in selected_records})} unique clips...")
     cached_waveforms = preload_waveforms(selected_records, cfg.get("sample_rate", 16000))
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    input_transform = build_input_transform(cfg, device)
     trainer = Trainer(
         model=None,
         optimizer=None,
@@ -515,11 +657,15 @@ def main():
         device=device,
         use_amp=bool(cfg.get("amp", False)),
         gradient_clip=cfg.get("gradient_clip", None),
+        input_transform=input_transform,
     )
     frame_length, frame_hop, frames_per_clip = frame_settings(cfg, metrics)
+    drop_eval_tail = eval_drop_silent_tail_frames(cfg, metrics)
+    sample_rate = int(cfg.get("sample_rate", 16000))
     print(
         f"Frame settings: frame_length={frame_length}, "
-        f"frame_hop={frame_hop}, frames_per_clip={frames_per_clip}"
+        f"frame_hop={frame_hop}, frames_per_clip={frames_per_clip}, "
+        f"eval_drop_silent_tail_frames={drop_eval_tail}"
     )
 
     if args.eval_all_cycles:
@@ -560,8 +706,23 @@ def main():
                     frame_length,
                     frame_hop,
                     frames_per_clip,
+                    drop_eval_tail,
+                    sample_rate,
                 ),
             }
+            if val_records:
+                cycle_report["val"] = evaluate_split(
+                    "VAL",
+                    trainer,
+                    models,
+                    val_records,
+                    cached_waveforms,
+                    frame_length,
+                    frame_hop,
+                    frames_per_clip,
+                    drop_eval_tail,
+                    sample_rate,
+                )
             if args.eval_modes:
                 cycle_report["test_modes"] = evaluate_split_modes(
                     "TEST",
@@ -573,6 +734,9 @@ def main():
                     frames_per_clip,
                     device,
                     args.zero_threshold,
+                    drop_eval_tail,
+                    sample_rate,
+                    input_transform,
                 )
             report["cycles"].append(cycle_report)
 
@@ -615,7 +779,22 @@ def main():
         frame_length,
         frame_hop,
         frames_per_clip,
+        drop_eval_tail,
+        sample_rate,
     )
+    if val_records:
+        report["val"] = evaluate_split(
+            "VAL",
+            trainer,
+            models,
+            val_records,
+            cached_waveforms,
+            frame_length,
+            frame_hop,
+            frames_per_clip,
+            drop_eval_tail,
+            sample_rate,
+        )
     if args.eval_train:
         report["train"] = evaluate_split(
             "TRAIN",
@@ -626,6 +805,8 @@ def main():
             frame_length,
             frame_hop,
             frames_per_clip,
+            drop_eval_tail,
+            sample_rate,
         )
     if args.eval_modes:
         report["test_modes"] = evaluate_split_modes(
@@ -638,6 +819,9 @@ def main():
             frames_per_clip,
             device,
             args.zero_threshold,
+            drop_eval_tail,
+            sample_rate,
+            input_transform,
         )
         if args.eval_train:
             report["train_modes"] = evaluate_split_modes(
@@ -650,6 +834,9 @@ def main():
                 frames_per_clip,
                 device,
                 args.zero_threshold,
+                drop_eval_tail,
+                sample_rate,
+                input_transform,
             )
 
     output_path = os.path.join(args.exp_dir, f"analysis_{model_name}.json")

@@ -109,3 +109,73 @@ class KV260AudioNetDS1D(nn.Module):
             x = self.avg_pool(x).flatten(1)
         x = self.dropout(x)
         return self.fc(x)
+
+
+class KV260LogMelNetDS1D(nn.Module):
+    """
+    KV260-oriented temporal 1D-CNN for log-mel inputs.
+
+    The input shape is [B, n_mels, T]. It is reshaped to [B, n_mels, 1, T],
+    so every convolution still slides only along time with kernel (1, k).
+    Log-mel extraction is intentionally kept outside the model.
+    """
+    def __init__(
+        self,
+        num_classes=10,
+        input_channels=64,
+        width_mult=1.0,
+        dropout=0.20,
+        pool_type="avgmax",
+    ):
+        super().__init__()
+        pool_type = pool_type.lower()
+        if pool_type not in {"avg", "avgmax"}:
+            raise ValueError(f"Unsupported pool_type '{pool_type}'. Use 'avg' or 'avgmax'.")
+        self.pool_type = pool_type
+
+        def c(channels):
+            return max(8, int(round(channels * width_mult)))
+
+        channels = [c(v) for v in [48, 64, 80, 96, 128, 160]]
+        self.stem = ConvBNReLU2dH1(input_channels, channels[0], kernel_size=5, stride=1)
+        self.blocks = nn.Sequential(
+            DSBlock2dH1(channels[0], channels[1], kernel_size=5, stride=2),
+            DSBlock2dH1(channels[1], channels[2], kernel_size=5, stride=2),
+            DSBlock2dH1(channels[2], channels[3], kernel_size=5, stride=2),
+            DSBlock2dH1(channels[3], channels[4], kernel_size=3, stride=2),
+            DSBlock2dH1(channels[4], channels[5], kernel_size=3, stride=2),
+            DSBlock2dH1(channels[5], channels[5], kernel_size=3, stride=1),
+        )
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.max_pool = nn.AdaptiveMaxPool2d((1, 1)) if pool_type == "avgmax" else None
+        self.dropout = nn.Dropout(dropout)
+        head_features = channels[-1] * (2 if pool_type == "avgmax" else 1)
+        self.fc = nn.Linear(head_features, num_classes)
+
+        self._initialize_weights()
+
+    def _initialize_weights(self):
+        for module in self.modules():
+            if isinstance(module, nn.Conv2d):
+                nn.init.kaiming_normal_(module.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(module, nn.BatchNorm2d):
+                nn.init.ones_(module.weight)
+                nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Linear):
+                nn.init.xavier_uniform_(module.weight)
+                nn.init.zeros_(module.bias)
+
+    def forward(self, x):
+        if x.dim() == 3:
+            x = x.unsqueeze(2)
+        elif x.dim() != 4:
+            raise ValueError(f"Expected input [B,C,T] or [B,C,1,T], got shape {tuple(x.shape)}")
+
+        x = self.stem(x)
+        x = self.blocks(x)
+        if self.pool_type == "avgmax":
+            x = torch.cat([self.avg_pool(x).flatten(1), self.max_pool(x).flatten(1)], dim=1)
+        else:
+            x = self.avg_pool(x).flatten(1)
+        x = self.dropout(x)
+        return self.fc(x)

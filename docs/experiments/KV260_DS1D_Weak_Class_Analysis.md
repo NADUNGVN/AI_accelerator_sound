@@ -257,3 +257,153 @@ test: held out source groups for final report
 ```
 
 Then rerun the targeted config and select the checkpoint by validation accuracy, not by test accuracy or final epoch.
+
+## Validation Protocol Run
+
+Config:
+
+```text
+configs/kv260_dsafe_ds1d_weakclass_val.json
+```
+
+Run:
+
+```bash
+python train.py --fold 1 --config configs/kv260_dsafe_ds1d_weakclass_val.json --exp_name local_kv260_ds1d_weakclass_val_50ep --epochs 50 --batch_size 64
+python tools/analyze_experiment.py --exp_dir experiments/local_kv260_ds1d_weakclass_val_50ep/fold_1 --fold 1 --config configs/kv260_dsafe_ds1d_weakclass_val.json --eval_all_cycles --eval_modes --eval_train
+```
+
+Split:
+
+```text
+Protocol: source_group_8_1_1
+Train: 6996 clips
+Val: 866 clips
+Test: 870 clips
+Train/test source-label overlap: 0
+Train/val source-label overlap: 0
+Val/test source-label overlap: 0
+```
+
+Result:
+
+| Model | Params | MAC/input | Selection | Val acc | Test acc |
+|---|---:|---:|---|---:|---:|
+| weak-class full-clip DS1D | 82,474 | 61.84M | best validation / final epoch 50 | 70.67% | 76.21% |
+| weak-class full-clip DS1D | 82,474 | 61.84M | last-2 ensemble | N/A | 75.63% |
+
+Per-class result at final epoch:
+
+| Class | Test acc | Main issue |
+|---|---:|---|
+| air_conditioner | 65.00% | confused with engine_idling and children_playing |
+| car_horn | 75.00% | improved but still short-event sensitive |
+| children_playing | 77.00% | confused with street_music/siren |
+| dog_bark | 66.00% | confused with children_playing |
+| drilling | 88.00% | strong |
+| engine_idling | 85.00% | strong on test, weak on val |
+| gun_shot | 100.00% | solved |
+| jackhammer | 65.31% | confused with air_conditioner |
+| siren | 86.02% | strong |
+| street_music | 69.61% | confused with children_playing |
+
+Interpretation:
+
+- The validation protocol is working and prevents test-based checkpoint selection.
+- The best valid result so far is `76.21%` test accuracy.
+- The gap to `>90%` is not an epoch-count issue: train reaches `89.72%`, while val stays around `70.67%`.
+- The main bottleneck is generalization across source groups for stationary/mechanical textures and mixed urban backgrounds.
+
+## Segment 1s Trial
+
+Hypothesis:
+
+Full-clip global pooling may dilute short local events, so evaluate 1-second overlapping windows while keeping the same DPU-safe DS1D model.
+
+Config:
+
+```text
+configs/kv260_dsafe_ds1d_segment1s_val.json
+```
+
+Model profile:
+
+```text
+Params: 82,474
+MAC/input: 15.49M
+frames_per_clip: 7
+Worst-case MAC/clip: 108.40M
+Train frames after duration-tail drop: 45,297
+```
+
+Result:
+
+| Selection | Val acc | Test acc |
+|---|---:|---:|
+| best validation, epoch 10 | 69.17% | 72.53% |
+| cycle 3 | 66.05% | 74.83% |
+| final epoch 50 | 65.24% | 73.56% |
+| last-2 ensemble | N/A | 74.71% |
+
+Conclusion:
+
+- Segmenting into 1-second windows did not improve the valid checkpoint result.
+- Train accuracy reached `94.25%`, but validation decreased, so this direction overfits more than full-clip.
+- It improves some localized classes but makes `jackhammer` and `air_conditioner` separation worse.
+- This is not the main path to `>90%` under the current source-group split.
+
+## Log-Mel Temporal 1D-CNN Trial
+
+Hypothesis:
+
+Keep the classifier as a 1D-CNN, but move from raw waveform input to external log-mel preprocessing. The model then applies 1D convolutions only along the time axis over mel channels.
+
+Config:
+
+```text
+configs/kv260_logmel_ds1d_val.json
+```
+
+Model profile:
+
+```text
+Classifier input: 64 mel channels x 251 time steps
+Params: 97,546
+Classifier MAC/input: 5.45M
+```
+
+Result:
+
+| Selection | Val acc | Test acc |
+|---|---:|---:|
+| best validation, epoch 44 | 69.98% | 63.45% |
+| cycle 3 | 69.86% | 65.06% |
+| final epoch 50 | 69.40% | 65.29% |
+| last-2 ensemble | N/A | 65.75% |
+
+Conclusion:
+
+- This first log-mel 1D-CNN is extremely cheap, but accuracy is worse than raw DS1D.
+- The model still confuses `engine_idling`, `jackhammer`, `drilling`, and `air_conditioner`.
+- The poor result does not disprove log-mel input in general; it shows that this small temporal-only classifier is underpowered or poorly regularized for this split.
+
+## Current Best And Next Direction
+
+Current best valid result:
+
+```text
+configs/kv260_dsafe_ds1d_weakclass_val.json
+Params: 82,474
+MAC/clip: 61.84M
+Val acc: 70.67%
+Test acc: 76.21%
+```
+
+To move toward `>90%`, the next experiments should not keep shrinking the model. The current model is already very small and under-generalizes. The next practical path is:
+
+1. Increase raw DS1D capacity under a controlled KV260 budget, for example width multiplier `1.5` or `2.0`.
+2. Keep source-group validation and select by validation only.
+3. Add stronger regularization during training, such as mixup or less aggressive class reweighting.
+4. Use the validation confusion matrix to tune hard classes, instead of applying fixed hard-class weights blindly.
+
+The immediate next candidate should be a wider DPU-safe raw DS1D full-clip model, because full-clip raw DS1D is still the best validated family so far.
