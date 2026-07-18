@@ -325,7 +325,7 @@ increase:
 4. evaluate every candidate with at least folds `1-3` before spending server
    time on all 10 folds.
 
-The next candidate to test is hard-negative margin training:
+The third candidate tested was hard-negative margin training:
 
 ```text
 Config: configs/kv260_ds1d_pyramid_hardneg_margin_val.json
@@ -339,4 +339,64 @@ Run command:
 
 ```bash
 python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_hardneg_margin_val.json --exp_name local_multifold_pyramid_hardneg_margin_f1_f3_50ep --folds 1-3 --epochs 50 --analyze --eval_modes
+```
+
+### Phase 3 Result: Hard-Negative Margin
+
+Result files:
+
+```text
+experiments/local_multifold_pyramid_hardneg_margin_f1_f3_50ep/multifold_summary.json
+experiments/local_multifold_pyramid_hardneg_margin_f1_f3_50ep/multifold_summary.md
+experiments/local_multifold_pyramid_hardneg_margin_f1_f3_50ep/source_confusions.json
+experiments/local_multifold_pyramid_hardneg_margin_f1_f3_50ep/source_confusions.md
+```
+
+Fold summary:
+
+| Fold | Best val | Best-val test | Final test | Ensemble | Worst final class | Worst final acc |
+|---:|---:|---:|---:|---:|---|---:|
+| 1 | 69.98% | 66.44% | 74.60% | 76.78% | air_conditioner | 45.00% |
+| 2 | 69.23% | 70.44% | 70.44% | 71.02% | engine_idling | 38.00% |
+| 3 | 71.38% | 67.74% | 67.85% | 68.08% | air_conditioner | 12.00% |
+
+Aggregate versus baseline:
+
+| Metric | Baseline mean | Hard-negative mean | Delta |
+|---|---:|---:|---:|
+| Validation-selected test | 71.23% | 68.20% | -3.02 |
+| Final test | 71.88% | 70.96% | -0.91 |
+| Last-2 ensemble | 72.30% | 71.96% | -0.34 |
+| Worst final class | 42.00% | 31.67% | -10.33 |
+
+Final test per-class delta:
+
+| Class | Baseline mean | Hard-negative mean | Delta |
+|---|---:|---:|---:|
+| air_conditioner | 42.00% | 35.67% | -6.33 |
+| car_horn | 86.54% | 84.89% | -1.65 |
+| children_playing | 70.33% | 71.00% | +0.67 |
+| dog_bark | 78.67% | 81.00% | +2.33 |
+| drilling | 79.67% | 84.67% | +5.00 |
+| engine_idling | 60.00% | 55.67% | -4.33 |
+| gun_shot | 100.00% | 99.10% | -0.90 |
+| jackhammer | 78.22% | 72.44% | -5.77 |
+| siren | 83.03% | 85.20% | +2.17 |
+| street_music | 67.77% | 67.10% | -0.67 |
+
+Decision:
+
+```text
+Reject configs/kv260_ds1d_pyramid_hardneg_margin_val.json as a candidate.
+It improved fold 2 but degraded fold 1 and fold 3. The main target class
+air_conditioner dropped from 42.00% mean to 35.67% mean, and fold 3 dropped
+from 18.00% to 12.00%.
+```
+
+Lesson:
+
+```text
+A pair/group margin on logits is too coarse for this problem. It pushes class
+boundaries but does not learn the missing source-invariant representation for
+stationary mechanical sounds.
 ```
