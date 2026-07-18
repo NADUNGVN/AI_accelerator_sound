@@ -420,3 +420,71 @@ Run command:
 ```bash
 python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_supcon_sourceinv_val.json --exp_name local_multifold_pyramid_supcon_sourceinv_f1_f3_50ep --folds 1-3 --epochs 50 --analyze --eval_modes
 ```
+
+### Phase 4 Result: Source-Invariant SupCon
+
+Result files:
+
+```text
+experiments/local_multifold_pyramid_supcon_sourceinv_f1_f3_50ep/multifold_summary.json
+experiments/local_multifold_pyramid_supcon_sourceinv_f1_f3_50ep/multifold_summary.md
+experiments/local_multifold_pyramid_supcon_sourceinv_f1_f3_50ep/source_confusions.json
+experiments/local_multifold_pyramid_supcon_sourceinv_f1_f3_50ep/source_confusions.md
+```
+
+Fold summary:
+
+| Fold | Best val | Best-val test | Final test | Ensemble | Worst final class | Worst final acc |
+|---:|---:|---:|---:|---:|---|---:|
+| 1 | 72.63% | 78.28% | 78.97% | 79.31% | air_conditioner | 66.00% |
+| 2 | 67.16% | 65.82% | 65.47% | 66.74% | jackhammer | 36.36% |
+| 3 | 72.18% | 65.90% | 65.90% | 65.56% | air_conditioner | 27.00% |
+
+Aggregate versus baseline:
+
+| Metric | Baseline mean | SupCon mean | Delta |
+|---|---:|---:|---:|
+| Validation-selected test | 71.23% | 70.00% | -1.23 |
+| Final test | 71.88% | 70.11% | -1.76 |
+| Last-2 ensemble | 72.30% | 70.54% | -1.76 |
+| Worst final class | 42.00% | 43.12% | +1.12 |
+
+Final test per-class delta:
+
+| Class | Baseline mean | SupCon mean | Delta |
+|---|---:|---:|---:|
+| air_conditioner | 42.00% | 43.33% | +1.33 |
+| car_horn | 86.54% | 86.54% | +0.00 |
+| children_playing | 70.33% | 68.33% | -2.00 |
+| dog_bark | 78.67% | 78.67% | +0.00 |
+| drilling | 79.67% | 77.33% | -2.33 |
+| engine_idling | 60.00% | 59.00% | -1.00 |
+| gun_shot | 100.00% | 100.00% | +0.00 |
+| jackhammer | 78.22% | 61.05% | -17.16 |
+| siren | 83.03% | 88.08% | +5.05 |
+| street_music | 67.77% | 68.80% | +1.03 |
+
+Important signal:
+
+```text
+SupCon improved the primary fold-3 air_conditioner collapse from 18.00% to
+27.00%, and fsID 202516 improved from 0/12 to 9/12. However, fold 2 jackhammer
+collapsed to 36.36%, causing aggregate accuracy to drop.
+```
+
+Decision:
+
+```text
+Reject configs/kv260_ds1d_pyramid_supcon_sourceinv_val.json as a candidate in
+its current form. The idea has a useful signal for air_conditioner source
+generalization, but the sampler/loss is too broad and damages jackhammer.
+```
+
+Next refinement:
+
+```text
+Do not use broad all-class SupCon with the current sampler. If this direction is
+continued, restrict the objective to the air_conditioner/engine_idling boundary
+or reduce SupCon weight, and protect jackhammer with a validation rejection
+condition.
+```
