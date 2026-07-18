@@ -149,7 +149,7 @@ TCAMBlock = TCAM
 
 
 class ConvTCAMBlock(nn.Module):
-    """One backbone module: SAME-padded Conv -> ReLU -> TCAM."""
+    """One backbone module: SAME-padded Conv -> BN -> ReLU -> TCAM."""
 
     def __init__(
         self,
@@ -161,10 +161,11 @@ class ConvTCAMBlock(nn.Module):
     ) -> None:
         super().__init__()
         self.conv = SamePadConv1d(in_channels, out_channels, kernel_size, stride)
+        self.bn = nn.BatchNorm1d(out_channels)
         self.tcam = TCAM(out_channels, reduction=reduction)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = F.relu(self.conv(x))
+        x = F.relu(self.bn(self.conv(x)))
         return self.tcam(x)
 
 
@@ -205,6 +206,7 @@ class TCAM1DCNN(nn.Module):
         self.head_conv = SamePadConv1d(prev_out, 256, kernel_size=3, stride=2)
 
         # Global average pooling + linear softmax classifier (Table 2 tail).
+        self.dropout = nn.Dropout(p=0.2)
         self.classifier = nn.Linear(256, num_classes)
 
         self._init_weights()
@@ -223,4 +225,5 @@ class TCAM1DCNN(nn.Module):
         # convolution (L19) feeds global average pooling directly.
         x = self.head_conv(x)                   # (B, 256, 20)
         x = x.mean(dim=2)                       # global average pooling -> (B, 256)
+        x = self.dropout(x)
         return self.classifier(x)               # (B, num_classes) logits
