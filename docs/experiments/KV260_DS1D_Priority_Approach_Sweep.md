@@ -337,6 +337,69 @@ The next path should keep the pyramid head and change one thing at a time.
    - QAT should be added after the float pyramid model is stronger, otherwise
      quantization will preserve a weak model rather than create a 90% model.
 
+## Budget Expansion Plan
+
+The next controlled expansion allows the model to grow up to:
+
+```text
+max_params: 300,000
+max_macs_per_clip: 300,000,000
+FLOPs-equivalent convention: FLOPs = 2 * MACs
+```
+
+This keeps the final candidate in the `Good` KV260 tier while allowing enough
+capacity to test whether the current 79% result is mainly limited by feature
+capacity.
+
+Estimated profiles for the pyramid DS1D family:
+
+| Config | Width | Params | MAC/clip | FLOPs-equivalent | Budget status |
+|---|---:|---:|---:|---:|---|
+| `configs/kv260_ds1d_pyramid_mixup_ema_val.json` | 1.00 | 101,674 | 61.85M | 123.71M | Excellent |
+| `configs/kv260_ds1d_pyramid_w125_weakmixup_val.json` | 1.25 | 148,930 | 90.52M | 181.04M | Excellent |
+| `configs/kv260_ds1d_pyramid_w150_weakmixup_val.json` | 1.50 | 204,922 | 124.46M | 248.92M | Good |
+| `configs/kv260_ds1d_pyramid_w175_weakmixup_val.json` | 1.75 | 269,650 | 163.69M | 327.37M | Good |
+| not selected | 2.00 | 343,114 | 208.19M | 416.38M | rejected: params >300K |
+
+Implementation safeguard:
+
+- `train.py` now supports `deployment_budget.max_params`.
+- `train.py` now supports `deployment_budget.max_macs_per_clip`.
+- Training stops before epoch 1 if the profiled model exceeds either limit.
+- The active budget is saved into `metrics.json`.
+
+The expansion configs also reduce mixup strength:
+
+```text
+previous mixup: alpha=0.20, prob=0.70
+new weak mixup: alpha=0.10, prob=0.50
+```
+
+Reason:
+
+- The previous pyramid run improved test accuracy but had low final train
+  accuracy, indicating underfit from strong regularization.
+- The wider models should use extra capacity for weak mixed-background classes
+  instead of being suppressed by overly strong mixup.
+
+Recommended run order:
+
+```bash
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_w125_weakmixup_val.json --exp_name server_pyramid_w125_weakmixup_50ep --epochs 50
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_w150_weakmixup_val.json --exp_name server_pyramid_w150_weakmixup_50ep --epochs 50
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_w175_weakmixup_val.json --exp_name server_pyramid_w175_weakmixup_50ep --epochs 50
+```
+
+Decision rule:
+
+- If width `1.25` improves validation-selected test accuracy by at least
+  `+1.0 point`, continue to `1.50`.
+- If width `1.50` improves materially and stays below 300K/300M, run `1.75`.
+- If a wider model improves train accuracy but not validation, stop widening and
+  tune augmentation/class-pair errors instead.
+- Do not use width `2.0` as a primary candidate under the current thesis budget
+  because it exceeds 300K parameters.
+
 ## Reproducible Commands
 
 Best current run:

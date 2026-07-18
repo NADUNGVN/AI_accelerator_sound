@@ -326,6 +326,32 @@ def estimate_conv_linear_macs(model, input_length, device, input_channels=1):
     return macs
 
 
+def enforce_deployment_budget(cfg, model_params, model_macs_per_clip):
+    budget = cfg.get("deployment_budget", {}) or {}
+    max_params = budget.get("max_params", cfg.get("max_params"))
+    max_macs = budget.get("max_macs_per_clip", cfg.get("max_macs_per_clip"))
+    if max_params is None and max_macs is None:
+        return
+
+    params = int(model_params["params_with_bias"])
+    print(
+        "[Budget Setup] "
+        f"max_params={max_params if max_params is not None else 'none'} | "
+        f"max_macs_per_clip={max_macs if max_macs is not None else 'none'} | "
+        f"actual_params={params:,} | actual_macs_per_clip={model_macs_per_clip:,}"
+    )
+    if max_params is not None and params > int(max_params):
+        raise ValueError(
+            f"Model parameter budget exceeded: {params:,} > {int(max_params):,}. "
+            "Reduce width_mult/channels or increase deployment_budget.max_params."
+        )
+    if max_macs is not None and model_macs_per_clip > int(max_macs):
+        raise ValueError(
+            f"Model MAC/clip budget exceeded: {model_macs_per_clip:,} > {int(max_macs):,}. "
+            "Reduce width_mult/input length/frames_per_clip or increase deployment_budget.max_macs_per_clip."
+        )
+
+
 def balanced_class_weights(records, num_classes, device):
     counts = torch.zeros(num_classes, dtype=torch.float32)
     for record in records:
@@ -679,10 +705,13 @@ def main():
         device,
         input_channels=model_input_channels,
     )
+    model_macs_per_clip = model_macs * effective_frames_per_clip
     print(
         f"[Model Setup] model={model_name} | params={model_params['params_with_bias']:,} | "
-        f"MACs/input={model_macs:,} | frame_length={frame_length} | frames_per_clip={effective_frames_per_clip}"
+        f"MACs/input={model_macs:,} | MACs/clip={model_macs_per_clip:,} | "
+        f"frame_length={frame_length} | frames_per_clip={effective_frames_per_clip}"
     )
+    enforce_deployment_budget(cfg, model_params, model_macs_per_clip)
     if input_transform is not None:
         print(
             f"[Feature Setup] input_features={cfg.get('input_features')} | "
@@ -949,7 +978,8 @@ def main():
         "model_name": model_name,
         "model_params": model_params,
         "model_conv_linear_macs_per_input": model_macs,
-        "model_conv_linear_macs_per_clip_eval": model_macs * effective_frames_per_clip,
+        "model_conv_linear_macs_per_clip_eval": model_macs_per_clip,
+        "deployment_budget": cfg.get("deployment_budget"),
         "input_features": cfg.get("input_features", "waveform"),
         "classifier_input_channels": model_input_channels,
         "classifier_input_length": model_input_length,
