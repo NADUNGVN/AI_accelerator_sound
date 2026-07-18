@@ -324,3 +324,19 @@ increase:
 3. keep the deployment budget at `params <=300K` and `MAC/clip <=300M`;
 4. evaluate every candidate with at least folds `1-3` before spending server
    time on all 10 folds.
+
+The next candidate to test is hard-negative margin training:
+
+```text
+Config: configs/kv260_ds1d_pyramid_hardneg_margin_val.json
+Params: unchanged from baseline
+MAC/clip: unchanged from baseline
+Mechanism: add a small auxiliary loss during training only
+Target: reduce confusion inside [air_conditioner, drilling, engine_idling, jackhammer, street_music]
+```
+
+Run command:
+
+```bash
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_hardneg_margin_val.json --exp_name local_multifold_pyramid_hardneg_margin_f1_f3_50ep --folds 1-3 --epochs 50 --analyze --eval_modes
+```

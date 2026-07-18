@@ -23,6 +23,7 @@ class Trainer:
         gradient_clip=5.0,
         input_transform=None,
         mixup_cfg=None,
+        hard_negative_margin_cfg=None,
         ema=None,
     ):
         self.model = model
@@ -35,7 +36,53 @@ class Trainer:
         self.gradient_clip = gradient_clip
         self.input_transform = input_transform
         self.mixup_cfg = mixup_cfg or {}
+        self.hard_negative_margin_cfg = hard_negative_margin_cfg or {}
+        self.hard_negative_pairs = self._build_hard_negative_pairs(self.hard_negative_margin_cfg)
         self.ema = ema
+
+    @staticmethod
+    def _build_hard_negative_pairs(cfg):
+        if not cfg.get("enabled", False):
+            return []
+
+        pairs = []
+        for group in cfg.get("groups", []):
+            group = [int(class_id) for class_id in group]
+            for target in group:
+                for negative in group:
+                    if negative != target:
+                        pairs.append((target, negative))
+
+        for pair in cfg.get("pairs", []):
+            if len(pair) != 2:
+                raise ValueError(f"hard_negative_margin pair must have 2 class ids, got {pair}")
+            target, negative = int(pair[0]), int(pair[1])
+            if target != negative:
+                pairs.append((target, negative))
+
+        unique_pairs = []
+        for pair in pairs:
+            if pair not in unique_pairs:
+                unique_pairs.append(pair)
+        return unique_pairs
+
+    def hard_negative_margin_loss(self, logits, targets):
+        cfg = self.hard_negative_margin_cfg
+        if not cfg.get("enabled", False) or not self.hard_negative_pairs:
+            return logits.new_zeros(())
+
+        margin = float(cfg.get("margin", 0.5))
+        losses = []
+        for target_class, negative_class in self.hard_negative_pairs:
+            mask = targets == target_class
+            if mask.any():
+                target_logits = logits[mask, target_class]
+                negative_logits = logits[mask, negative_class]
+                losses.append(F.relu(negative_logits - target_logits + margin).mean())
+
+        if not losses:
+            return logits.new_zeros(())
+        return torch.stack(losses).mean()
 
     def transform_inputs(self, inputs):
         if self.input_transform is None:
@@ -78,6 +125,19 @@ class Trainer:
                     raw_loss = lam * self.criterion(logits, targets_a) + (1.0 - lam) * self.criterion(logits, targets_b)
                 else:
                     raw_loss = self.criterion(logits, targets)
+                hard_negative_cfg = self.hard_negative_margin_cfg
+                if hard_negative_cfg.get("enabled", False):
+                    apply_to_mixup = bool(hard_negative_cfg.get("apply_to_mixup", False))
+                    if mixup_enabled and lam < 1.0 and apply_to_mixup:
+                        margin_loss = (
+                            lam * self.hard_negative_margin_loss(logits, targets_a)
+                            + (1.0 - lam) * self.hard_negative_margin_loss(logits, targets_b)
+                        )
+                    elif lam >= 1.0:
+                        margin_loss = self.hard_negative_margin_loss(logits, targets)
+                    else:
+                        margin_loss = logits.new_zeros(())
+                    raw_loss = raw_loss + float(hard_negative_cfg.get("weight", 0.05)) * margin_loss
                 loss = raw_loss / self.accumulation_steps
                 
             self.scaler.scale(loss).backward()

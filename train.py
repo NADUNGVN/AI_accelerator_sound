@@ -807,12 +807,23 @@ def main():
         gradient_clip=gradient_clip,
         input_transform=input_transform,
         mixup_cfg=cfg.get("mixup", {}),
+        hard_negative_margin_cfg=cfg.get("hard_negative_margin", {}),
         ema=ema,
     )
     if cfg.get("mixup", {}).get("enabled", False):
         print(
             f"[Mixup Setup] enabled=True | alpha={float(cfg.get('mixup', {}).get('alpha', 0.2)):g} | "
             f"prob={float(cfg.get('mixup', {}).get('prob', 1.0)):g}"
+        )
+    hard_negative_cfg = cfg.get("hard_negative_margin", {})
+    if hard_negative_cfg.get("enabled", False):
+        print(
+            "[Hard Negative Setup] enabled=True | "
+            f"weight={float(hard_negative_cfg.get('weight', 0.05)):g} | "
+            f"margin={float(hard_negative_cfg.get('margin', 0.5)):g} | "
+            f"apply_to_mixup={bool(hard_negative_cfg.get('apply_to_mixup', False))} | "
+            f"groups={hard_negative_cfg.get('groups', [])} | "
+            f"pairs={hard_negative_cfg.get('pairs', [])}"
         )
 
     best_acc = None
