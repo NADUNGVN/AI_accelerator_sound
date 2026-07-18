@@ -268,3 +268,87 @@ Updated decision:
 - The next repair test should be `w125_jackguard`.
 - If `w125_jackguard` still fails, return to width `1.0` pyramid and optimize
   class-pair augmentation rather than widening.
+
+## Width 1.25 Jackguard Verification
+
+Run:
+
+```bash
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_w125_jackguard_val.json --exp_name local_pyramid_w125_jackguard_50ep --epochs 50
+python tools/analyze_experiment.py --exp_dir experiments/local_pyramid_w125_jackguard_50ep/fold_1 --fold 1 --config configs/kv260_ds1d_pyramid_w125_jackguard_val.json --eval_all_cycles --eval_modes
+```
+
+Profile:
+
+```text
+Params: 148,930
+MAC/clip: 90.52M
+FLOPs-equivalent: 181.04M
+Budget guard: pass
+```
+
+Overall result:
+
+| Run | Params | MAC/clip | Best val | Val-selected test | Final test | Ensemble |
+|---|---:|---:|---:|---:|---:|---:|
+| width 1.0 pyramid | 101,674 | 61.85M | 72.86% | 79.08% | 79.43% | 79.89% |
+| width 1.25 weakmixup | 148,930 | 90.52M | 70.79% | 73.33% | 75.29% | 75.06% |
+| width 1.25 control | 148,930 | 90.52M | 72.86% | 74.14% | 75.06% | 74.94% |
+| width 1.25 jackguard | 148,930 | 90.52M | 72.86% | 69.54% | 70.00% | 70.46% |
+
+Final checkpoint mechanical-texture comparison:
+
+| Run | Test acc | air_conditioner | engine_idling | jackhammer | Main jackhammer confusion |
+|---|---:|---:|---:|---:|---|
+| width 1.0 pyramid | 79.43% | 65.00% | 85.00% | 90.82% | drilling 3, air_conditioner 2, car_horn 2 |
+| width 1.25 weakmixup | 75.29% | 65.00% | 85.00% | 41.84% | air_conditioner 40, gun_shot 5, street_music 5 |
+| width 1.25 control | 75.06% | 66.00% | 71.00% | 43.88% | air_conditioner 41, dog_bark 6, gun_shot 3 |
+| width 1.25 jackguard | 70.00% | 32.00% | 78.00% | 46.94% | air_conditioner 43, car_horn 3, gun_shot 2 |
+
+Cycle-level note for `w125_jackguard`:
+
+| Checkpoint | Test acc | Val acc | air_conditioner | jackhammer |
+|---|---:|---:|---:|---:|
+| cycle 1 | 46.90% | 55.54% | 40.00% | 23.47% |
+| cycle 2 | 70.92% | 69.28% | 33.00% | 69.39% |
+| cycle 3 | 70.92% | 71.82% | 32.00% | 57.14% |
+| final | 70.00% | 72.06% | 32.00% | 46.94% |
+
+Conclusion:
+
+- `w125_jackguard` does not solve the issue.
+- It can temporarily raise test `jackhammer` to `69.39%` at cycle 2, but this
+  comes with a severe collapse of `air_conditioner` to `33.00%`.
+- Final `jackhammer` remains only `46.94%`, far below the width `1.0` pyramid
+  result of `90.82%`.
+- The added jackhammer weight shifts the mechanical-texture boundary rather than
+  learning a robust distinction.
+
+Final decision for width `1.25`:
+
+- Stop the current width `1.25` expansion path.
+- Do not run `w150` or `w175` with this architecture/training recipe.
+- Revert the active base to `configs/kv260_ds1d_pyramid_mixup_ema_val.json`.
+
+Next solution direction:
+
+1. **Use width `1.0` pyramid as the stable base.**
+   - It is still the best validated model: `79.08%` validation-selected test and
+     `79.89%` ensemble.
+
+2. **Improve class boundaries through data/augmentation, not width.**
+   - Target class pairs:
+     - `air_conditioner` vs `engine_idling`;
+     - `jackhammer` vs `air_conditioner`;
+     - `children_playing` vs `street_music`;
+     - `dog_bark` vs `siren/children_playing`.
+
+3. **Add class-pair diagnostics before another architecture change.**
+   - Track per-class validation and test deltas for every run.
+   - Reject a run if any critical class drops more than 15 points even when
+     aggregate validation looks acceptable.
+
+4. **Use multi-fold source-group evaluation before claiming progress.**
+   - A single validation bucket missed the `jackhammer` test collapse.
+   - Rotate validation/test buckets or run multiple folds before selecting a
+     final architecture.
