@@ -400,6 +400,69 @@ Decision rule:
 - Do not use width `2.0` as a primary candidate under the current thesis budget
   because it exceeds 300K parameters.
 
+## Width 1.25 Local Verification
+
+Run:
+
+```bash
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_w125_weakmixup_val.json --exp_name local_pyramid_w125_weakmixup_50ep --epochs 50
+python tools/analyze_experiment.py --exp_dir experiments/local_pyramid_w125_weakmixup_50ep/fold_1 --fold 1 --config configs/kv260_ds1d_pyramid_w125_weakmixup_val.json --eval_all_cycles --eval_modes
+```
+
+Profile:
+
+```text
+Params: 148,930
+MAC/clip: 90.52M
+FLOPs-equivalent: 181.04M
+Budget guard: passed under 300K params and 300M MAC/clip
+```
+
+Result:
+
+| Selection | Val acc | Test acc |
+|---|---:|---:|
+| best validation | 70.79% | 73.33% |
+| cycle 2 | 69.98% | 73.79% |
+| cycle 3 | 69.05% | 72.07% |
+| final epoch 50 | 69.17% | 75.29% |
+| last-2 ensemble | N/A | 75.06% |
+
+Final checkpoint per-class test accuracy:
+
+| Class | Accuracy |
+|---|---:|
+| air_conditioner | 65.00% |
+| car_horn | 70.00% |
+| children_playing | 79.00% |
+| dog_bark | 71.00% |
+| drilling | 90.00% |
+| engine_idling | 85.00% |
+| gun_shot | 100.00% |
+| jackhammer | 41.84% |
+| siren | 84.95% |
+| street_music | 78.43% |
+
+Interpretation:
+
+- Width `1.25` is deployable under the expanded budget, but it does not improve
+  accuracy.
+- Validation-selected test accuracy drops from the width `1.0` pyramid result
+  of `79.08%` to `73.33%`.
+- Final checkpoint test accuracy reaches only `75.29%`, still below the previous
+  width `1.0` final result of `79.43%`.
+- The main regression is `jackhammer`: `90.82%` in the width `1.0` pyramid final
+  checkpoint versus `41.84%` in width `1.25`.
+- This means capacity alone is not solving the problem; the wider model changes
+  the class boundary in a harmful way for mechanical texture classes.
+
+Decision:
+
+- Do not continue to width `1.50` or `1.75` with the same weak-mixup recipe.
+- The next experiment should keep width `1.0` pyramid as the best base and tune
+  the training recipe, especially jackhammer-preserving class weighting or
+  lower/no mixup.
+
 ## Reproducible Commands
 
 Best current run:
