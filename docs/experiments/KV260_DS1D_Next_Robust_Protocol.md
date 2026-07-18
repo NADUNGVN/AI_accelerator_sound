@@ -536,3 +536,44 @@ The longer 4-cycle schedule lowers validation accuracy and damages jackhammer.
 This supports the current diagnosis that the main bottleneck is source/class
 generalization, not insufficient epoch count.
 ```
+
+### Baseline 200-Epoch Fold-1 Paper-LR Check
+
+Purpose:
+
+```text
+Check whether the 200-epoch failure above was caused by using the current
+baseline LR=0.001 instead of the paper LR=0.0002.
+```
+
+Command:
+
+```bash
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_mixup_ema_val.json --exp_name local_pyramid_base_fold1_200ep_lr2e4 --folds 1 --epochs 200 --lr 0.0002 --analyze --eval_modes
+```
+
+Fold-1 comparison:
+
+| Run | LR | Snapshot epochs | Best val | Best-val test | Final test | Last-2 ensemble | Worst class |
+|---|---:|---|---:|---:|---:|---:|---|
+| 50 epoch baseline | 0.001 | 13, 26, 39, 50 | 72.86% | 79.08% | 79.43% | 79.89% | air_conditioner 65.00% |
+| 200 epoch baseline | 0.001 | 50, 100, 150, 200 | 68.71% | 76.21% | 76.55% | 76.67% | jackhammer 50.00% |
+| 200 epoch paper-LR | 0.0002 | 50, 100, 150, 200 | 68.82% | 68.85% | 72.64% | 71.49% | air_conditioner 36.00% |
+
+Cycle-level 200-epoch paper-LR result:
+
+| Snapshot | Test | Val | air_conditioner | jackhammer | car_horn |
+|---|---:|---:|---:|---:|---:|
+| epoch 50 | 65.17% | 63.28% | 33.00% | 37.76% | 62.50% |
+| epoch 100 | 68.62% | 65.70% | 35.00% | 50.00% | 60.00% |
+| epoch 150 | 69.20% | 67.21% | 34.00% | 41.84% | 65.00% |
+| epoch 200 | 72.64% | 67.90% | 36.00% | 52.04% | 65.00% |
+
+Decision:
+
+```text
+Reject the paper-LR 200-epoch control for the current baseline. It is worse
+than both the 50-epoch baseline and the 200-epoch lr=0.001 run on fold 1.
+The 200-epoch paper-style schedule is therefore not the missing ingredient for
+the current source-safe protocol.
+```
