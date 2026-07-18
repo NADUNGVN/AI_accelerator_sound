@@ -269,15 +269,18 @@ def main():
         gradient_clip = float(gradient_clip)
     adam_eps = float(cfg.get("adam_eps", 1e-8))
 
-    print(f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | Adam eps={adam_eps:g}")
+    weight_decay = float(cfg.get("weight_decay", 0.0))
+    print(f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | Weight Decay={weight_decay:g} | Adam eps={adam_eps:g}")
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4), eps=adam_eps)
+    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4), eps=adam_eps, weight_decay=weight_decay)
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
 
+    mixup_cfg = cfg.get("mixup", None)
     trainer = Trainer(
         model=model, optimizer=optimizer, criterion=criterion, scaler=scaler,
         device=device, accumulation_steps=cfg.get("accum_steps", 1),
-        use_amp=use_amp, gradient_clip=gradient_clip
+        use_amp=use_amp, gradient_clip=gradient_clip,
+        mixup_cfg=mixup_cfg
     )
 
     best_acc = None

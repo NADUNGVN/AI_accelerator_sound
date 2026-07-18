@@ -1,5 +1,6 @@
 import time
 import math
+import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -20,6 +21,7 @@ class Trainer:
         accumulation_steps=1,
         use_amp=True,
         gradient_clip=5.0,
+        mixup_cfg=None,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -29,6 +31,7 @@ class Trainer:
         self.accumulation_steps = accumulation_steps
         self.use_amp = use_amp
         self.gradient_clip = gradient_clip
+        self.mixup_cfg = mixup_cfg or {}
 
     def train_epoch(self, loader):
         self.model.train()
@@ -42,13 +45,30 @@ class Trainer:
             inputs = inputs.to(self.device, non_blocking=True)
             targets = targets.to(self.device, non_blocking=True)
             
+            mixup_enabled = bool(self.mixup_cfg.get("enabled", False)) and inputs.size(0) > 1
+            if mixup_enabled and random.random() < float(self.mixup_cfg.get("prob", 1.0)):
+                alpha = float(self.mixup_cfg.get("alpha", 0.2))
+                lam = random.betavariate(alpha, alpha) if alpha > 0.0 else 1.0
+                index = torch.randperm(inputs.size(0), device=self.device)
+                mixed_inputs = lam * inputs + (1.0 - lam) * inputs[index]
+                targets_a = targets
+                targets_b = targets[index]
+            else:
+                lam = 1.0
+                mixed_inputs = inputs
+                targets_a = targets
+                targets_b = targets
+            
             with torch.amp.autocast(
                 device_type="cuda" if "cuda" in self.device.type else "cpu",
                 dtype=torch.float16,
                 enabled=self.use_amp,
             ):
-                logits = self.model(inputs)
-                raw_loss = self.criterion(logits, targets)
+                logits = self.model(mixed_inputs)
+                if mixup_enabled and lam < 1.0:
+                    raw_loss = lam * self.criterion(logits, targets_a) + (1.0 - lam) * self.criterion(logits, targets_b)
+                else:
+                    raw_loss = self.criterion(logits, targets)
                 loss = raw_loss / self.accumulation_steps
                 
             self.scaler.scale(loss).backward()
