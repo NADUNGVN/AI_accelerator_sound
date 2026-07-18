@@ -215,3 +215,56 @@ Next full run priority:
 1. Run `w125_control` first. This isolates whether width `1.25` itself causes
    the regression.
 2. Run `w125_jackguard` only if `w125_control` still loses `jackhammer`.
+
+## Width 1.25 Control Verification
+
+Run:
+
+```bash
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_w125_control_val.json --exp_name local_pyramid_w125_control_50ep --epochs 50
+python tools/analyze_experiment.py --exp_dir experiments/local_pyramid_w125_control_50ep/fold_1 --fold 1 --config configs/kv260_ds1d_pyramid_w125_control_val.json --eval_all_cycles --eval_modes
+```
+
+Profile:
+
+```text
+Params: 148,930
+MAC/clip: 90.52M
+FLOPs-equivalent: 181.04M
+Budget guard: pass
+```
+
+Overall result:
+
+| Run | Params | MAC/clip | Best val | Val-selected test | Final test | Ensemble |
+|---|---:|---:|---:|---:|---:|---:|
+| width 1.0 pyramid | 101,674 | 61.85M | 72.86% | 79.08% | 79.43% | 79.89% |
+| width 1.25 weakmixup | 148,930 | 90.52M | 70.79% | 73.33% | 75.29% | 75.06% |
+| width 1.25 control | 148,930 | 90.52M | 72.86% | 74.14% | 75.06% | 74.94% |
+
+Jackhammer result:
+
+| Run | Final test acc | Jackhammer acc | Main jackhammer confusion |
+|---|---:|---:|---|
+| width 1.0 pyramid | 79.43% | 90.82% | drilling 3, air_conditioner 2, car_horn 2 |
+| width 1.25 weakmixup | 75.29% | 41.84% | air_conditioner 40, gun_shot 5, street_music 5 |
+| width 1.25 control | 75.06% | 43.88% | air_conditioner 41, dog_bark 6, gun_shot 3 |
+
+Conclusion:
+
+- `w125_control` does **not** restore `jackhammer`.
+- Restoring the original mixup, dropout, and weight decay improves validation
+  versus `w125_weakmixup`, but it does not fix the class-specific test
+  regression.
+- The regression is now more likely caused by the interaction between width
+  `1.25`, EMA validation, and source-specific mechanical texture boundaries.
+- Aggregate validation accuracy is not sufficient here: `w125_control` reaches
+  the same best validation accuracy as width `1.0` (`72.86%`) but has much worse
+  test accuracy and jackhammer accuracy.
+
+Updated decision:
+
+- Do not run width `1.50` or `1.75` until `jackhammer` is protected.
+- The next repair test should be `w125_jackguard`.
+- If `w125_jackguard` still fails, return to width `1.0` pyramid and optimize
+  class-pair augmentation rather than widening.
