@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+import copy
 import json
 import time
 import math
@@ -240,6 +241,8 @@ def build_model(cfg, num_classes):
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
             pool_type=cfg.get("pool_type", "avg"),
+            pool_bins=cfg.get("pool_bins", None),
+            stem_type=cfg.get("stem_type", "single"),
         )
     elif model_name == "kv260_logmel_net_ds1d":
         model = KV260LogMelNetDS1D(
@@ -354,6 +357,44 @@ def make_weighted_sampler(frame_records, num_classes, multipliers=None):
         class_weights = apply_class_multipliers(class_weights, multipliers, device=torch.device("cpu"))
     sample_weights = torch.tensor([float(class_weights[label]) for label in labels], dtype=torch.double)
     return WeightedRandomSampler(sample_weights, num_samples=len(sample_weights), replacement=True)
+
+
+class FocalLoss(nn.Module):
+    def __init__(self, weight=None, gamma=1.5, label_smoothing=0.0):
+        super().__init__()
+        self.weight = weight
+        self.gamma = float(gamma)
+        self.label_smoothing = float(label_smoothing)
+
+    def forward(self, logits, target):
+        ce = F.cross_entropy(
+            logits,
+            target,
+            weight=self.weight,
+            label_smoothing=self.label_smoothing,
+            reduction="none",
+        )
+        pt = torch.exp(-ce.detach()).clamp(1e-6, 1.0)
+        return (((1.0 - pt) ** self.gamma) * ce).mean()
+
+
+class ModelEMA:
+    def __init__(self, model, decay=0.995):
+        self.module = copy.deepcopy(model).eval()
+        self.decay = float(decay)
+        for param in self.module.parameters():
+            param.requires_grad_(False)
+
+    @torch.no_grad()
+    def update(self, model):
+        ema_state = self.module.state_dict()
+        model_state = model.state_dict()
+        for key, ema_value in ema_state.items():
+            model_value = model_state[key].detach()
+            if ema_value.dtype.is_floating_point:
+                ema_value.mul_(self.decay).add_(model_value, alpha=1.0 - self.decay)
+            else:
+                ema_value.copy_(model_value)
 
 
 def main():
@@ -661,7 +702,10 @@ def main():
                 return self.mse(torch.log1p(probs), torch.log1p(target_onehot))
         criterion = MSLELoss()
     else:
-        print("[Loss Setup] Using Cross Entropy Loss.")
+        if loss_type == "focal":
+            print("[Loss Setup] Using Focal Cross Entropy Loss.")
+        else:
+            print("[Loss Setup] Using Cross Entropy Loss.")
         label_smoothing = float(cfg.get("label_smoothing", 0.0))
         class_weighting = cfg.get("class_weighting", "none").lower()
         ce_weights = None
@@ -675,7 +719,17 @@ def main():
             print(f"[Loss Setup] Balanced class weights: {[round(float(w), 4) for w in ce_weights.cpu()]}")
         elif class_weighting != "none":
             raise ValueError(f"Unsupported class_weighting '{class_weighting}'. Use 'none' or 'balanced'.")
-        criterion = nn.CrossEntropyLoss(weight=ce_weights, label_smoothing=label_smoothing)
+        if loss_type == "focal":
+            criterion = FocalLoss(
+                weight=ce_weights,
+                gamma=float(cfg.get("focal_gamma", 1.5)),
+                label_smoothing=label_smoothing,
+            )
+            print(f"[Loss Setup] Focal gamma={float(cfg.get('focal_gamma', 1.5)):g}")
+        elif loss_type == "crossentropy":
+            criterion = nn.CrossEntropyLoss(weight=ce_weights, label_smoothing=label_smoothing)
+        else:
+            raise ValueError(f"Unsupported loss '{loss_type}'. Use 'msle', 'crossentropy', or 'focal'.")
 
     use_amp = bool(cfg.get("amp", True))
     gradient_clip = cfg.get("gradient_clip", 5.0)
@@ -708,12 +762,29 @@ def main():
     else:
         raise ValueError(f"Unsupported optimizer '{optimizer_name}'. Use 'adam' or 'adamw'.")
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
+    ema_cfg = cfg.get("ema", {})
+    ema = ModelEMA(model, decay=ema_cfg.get("decay", 0.995)) if ema_cfg.get("enabled", False) else None
+    use_ema_for_validation = bool(ema_cfg.get("use_for_validation", True)) and ema is not None
+    if ema is not None:
+        print(
+            f"[EMA Setup] enabled=True | decay={float(ema_cfg.get('decay', 0.995)):g} | "
+            f"use_for_validation={use_ema_for_validation}"
+        )
 
     trainer = Trainer(
         model=model, optimizer=optimizer, criterion=criterion, scaler=scaler,
         device=device, accumulation_steps=cfg.get("accum_steps", 1),
-        use_amp=use_amp, gradient_clip=gradient_clip, input_transform=input_transform
+        use_amp=use_amp,
+        gradient_clip=gradient_clip,
+        input_transform=input_transform,
+        mixup_cfg=cfg.get("mixup", {}),
+        ema=ema,
     )
+    if cfg.get("mixup", {}).get("enabled", False):
+        print(
+            f"[Mixup Setup] enabled=True | alpha={float(cfg.get('mixup', {}).get('alpha', 0.2)):g} | "
+            f"prob={float(cfg.get('mixup', {}).get('prob', 1.0)):g}"
+        )
 
     best_acc = None
     history = {"train_loss": [], "train_acc": [], "val_clip_acc": []}
@@ -733,9 +804,10 @@ def main():
         epoch_start = time.time()
         loss, train_acc = trainer.train_epoch(train_loader)
         
+        eval_model = ema.module if use_ema_for_validation else model
         if uses_validation:
             val_clip_acc = trainer.evaluate_clips(
-                [model],
+                [eval_model],
                 val_clips,
                 cached_waveforms,
                 frame_length=frame_length,
@@ -760,23 +832,25 @@ def main():
         if uses_validation and (best_acc is None or val_clip_acc > best_acc):
             best_acc = val_clip_acc
             torch.save({
-                "model_state_dict": model.state_dict(),
+                "model_state_dict": eval_model.state_dict(),
                 "epoch": epoch,
-                "val_acc": val_clip_acc
+                "val_acc": val_clip_acc,
+                "ema": use_ema_for_validation,
             }, best_ckpt_path)
             
         # Snapshot Ensemble saving
         if (epoch + 1) % epochs_per_cycle == 0:
             cycle_id = (epoch + 1) // epochs_per_cycle
             snapshot_path = get_cycle_ckpt_path(cycle_id)
-            torch.save(model.state_dict(), snapshot_path)
+            torch.save(eval_model.state_dict(), snapshot_path)
             snapshot_checkpoints.append(snapshot_path)
             snapshot_epochs.append(epoch + 1)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
     if not snapshot_epochs or snapshot_epochs[-1] != epochs:
+        eval_model = ema.module if use_ema_for_validation else model
         snapshot_path = get_cycle_ckpt_path("final")
-        torch.save(model.state_dict(), snapshot_path)
+        torch.save(eval_model.state_dict(), snapshot_path)
         snapshot_checkpoints.append(snapshot_path)
         snapshot_epochs.append(epochs)
         print("--> Saved Final Epoch checkpoint.")
@@ -890,11 +964,17 @@ def main():
         "last_snapshot_epoch": last_snapshot_epoch,
         "seed": cfg.get("seed", 83),
         "loss_type": loss_type,
+        "focal_gamma": cfg.get("focal_gamma"),
         "label_smoothing": float(cfg.get("label_smoothing", 0.0)),
         "class_weighting": cfg.get("class_weighting", "none"),
         "class_weight_multipliers": cfg.get("class_weight_multipliers"),
         "weighted_sampler": cfg.get("weighted_sampler"),
         "pool_type": cfg.get("pool_type", "avg"),
+        "pool_bins": cfg.get("pool_bins"),
+        "stem_type": cfg.get("stem_type", "single"),
+        "mixup": cfg.get("mixup"),
+        "ema": cfg.get("ema"),
+        "use_ema_for_validation": use_ema_for_validation,
         "amp": use_amp,
         "gradient_clip": gradient_clip,
         "optimizer": optimizer_name,

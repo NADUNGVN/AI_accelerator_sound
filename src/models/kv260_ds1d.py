@@ -21,6 +21,28 @@ class ConvBNReLU2dH1(nn.Module):
         return self.relu(self.bn(self.conv(x)))
 
 
+class MultiScaleStem2dH1(nn.Module):
+    """
+    Parallel temporal kernels over the raw waveform. The operation is still
+    logical 1D convolution because every kernel has height=1.
+    """
+    def __init__(self, out_channels, kernels=(15, 31, 63), stride=4):
+        super().__init__()
+        branch_count = len(kernels)
+        base = out_channels // branch_count
+        widths = [base for _ in kernels]
+        widths[-1] += out_channels - sum(widths)
+        self.branches = nn.ModuleList(
+            [
+                ConvBNReLU2dH1(1, width, kernel_size=kernel, stride=stride)
+                for width, kernel in zip(widths, kernels)
+            ]
+        )
+
+    def forward(self, x):
+        return torch.cat([branch(x) for branch in self.branches], dim=1)
+
+
 class DSBlock2dH1(nn.Module):
     """
     DPU-friendly depthwise-separable temporal block:
@@ -55,18 +77,33 @@ class KV260AudioNetDS1D(nn.Module):
     internally to [B, 1, 1, T] so every convolution has kernel (1, k), i.e. it
     only slides along time.
     """
-    def __init__(self, num_classes=10, width_mult=1.0, dropout=0.15, pool_type="avg"):
+    def __init__(
+        self,
+        num_classes=10,
+        width_mult=1.0,
+        dropout=0.15,
+        pool_type="avg",
+        pool_bins=None,
+        stem_type="single",
+    ):
         super().__init__()
         pool_type = pool_type.lower()
-        if pool_type not in {"avg", "avgmax"}:
-            raise ValueError(f"Unsupported pool_type '{pool_type}'. Use 'avg' or 'avgmax'.")
+        if pool_type not in {"avg", "avgmax", "pyramid_avgmax"}:
+            raise ValueError(f"Unsupported pool_type '{pool_type}'. Use 'avg', 'avgmax', or 'pyramid_avgmax'.")
         self.pool_type = pool_type
+        self.pool_bins = [int(v) for v in (pool_bins or [1, 2, 4])]
 
         def c(channels):
             return max(8, int(round(channels * width_mult)))
 
         channels = [c(v) for v in [24, 32, 48, 64, 96, 128, 160]]
-        self.stem = ConvBNReLU2dH1(1, channels[0], kernel_size=31, stride=4)
+        stem_type = stem_type.lower()
+        if stem_type == "single":
+            self.stem = ConvBNReLU2dH1(1, channels[0], kernel_size=31, stride=4)
+        elif stem_type == "multiscale":
+            self.stem = MultiScaleStem2dH1(channels[0], kernels=(15, 31, 63), stride=4)
+        else:
+            raise ValueError(f"Unsupported stem_type '{stem_type}'. Use 'single' or 'multiscale'.")
         self.blocks = nn.Sequential(
             DSBlock2dH1(channels[0], channels[1], kernel_size=15, stride=2),
             DSBlock2dH1(channels[1], channels[2], kernel_size=15, stride=2),
@@ -79,7 +116,10 @@ class KV260AudioNetDS1D(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.max_pool = nn.AdaptiveMaxPool2d((1, 1)) if pool_type == "avgmax" else None
         self.dropout = nn.Dropout(dropout)
-        head_features = channels[-1] * (2 if pool_type == "avgmax" else 1)
+        if pool_type == "pyramid_avgmax":
+            head_features = channels[-1] * 2 * sum(self.pool_bins)
+        else:
+            head_features = channels[-1] * (2 if pool_type == "avgmax" else 1)
         self.fc = nn.Linear(head_features, num_classes)
 
         self._initialize_weights()
@@ -103,7 +143,13 @@ class KV260AudioNetDS1D(nn.Module):
 
         x = self.stem(x)
         x = self.blocks(x)
-        if self.pool_type == "avgmax":
+        if self.pool_type == "pyramid_avgmax":
+            pooled = []
+            for bin_count in self.pool_bins:
+                pooled.append(nn.functional.adaptive_avg_pool2d(x, (1, bin_count)).flatten(1))
+                pooled.append(nn.functional.adaptive_max_pool2d(x, (1, bin_count)).flatten(1))
+            x = torch.cat(pooled, dim=1)
+        elif self.pool_type == "avgmax":
             x = torch.cat([self.avg_pool(x).flatten(1), self.max_pool(x).flatten(1)], dim=1)
         else:
             x = self.avg_pool(x).flatten(1)

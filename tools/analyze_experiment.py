@@ -69,6 +69,8 @@ def build_model(cfg, metrics, num_classes):
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
             pool_type=cfg.get("pool_type", "avg"),
+            pool_bins=cfg.get("pool_bins", None),
+            stem_type=cfg.get("stem_type", "single"),
         )
     if model_name == "kv260_logmel_net_ds1d":
         return KV260LogMelNetDS1D(
@@ -641,9 +643,9 @@ def main():
     print(f"test clips : {len(test_records)}")
 
     selected_records = list(test_records)
+    selected_records.extend(val_records)
     if args.eval_train:
         selected_records.extend(train_records)
-        selected_records.extend(val_records)
     print(f"\nPreloading {len({r['path'] for r in selected_records})} unique clips...")
     cached_waveforms = preload_waveforms(selected_records, cfg.get("sample_rate", 16000))
 
