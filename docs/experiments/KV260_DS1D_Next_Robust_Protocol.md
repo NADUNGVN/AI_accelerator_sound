@@ -488,3 +488,51 @@ continued, restrict the objective to the air_conditioner/engine_idling boundary
 or reduce SupCon weight, and protect jackhammer with a validation rejection
 condition.
 ```
+
+### Baseline 200-Epoch Fold-1 Check
+
+Purpose:
+
+```text
+Check whether the 50-epoch baseline was simply under-trained compared with the
+paper-style 200 epochs and 4 cycles.
+```
+
+Command:
+
+```bash
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_mixup_ema_val.json --exp_name local_pyramid_base_fold1_200ep --folds 1 --epochs 200 --analyze --eval_modes
+```
+
+Training schedule:
+
+```text
+epochs=200
+cycles=4
+snapshot_epochs=[50, 100, 150, 200]
+```
+
+Fold-1 result compared with the previous 50-epoch baseline:
+
+| Run | Best val | Best-val test | Final test | Last-2 ensemble | Worst class |
+|---|---:|---:|---:|---:|---|
+| 50 epoch | 72.86% | 79.08% | 79.43% | 79.89% | air_conditioner 65.00% |
+| 200 epoch | 68.71% | 76.21% | 76.55% | 76.67% | jackhammer 50.00% |
+
+Cycle-level 200-epoch result:
+
+| Snapshot | Test | Val | air_conditioner | engine_idling | jackhammer |
+|---|---:|---:|---:|---:|---:|
+| epoch 50 | 75.40% | 65.59% | 65.00% | 78.00% | 71.43% |
+| epoch 100 | 75.63% | 66.63% | 67.00% | 89.00% | 53.06% |
+| epoch 150 | 75.75% | 67.44% | 68.00% | 87.00% | 47.96% |
+| epoch 200 | 76.55% | 66.17% | 66.00% | 87.00% | 50.00% |
+
+Decision:
+
+```text
+Increasing the current baseline from 50 to 200 epochs does not improve fold 1.
+The longer 4-cycle schedule lowers validation accuracy and damages jackhammer.
+This supports the current diagnosis that the main bottleneck is source/class
+generalization, not insufficient epoch count.
+```
