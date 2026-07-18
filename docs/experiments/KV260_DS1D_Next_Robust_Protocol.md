@@ -224,6 +224,29 @@ not model size; it is the boundary among stationary/mechanical/background-rich
 classes: air_conditioner, engine_idling, jackhammer, drilling, and street_music.
 ```
 
+Source-level diagnostic command:
+
+```bash
+python tools/analyze_source_confusions.py --exp_name local_multifold_pyramid_base_f1_f3_50ep --folds 3 --classes air_conditioner,engine_idling,jackhammer,street_music --top_groups 8
+```
+
+Source-level finding on baseline fold 3:
+
+| Class | fsID | Accuracy | Support | Main confusions |
+|---|---|---:|---:|---|
+| air_conditioner | 74677 | 0.00% | 31 | street_music 21, children_playing 7, jackhammer 3 |
+| air_conditioner | 74507 | 0.00% | 25 | jackhammer 25 |
+| air_conditioner | 202516 | 0.00% | 12 | engine_idling 12 |
+| engine_idling | 177592 | 0.00% | 11 | siren 6, children_playing 2, street_music 2 |
+| engine_idling | 111386 | 21.74% | 23 | car_horn 16, jackhammer 1, air_conditioner 1 |
+| jackhammer | 132016 | 0.00% | 9 | children_playing 5, air_conditioner 4 |
+| street_music | 93065 | 0.00% | 6 | children_playing 6 |
+| street_music | 60608 | 0.00% | 6 | siren 6 |
+
+This confirms that the accuracy drop is source-group concentrated. A candidate
+that improves only average validation but still fails these source groups should
+be rejected.
+
 ### Phase 2 Result: General Robust Augmentation
 
 Command:
