@@ -135,7 +135,7 @@ class KV260AudioNetDS1D(nn.Module):
                 nn.init.xavier_uniform_(module.weight)
                 nn.init.zeros_(module.bias)
 
-    def forward(self, x):
+    def forward(self, x, return_features=False):
         if x.dim() == 3:
             x = x.unsqueeze(2)
         elif x.dim() != 4:
@@ -153,8 +153,12 @@ class KV260AudioNetDS1D(nn.Module):
             x = torch.cat([self.avg_pool(x).flatten(1), self.max_pool(x).flatten(1)], dim=1)
         else:
             x = self.avg_pool(x).flatten(1)
-        x = self.dropout(x)
-        return self.fc(x)
+        features = x
+        x = self.dropout(features)
+        logits = self.fc(x)
+        if return_features:
+            return logits, features
+        return logits
 
 
 class KV260LogMelNetDS1D(nn.Module):
@@ -211,7 +215,7 @@ class KV260LogMelNetDS1D(nn.Module):
                 nn.init.xavier_uniform_(module.weight)
                 nn.init.zeros_(module.bias)
 
-    def forward(self, x):
+    def forward(self, x, return_features=False):
         if x.dim() == 3:
             x = x.unsqueeze(2)
         elif x.dim() != 4:
@@ -223,5 +227,9 @@ class KV260LogMelNetDS1D(nn.Module):
             x = torch.cat([self.avg_pool(x).flatten(1), self.max_pool(x).flatten(1)], dim=1)
         else:
             x = self.avg_pool(x).flatten(1)
-        x = self.dropout(x)
-        return self.fc(x)
+        features = x
+        x = self.dropout(features)
+        logits = self.fc(x)
+        if return_features:
+            return logits, features
+        return logits

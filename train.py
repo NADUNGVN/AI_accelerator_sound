@@ -9,7 +9,7 @@ import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader, WeightedRandomSampler
+from torch.utils.data import DataLoader, Sampler, WeightedRandomSampler
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 
@@ -385,6 +385,97 @@ def make_weighted_sampler(frame_records, num_classes, multipliers=None):
     return WeightedRandomSampler(sample_weights, num_samples=len(sample_weights), replacement=True)
 
 
+def attach_source_ids(frame_records):
+    source_to_id = {}
+    for record in frame_records:
+        fsid = record.get("fsID")
+        if fsid is None:
+            fsid = os.path.basename(record["path"]).split("-")[0]
+        class_id = record.get("classID", record["label"])
+        source_key = (str(fsid), int(class_id))
+        if source_key not in source_to_id:
+            source_to_id[source_key] = len(source_to_id)
+        record["source_id"] = source_to_id[source_key]
+    return source_to_id
+
+
+class SourceAwareBatchSampler(Sampler):
+    """
+    Builds batches with multiple source groups per class. This gives supervised
+    contrastive training positive pairs that share the label but not the source.
+    """
+    def __init__(
+        self,
+        records,
+        batch_size,
+        classes_per_batch=8,
+        sources_per_class=2,
+        samples_per_source=4,
+        seed=83,
+    ):
+        self.records = records
+        self.batch_size = max(1, int(batch_size))
+        self.sources_per_class = max(1, int(sources_per_class))
+        self.samples_per_source = max(1, int(samples_per_source))
+        self.classes_per_batch = max(1, int(classes_per_batch))
+        self.seed = int(seed)
+        self.epoch = 0
+
+        min_unit = self.sources_per_class * self.samples_per_source
+        if min_unit > self.batch_size:
+            self.samples_per_source = max(1, self.batch_size // self.sources_per_class)
+            min_unit = self.sources_per_class * self.samples_per_source
+        if self.classes_per_batch * min_unit > self.batch_size:
+            self.classes_per_batch = max(1, self.batch_size // min_unit)
+
+        self.indices_by_label_source = defaultdict(lambda: defaultdict(list))
+        for idx, record in enumerate(records):
+            label = int(record["label"])
+            source_id = int(record.get("source_id", -1))
+            self.indices_by_label_source[label][source_id].append(idx)
+
+        self.labels = sorted(self.indices_by_label_source)
+        if not self.labels:
+            raise ValueError("SourceAwareBatchSampler requires at least one training record.")
+        self.num_batches = max(1, math.ceil(len(records) / self.batch_size))
+
+    def __len__(self):
+        return self.num_batches
+
+    def __iter__(self):
+        rng = random.Random(self.seed + self.epoch)
+        self.epoch += 1
+
+        for _ in range(self.num_batches):
+            if len(self.labels) >= self.classes_per_batch:
+                labels = rng.sample(self.labels, self.classes_per_batch)
+            else:
+                labels = [rng.choice(self.labels) for _ in range(self.classes_per_batch)]
+
+            batch = []
+            for label in labels:
+                by_source = self.indices_by_label_source[label]
+                source_ids = sorted(by_source)
+                if len(source_ids) >= self.sources_per_class:
+                    chosen_sources = rng.sample(source_ids, self.sources_per_class)
+                else:
+                    chosen_sources = [rng.choice(source_ids) for _ in range(self.sources_per_class)]
+
+                for source_id in chosen_sources:
+                    indices = by_source[source_id]
+                    if len(indices) >= self.samples_per_source:
+                        batch.extend(rng.sample(indices, self.samples_per_source))
+                    else:
+                        batch.extend(rng.choice(indices) for _ in range(self.samples_per_source))
+
+            while len(batch) < self.batch_size:
+                label = rng.choice(self.labels)
+                source_id = rng.choice(sorted(self.indices_by_label_source[label]))
+                batch.append(rng.choice(self.indices_by_label_source[label][source_id]))
+            rng.shuffle(batch)
+            yield batch[:self.batch_size]
+
+
 class FocalLoss(nn.Module):
     def __init__(self, weight=None, gamma=1.5, label_smoothing=0.0):
         super().__init__()
@@ -629,6 +720,15 @@ def main():
     
     print(f"Clips: Train={len(train_clips)}, Val={len(val_clips)}, Test={len(test_records)}")
     print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)}")
+    supervised_contrastive_cfg = cfg.get("supervised_contrastive", {})
+    supervised_contrastive_enabled = bool(supervised_contrastive_cfg.get("enabled", False))
+    if supervised_contrastive_enabled:
+        source_to_id = attach_source_ids(train_frames)
+        print(
+            "[SupCon Data Setup] "
+            f"enabled=True | source_groups={len(source_to_id)} | "
+            f"source_aware={bool(supervised_contrastive_cfg.get('source_aware', True))}"
+        )
 
     # 3. Preload waveforms to RAM after optional smoke subsetting.
     selected_clip_records = train_clips + val_clips + test_records
@@ -651,38 +751,63 @@ def main():
         cached_waveforms,
         frame_length=frame_length,
         augment_cfg=cfg.get("augment", None),
+        return_source_id=supervised_contrastive_enabled,
     )
     
     num_workers = cfg.get("num_workers", 0)
+    source_batch_cfg = supervised_contrastive_cfg.get("source_aware_batch_sampler", {})
+    use_source_batch_sampler = supervised_contrastive_enabled and bool(source_batch_cfg.get("enabled", False))
     loader_kwargs = {
-        "batch_size": cfg.get("batch_size", 96),
-        "shuffle": True,
         "num_workers": num_workers,
         "pin_memory": True,
-        "drop_last": True
     }
     if num_workers > 0:
         loader_kwargs["persistent_workers"] = True
         loader_kwargs["prefetch_factor"] = 2
-    if len(train_dataset) < loader_kwargs["batch_size"]:
-        loader_kwargs["drop_last"] = False
-        print(
-            "Train frame count is smaller than batch size; disabling drop_last "
-            "to keep smoke-test DataLoader non-empty."
-        )
     weighted_sampler_cfg = cfg.get("weighted_sampler", {})
-    if weighted_sampler_cfg.get("enabled", False):
-        sampler = make_weighted_sampler(
+    if use_source_batch_sampler:
+        if weighted_sampler_cfg.get("enabled", False):
+            raise ValueError("weighted_sampler and source_aware_batch_sampler cannot both be enabled.")
+        batch_sampler = SourceAwareBatchSampler(
             train_frames,
-            num_classes=10,
-            multipliers=weighted_sampler_cfg.get("class_multipliers"),
+            batch_size=cfg.get("batch_size", 96),
+            classes_per_batch=source_batch_cfg.get("classes_per_batch", 8),
+            sources_per_class=source_batch_cfg.get("sources_per_class", 2),
+            samples_per_source=source_batch_cfg.get("samples_per_source", 4),
+            seed=cfg.get("seed", 83),
         )
-        loader_kwargs["sampler"] = sampler
-        loader_kwargs["shuffle"] = False
+        loader_kwargs["batch_sampler"] = batch_sampler
         print(
-            "[DataLoader Setup] WeightedRandomSampler enabled | "
-            f"class_multipliers={weighted_sampler_cfg.get('class_multipliers')}"
+            "[DataLoader Setup] SourceAwareBatchSampler enabled | "
+            f"batch_size={batch_sampler.batch_size} | "
+            f"classes_per_batch={batch_sampler.classes_per_batch} | "
+            f"sources_per_class={batch_sampler.sources_per_class} | "
+            f"samples_per_source={batch_sampler.samples_per_source}"
         )
+    else:
+        loader_kwargs.update({
+            "batch_size": cfg.get("batch_size", 96),
+            "shuffle": True,
+            "drop_last": True,
+        })
+        if len(train_dataset) < loader_kwargs["batch_size"]:
+            loader_kwargs["drop_last"] = False
+            print(
+                "Train frame count is smaller than batch size; disabling drop_last "
+                "to keep smoke-test DataLoader non-empty."
+            )
+        if weighted_sampler_cfg.get("enabled", False):
+            sampler = make_weighted_sampler(
+                train_frames,
+                num_classes=10,
+                multipliers=weighted_sampler_cfg.get("class_multipliers"),
+            )
+            loader_kwargs["sampler"] = sampler
+            loader_kwargs["shuffle"] = False
+            print(
+                "[DataLoader Setup] WeightedRandomSampler enabled | "
+                f"class_multipliers={weighted_sampler_cfg.get('class_multipliers')}"
+            )
         
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
@@ -808,6 +933,7 @@ def main():
         input_transform=input_transform,
         mixup_cfg=cfg.get("mixup", {}),
         hard_negative_margin_cfg=cfg.get("hard_negative_margin", {}),
+        supervised_contrastive_cfg=supervised_contrastive_cfg,
         ema=ema,
     )
     if cfg.get("mixup", {}).get("enabled", False):
@@ -824,6 +950,14 @@ def main():
             f"apply_to_mixup={bool(hard_negative_cfg.get('apply_to_mixup', False))} | "
             f"groups={hard_negative_cfg.get('groups', [])} | "
             f"pairs={hard_negative_cfg.get('pairs', [])}"
+        )
+    if supervised_contrastive_cfg.get("enabled", False):
+        print(
+            "[SupCon Setup] enabled=True | "
+            f"weight={float(supervised_contrastive_cfg.get('weight', 0.05)):g} | "
+            f"temperature={float(supervised_contrastive_cfg.get('temperature', 0.1)):g} | "
+            f"source_aware={bool(supervised_contrastive_cfg.get('source_aware', True))} | "
+            f"apply_to_mixup={bool(supervised_contrastive_cfg.get('apply_to_mixup', False))}"
         )
 
     best_acc = None
@@ -1014,6 +1148,8 @@ def main():
         "pool_bins": cfg.get("pool_bins"),
         "stem_type": cfg.get("stem_type", "single"),
         "mixup": cfg.get("mixup"),
+        "supervised_contrastive": cfg.get("supervised_contrastive"),
+        "hard_negative_margin": cfg.get("hard_negative_margin"),
         "ema": cfg.get("ema"),
         "use_ema_for_validation": use_ema_for_validation,
         "amp": use_amp,

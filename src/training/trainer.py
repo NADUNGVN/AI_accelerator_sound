@@ -24,6 +24,7 @@ class Trainer:
         input_transform=None,
         mixup_cfg=None,
         hard_negative_margin_cfg=None,
+        supervised_contrastive_cfg=None,
         ema=None,
     ):
         self.model = model
@@ -38,6 +39,7 @@ class Trainer:
         self.mixup_cfg = mixup_cfg or {}
         self.hard_negative_margin_cfg = hard_negative_margin_cfg or {}
         self.hard_negative_pairs = self._build_hard_negative_pairs(self.hard_negative_margin_cfg)
+        self.supervised_contrastive_cfg = supervised_contrastive_cfg or {}
         self.ema = ema
 
     @staticmethod
@@ -84,6 +86,37 @@ class Trainer:
             return logits.new_zeros(())
         return torch.stack(losses).mean()
 
+    def supervised_contrastive_loss(self, features, targets, source_ids=None):
+        cfg = self.supervised_contrastive_cfg
+        if not cfg.get("enabled", False):
+            return features.new_zeros(())
+
+        features = F.normalize(features.float(), dim=1)
+        targets = targets.view(-1, 1)
+        positive_mask = torch.eq(targets, targets.T)
+
+        if bool(cfg.get("source_aware", True)) and source_ids is not None:
+            source_ids = source_ids.view(-1, 1)
+            positive_mask = positive_mask & torch.ne(source_ids, source_ids.T)
+
+        logits_mask = torch.ones_like(positive_mask, dtype=torch.bool)
+        logits_mask.fill_diagonal_(False)
+        positive_mask = positive_mask & logits_mask
+
+        positive_counts = positive_mask.sum(dim=1)
+        valid_anchors = positive_counts > 0
+        if not valid_anchors.any():
+            return features.new_zeros(())
+
+        temperature = float(cfg.get("temperature", 0.1))
+        similarity = torch.matmul(features, features.T) / max(temperature, 1e-6)
+        similarity = similarity - similarity.max(dim=1, keepdim=True).values.detach()
+
+        exp_similarity = torch.exp(similarity) * logits_mask.float()
+        log_prob = similarity - torch.log(exp_similarity.sum(dim=1, keepdim=True).clamp_min(1e-12))
+        mean_log_prob_pos = (positive_mask.float() * log_prob).sum(dim=1) / positive_counts.clamp_min(1)
+        return -mean_log_prob_pos[valid_anchors].mean()
+
     def transform_inputs(self, inputs):
         if self.input_transform is None:
             return inputs
@@ -97,9 +130,19 @@ class Trainer:
         correct = 0
         total = 0
         
-        for batch_idx, (inputs, targets) in enumerate(loader):
+        supcon_enabled = bool(self.supervised_contrastive_cfg.get("enabled", False))
+
+        for batch_idx, batch in enumerate(loader):
+            if len(batch) == 3:
+                inputs, targets, source_ids = batch
+            else:
+                inputs, targets = batch
+                source_ids = None
+
             inputs = inputs.to(self.device, non_blocking=True)
             targets = targets.to(self.device, non_blocking=True)
+            if source_ids is not None:
+                source_ids = source_ids.to(self.device, non_blocking=True)
             inputs = self.transform_inputs(inputs)
             mixup_enabled = bool(self.mixup_cfg.get("enabled", False)) and inputs.size(0) > 1
             if mixup_enabled and random.random() < float(self.mixup_cfg.get("prob", 1.0)):
@@ -120,11 +163,23 @@ class Trainer:
                 dtype=torch.float16,
                 enabled=self.use_amp,
             ):
-                logits = self.model(mixed_inputs)
+                if supcon_enabled:
+                    logits, features = self.model(mixed_inputs, return_features=True)
+                else:
+                    logits = self.model(mixed_inputs)
+                    features = None
                 if mixup_enabled and lam < 1.0:
                     raw_loss = lam * self.criterion(logits, targets_a) + (1.0 - lam) * self.criterion(logits, targets_b)
                 else:
                     raw_loss = self.criterion(logits, targets)
+                supcon_cfg = self.supervised_contrastive_cfg
+                if supcon_cfg.get("enabled", False):
+                    apply_to_mixup = bool(supcon_cfg.get("apply_to_mixup", False))
+                    if lam >= 1.0 or apply_to_mixup:
+                        supcon_loss = self.supervised_contrastive_loss(features, targets, source_ids)
+                    else:
+                        supcon_loss = logits.new_zeros(())
+                    raw_loss = raw_loss + float(supcon_cfg.get("weight", 0.05)) * supcon_loss
                 hard_negative_cfg = self.hard_negative_margin_cfg
                 if hard_negative_cfg.get("enabled", False):
                     apply_to_mixup = bool(hard_negative_cfg.get("apply_to_mixup", False))

@@ -72,11 +72,19 @@ class CachedUrbanSoundFrameDataset(Dataset):
     Retrieves waveforms directly from pre-loaded RAM dictionary,
     extracting 8000-sample frames on-the-fly. No Disk I/O during training.
     """
-    def __init__(self, records, cached_waveforms, frame_length=8000, augment_cfg=None):
+    def __init__(
+        self,
+        records,
+        cached_waveforms,
+        frame_length=8000,
+        augment_cfg=None,
+        return_source_id=False,
+    ):
         self.records = records
         self.cached_waveforms = cached_waveforms
         self.frame_length = frame_length
         self.augment = WaveformAugment(augment_cfg)
+        self.return_source_id = bool(return_source_id)
 
     def __len__(self):
         return len(self.records)
@@ -101,7 +109,9 @@ class CachedUrbanSoundFrameDataset(Dataset):
             frame = F.pad(frame, (0, padding), mode='constant')
 
         frame = self.augment(frame.float())
-            
+
+        if self.return_source_id:
+            return frame, label, int(record.get("source_id", -1))
         return frame, label
 
 def parse_dataset(csv_path, audio_base_dir, class_names):
@@ -225,7 +235,10 @@ def generate_frame_records(
                 "path": r["path"],
                 "label": r["label"],
                 "fold": r["fold"],
-                "frame_start": frame_start
+                "frame_start": frame_start,
+                "slice_file_name": r.get("slice_file_name"),
+                "fsID": r.get("fsID"),
+                "classID": r.get("classID"),
             })
     return frame_records
 

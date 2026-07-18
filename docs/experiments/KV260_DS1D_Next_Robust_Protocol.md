@@ -400,3 +400,23 @@ A pair/group margin on logits is too coarse for this problem. It pushes class
 boundaries but does not learn the missing source-invariant representation for
 stationary mechanical sounds.
 ```
+
+### Phase 4 Candidate: Source-Invariant Supervised Contrastive Training
+
+This candidate keeps the deployment model unchanged and adds a training-only
+feature loss:
+
+```text
+Config: configs/kv260_ds1d_pyramid_supcon_sourceinv_val.json
+Params: unchanged from baseline
+MAC/clip: unchanged from baseline
+Mechanism: CE + source-aware supervised contrastive feature loss
+Sampler: batches contain same-class examples from different fsID source groups
+Target: learn source-invariant features before the final classifier
+```
+
+Run command:
+
+```bash
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_supcon_sourceinv_val.json --exp_name local_multifold_pyramid_supcon_sourceinv_f1_f3_50ep --folds 1-3 --epochs 50 --analyze --eval_modes
+```
