@@ -602,3 +602,28 @@ Decision:
 Prioritize source-aware hard-group training and targeted weak-boundary
 regularization before more long runs, width-only scaling, or broad SupCon.
 ```
+
+### Local Source-Aware Training Result
+
+Follow-up local runs are recorded in:
+
+```text
+docs/experiments/KV260_DS1D_Source_Group_Audit.md
+```
+
+Result:
+
+```text
+Source-hard CE was rejected after fold 1 because jackhammer collapsed from
+90.82% to 60.20%. Source-balanced CE was then tested on folds 1-3 and did not
+beat baseline: mean final 70.30% vs 71.88%, mean ensemble 69.46% vs 72.30%.
+```
+
+Decision update:
+
+```text
+Do not promote source-hard CE or source-balanced CE to 10 folds. Keep the
+top-level source_aware_batch_sampler implementation for controlled ablations,
+but the next improvement must address representation/source-domain features,
+not only batch composition.
+```

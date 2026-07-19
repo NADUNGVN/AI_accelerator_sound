@@ -401,8 +401,9 @@ def attach_source_ids(frame_records):
 
 class SourceAwareBatchSampler(Sampler):
     """
-    Builds batches with multiple source groups per class. This gives supervised
-    contrastive training positive pairs that share the label but not the source.
+    Builds batches with multiple source groups per class. This can be used for
+    source-robust CE training and also gives supervised contrastive training
+    positive pairs that share the label but not the source.
     """
     def __init__(
         self,
@@ -411,6 +412,7 @@ class SourceAwareBatchSampler(Sampler):
         classes_per_batch=8,
         sources_per_class=2,
         samples_per_source=4,
+        class_multipliers=None,
         seed=83,
     ):
         self.records = records
@@ -418,6 +420,7 @@ class SourceAwareBatchSampler(Sampler):
         self.sources_per_class = max(1, int(sources_per_class))
         self.samples_per_source = max(1, int(samples_per_source))
         self.classes_per_batch = max(1, int(classes_per_batch))
+        self.class_multipliers = class_multipliers
         self.seed = int(seed)
         self.epoch = 0
 
@@ -437,20 +440,56 @@ class SourceAwareBatchSampler(Sampler):
         self.labels = sorted(self.indices_by_label_source)
         if not self.labels:
             raise ValueError("SourceAwareBatchSampler requires at least one training record.")
+        self.label_weights = self._build_label_weights()
         self.num_batches = max(1, math.ceil(len(records) / self.batch_size))
 
     def __len__(self):
         return self.num_batches
+
+    def _build_label_weights(self):
+        if self.class_multipliers is None:
+            return {label: 1.0 for label in self.labels}
+        if len(self.class_multipliers) <= max(self.labels):
+            raise ValueError(
+                f"class_multipliers must cover label {max(self.labels)}, "
+                f"got {len(self.class_multipliers)} values"
+            )
+        weights = {}
+        for label in self.labels:
+            weights[label] = max(0.0, float(self.class_multipliers[label]))
+        if sum(weights.values()) <= 0.0:
+            raise ValueError("At least one source-aware class multiplier must be positive.")
+        return weights
+
+    def _weighted_label_choice(self, rng, labels):
+        total_weight = sum(self.label_weights.get(label, 1.0) for label in labels)
+        if total_weight <= 0.0:
+            return rng.choice(labels)
+        threshold = rng.random() * total_weight
+        cumulative = 0.0
+        for label in labels:
+            cumulative += self.label_weights.get(label, 1.0)
+            if cumulative >= threshold:
+                return label
+        return labels[-1]
+
+    def _sample_labels(self, rng):
+        if len(self.labels) >= self.classes_per_batch:
+            available = list(self.labels)
+            labels = []
+            for _ in range(self.classes_per_batch):
+                label = self._weighted_label_choice(rng, available)
+                labels.append(label)
+                available.remove(label)
+            return labels
+        return [self._weighted_label_choice(rng, self.labels) for _ in range(self.classes_per_batch)]
 
     def __iter__(self):
         rng = random.Random(self.seed + self.epoch)
         self.epoch += 1
 
         for _ in range(self.num_batches):
-            if len(self.labels) >= self.classes_per_batch:
-                labels = rng.sample(self.labels, self.classes_per_batch)
-            else:
-                labels = [rng.choice(self.labels) for _ in range(self.classes_per_batch)]
+            labels = self._sample_labels(rng)
 
             batch = []
             for label in labels:
@@ -722,12 +761,23 @@ def main():
     print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)}")
     supervised_contrastive_cfg = cfg.get("supervised_contrastive", {})
     supervised_contrastive_enabled = bool(supervised_contrastive_cfg.get("enabled", False))
-    if supervised_contrastive_enabled:
+    standalone_source_batch_cfg = cfg.get("source_aware_batch_sampler", {})
+    supcon_source_batch_cfg = supervised_contrastive_cfg.get("source_aware_batch_sampler", {})
+    if standalone_source_batch_cfg.get("enabled", False):
+        source_batch_cfg = standalone_source_batch_cfg
+        source_batch_origin = "source_aware_batch_sampler"
+    else:
+        source_batch_cfg = supcon_source_batch_cfg
+        source_batch_origin = "supervised_contrastive.source_aware_batch_sampler"
+    use_source_batch_sampler = bool(source_batch_cfg.get("enabled", False))
+    needs_source_ids = supervised_contrastive_enabled or use_source_batch_sampler
+    if needs_source_ids:
         source_to_id = attach_source_ids(train_frames)
         print(
-            "[SupCon Data Setup] "
-            f"enabled=True | source_groups={len(source_to_id)} | "
-            f"source_aware={bool(supervised_contrastive_cfg.get('source_aware', True))}"
+            "[Source Data Setup] "
+            f"source_groups={len(source_to_id)} | "
+            f"supcon={supervised_contrastive_enabled} | "
+            f"source_batch_sampler={use_source_batch_sampler}"
         )
 
     # 3. Preload waveforms to RAM after optional smoke subsetting.
@@ -755,8 +805,6 @@ def main():
     )
     
     num_workers = cfg.get("num_workers", 0)
-    source_batch_cfg = supervised_contrastive_cfg.get("source_aware_batch_sampler", {})
-    use_source_batch_sampler = supervised_contrastive_enabled and bool(source_batch_cfg.get("enabled", False))
     loader_kwargs = {
         "num_workers": num_workers,
         "pin_memory": True,
@@ -774,15 +822,18 @@ def main():
             classes_per_batch=source_batch_cfg.get("classes_per_batch", 8),
             sources_per_class=source_batch_cfg.get("sources_per_class", 2),
             samples_per_source=source_batch_cfg.get("samples_per_source", 4),
+            class_multipliers=source_batch_cfg.get("class_multipliers"),
             seed=cfg.get("seed", 83),
         )
         loader_kwargs["batch_sampler"] = batch_sampler
         print(
             "[DataLoader Setup] SourceAwareBatchSampler enabled | "
+            f"origin={source_batch_origin} | "
             f"batch_size={batch_sampler.batch_size} | "
             f"classes_per_batch={batch_sampler.classes_per_batch} | "
             f"sources_per_class={batch_sampler.sources_per_class} | "
-            f"samples_per_source={batch_sampler.samples_per_source}"
+            f"samples_per_source={batch_sampler.samples_per_source} | "
+            f"class_multipliers={source_batch_cfg.get('class_multipliers')}"
         )
     else:
         loader_kwargs.update({
@@ -1144,6 +1195,7 @@ def main():
         "class_weighting": cfg.get("class_weighting", "none"),
         "class_weight_multipliers": cfg.get("class_weight_multipliers"),
         "weighted_sampler": cfg.get("weighted_sampler"),
+        "source_aware_batch_sampler": cfg.get("source_aware_batch_sampler"),
         "pool_type": cfg.get("pool_type", "avg"),
         "pool_bins": cfg.get("pool_bins"),
         "stem_type": cfg.get("stem_type", "single"),

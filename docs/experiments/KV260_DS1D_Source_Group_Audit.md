@@ -150,3 +150,176 @@ Implementation idea:
    mean final accuracy improves over 71.88%, ensemble improves over 72.30%,
    `air_conditioner` improves without `jackhammer` falling below baseline.
 
+## Local Source-Aware Training Check
+
+Date: 2026-07-19
+
+Machine:
+
+```text
+Windows local machine
+Python: C:\Users\Dawin\AppData\Local\Programs\Python\Python311\python.exe
+Device: cuda
+GPU-compatible batch tested: 64 full-clip waveforms
+```
+
+Code change:
+
+```text
+train.py now supports a top-level source_aware_batch_sampler for CE training.
+The sampler no longer requires supervised_contrastive.enabled=true.
+```
+
+### Smoke Test
+
+Command:
+
+```bash
+python train.py --fold 1 --config configs/kv260_ds1d_pyramid_sourcehard_ce_val.json --exp_name smoke_sourcehard_local --epochs 1 --max_train_clips 80 --max_val_clips 20 --max_test_clips 20
+```
+
+Result:
+
+```text
+Device: cuda
+Source-label overlap train/test: 0
+Source-label overlap train/val: 0
+Source-label overlap val/test: 0
+Params: 101,674
+MAC/clip: 61,854,400
+Status: DataLoader, source sampler, loss, hard-negative margin, EMA, and eval all run successfully.
+```
+
+### Source-Hard CE
+
+Config:
+
+```text
+configs/kv260_ds1d_pyramid_sourcehard_ce_val.json
+```
+
+Purpose:
+
+```text
+Use source-aware batches, class multipliers for weak classes, and targeted
+hard-negative margin on audited confusion pairs.
+```
+
+Command:
+
+```bash
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_sourcehard_ce_val.json --exp_name local_sourcehard_ce_f1_50ep --folds 1 --epochs 50 --analyze --eval_modes
+```
+
+Fold-1 result:
+
+| Run | Final test | Last-2 ensemble | Worst class |
+|---|---:|---:|---|
+| Baseline | 79.43% | 79.89% | air_conditioner 65.00% |
+| Source-hard CE | 76.21% | 77.01% | jackhammer 60.20% |
+
+Fold-1 per-class delta against baseline:
+
+| Class | Baseline | Source-hard | Delta |
+|---|---:|---:|---:|
+| air_conditioner | 65.00% | 69.00% | +4.00 |
+| car_horn | 75.00% | 77.50% | +2.50 |
+| children_playing | 70.00% | 65.00% | -5.00 |
+| dog_bark | 68.00% | 75.00% | +7.00 |
+| drilling | 90.00% | 81.00% | -9.00 |
+| engine_idling | 85.00% | 86.00% | +1.00 |
+| gun_shot | 100.00% | 100.00% | +0.00 |
+| jackhammer | 90.82% | 60.20% | -30.61 |
+| siren | 84.95% | 87.10% | +2.15 |
+| street_music | 76.47% | 77.45% | +0.98 |
+
+Decision:
+
+```text
+Reject source-hard CE in this form. It confirms that targeted pressure can
+recover air_conditioner slightly, but the hard-negative pair/multiplier setup
+damages jackhammer too much. Do not run folds 2-3 or 10-fold promotion for this
+config.
+```
+
+### Source-Balanced CE
+
+Config:
+
+```text
+configs/kv260_ds1d_pyramid_sourcebalance_ce_val.json
+```
+
+Purpose:
+
+```text
+Isolate the source-aware sampler by removing hard-negative margin and removing
+strong weak-class sampler multipliers.
+```
+
+Commands:
+
+```bash
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_sourcebalance_ce_val.json --exp_name local_sourcebalance_ce_f1_50ep --folds 1 --epochs 50 --analyze --eval_modes
+python tools/run_multifold.py --config configs/kv260_ds1d_pyramid_sourcebalance_ce_val.json --exp_name local_sourcebalance_ce_f1_50ep --folds 1-3 --epochs 50 --analyze --eval_modes --skip_existing
+python tools/audit_source_groups.py --exp_name local_sourcebalance_ce_f1_50ep --folds 1-3 --classes air_conditioner,engine_idling,jackhammer,drilling,children_playing,street_music,siren --min_support 5 --max_groups 20 --max_spectrogram_clips 6
+```
+
+Folds 1-3 result:
+
+| Run | Mean final | Mean ensemble | Worst-class mean |
+|---|---:|---:|---:|
+| Baseline | 71.88% | 72.30% | 42.00% |
+| Source-balanced CE | 70.30% | 69.46% | 42.33% |
+
+Per-fold result:
+
+| Fold | Baseline final | Source-balanced final | Delta |
+|---:|---:|---:|---:|
+| 1 | 79.43% | 79.31% | -0.11 |
+| 2 | 67.32% | 64.90% | -2.42 |
+| 3 | 68.89% | 66.70% | -2.19 |
+
+Per-class mean delta:
+
+| Class | Baseline | Source-balanced | Delta |
+|---|---:|---:|---:|
+| air_conditioner | 42.00% | 43.33% | +1.33 |
+| car_horn | 86.54% | 91.60% | +5.06 |
+| children_playing | 70.33% | 66.33% | -4.00 |
+| dog_bark | 78.67% | 77.33% | -1.33 |
+| drilling | 79.67% | 74.00% | -5.67 |
+| engine_idling | 60.00% | 59.67% | -0.33 |
+| gun_shot | 100.00% | 100.00% | +0.00 |
+| jackhammer | 78.22% | 73.52% | -4.69 |
+| siren | 83.03% | 85.93% | +2.91 |
+| street_music | 67.77% | 64.12% | -3.65 |
+
+Source audit after source-balanced CE still shows the same held-out source
+collapses:
+
+| Fold | Class | fsID | Accuracy | Main confusion |
+|---:|---|---:|---:|---|
+| 2 | engine_idling | 94632 | 0/31 | jackhammer, air_conditioner, street_music, drilling |
+| 3 | air_conditioner | 74677 | 0/31 | street_music 31 |
+| 1 | air_conditioner | 146690 | 0/25 | engine_idling 25 |
+| 3 | air_conditioner | 74507 | 0/25 | jackhammer 25 |
+| 2 | air_conditioner | 162103 | 0/18 | drilling 18 |
+
+Decision:
+
+```text
+Reject source-balanced CE as an improvement candidate. It is safe enough to keep
+as an ablation tool, but it does not solve source-domain generalization and does
+not beat the baseline on folds 1-3.
+```
+
+Current conclusion:
+
+```text
+The failure is deeper than batch composition. The model still lacks features
+that separate unseen source textures inside air_conditioner, engine_idling,
+drilling, jackhammer, children_playing, siren, and street_music. The next useful
+direction should change the representation or training target more directly,
+while protecting jackhammer and drilling with rejection criteria.
+```
