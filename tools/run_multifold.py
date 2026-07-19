@@ -108,6 +108,9 @@ def collect_fold(exp_root, fold):
         "ensemble_test_acc_pct": pct(metrics.get("test_acc_ensemble")) if metrics else None,
         "final_cycle_test_acc_pct": pct(((final or {}).get("test") or {}).get("accuracy")),
         "final_cycle_val_acc_pct": pct(((final or {}).get("val") or {}).get("accuracy")),
+        "planned_epochs": metrics.get("epochs") if metrics else None,
+        "completed_epochs": metrics.get("completed_epochs") if metrics else None,
+        "early_stopped": metrics.get("early_stopped") if metrics else None,
         "final_per_class_pct": {},
     }
 
@@ -171,12 +174,19 @@ def write_summary_files(summary, exp_root):
     lines.append("")
     lines.append("## Fold Results")
     lines.append("")
-    lines.append("| Fold | Best val | Best-val test | Final test | Ensemble | Worst final class | Worst final acc |")
-    lines.append("|---:|---:|---:|---:|---:|---|---:|")
+    lines.append("| Fold | Epochs | Early stop | Best val | Best-val test | Final test | Ensemble | Worst final class | Worst final acc |")
+    lines.append("|---:|---:|:---:|---:|---:|---:|---:|---|---:|")
     for row in summary["rows"]:
+        planned_epochs = row.get("planned_epochs")
+        completed_epochs = row.get("completed_epochs")
+        if completed_epochs is None and planned_epochs is not None:
+            completed_epochs = planned_epochs
+        epoch_text = "N/A" if planned_epochs is None else f"{completed_epochs}/{planned_epochs}"
         lines.append(
             "| "
             f"{row['fold']} | "
+            f"{epoch_text} | "
+            f"{'yes' if row.get('early_stopped') else 'no'} | "
             f"{fmt_pct(row['best_val_acc_pct'])} | "
             f"{fmt_pct(row['best_val_test_acc_pct'])} | "
             f"{fmt_pct(row['final_test_acc_pct'])} | "

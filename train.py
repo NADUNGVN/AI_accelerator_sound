@@ -1140,6 +1140,25 @@ def main():
     epochs_per_cycle = math.ceil(epochs / cycles)
     snapshot_checkpoints = []
     snapshot_epochs = []
+    early_stopping_cfg = cfg.get("early_stopping", {}) or {}
+    early_stopping_enabled = bool(early_stopping_cfg.get("enabled", False)) and uses_validation
+    early_stopping_patience = int(early_stopping_cfg.get("patience", 30))
+    early_stopping_min_delta = float(early_stopping_cfg.get("min_delta", 0.0))
+    early_stopping_warmup_epochs = int(early_stopping_cfg.get("warmup_epochs", epochs_per_cycle))
+    early_stopping_best = None
+    early_stopping_bad_epochs = 0
+    early_stopped = False
+    early_stop_epoch = None
+    completed_epochs = 0
+    if early_stopping_cfg.get("enabled", False):
+        if uses_validation:
+            print(
+                "[Early Stopping Setup] enabled=True | monitor=val_clip_acc | mode=max | "
+                f"warmup_epochs={early_stopping_warmup_epochs} | "
+                f"patience={early_stopping_patience} | min_delta={early_stopping_min_delta:g}"
+            )
+        else:
+            print("[Early Stopping Setup] disabled because this protocol has no validation split.")
 
     # Training Loop
     for epoch in range(epochs):
@@ -1149,6 +1168,7 @@ def main():
             
         epoch_start = time.time()
         loss, train_acc = trainer.train_epoch(train_loader)
+        completed_epochs = epoch + 1
         
         eval_model = ema.module if use_ema_for_validation else model
         if uses_validation:
@@ -1193,13 +1213,30 @@ def main():
             snapshot_epochs.append(epoch + 1)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
-    if not snapshot_epochs or snapshot_epochs[-1] != epochs:
+        if early_stopping_enabled and completed_epochs >= early_stopping_warmup_epochs:
+            if early_stopping_best is None or val_clip_acc > early_stopping_best + early_stopping_min_delta:
+                early_stopping_best = val_clip_acc
+                early_stopping_bad_epochs = 0
+            else:
+                early_stopping_bad_epochs += 1
+                if early_stopping_bad_epochs >= early_stopping_patience:
+                    early_stopped = True
+                    early_stop_epoch = completed_epochs
+                    print(
+                        "--> Early stopping triggered: "
+                        f"epoch={completed_epochs}, best_val={early_stopping_best*100:.2f}%, "
+                        f"patience={early_stopping_patience}, min_delta={early_stopping_min_delta:g}."
+                    )
+                    break
+
+    final_epoch = completed_epochs or epochs
+    if not snapshot_epochs or snapshot_epochs[-1] != final_epoch:
         eval_model = ema.module if use_ema_for_validation else model
         snapshot_path = get_cycle_ckpt_path("final")
         torch.save(eval_model.state_dict(), snapshot_path)
         snapshot_checkpoints.append(snapshot_path)
-        snapshot_epochs.append(epochs)
-        print("--> Saved Final Epoch checkpoint.")
+        snapshot_epochs.append(final_epoch)
+        print(f"--> Saved Final Epoch checkpoint at epoch {final_epoch}.")
 
     # Load and evaluate the best validation model only when the protocol has a validation fold.
     if uses_validation and os.path.exists(best_ckpt_path):
@@ -1306,9 +1343,14 @@ def main():
         "drop_silent_tail_frames": drop_silent_tail_frames,
         "eval_drop_silent_tail_frames": eval_drop_silent_tail_frames,
         "epochs": epochs,
+        "completed_epochs": completed_epochs,
         "cycles": cycles,
         "snapshot_epochs": snapshot_epochs,
         "last_snapshot_epoch": last_snapshot_epoch,
+        "early_stopping": cfg.get("early_stopping"),
+        "early_stopped": early_stopped,
+        "early_stop_epoch": early_stop_epoch,
+        "early_stopping_best_val_acc": early_stopping_best,
         "seed": cfg.get("seed", 83),
         "loss_type": loss_type,
         "focal_gamma": cfg.get("focal_gamma"),
