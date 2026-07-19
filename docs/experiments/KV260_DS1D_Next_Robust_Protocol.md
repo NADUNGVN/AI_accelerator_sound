@@ -577,3 +577,28 @@ than both the 50-epoch baseline and the 200-epoch lr=0.001 run on fold 1.
 The 200-epoch paper-style schedule is therefore not the missing ingredient for
 the current source-safe protocol.
 ```
+
+### Source Group Audit
+
+The next verification step is recorded in:
+
+```text
+docs/experiments/KV260_DS1D_Source_Group_Audit.md
+```
+
+Main conclusion:
+
+```text
+The current 72% multi-fold ceiling is dominated by source-domain failures.
+For example, air_conditioner has 174 errors across folds 1-3, and its top
+10 failed source groups account for 93.1% of those errors. Engine_idling top
+10 source groups account for 89.2% of errors, and jackhammer top 5 source
+groups account for 98.5% of errors.
+```
+
+Decision:
+
+```text
+Prioritize source-aware hard-group training and targeted weak-boundary
+regularization before more long runs, width-only scaling, or broad SupCon.
+```
