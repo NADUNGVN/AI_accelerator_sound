@@ -652,3 +652,35 @@ Reject direct depth increase as the next improvement path. It damaged the
 jackhammer source group fsID 177537 and did not solve the weak air_conditioner
 source groups. Keep the current 101,674-param baseline as the best model.
 ```
+
+### Train-Time Protection And Frame Check
+
+Detailed log:
+
+```text
+docs/experiments/KV260_DS1D_Train_Time_Protection_And_Frame_Check.md
+```
+
+Result:
+
+```text
+Protected fine-tuning from the current baseline slightly improved final mean
+accuracy on folds 1-3 from 71.88% to 72.22%, but the ensemble mean did not
+improve: 72.30% baseline versus 72.22% fine-tune. It is useful as a guardrail,
+not as the main accuracy path.
+
+The paper-style 16K frame + SUM candidate fit the KV260 budget at 101,674 params
+and 201.57M MAC/clip, but fold-1 accuracy was worse than full-clip baseline.
+Naive 16K frame training reached only 70.69% final test accuracy, and
+duration-aware 16K frame training reached 77.24% final test accuracy while
+damaging jackhammer.
+```
+
+Decision update:
+
+```text
+Keep configs/kv260_ds1d_pyramid_mixup_ema_val.json as the active best model.
+Do not continue random-init weak boost + KD or 16K frame SUM as replacement
+paths. Use protected fine-tuning only as a train-time guardrail for future
+representation changes.
+```

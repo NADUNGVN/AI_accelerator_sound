@@ -290,6 +290,96 @@ def build_input_transform(cfg, device):
     raise ValueError(f"Unsupported input_features '{input_features}'. Use 'waveform' or 'logmel'.")
 
 
+def resolve_repo_path(path):
+    if path is None:
+        return None
+    path = os.path.expanduser(str(path))
+    if os.path.isabs(path):
+        return path
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    return os.path.abspath(os.path.join(repo_root, path))
+
+
+def load_json_config(path):
+    resolved = resolve_repo_path(path)
+    with open(resolved, "r") as f:
+        return json.load(f), resolved
+
+
+def format_teacher_checkpoint_path(template, fold):
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    formatted = str(template).format(fold=fold, repo_root=repo_root)
+    return resolve_repo_path(formatted)
+
+
+def load_teacher_model(student_cfg, distillation_cfg, fold, device):
+    if not distillation_cfg.get("enabled", False):
+        return None, None, None, None
+
+    teacher_config_path = distillation_cfg.get("teacher_config")
+    if teacher_config_path:
+        teacher_cfg, teacher_config_resolved = load_json_config(teacher_config_path)
+    else:
+        teacher_cfg = copy.deepcopy(student_cfg)
+        teacher_config_resolved = None
+
+    compatibility_keys = ["input_features", "sample_rate", "frame_length", "frame_hop", "frames_per_clip"]
+    mismatches = []
+    for key in compatibility_keys:
+        student_value = student_cfg.get(key)
+        teacher_value = teacher_cfg.get(key)
+        if student_value != teacher_value:
+            mismatches.append(f"{key}: student={student_value} teacher={teacher_value}")
+    if mismatches:
+        raise ValueError(
+            "Distillation teacher/student input settings must match for this trainer: "
+            + "; ".join(mismatches)
+        )
+
+    checkpoint_template = distillation_cfg.get("teacher_checkpoint_template") or distillation_cfg.get("checkpoint_template")
+    if not checkpoint_template:
+        raise ValueError("distillation.teacher_checkpoint_template is required when distillation is enabled.")
+    checkpoint_path = format_teacher_checkpoint_path(checkpoint_template, fold)
+    if not os.path.exists(checkpoint_path):
+        raise FileNotFoundError(f"Teacher checkpoint not found: {checkpoint_path}")
+
+    teacher_name, teacher_model = build_model(teacher_cfg, num_classes=10)
+    state = torch.load(checkpoint_path, map_location=device, weights_only=True)
+    if isinstance(state, dict) and "model_state_dict" in state:
+        state = state["model_state_dict"]
+    teacher_model.load_state_dict(state)
+    teacher_model = teacher_model.to(device)
+    teacher_model.eval()
+    for parameter in teacher_model.parameters():
+        parameter.requires_grad_(False)
+
+    return teacher_name, teacher_model, checkpoint_path, teacher_config_resolved
+
+
+def load_initial_model_weights(model, cfg, fold, device):
+    initial_cfg = cfg.get("initial_checkpoint", {}) or {}
+    if not initial_cfg.get("enabled", False):
+        return None
+
+    checkpoint_template = initial_cfg.get("template") or initial_cfg.get("path")
+    if not checkpoint_template:
+        raise ValueError("initial_checkpoint.template is required when initial_checkpoint is enabled.")
+    checkpoint_path = format_teacher_checkpoint_path(checkpoint_template, fold)
+    if not os.path.exists(checkpoint_path):
+        raise FileNotFoundError(f"Initial checkpoint not found: {checkpoint_path}")
+
+    state = torch.load(checkpoint_path, map_location=device, weights_only=True)
+    if isinstance(state, dict) and "model_state_dict" in state:
+        state = state["model_state_dict"]
+    strict = bool(initial_cfg.get("strict", True))
+    model.load_state_dict(state, strict=strict)
+    print(
+        "[Initial Checkpoint Setup] enabled=True | "
+        f"checkpoint={checkpoint_path} | strict={strict}"
+    )
+    return checkpoint_path
+
+
 def count_parameters(model):
     return {
         "params_with_bias": sum(p.numel() for p in model.parameters()),
@@ -876,6 +966,7 @@ def main():
     # Instantiate model, loss, optimizer, scaler
     model_name, model = build_model(cfg, num_classes=10)
     model = model.to(device)
+    initial_checkpoint_path = load_initial_model_weights(model, cfg, args.fold, device)
     input_transform = build_input_transform(cfg, device)
     model_input_channels = 1
     model_input_length = frame_length
@@ -903,6 +994,23 @@ def main():
         print(
             f"[Feature Setup] input_features={cfg.get('input_features')} | "
             f"classifier_input_channels={model_input_channels} | classifier_input_length={model_input_length}"
+        )
+    distillation_cfg = cfg.get("distillation", {})
+    teacher_name, teacher_model, teacher_checkpoint_path, teacher_config_path = load_teacher_model(
+        cfg,
+        distillation_cfg,
+        args.fold,
+        device,
+    )
+    if teacher_model is not None:
+        print(
+            "[Distillation Setup] enabled=True | "
+            f"teacher={teacher_name} | "
+            f"checkpoint={teacher_checkpoint_path} | "
+            f"weight={float(distillation_cfg.get('weight', 0.2)):g} | "
+            f"temperature={float(distillation_cfg.get('temperature', 2.0)):g} | "
+            f"protect_classes={distillation_cfg.get('protect_classes', [])} | "
+            f"apply_to_mixup={bool(distillation_cfg.get('apply_to_mixup', False))}"
         )
     
     loss_type = cfg.get("loss", "crossentropy").lower()
@@ -996,6 +1104,8 @@ def main():
         mixup_cfg=cfg.get("mixup", {}),
         hard_negative_margin_cfg=cfg.get("hard_negative_margin", {}),
         supervised_contrastive_cfg=supervised_contrastive_cfg,
+        distillation_cfg=distillation_cfg,
+        teacher_model=teacher_model,
         ema=ema,
     )
     if cfg.get("mixup", {}).get("enabled", False):
@@ -1214,6 +1324,11 @@ def main():
         "mixup": cfg.get("mixup"),
         "supervised_contrastive": cfg.get("supervised_contrastive"),
         "hard_negative_margin": cfg.get("hard_negative_margin"),
+        "distillation": cfg.get("distillation"),
+        "initial_checkpoint": cfg.get("initial_checkpoint"),
+        "initial_checkpoint_path": initial_checkpoint_path,
+        "teacher_checkpoint_path": teacher_checkpoint_path,
+        "teacher_config_path": teacher_config_path,
         "ema": cfg.get("ema"),
         "use_ema_for_validation": use_ema_for_validation,
         "amp": use_amp,

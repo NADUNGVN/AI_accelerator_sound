@@ -25,6 +25,8 @@ class Trainer:
         mixup_cfg=None,
         hard_negative_margin_cfg=None,
         supervised_contrastive_cfg=None,
+        distillation_cfg=None,
+        teacher_model=None,
         ema=None,
     ):
         self.model = model
@@ -40,6 +42,12 @@ class Trainer:
         self.hard_negative_margin_cfg = hard_negative_margin_cfg or {}
         self.hard_negative_pairs = self._build_hard_negative_pairs(self.hard_negative_margin_cfg)
         self.supervised_contrastive_cfg = supervised_contrastive_cfg or {}
+        self.distillation_cfg = distillation_cfg or {}
+        self.teacher_model = teacher_model
+        if self.teacher_model is not None:
+            self.teacher_model.eval()
+            for parameter in self.teacher_model.parameters():
+                parameter.requires_grad_(False)
         self.ema = ema
 
     @staticmethod
@@ -117,6 +125,29 @@ class Trainer:
         mean_log_prob_pos = (positive_mask.float() * log_prob).sum(dim=1) / positive_counts.clamp_min(1)
         return -mean_log_prob_pos[valid_anchors].mean()
 
+    def protected_distillation_loss(self, student_logits, teacher_logits, targets):
+        cfg = self.distillation_cfg
+        if not cfg.get("enabled", False) or self.teacher_model is None:
+            return student_logits.new_zeros(())
+
+        temperature = max(float(cfg.get("temperature", 2.0)), 1e-6)
+        protect_classes = cfg.get("protect_classes", [])
+        if protect_classes:
+            mask = torch.zeros_like(targets, dtype=torch.bool)
+            for class_id in protect_classes:
+                mask = mask | (targets == int(class_id))
+        else:
+            mask = torch.ones_like(targets, dtype=torch.bool)
+
+        if not mask.any():
+            return student_logits.new_zeros(())
+
+        student_log_probs = F.log_softmax(student_logits.float() / temperature, dim=1)
+        teacher_probs = F.softmax(teacher_logits.float() / temperature, dim=1)
+        per_sample = F.kl_div(student_log_probs, teacher_probs, reduction="none").sum(dim=1)
+        per_sample = per_sample * temperature * temperature
+        return per_sample[mask].mean()
+
     def transform_inputs(self, inputs):
         if self.input_transform is None:
             return inputs
@@ -193,6 +224,22 @@ class Trainer:
                     else:
                         margin_loss = logits.new_zeros(())
                     raw_loss = raw_loss + float(hard_negative_cfg.get("weight", 0.05)) * margin_loss
+                distillation_cfg = self.distillation_cfg
+                if distillation_cfg.get("enabled", False) and self.teacher_model is not None:
+                    apply_to_mixup = bool(distillation_cfg.get("apply_to_mixup", False))
+                    if lam >= 1.0 or apply_to_mixup:
+                        with torch.no_grad():
+                            teacher_logits = self.teacher_model(mixed_inputs)
+                        if mixup_enabled and lam < 1.0 and apply_to_mixup:
+                            distill_loss = (
+                                lam * self.protected_distillation_loss(logits, teacher_logits, targets_a)
+                                + (1.0 - lam) * self.protected_distillation_loss(logits, teacher_logits, targets_b)
+                            )
+                        else:
+                            distill_loss = self.protected_distillation_loss(logits, teacher_logits, targets)
+                    else:
+                        distill_loss = logits.new_zeros(())
+                    raw_loss = raw_loss + float(distillation_cfg.get("weight", 0.2)) * distill_loss
                 loss = raw_loss / self.accumulation_steps
                 
             self.scaler.scale(loss).backward()
