@@ -45,6 +45,46 @@ the same command with:
 --batch_size 64 --skip_existing
 ```
 
+## Automatic Screen Run
+
+Use this option for the full unattended three-model run:
+
+```bash
+screen -S sound_full10
+```
+
+Inside screen:
+
+```bash
+conda activate sound_env
+bash scripts/run_server3090_full10_three_models.sh
+```
+
+Detach from screen:
+
+```text
+Ctrl-a d
+```
+
+Re-attach:
+
+```bash
+screen -r sound_full10
+```
+
+If CUDA OOM happens, re-run with lower batch size. The script resumes completed
+folds by default:
+
+```bash
+bash scripts/run_server3090_full10_three_models.sh --batch-size 64
+```
+
+Logs:
+
+```text
+logs/server3090_full10/
+```
+
 ## Run 1: Current Best Pyramid Baseline
 
 This run must finish before the protected fine-tune run because its checkpoints
