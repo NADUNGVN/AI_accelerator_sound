@@ -13,7 +13,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
 from src.data import LogMelFeatureExtractor, load_audio_to_ram, parse_dataset
-from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260LogMelNetDS1D
+from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260AudioNetDS1DDeep, KV260LogMelNetDS1D
 from src.training import Trainer
 
 
@@ -68,6 +68,16 @@ def build_model(cfg, metrics, num_classes):
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
+            pool_type=cfg.get("pool_type", "avg"),
+            pool_bins=cfg.get("pool_bins", None),
+            stem_type=cfg.get("stem_type", "single"),
+            extra_late_blocks=int((metrics or {}).get("extra_late_blocks", cfg.get("extra_late_blocks", 0))),
+        )
+    if model_name == "kv260_audio_net_ds1d_deep":
+        return KV260AudioNetDS1DDeep(
+            num_classes=num_classes,
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.20)),
             pool_type=cfg.get("pool_type", "avg"),
             pool_bins=cfg.get("pool_bins", None),
             stem_type=cfg.get("stem_type", "single"),

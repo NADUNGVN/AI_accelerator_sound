@@ -627,3 +627,28 @@ top-level source_aware_batch_sampler implementation for controlled ablations,
 but the next improvement must address representation/source-domain features,
 not only batch composition.
 ```
+
+### Added-Layer Check
+
+The direct layer-depth experiment is recorded in:
+
+```text
+docs/experiments/KV260_DS1D_Layer_Depth_Check.md
+```
+
+Result:
+
+```text
+Adding layers is feasible within the KV260 budget, but the tested variants did
+not improve source-safe accuracy. LateRes2 used 157,994 params and 75.61M
+MAC/clip but dropped fold-1 final accuracy to 75.52%. The deeper 196,074-param
+model dropped fold-1 final accuracy to 71.72%.
+```
+
+Decision update:
+
+```text
+Reject direct depth increase as the next improvement path. It damaged the
+jackhammer source group fsID 177537 and did not solve the weak air_conditioner
+source groups. Keep the current 101,674-param baseline as the best model.
+```

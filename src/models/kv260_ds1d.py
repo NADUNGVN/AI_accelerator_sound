@@ -69,6 +69,57 @@ class DSBlock2dH1(nn.Module):
         return self.pointwise(self.depthwise(x))
 
 
+class ResidualDSBlock2dH1(nn.Module):
+    """
+    Residual depthwise-separable temporal block using Conv2D-H1 operators.
+    The residual branch keeps deeper late-stage modeling cheap after temporal
+    downsampling while preserving a DPU-friendly Conv/BN/ReLU/Add pattern.
+    """
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1):
+        super().__init__()
+        self.depthwise = nn.Conv2d(
+            in_channels,
+            in_channels,
+            kernel_size=(1, kernel_size),
+            stride=(1, stride),
+            padding=(0, kernel_size // 2),
+            groups=in_channels,
+            bias=False,
+        )
+        self.depthwise_bn = nn.BatchNorm2d(in_channels)
+        self.pointwise = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size=(1, 1),
+            stride=(1, 1),
+            padding=(0, 0),
+            bias=False,
+        )
+        self.pointwise_bn = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU(inplace=True)
+
+        if stride != 1 or in_channels != out_channels:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(
+                    in_channels,
+                    out_channels,
+                    kernel_size=(1, 1),
+                    stride=(1, stride),
+                    padding=(0, 0),
+                    bias=False,
+                ),
+                nn.BatchNorm2d(out_channels),
+            )
+        else:
+            self.shortcut = nn.Identity()
+
+    def forward(self, x):
+        residual = self.shortcut(x)
+        x = self.relu(self.depthwise_bn(self.depthwise(x)))
+        x = self.pointwise_bn(self.pointwise(x))
+        return self.relu(x + residual)
+
+
 class KV260AudioNetDS1D(nn.Module):
     """
     KV260-oriented 1D-CNN represented as Conv2D with height=1.
@@ -85,6 +136,7 @@ class KV260AudioNetDS1D(nn.Module):
         pool_type="avg",
         pool_bins=None,
         stem_type="single",
+        extra_late_blocks=0,
     ):
         super().__init__()
         pool_type = pool_type.lower()
@@ -104,7 +156,7 @@ class KV260AudioNetDS1D(nn.Module):
             self.stem = MultiScaleStem2dH1(channels[0], kernels=(15, 31, 63), stride=4)
         else:
             raise ValueError(f"Unsupported stem_type '{stem_type}'. Use 'single' or 'multiscale'.")
-        self.blocks = nn.Sequential(
+        blocks = [
             DSBlock2dH1(channels[0], channels[1], kernel_size=15, stride=2),
             DSBlock2dH1(channels[1], channels[2], kernel_size=15, stride=2),
             DSBlock2dH1(channels[2], channels[3], kernel_size=11, stride=2),
@@ -112,6 +164,115 @@ class KV260AudioNetDS1D(nn.Module):
             DSBlock2dH1(channels[4], channels[5], kernel_size=9, stride=2),
             DSBlock2dH1(channels[5], channels[6], kernel_size=7, stride=2),
             DSBlock2dH1(channels[6], channels[6], kernel_size=15, stride=1),
+        ]
+        late_kernels = [15, 9, 7]
+        for idx in range(max(0, int(extra_late_blocks))):
+            blocks.append(
+                ResidualDSBlock2dH1(
+                    channels[6],
+                    channels[6],
+                    kernel_size=late_kernels[idx % len(late_kernels)],
+                    stride=1,
+                )
+            )
+        self.blocks = nn.Sequential(*blocks)
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.max_pool = nn.AdaptiveMaxPool2d((1, 1)) if pool_type == "avgmax" else None
+        self.dropout = nn.Dropout(dropout)
+        if pool_type == "pyramid_avgmax":
+            head_features = channels[-1] * 2 * sum(self.pool_bins)
+        else:
+            head_features = channels[-1] * (2 if pool_type == "avgmax" else 1)
+        self.fc = nn.Linear(head_features, num_classes)
+
+        self._initialize_weights()
+
+    def _initialize_weights(self):
+        for module in self.modules():
+            if isinstance(module, nn.Conv2d):
+                nn.init.kaiming_normal_(module.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(module, nn.BatchNorm2d):
+                nn.init.ones_(module.weight)
+                nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Linear):
+                nn.init.xavier_uniform_(module.weight)
+                nn.init.zeros_(module.bias)
+
+    def forward(self, x, return_features=False):
+        if x.dim() == 3:
+            x = x.unsqueeze(2)
+        elif x.dim() != 4:
+            raise ValueError(f"Expected input [B,C,T] or [B,C,1,T], got shape {tuple(x.shape)}")
+
+        x = self.stem(x)
+        x = self.blocks(x)
+        if self.pool_type == "pyramid_avgmax":
+            pooled = []
+            for bin_count in self.pool_bins:
+                pooled.append(nn.functional.adaptive_avg_pool2d(x, (1, bin_count)).flatten(1))
+                pooled.append(nn.functional.adaptive_max_pool2d(x, (1, bin_count)).flatten(1))
+            x = torch.cat(pooled, dim=1)
+        elif self.pool_type == "avgmax":
+            x = torch.cat([self.avg_pool(x).flatten(1), self.max_pool(x).flatten(1)], dim=1)
+        else:
+            x = self.avg_pool(x).flatten(1)
+        features = x
+        x = self.dropout(features)
+        logits = self.fc(x)
+        if return_features:
+            return logits, features
+        return logits
+
+
+class KV260AudioNetDS1DDeep(nn.Module):
+    """
+    Deeper KV260-oriented 1D-CNN variant.
+
+    It keeps the raw waveform and Conv2D-H1 deployment form of
+    KV260AudioNetDS1D, but adds residual depthwise-separable blocks only after
+    substantial temporal downsampling. This increases representation capacity
+    with modest MAC growth compared with adding early waveform layers.
+    """
+    def __init__(
+        self,
+        num_classes=10,
+        width_mult=1.0,
+        dropout=0.20,
+        pool_type="avg",
+        pool_bins=None,
+        stem_type="single",
+    ):
+        super().__init__()
+        pool_type = pool_type.lower()
+        if pool_type not in {"avg", "avgmax", "pyramid_avgmax"}:
+            raise ValueError(f"Unsupported pool_type '{pool_type}'. Use 'avg', 'avgmax', or 'pyramid_avgmax'.")
+        self.pool_type = pool_type
+        self.pool_bins = [int(v) for v in (pool_bins or [1, 2, 4])]
+
+        def c(channels):
+            return max(8, int(round(channels * width_mult)))
+
+        channels = [c(v) for v in [24, 32, 48, 64, 96, 128, 192]]
+        stem_type = stem_type.lower()
+        if stem_type == "single":
+            self.stem = ConvBNReLU2dH1(1, channels[0], kernel_size=31, stride=4)
+        elif stem_type == "multiscale":
+            self.stem = MultiScaleStem2dH1(channels[0], kernels=(15, 31, 63), stride=4)
+        else:
+            raise ValueError(f"Unsupported stem_type '{stem_type}'. Use 'single' or 'multiscale'.")
+
+        self.blocks = nn.Sequential(
+            DSBlock2dH1(channels[0], channels[1], kernel_size=15, stride=2),
+            DSBlock2dH1(channels[1], channels[2], kernel_size=15, stride=2),
+            DSBlock2dH1(channels[2], channels[3], kernel_size=11, stride=2),
+            ResidualDSBlock2dH1(channels[3], channels[3], kernel_size=13, stride=1),
+            DSBlock2dH1(channels[3], channels[4], kernel_size=9, stride=2),
+            ResidualDSBlock2dH1(channels[4], channels[4], kernel_size=15, stride=1),
+            DSBlock2dH1(channels[4], channels[5], kernel_size=9, stride=2),
+            ResidualDSBlock2dH1(channels[5], channels[5], kernel_size=11, stride=1),
+            DSBlock2dH1(channels[5], channels[6], kernel_size=7, stride=2),
+            ResidualDSBlock2dH1(channels[6], channels[6], kernel_size=9, stride=1),
+            ResidualDSBlock2dH1(channels[6], channels[6], kernel_size=15, stride=1),
         )
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.max_pool = nn.AdaptiveMaxPool2d((1, 1)) if pool_type == "avgmax" else None

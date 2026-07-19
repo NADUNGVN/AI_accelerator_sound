@@ -16,7 +16,7 @@ from collections import defaultdict
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260LogMelNetDS1D
+from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260AudioNetDS1DDeep, KV260LogMelNetDS1D
 from src.data import (
     CachedUrbanSoundFrameDataset,
     LogMelFeatureExtractor,
@@ -243,6 +243,16 @@ def build_model(cfg, num_classes):
             pool_type=cfg.get("pool_type", "avg"),
             pool_bins=cfg.get("pool_bins", None),
             stem_type=cfg.get("stem_type", "single"),
+            extra_late_blocks=int(cfg.get("extra_late_blocks", 0)),
+        )
+    elif model_name == "kv260_audio_net_ds1d_deep":
+        model = KV260AudioNetDS1DDeep(
+            num_classes=num_classes,
+            width_mult=float(cfg.get("width_mult", 1.0)),
+            dropout=float(cfg.get("dropout", 0.20)),
+            pool_type=cfg.get("pool_type", "avg"),
+            pool_bins=cfg.get("pool_bins", None),
+            stem_type=cfg.get("stem_type", "single"),
         )
     elif model_name == "kv260_logmel_net_ds1d":
         model = KV260LogMelNetDS1D(
@@ -255,7 +265,8 @@ def build_model(cfg, num_classes):
     else:
         raise ValueError(
             f"Unsupported model_name '{model_name}'. Use 'tcam1dcnn', "
-            "'efficient_audio_cnn1d', 'kv260_audio_net_ds1d', or 'kv260_logmel_net_ds1d'."
+            "'efficient_audio_cnn1d', 'kv260_audio_net_ds1d', "
+            "'kv260_audio_net_ds1d_deep', or 'kv260_logmel_net_ds1d'."
         )
     return model_name, model
 
@@ -1199,6 +1210,7 @@ def main():
         "pool_type": cfg.get("pool_type", "avg"),
         "pool_bins": cfg.get("pool_bins"),
         "stem_type": cfg.get("stem_type", "single"),
+        "extra_late_blocks": cfg.get("extra_late_blocks", 0),
         "mixup": cfg.get("mixup"),
         "supervised_contrastive": cfg.get("supervised_contrastive"),
         "hard_negative_margin": cfg.get("hard_negative_margin"),
