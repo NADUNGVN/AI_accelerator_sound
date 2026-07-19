@@ -290,6 +290,52 @@ def build_input_transform(cfg, device):
     raise ValueError(f"Unsupported input_features '{input_features}'. Use 'waveform' or 'logmel'.")
 
 
+def get_epoch_lr(epoch, total_epochs, base_lr, cycles, cfg):
+    schedule_cfg = cfg.get("lr_schedule", {}) or {}
+    schedule_type = str(schedule_cfg.get("type", "cosine_restart")).lower()
+    base_lr = float(base_lr)
+
+    if schedule_type in {"cosine", "cosine_restart"}:
+        lr = Trainer.get_cosine_lr(epoch, total_epochs, base_lr, cycles)
+    elif schedule_type in {"step", "multistep"}:
+        lr = base_lr
+        gamma = float(schedule_cfg.get("gamma", 0.1))
+        milestones = sorted(int(m) for m in schedule_cfg.get("milestones", []))
+        completed_epoch = epoch + 1
+        for milestone in milestones:
+            if completed_epoch > milestone:
+                lr *= gamma
+    elif schedule_type == "constant":
+        lr = base_lr
+    else:
+        raise ValueError(
+            f"Unsupported lr_schedule type '{schedule_type}'. "
+            "Use 'cosine_restart', 'multistep', 'step', or 'constant'."
+        )
+
+    warmup_epochs = int(schedule_cfg.get("warmup_epochs", 0))
+    if warmup_epochs > 0 and (epoch + 1) <= warmup_epochs:
+        lr *= float(schedule_cfg.get("warmup_factor", 0.1))
+
+    return max(lr, float(schedule_cfg.get("min_lr", 1e-6)))
+
+
+def describe_lr_schedule(cfg, cycles):
+    schedule_cfg = cfg.get("lr_schedule", {}) or {}
+    schedule_type = str(schedule_cfg.get("type", "cosine_restart")).lower()
+    parts = [f"type={schedule_type}"]
+    if schedule_type in {"cosine", "cosine_restart"}:
+        parts.append(f"cycles={cycles}")
+    if schedule_type in {"step", "multistep"}:
+        parts.append(f"milestones={schedule_cfg.get('milestones', [])}")
+        parts.append(f"gamma={float(schedule_cfg.get('gamma', 0.1)):g}")
+    if int(schedule_cfg.get("warmup_epochs", 0)) > 0:
+        parts.append(f"warmup_epochs={int(schedule_cfg.get('warmup_epochs', 0))}")
+        parts.append(f"warmup_factor={float(schedule_cfg.get('warmup_factor', 0.1)):g}")
+    parts.append(f"min_lr={float(schedule_cfg.get('min_lr', 1e-6)):g}")
+    return " | ".join(parts)
+
+
 def resolve_repo_path(path):
     if path is None:
         return None
@@ -1063,6 +1109,10 @@ def main():
 
     weight_decay = float(cfg.get("weight_decay", 0.0))
     optimizer_name = cfg.get("optimizer", "adam").lower()
+    momentum = float(cfg.get("momentum", 0.9))
+    nesterov_enabled = optimizer_name == "nesterov" or (
+        optimizer_name == "sgd" and bool(cfg.get("nesterov", False))
+    )
 
     print(
         f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | "
@@ -1083,8 +1133,26 @@ def main():
             eps=adam_eps,
             weight_decay=weight_decay,
         )
+    elif optimizer_name in {"sgd", "nesterov"}:
+        optimizer = torch.optim.SGD(
+            model.parameters(),
+            lr=cfg.get("lr", 2e-4),
+            momentum=momentum,
+            weight_decay=weight_decay,
+            nesterov=nesterov_enabled,
+        )
+        print(f"[Optimizer Setup] momentum={momentum:g} | nesterov={nesterov_enabled}")
+    elif optimizer_name == "adadelta":
+        optimizer = torch.optim.Adadelta(
+            model.parameters(),
+            lr=cfg.get("lr", 1.0),
+            weight_decay=weight_decay,
+        )
     else:
-        raise ValueError(f"Unsupported optimizer '{optimizer_name}'. Use 'adam' or 'adamw'.")
+        raise ValueError(
+            f"Unsupported optimizer '{optimizer_name}'. "
+            "Use 'adam', 'adamw', 'sgd', 'nesterov', or 'adadelta'."
+        )
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
     ema_cfg = cfg.get("ema", {})
     ema = ModelEMA(model, decay=ema_cfg.get("decay", 0.995)) if ema_cfg.get("enabled", False) else None
@@ -1138,6 +1206,7 @@ def main():
     cycles = cfg.get("cycles", 4)
     epochs = cfg.get("epochs", 200)
     epochs_per_cycle = math.ceil(epochs / cycles)
+    print(f"[LR Schedule Setup] {describe_lr_schedule(cfg, cycles)}")
     snapshot_checkpoints = []
     snapshot_epochs = []
     early_stopping_cfg = cfg.get("early_stopping", {}) or {}
@@ -1162,7 +1231,7 @@ def main():
 
     # Training Loop
     for epoch in range(epochs):
-        lr = trainer.get_cosine_lr(epoch, epochs, cfg.get("lr", 2e-4), cycles)
+        lr = get_epoch_lr(epoch, epochs, cfg.get("lr", 2e-4), cycles, cfg)
         for param_group in optimizer.param_groups:
             param_group["lr"] = lr
             
@@ -1378,6 +1447,9 @@ def main():
         "optimizer": optimizer_name,
         "weight_decay": weight_decay,
         "adam_eps": adam_eps,
+        "momentum": momentum,
+        "nesterov": nesterov_enabled,
+        "lr_schedule": cfg.get("lr_schedule", {"type": "cosine_restart"}),
         "batch_size": cfg.get("batch_size", 96),
         "accum_steps": cfg.get("accum_steps", 1),
         "max_train_clips": args.max_train_clips,

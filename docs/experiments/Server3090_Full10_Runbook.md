@@ -216,3 +216,26 @@ monitor=val_clip_acc
 
 Early stopping is per fold. When it triggers, training still saves
 `cycle_final.pt`, runs test evaluation, and writes `metrics.json`.
+
+## Optional Research Hyperparameter Run
+
+This is not part of the initial three-model full-10 batch. Run it after the
+current batch produces enough evidence, or run fold 1 only as a diagnostic.
+
+Research notes:
+
+```text
+docs/experiments/Hyperparameter_Research_Setup.md
+```
+
+Fold-1 diagnostic:
+
+```bash
+bash scripts/run_server3090_hparam_nesterov_step.sh
+```
+
+Full-10 promotion, only if fold 1 is better than the AdamW/cosine baseline:
+
+```bash
+bash scripts/run_server3090_hparam_nesterov_step.sh 1-10 server3090_full10_pyramid_nesterov_step_200ep_es
+```
