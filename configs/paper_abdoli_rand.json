@@ -1,5 +1,5 @@
 {
-  "comment": "Alias of paper_abdoli_rand.json — best random-init paper setup (87%).",
+  "comment": "Abdoli et al. 2019 random-init 16k (Table 3 best rand): rectangular + 75% overlap + sum rule → reported 87%.",
   "model_name": "abdoli1dcnn",
   "variant": "rand",
   "freeze_gammatone": false,

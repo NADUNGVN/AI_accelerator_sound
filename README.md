@@ -37,24 +37,38 @@ data/raw/
 ```
 *(Đường dẫn mặc định trong mã nguồn đã được cấu hình trỏ thẳng tới `data/raw/UrbanSound8K`)*.
 
-### Bước 3: Chạy huấn luyện (Official 10-Fold CV)
-Để huấn luyện mô hình cho một fold cụ thể (ví dụ Fold 1):
+### Bước 3a: Reproduce paper Abdoli et al. 2019 (khuyến nghị)
+
+Config bám sát paper (Table 1 + Table 3 best 89%):
+- Model: `Abdoli1DCNN` variant `gamma` (CL1 Gammatone 64×512, **frozen**)
+- Input: 16 000 samples (1 s @ 16 kHz), hop 8000 (**50% overlap**), rectangular window
+- Loss: MSLE (Eq. 4) · Optimizer: Adadelta lr=1.0 · batch=100 · epochs≤100 + early stop
+- Protocol: `clean_8_1_1` (8 train / 1 val / 1 test, official US8K folds)
+- Aggregation: **sum rule** trên softmax của các frame
+
+```bash
+# Best paper setup (reported 89%) — one fold
+python train.py --fold 1 --config configs/paper_abdoli_gamma.json --exp_name paper_abdoli_gamma
+
+# Random-init setup (reported 87%)
+python train.py --fold 1 --config configs/paper_abdoli_rand.json --exp_name paper_abdoli_rand
+
+# Full 10-fold CV (mean accuracy across folds)
+for f in $(seq 1 10); do
+  python train.py --fold $f --config configs/paper_abdoli_gamma.json --exp_name paper_abdoli_gamma
+done
+```
+
+Metric chính để so với paper: **Best Validation Model Test Accuracy** trong log / `metrics.json`.
+
+### Bước 3b: TCAM / research baselines
+
 ```bash
 python train.py --fold 1 --config configs/reproduce_msle.json --exp_name paper9_msle
-```
-
-Mặc định các config reproduce dùng protocol `paper_9_1`: train trên 9 fold và test trên 1 fold, không chọn checkpoint theo validation. Các config này cũng dùng baseline FP32 (`amp: false`), không gradient clipping (`gradient_clip: null`) và `adam_eps: 1e-7` để gần cấu hình paper hơn trước khi bật tối ưu hiệu năng. Nếu cần thí nghiệm sạch có validation riêng, gọi rõ:
-
-```bash
 python train.py --fold 1 --config configs/reproduce_msle.json --protocol clean_8_1_1 --exp_name cleanval_msle
-```
-
-Để kiểm tra đối chứng xem kết quả paper có thể đến từ random clip split thay vì official UrbanSound8K fold split hay không:
-
-```bash
 python train.py --fold 1 --config configs/random_clip_msle.json --exp_name randomclip_msle_fp32
 ```
 
-Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.
+Kết quả được lưu dưới `experiments/<exp_name>/fold_<k>/` (history, metrics, predictions, checkpoints).
 
 Các thư mục `experiments/`, `checkpoints/`, `logs/`, `results/` và `data/` là artifact/local data sinh ra trong quá trình chạy, không track trong Git; phần kết luận nghiên cứu được giữ trong `docs/`.

@@ -102,28 +102,47 @@ class Trainer:
         lr = max_lr / 2.0 * (math.cos(math.pi * cycle_epoch / epochs_per_cycle) + 1.0)
         return max(lr, 1e-6)
 
-    def evaluate_clips(self, models, records, cached_waveforms, frame_length=8000, frame_hop=None, return_predictions=False):
+    def evaluate_clips(
+        self,
+        models,
+        records,
+        cached_waveforms,
+        frame_length=8000,
+        frame_hop=None,
+        return_predictions=False,
+        aggregation="sum",
+        sample_rate=16000,
+        clip_seconds=4.0,
+    ):
         """
-        Evaluates whole 4-second audio clips using the SUM rule on all overlapping frames
-        retrieved directly from RAM. Supports ensembling.
+        Evaluate whole audio clips by sliding a window over each waveform and
+        aggregating per-frame softmax predictions.
+
+        Aggregation rules (Abdoli et al. 2019, Sec. 2.4):
+          * "sum"      — sum rule (Eq. 6 / Table 2 best for 16k)
+          * "majority" — majority vote over argmax frame predictions (Eq. 5)
         """
         if frame_hop is None:
             frame_hop = frame_length // 2
+        aggregation = (aggregation or "sum").lower()
+        if aggregation not in {"sum", "majority"}:
+            raise ValueError(f"Unknown aggregation '{aggregation}'. Use 'sum' or 'majority'.")
 
         for m in models:
             m.eval()
 
-        # Group records by audio path
-        clips = defaultdict(list)
+        # Group records by audio path (one entry per clip is enough for label)
+        clips = {}
         for r in records:
-            clips[r["path"]].append(r)
+            if r["path"] not in clips:
+                clips[r["path"]] = r["label"]
 
         correct = 0
         total = len(clips)
         predictions = []
 
-        # Pre-generate frame offsets for 4-second audio (64,000 samples @ 16kHz)
-        total_samples = 16000 * 4
+        # Sliding-window offsets over a fixed-length padded clip
+        total_samples = int(sample_rate * clip_seconds)
         if total_samples <= frame_length:
             offsets = [0]
         else:
@@ -131,25 +150,23 @@ class Trainer:
             offsets = list(range(0, max_start + 1, frame_hop))
 
         num_frames = len(offsets)
+        num_classes = 10
 
         with torch.no_grad():
-            for path, frames in clips.items():
-                label = frames[0]["label"]
-                waveform_np = cached_waveforms[path]
-                waveform = torch.from_numpy(waveform_np)
+            for path, label in clips.items():
+                waveform = torch.from_numpy(cached_waveforms[path])
 
-                # Extract frames
                 batch_frames = []
                 for offset in offsets:
                     frame = waveform[:, offset:offset + frame_length]
                     if frame.shape[-1] < frame_length:
-                        frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
+                        frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
                     batch_frames.append(frame)
 
                 batch_tensor = torch.stack(batch_frames).to(self.device)
 
-                # Forward pass through all ensembled models
-                sum_probs = torch.zeros((num_frames, 10), device=self.device)
+                # Average ensemble members first, then aggregate over frames
+                sum_probs = torch.zeros((num_frames, num_classes), device=self.device)
                 for m in models:
                     with torch.amp.autocast(
                         device_type="cuda" if "cuda" in self.device.type else "cpu",
@@ -157,26 +174,30 @@ class Trainer:
                         enabled=self.use_amp,
                     ):
                         logits = m(batch_tensor)
-                        probs = F.softmax(logits, dim=-1)
-                        sum_probs += probs
-                
-                sum_probs /= len(models)
-                
-                # SUM rule: aggregate frame predictions
-                clip_prob = torch.sum(sum_probs, dim=0) # (10,)
-                predicted_class = torch.argmax(clip_prob).item()
-                
+                        sum_probs += F.softmax(logits, dim=-1)
+
+                mean_probs = sum_probs / len(models)
+
+                if aggregation == "sum":
+                    # Eq. 6: y_i = (1/S) Σ o_ji  (mean is equivalent to sum for argmax)
+                    clip_score = mean_probs.sum(dim=0)
+                    predicted_class = int(torch.argmax(clip_score).item())
+                else:
+                    # Eq. 5: majority vote over frame-level argmax
+                    frame_preds = torch.argmax(mean_probs, dim=-1)
+                    votes = torch.bincount(frame_preds, minlength=num_classes)
+                    predicted_class = int(torch.argmax(votes).item())
+
                 if return_predictions:
                     predictions.append({
                         "path": path,
                         "label": label,
-                        "predicted": predicted_class
+                        "predicted": predicted_class,
                     })
-                
+
                 if predicted_class == label:
                     correct += 1
-                    
+
         if return_predictions:
             return correct / total, predictions
-        else:
-            return correct / total
+        return correct / total

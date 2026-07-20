@@ -79,6 +79,44 @@ def source_label_overlap_summary(train_clips, test_records, limit=10):
     }
 
 
+def build_model(model_name, cfg, frame_length, device):
+    """Instantiate the architecture selected by config (Abdoli1DCNN or TCAM1DCNN)."""
+    model_name = model_name.lower()
+    if model_name in {"abdoli1dcnn", "abdoli"}:
+        # freeze_gammatone: None → model default (True for gamma, False for rand)
+        freeze_cfg = cfg.get("freeze_gammatone", None)
+        if freeze_cfg is not None:
+            freeze_cfg = bool(freeze_cfg)
+        model = Abdoli1DCNN(
+            num_classes=10,
+            variant=cfg.get("variant", "gamma"),
+            input_length=frame_length,
+            freeze_gammatone=freeze_cfg,
+            dropout=float(cfg.get("dropout", 0.25)),
+        ).to(device)
+    else:
+        model = TCAM1DCNN(num_classes=10).to(device)
+    return model
+
+
+class MSLELoss(nn.Module):
+    """Mean Squared Logarithmic Error (Abdoli et al. 2019, Eq. 4).
+
+    L = mean( (log(p_i + 1) - log(a_i + 1))^2 )
+    where p is softmax(logits) and a is one-hot ground truth.
+    Equivalent to MSE(log1p(p), log1p(a)).
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.mse = nn.MSELoss()
+
+    def forward(self, logits, target):
+        probs = F.softmax(logits, dim=-1)
+        target_onehot = F.one_hot(target, num_classes=logits.size(-1)).float()
+        return self.mse(torch.log1p(probs), torch.log1p(target_onehot))
+
+
 def main():
     parser = argparse.ArgumentParser(description="Train SOTA TCAM1DCNN on RTX 3090 (Modular Structure)")
     parser.add_argument("--data_dir", type=str, default="data/raw/UrbanSound8K", help="Path to UrbanSound8K folder")
@@ -140,22 +178,24 @@ def main():
         exp_dir = f"experiments/{args.exp_name}/fold_{args.fold}"
         ckpt_dir = f"{exp_dir}/checkpoints"
         os.makedirs(ckpt_dir, exist_ok=True)
-        
-        best_ckpt_path = f"{ckpt_dir}/tcam_fold_{args.fold}_best.pt"
+
+        best_ckpt_path = f"{ckpt_dir}/best.pt"
+        last_ckpt_path = f"{ckpt_dir}/last.pt"
         history_path = f"{exp_dir}/history.json"
         metrics_path = f"{exp_dir}/metrics.json"
         predictions_path = f"{exp_dir}/predictions.json"
-        
+
         def get_cycle_ckpt_path(cycle_id):
-            return f"{ckpt_dir}/tcam_fold_{args.fold}_cycle_{cycle_id}.pt"
+            return f"{ckpt_dir}/cycle_{cycle_id}.pt"
     else:
-        best_ckpt_path = f"checkpoints/tcam_fold_{args.fold}_best.pt"
+        best_ckpt_path = f"checkpoints/fold_{args.fold}_best.pt"
+        last_ckpt_path = f"checkpoints/fold_{args.fold}_last.pt"
         history_path = f"logs/fold_{args.fold}_history.json"
         metrics_path = f"results/metrics/fold_{args.fold}_metrics.json"
         predictions_path = f"results/predictions/fold_{args.fold}_predictions.json"
-        
+
         def get_cycle_ckpt_path(cycle_id):
-            return f"checkpoints/tcam_fold_{args.fold}_cycle_{cycle_id}.pt"
+            return f"checkpoints/fold_{args.fold}_cycle_{cycle_id}.pt"
             
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device designated for training: {device}")
@@ -249,53 +289,54 @@ def main():
 
     # Instantiate model
     model_name = cfg.get("model_name", "tcam1dcnn").lower()
-    if model_name in {"abdoli1dcnn", "abdoli"}:
-        variant = cfg.get("variant", "gamma")
-        freeze_gammatone = bool(cfg.get("freeze_gammatone", False))
-        dropout_rate = float(cfg.get("dropout", 0.25))
-        model = Abdoli1DCNN(
-            num_classes=10,
-            variant=variant,
-            input_length=frame_length,
-            freeze_gammatone=freeze_gammatone,
-            dropout=dropout_rate,
-        ).to(device)
-        print(f"[Model Setup] Using Abdoli1DCNN (variant={variant}, frame_length={frame_length}, freeze_gammatone={freeze_gammatone}, dropout={dropout_rate})")
+    is_abdoli = model_name in {"abdoli1dcnn", "abdoli"}
+    model = build_model(model_name, cfg, frame_length, device)
+    if is_abdoli:
+        n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        n_total = sum(p.numel() for p in model.parameters())
+        print(
+            f"[Model Setup] Abdoli1DCNN variant={cfg.get('variant', 'gamma')} | "
+            f"frame_length={frame_length} | freeze_gammatone={getattr(model, 'freeze_gammatone', None)} | "
+            f"dropout={float(cfg.get('dropout', 0.25))} | "
+            f"params trainable={n_train:,} total={n_total:,}"
+        )
     else:
-        model = TCAM1DCNN(num_classes=10).to(device)
         print("[Model Setup] Using TCAM1DCNN")
-    
-    loss_type = cfg.get("loss", "crossentropy").lower()
+
+    # Paper Abdoli uses MSLE (Eq. 4). Default CE only for non-paper / TCAM runs.
+    default_loss = "msle" if is_abdoli else "crossentropy"
+    loss_type = cfg.get("loss", default_loss).lower()
     if loss_type == "msle":
-        print("[Loss Setup] Using Mean Squared Logarithmic Error (MSLE) Loss.")
-        class MSLELoss(nn.Module):
-            def __init__(self):
-                super().__init__()
-                self.mse = nn.MSELoss()
-            def forward(self, logits, target):
-                probs = F.softmax(logits, dim=-1)
-                target_onehot = F.one_hot(target, num_classes=logits.size(-1)).float()
-                return self.mse(torch.log1p(probs), torch.log1p(target_onehot))
+        print("[Loss Setup] Mean Squared Logarithmic Error (MSLE, Abdoli Eq. 4).")
         criterion = MSLELoss()
     else:
-        print("[Loss Setup] Using Cross Entropy Loss.")
+        print("[Loss Setup] Cross Entropy Loss.")
         criterion = nn.CrossEntropyLoss()
 
-    use_amp = bool(cfg.get("amp", True))
-    gradient_clip = cfg.get("gradient_clip", 5.0)
+    use_amp = bool(cfg.get("amp", False if is_abdoli else True))
+    # Paper does not use gradient clipping.
+    gradient_clip = cfg.get("gradient_clip", None if is_abdoli else 5.0)
     if gradient_clip is not None:
         gradient_clip = float(gradient_clip)
     adam_eps = float(cfg.get("adam_eps", 1e-8))
 
     weight_decay = float(cfg.get("weight_decay", 0.0))
-    optimizer_name = cfg.get("optimizer", "adam").lower()
-    base_lr = float(cfg.get("lr", 2e-4 if optimizer_name == "adam" else 1.0))
-    print(f"[Numeric Setup] Optimizer={optimizer_name.upper()} | LR={base_lr} | AMP={use_amp} | Gradient Clip={gradient_clip} | Weight Decay={weight_decay:g}")
+    # Paper Sec. 3.2: Adadelta, default lr=1.0
+    default_opt = "adadelta" if is_abdoli else "adam"
+    optimizer_name = cfg.get("optimizer", default_opt).lower()
+    base_lr = float(cfg.get("lr", 1.0 if optimizer_name == "adadelta" else 2e-4))
+    aggregation = cfg.get("aggregation", "sum").lower()
+    print(
+        f"[Numeric Setup] Optimizer={optimizer_name.upper()} | LR={base_lr} | AMP={use_amp} | "
+        f"Gradient Clip={gradient_clip} | Weight Decay={weight_decay:g} | Aggregation={aggregation}"
+    )
 
+    # Only optimize parameters that require grad (frozen Gammatone CL1 excluded).
+    trainable_params = [p for p in model.parameters() if p.requires_grad]
     if optimizer_name == "adadelta":
-        optimizer = torch.optim.Adadelta(model.parameters(), lr=base_lr, weight_decay=weight_decay)
+        optimizer = torch.optim.Adadelta(trainable_params, lr=base_lr, weight_decay=weight_decay)
     else:
-        optimizer = torch.optim.Adam(model.parameters(), lr=base_lr, eps=adam_eps, weight_decay=weight_decay)
+        optimizer = torch.optim.Adam(trainable_params, lr=base_lr, eps=adam_eps, weight_decay=weight_decay)
 
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
 
@@ -314,103 +355,147 @@ def main():
 
     best_acc = None
     history = {"train_loss": [], "train_acc": [], "val_clip_acc": []}
-    
-    cycles = cfg.get("cycles", 4)
-    epochs = cfg.get("epochs", 200)
-    epochs_per_cycle = math.ceil(epochs / cycles)
+
+    # Paper Abdoli: plain 100-epoch training with early stopping (no snapshot ensemble).
+    # TCAM / research configs may set cycles > 1 for cosine snapshot ensembles.
+    default_cycles = 1 if is_abdoli else 4
+    cycles = int(cfg.get("cycles", default_cycles))
+    epochs = int(cfg.get("epochs", 100 if is_abdoli else 200))
+    epochs_per_cycle = max(1, math.ceil(epochs / max(cycles, 1)))
     snapshot_checkpoints = []
+
+    eval_kwargs = dict(
+        frame_length=frame_length,
+        frame_hop=frame_hop,
+        aggregation=aggregation,
+        sample_rate=cfg.get("sample_rate", 16000),
+    )
+
+    stopped_early = False
+    final_epoch = 0
 
     # Training Loop
     for epoch in range(epochs):
-        if optimizer_name != "adadelta":
+        final_epoch = epoch + 1
+        # Cosine multi-cycle LR only when not using Adadelta (TCAM-style).
+        if optimizer_name != "adadelta" and cycles > 1:
             lr = trainer.get_cosine_lr(epoch, epochs, base_lr, cycles)
             for param_group in optimizer.param_groups:
                 param_group["lr"] = lr
         else:
             lr = optimizer.param_groups[0]["lr"]
-            
+
         epoch_start = time.time()
         loss, train_acc = trainer.train_epoch(train_loader)
-        
+
         if uses_validation:
             val_clip_acc = trainer.evaluate_clips(
-                [model], val_clips, cached_waveforms, frame_length=frame_length, frame_hop=frame_hop
+                [model], val_clips, cached_waveforms, **eval_kwargs
             )
         else:
             val_clip_acc = None
-        
+
         history["train_loss"].append(loss)
         history["train_acc"].append(train_acc)
         history["val_clip_acc"].append(val_clip_acc)
-        
+
         if uses_validation:
-            print(f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | Train Acc={train_acc*100:.2f}% | Val Clip Acc={val_clip_acc*100:.2f}% | Time={time.time() - epoch_start:.2f}s")
+            print(
+                f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | "
+                f"Train Acc={train_acc*100:.2f}% | Val Clip Acc={val_clip_acc*100:.2f}% | "
+                f"Time={time.time() - epoch_start:.2f}s"
+            )
         else:
-            print(f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | Train Acc={train_acc*100:.2f}% | Time={time.time() - epoch_start:.2f}s")
-        
-        # Save best validation checkpoint only for the clean validation protocol.
+            print(
+                f"Epoch {epoch+1:03d}/{epochs:03d} | LR={lr:.6f} | Train Loss={loss:.4f} | "
+                f"Train Acc={train_acc*100:.2f}% | Time={time.time() - epoch_start:.2f}s"
+            )
+
+        # Best validation checkpoint (paper uses one training fold as val — clean_8_1_1).
         if uses_validation and (best_acc is None or val_clip_acc > best_acc):
             best_acc = val_clip_acc
             patience_counter = 0
             torch.save({
                 "model_state_dict": model.state_dict(),
                 "epoch": epoch,
-                "val_acc": val_clip_acc
+                "val_acc": val_clip_acc,
             }, best_ckpt_path)
             print(f"--> Saved new best validation model: Val Acc = {val_clip_acc*100:.2f}%")
         elif uses_validation and patience is not None:
             patience_counter += 1
             if patience_counter >= patience:
-                print(f"\n[Early Stopping] No improvement in validation accuracy for {patience} consecutive epochs. Stopping training early at Epoch {epoch+1}!")
+                print(
+                    f"\n[Early Stopping] No val improvement for {patience} epochs. "
+                    f"Stopping at Epoch {epoch+1}."
+                )
+                stopped_early = True
                 break
-            
-        # Snapshot Ensemble saving
-        if (epoch + 1) % epochs_per_cycle == 0:
+
+        # Optional multi-cycle snapshot ensemble (TCAM research; paper Abdoli uses cycles=1).
+        if cycles > 1 and (epoch + 1) % epochs_per_cycle == 0:
             cycle_id = (epoch + 1) // epochs_per_cycle
             snapshot_path = get_cycle_ckpt_path(cycle_id)
             torch.save(model.state_dict(), snapshot_path)
             snapshot_checkpoints.append(snapshot_path)
             print(f"--> Saved Snapshot Cycle {cycle_id} checkpoint.")
 
-    # Load and evaluate the best validation model only when the protocol has a validation fold.
+    # Always persist the last training state (paper-faithful final model).
+    torch.save(model.state_dict(), last_ckpt_path)
+    print(f"--> Saved last model state: {last_ckpt_path}")
+
+    # ---- Final evaluation -------------------------------------------------
+    def _load_model(state_path, wrapped=False):
+        m = build_model(model_name, cfg, frame_length, device)
+        state = torch.load(state_path, map_location=device, weights_only=True)
+        if wrapped and isinstance(state, dict) and "model_state_dict" in state:
+            state = state["model_state_dict"]
+        m.load_state_dict(state)
+        return m
+
+    # 1) Best-val model (primary paper metric when validation fold is used)
     if uses_validation and os.path.exists(best_ckpt_path):
-        if model_name in {"abdoli1dcnn", "abdoli"}:
-            best_model = Abdoli1DCNN(
-                num_classes=10,
-                variant=variant,
-                input_length=frame_length,
-                freeze_gammatone=freeze_gammatone,
-                dropout=dropout_rate,
-            ).to(device)
-        else:
-            best_model = TCAM1DCNN(num_classes=10).to(device)
-        best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
-        best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
-        test_acc_best, preds_best = trainer.evaluate_clips([best_model], test_records, cached_waveforms, frame_length=frame_length, frame_hop=frame_hop, return_predictions=True)
+        best_model = _load_model(best_ckpt_path, wrapped=True)
+        test_acc_best, preds_best = trainer.evaluate_clips(
+            [best_model], test_records, cached_waveforms,
+            return_predictions=True, **eval_kwargs,
+        )
     else:
         test_acc_best, preds_best = None, []
 
-    # Ensemble Evaluation
-    if not snapshot_checkpoints:
-        raise RuntimeError("No snapshot checkpoints were saved; cannot evaluate final snapshot or ensemble.")
+    # 2) Last training state
+    last_model = _load_model(last_ckpt_path, wrapped=False)
+    test_acc_last, preds_last = trainer.evaluate_clips(
+        [last_model], test_records, cached_waveforms,
+        return_predictions=True, **eval_kwargs,
+    )
 
-    ensemble_models = []
-    for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
-        m = TCAM1DCNN(num_classes=10).to(device)
-        m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
-        ensemble_models.append(m)
-        
-    test_acc_last, preds_last = trainer.evaluate_clips([ensemble_models[0]], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
-    test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(ensemble_models, test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
-    
+    # 3) Snapshot ensemble (only when multiple cycle checkpoints exist)
+    if snapshot_checkpoints:
+        ensemble_models = []
+        for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
+            ensemble_models.append(_load_model(snapshot_checkpoints[i], wrapped=False))
+        test_acc_ensemble, preds_ensemble = trainer.evaluate_clips(
+            ensemble_models, test_records, cached_waveforms,
+            return_predictions=True, **eval_kwargs,
+        )
+    else:
+        # Paper path: no ensemble — report last model as the single-model result.
+        test_acc_ensemble, preds_ensemble = test_acc_last, preds_last
+
     print(f"\n=================== FOLD {args.fold} FINAL EVALUATION RESULTS ===================")
+    print(f"  Model: {model_name} | Protocol: {protocol} | Aggregation: {aggregation}")
+    print(f"  Frame: length={frame_length}, hop={frame_hop} | Stopped early: {stopped_early} @ epoch {final_epoch}")
     if uses_validation:
         print(f"  Best Validation Model Test Accuracy: {test_acc_best*100:.2f}%")
+        print(f"  Best Val Clip Acc (during train):     {best_acc*100:.2f}%")
     else:
-        print("  Best Validation Model Test Accuracy: N/A (paper_9_1 uses no validation fold)")
-    print(f"  Last Snapshot (Epoch {epochs}) Test Accuracy: {test_acc_last*100:.2f}%")
-    print(f"  Ensembled Model (Last 2 Cycles) Test Accuracy: {test_acc_ensemble*100:.2f}%")
-    
+        print("  Best Validation Model Test Accuracy: N/A (no validation fold)")
+    print(f"  Last Model Test Accuracy:             {test_acc_last*100:.2f}%")
+    if snapshot_checkpoints:
+        print(f"  Ensemble (last ≤2 cycles) Test Acc:   {test_acc_ensemble*100:.2f}%")
+    else:
+        print("  Ensemble: N/A (paper-style single model; cycles=1)")
+
     # Save training history logs
     with open(history_path, "w") as fh:
         json.dump(history, fh)
@@ -426,6 +511,9 @@ def main():
     metrics = {
         "fold": args.fold,
         "protocol": protocol,
+        "model_name": model_name,
+        "variant": cfg.get("variant") if is_abdoli else None,
+        "freeze_gammatone": getattr(model, "freeze_gammatone", None) if is_abdoli else None,
         "random_split_algorithm": RANDOM_SPLIT_ALGORITHM if protocol == "random_clip_9_1" else None,
         "uses_validation": uses_validation,
         "official_train_folds": sorted({r["fold"] for r in train_clips}),
@@ -438,10 +526,17 @@ def main():
         "test_clip_count": len(test_records),
         "train_frame_count": len(train_frames),
         "val_frame_count": len(val_frames),
+        "frame_length": frame_length,
+        "frame_hop": frame_hop,
+        "aggregation": aggregation,
         "epochs": epochs,
+        "final_epoch": final_epoch,
+        "stopped_early": stopped_early,
         "cycles": cycles,
         "seed": cfg.get("seed", 83),
         "loss_type": loss_type,
+        "optimizer": optimizer_name,
+        "lr": base_lr,
         "amp": use_amp,
         "gradient_clip": gradient_clip,
         "adam_eps": adam_eps,
@@ -452,7 +547,9 @@ def main():
         "best_val_clip_acc": best_acc,
         "test_acc_best_val_model": test_acc_best,
         "test_acc_last_snapshot": test_acc_last,
-        "test_acc_ensemble": test_acc_ensemble
+        "test_acc_ensemble": test_acc_ensemble,
+        "trainable_params": sum(p.numel() for p in model.parameters() if p.requires_grad),
+        "total_params": sum(p.numel() for p in model.parameters()),
     }
     with open(metrics_path, "w") as fm:
         json.dump(metrics, fm, indent=2)
@@ -461,7 +558,7 @@ def main():
     preds_data = {
         "best_val_model_predictions": preds_best,
         "last_snapshot_predictions": preds_last,
-        "ensemble_model_predictions": preds_ensemble
+        "ensemble_model_predictions": preds_ensemble,
     }
     with open(predictions_path, "w") as fp:
         json.dump(preds_data, fp, indent=2)
