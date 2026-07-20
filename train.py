@@ -15,7 +15,7 @@ from collections import defaultdict
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src.models import TCAM1DCNN
+from src.models import TCAM1DCNN, Abdoli1DCNN
 from src.data import CachedUrbanSoundFrameDataset, parse_dataset, generate_frame_records, load_audio_to_ram
 from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
@@ -221,14 +221,17 @@ def main():
     
     random.shuffle(train_clips)
     
-    train_frames = generate_frame_records(train_clips)
-    val_frames = generate_frame_records(val_clips) if uses_validation else []
+    frame_length = int(cfg.get("frame_length", 8000))
+    frame_hop = int(cfg.get("frame_hop", frame_length // 2))
+
+    train_frames = generate_frame_records(train_clips, frame_length=frame_length, frame_hop=frame_hop)
+    val_frames = generate_frame_records(val_clips, frame_length=frame_length, frame_hop=frame_hop) if uses_validation else []
     
     print(f"Clips: Train={len(train_clips)}, Val={len(val_clips)}, Test={len(test_records)}")
-    print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)}")
+    print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)} (Length={frame_length}, Hop={frame_hop})")
 
     # Dataloader
-    train_dataset = CachedUrbanSoundFrameDataset(train_frames, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+    train_dataset = CachedUrbanSoundFrameDataset(train_frames, cached_waveforms, frame_length=frame_length)
     
     num_workers = cfg.get("num_workers", 0)
     loader_kwargs = {
@@ -244,8 +247,21 @@ def main():
         
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
-    # Instantiate model, loss, optimizer, scaler
-    model = TCAM1DCNN(num_classes=10).to(device)
+    # Instantiate model
+    model_name = cfg.get("model_name", "tcam1dcnn").lower()
+    if model_name in {"abdoli1dcnn", "abdoli"}:
+        variant = cfg.get("variant", "gamma")
+        freeze_gammatone = bool(cfg.get("freeze_gammatone", False))
+        model = Abdoli1DCNN(
+            num_classes=10,
+            variant=variant,
+            input_length=frame_length,
+            freeze_gammatone=freeze_gammatone,
+        ).to(device)
+        print(f"[Model Setup] Using Abdoli1DCNN (variant={variant}, frame_length={frame_length}, freeze_gammatone={freeze_gammatone})")
+    else:
+        model = TCAM1DCNN(num_classes=10).to(device)
+        print("[Model Setup] Using TCAM1DCNN")
     
     loss_type = cfg.get("loss", "crossentropy").lower()
     if loss_type == "msle":
@@ -270,9 +286,15 @@ def main():
     adam_eps = float(cfg.get("adam_eps", 1e-8))
 
     weight_decay = float(cfg.get("weight_decay", 0.0))
-    print(f"[Numeric Setup] AMP={use_amp} | Gradient Clip={gradient_clip} | Weight Decay={weight_decay:g} | Adam eps={adam_eps:g}")
+    optimizer_name = cfg.get("optimizer", "adam").lower()
+    base_lr = float(cfg.get("lr", 2e-4 if optimizer_name == "adam" else 1.0))
+    print(f"[Numeric Setup] Optimizer={optimizer_name.upper()} | LR={base_lr} | AMP={use_amp} | Gradient Clip={gradient_clip} | Weight Decay={weight_decay:g}")
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.get("lr", 2e-4), eps=adam_eps, weight_decay=weight_decay)
+    if optimizer_name == "adadelta":
+        optimizer = torch.optim.Adadelta(model.parameters(), lr=base_lr, weight_decay=weight_decay)
+    else:
+        optimizer = torch.optim.Adam(model.parameters(), lr=base_lr, eps=adam_eps, weight_decay=weight_decay)
+
     scaler = torch.amp.GradScaler("cuda" if "cuda" in device.type else "cpu", enabled=use_amp)
 
     mixup_cfg = cfg.get("mixup", None)
@@ -293,15 +315,20 @@ def main():
 
     # Training Loop
     for epoch in range(epochs):
-        lr = trainer.get_cosine_lr(epoch, epochs, cfg.get("lr", 2e-4), cycles)
-        for param_group in optimizer.param_groups:
-            param_group["lr"] = lr
+        if optimizer_name != "adadelta":
+            lr = trainer.get_cosine_lr(epoch, epochs, base_lr, cycles)
+            for param_group in optimizer.param_groups:
+                param_group["lr"] = lr
+        else:
+            lr = optimizer.param_groups[0]["lr"]
             
         epoch_start = time.time()
         loss, train_acc = trainer.train_epoch(train_loader)
         
         if uses_validation:
-            val_clip_acc = trainer.evaluate_clips([model], val_clips, cached_waveforms, frame_length=cfg.get("frame_length", 8000))
+            val_clip_acc = trainer.evaluate_clips(
+                [model], val_clips, cached_waveforms, frame_length=frame_length, frame_hop=frame_hop
+            )
         else:
             val_clip_acc = None
         

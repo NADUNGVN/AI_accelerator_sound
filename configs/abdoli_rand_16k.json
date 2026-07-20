@@ -1,0 +1,19 @@
+{
+  "model_name": "abdoli1dcnn",
+  "variant": "rand",
+  "freeze_gammatone": false,
+  "frame_length": 16000,
+  "frame_hop": 8000,
+  "protocol": "clean_8_1_1",
+  "batch_size": 100,
+  "accum_steps": 1,
+  "epochs": 100,
+  "optimizer": "adadelta",
+  "lr": 1.0,
+  "weight_decay": 0.0,
+  "amp": false,
+  "gradient_clip": 5.0,
+  "num_workers": 4,
+  "sample_rate": 16000,
+  "seed": 83
+}

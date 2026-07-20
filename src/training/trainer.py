@@ -102,45 +102,54 @@ class Trainer:
         lr = max_lr / 2.0 * (math.cos(math.pi * cycle_epoch / epochs_per_cycle) + 1.0)
         return max(lr, 1e-6)
 
-    def evaluate_clips(self, models, records, cached_waveforms, frame_length=8000, return_predictions=False):
+    def evaluate_clips(self, models, records, cached_waveforms, frame_length=8000, frame_hop=None, return_predictions=False):
         """
-        Evaluates whole 4-second audio clips using the SUM rule on all 15 overlapping frames
+        Evaluates whole 4-second audio clips using the SUM rule on all overlapping frames
         retrieved directly from RAM. Supports ensembling.
         """
+        if frame_hop is None:
+            frame_hop = frame_length // 2
+
         for m in models:
             m.eval()
-            
+
         # Group records by audio path
         clips = defaultdict(list)
         for r in records:
             clips[r["path"]].append(r)
-            
+
         correct = 0
         total = len(clips)
         predictions = []
-        
-        # Pre-generate frame offsets
-        offsets = [i * 4000 for i in range(15)] # 50% overlap of 8000 frames
-        
+
+        # Pre-generate frame offsets for 4-second audio (64,000 samples @ 16kHz)
+        total_samples = 16000 * 4
+        if total_samples <= frame_length:
+            offsets = [0]
+        else:
+            max_start = total_samples - frame_length
+            offsets = list(range(0, max_start + 1, frame_hop))
+
+        num_frames = len(offsets)
+
         with torch.no_grad():
             for path, frames in clips.items():
                 label = frames[0]["label"]
                 waveform_np = cached_waveforms[path]
                 waveform = torch.from_numpy(waveform_np)
-                    
-                # Extract all 15 frames
+
+                # Extract frames
                 batch_frames = []
                 for offset in offsets:
                     frame = waveform[:, offset:offset + frame_length]
                     if frame.shape[-1] < frame_length:
                         frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
                     batch_frames.append(frame)
-                    
-                # Shape: (15, 1, 8000)
+
                 batch_tensor = torch.stack(batch_frames).to(self.device)
-                
+
                 # Forward pass through all ensembled models
-                sum_probs = torch.zeros((15, 10), device=self.device)
+                sum_probs = torch.zeros((num_frames, 10), device=self.device)
                 for m in models:
                     with torch.amp.autocast(
                         device_type="cuda" if "cuda" in self.device.type else "cpu",

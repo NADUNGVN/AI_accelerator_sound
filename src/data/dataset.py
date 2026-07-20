@@ -120,18 +120,25 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
     print(f"Parsed {len(records)} standard audio clips (10 classes, rail_vehicle excluded).")
     return records
 
-def generate_frame_records(clip_records):
+def generate_frame_records(clip_records, frame_length=8000, frame_hop=4000, sample_rate=16000, clip_seconds=4.0):
     """
-    Expands clip records into frame records (15 frames per 4s clip with 50% overlap).
+    Expands clip records into frame records with dynamic frame_length and frame_hop.
     """
+    total_samples = int(sample_rate * clip_seconds)
+    if total_samples <= frame_length:
+        offsets = [0]
+    else:
+        max_start = total_samples - frame_length
+        offsets = list(range(0, max_start + 1, frame_hop))
+
     frame_records = []
     for r in clip_records:
-        for i in range(15):
+        for start in offsets:
             frame_records.append({
                 "path": r["path"],
                 "label": r["label"],
                 "fold": r["fold"],
-                "frame_start": i * 4000
+                "frame_start": start
             })
     return frame_records
 
