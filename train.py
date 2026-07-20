@@ -307,6 +307,11 @@ def main():
         mixup_cfg=mixup_cfg
     )
 
+    patience = cfg.get("patience", None)
+    if patience is not None:
+        patience = int(patience)
+    patience_counter = 0
+
     best_acc = None
     history = {"train_loss": [], "train_acc": [], "val_clip_acc": []}
     
@@ -346,11 +351,18 @@ def main():
         # Save best validation checkpoint only for the clean validation protocol.
         if uses_validation and (best_acc is None or val_clip_acc > best_acc):
             best_acc = val_clip_acc
+            patience_counter = 0
             torch.save({
                 "model_state_dict": model.state_dict(),
                 "epoch": epoch,
                 "val_acc": val_clip_acc
             }, best_ckpt_path)
+            print(f"--> Saved new best validation model: Val Acc = {val_clip_acc*100:.2f}%")
+        elif uses_validation and patience is not None:
+            patience_counter += 1
+            if patience_counter >= patience:
+                print(f"\n[Early Stopping] No improvement in validation accuracy for {patience} consecutive epochs. Stopping training early at Epoch {epoch+1}!")
+                break
             
         # Snapshot Ensemble saving
         if (epoch + 1) % epochs_per_cycle == 0:
@@ -362,10 +374,19 @@ def main():
 
     # Load and evaluate the best validation model only when the protocol has a validation fold.
     if uses_validation and os.path.exists(best_ckpt_path):
-        best_model = TCAM1DCNN(num_classes=10).to(device)
+        if model_name in {"abdoli1dcnn", "abdoli"}:
+            best_model = Abdoli1DCNN(
+                num_classes=10,
+                variant=variant,
+                input_length=frame_length,
+                freeze_gammatone=freeze_gammatone,
+                dropout=dropout_rate,
+            ).to(device)
+        else:
+            best_model = TCAM1DCNN(num_classes=10).to(device)
         best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
         best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
-        test_acc_best, preds_best = trainer.evaluate_clips([best_model], test_records, cached_waveforms, frame_length=cfg.get("frame_length", 8000), return_predictions=True)
+        test_acc_best, preds_best = trainer.evaluate_clips([best_model], test_records, cached_waveforms, frame_length=frame_length, frame_hop=frame_hop, return_predictions=True)
     else:
         test_acc_best, preds_best = None, []
 

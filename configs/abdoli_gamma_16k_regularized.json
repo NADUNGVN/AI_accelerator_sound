@@ -9,6 +9,7 @@
   "batch_size": 100,
   "accum_steps": 1,
   "epochs": 100,
+  "patience": 15,
   "optimizer": "adam",
   "lr": 0.0005,
   "weight_decay": 0.0001,

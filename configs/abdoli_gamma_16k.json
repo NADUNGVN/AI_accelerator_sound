@@ -8,6 +8,7 @@
   "batch_size": 100,
   "accum_steps": 1,
   "epochs": 100,
+  "patience": 15,
   "optimizer": "adadelta",
   "lr": 1.0,
   "weight_decay": 0.0,
