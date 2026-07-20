@@ -30,6 +30,7 @@ class Abdoli1DCNN(nn.Module):
         variant: str = "gamma",
         input_length: int = 16000,
         freeze_gammatone: bool = False,
+        dropout: float = 0.25,
     ) -> None:
         super().__init__()
         self.num_classes = num_classes
@@ -75,10 +76,10 @@ class Abdoli1DCNN(nn.Module):
 
         # Fully Connected Classifier
         self.fc1 = nn.Linear(flatten_dim, 128)
-        self.drop1 = nn.Dropout(p=0.25)
+        self.drop1 = nn.Dropout(p=dropout)
 
         self.fc2 = nn.Linear(128, 64)
-        self.drop2 = nn.Dropout(p=0.25)
+        self.drop2 = nn.Dropout(p=dropout)
 
         self.fc3 = nn.Linear(64, num_classes)
 

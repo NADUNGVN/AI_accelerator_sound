@@ -252,13 +252,15 @@ def main():
     if model_name in {"abdoli1dcnn", "abdoli"}:
         variant = cfg.get("variant", "gamma")
         freeze_gammatone = bool(cfg.get("freeze_gammatone", False))
+        dropout_rate = float(cfg.get("dropout", 0.25))
         model = Abdoli1DCNN(
             num_classes=10,
             variant=variant,
             input_length=frame_length,
             freeze_gammatone=freeze_gammatone,
+            dropout=dropout_rate,
         ).to(device)
-        print(f"[Model Setup] Using Abdoli1DCNN (variant={variant}, frame_length={frame_length}, freeze_gammatone={freeze_gammatone})")
+        print(f"[Model Setup] Using Abdoli1DCNN (variant={variant}, frame_length={frame_length}, freeze_gammatone={freeze_gammatone}, dropout={dropout_rate})")
     else:
         model = TCAM1DCNN(num_classes=10).to(device)
         print("[Model Setup] Using TCAM1DCNN")
