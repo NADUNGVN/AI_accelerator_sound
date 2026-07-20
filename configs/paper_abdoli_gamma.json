@@ -1,5 +1,5 @@
 {
-  "comment": "Abdoli et al. 2019 best setup (Table 3): 16kG + Gammatone freeze + rectangular + 50% overlap + sum rule → reported 89%.",
+  "comment": "Abdoli et al. 2019 best setup (Table 3): 16kG + Gammatone freeze + rectangular + 50% overlap + sum rule → reported 89%. Real-length framing, skip near-silent frames (no forced 4s zero canvas).",
   "model_name": "abdoli1dcnn",
   "variant": "gamma",
   "freeze_gammatone": true,
@@ -7,6 +7,11 @@
   "loss": "msle",
   "frame_length": 16000,
   "frame_hop": 8000,
+  "pad_to_seconds": null,
+  "max_seconds": 4.0,
+  "skip_near_zero_frames": true,
+  "zero_abs_threshold": 1e-4,
+  "allow_non_paper_framing": false,
   "aggregation": "sum",
   "protocol": "clean_8_1_1",
   "batch_size": 100,

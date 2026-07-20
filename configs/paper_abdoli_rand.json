@@ -1,5 +1,5 @@
 {
-  "comment": "Abdoli et al. 2019 random-init 16k (Table 3 best rand): rectangular + 75% overlap + sum rule → reported 87%.",
+  "comment": "Abdoli et al. 2019 random-init 16k (Table 3 best rand): rectangular + 75% overlap + sum rule → reported 87%. Real-length framing, skip near-silent frames.",
   "model_name": "abdoli1dcnn",
   "variant": "rand",
   "freeze_gammatone": false,
@@ -7,6 +7,11 @@
   "loss": "msle",
   "frame_length": 16000,
   "frame_hop": 4000,
+  "pad_to_seconds": null,
+  "max_seconds": 4.0,
+  "skip_near_zero_frames": true,
+  "zero_abs_threshold": 1e-4,
+  "allow_non_paper_framing": false,
   "aggregation": "sum",
   "protocol": "clean_8_1_1",
   "batch_size": 100,

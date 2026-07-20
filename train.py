@@ -16,7 +16,14 @@ from collections import defaultdict
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from src.models import TCAM1DCNN, Abdoli1DCNN
-from src.data import CachedUrbanSoundFrameDataset, parse_dataset, generate_frame_records, load_audio_to_ram
+from src.data import (
+    CachedUrbanSoundFrameDataset,
+    parse_dataset,
+    generate_frame_records,
+    load_audio_to_ram,
+    summarize_length_stats,
+    DEFAULT_ZERO_ABS_THRESHOLD,
+)
 from src.training import Trainer
 from src.utils import set_seed, prepare_dirs
 
@@ -209,23 +216,63 @@ def main():
     csv_path = os.path.join(args.data_dir, "metadata/UrbanSound8K.csv")
     audio_base = os.path.join(args.data_dir, "audio")
 
+    # Resolve model family early (drives framing defaults / hard checks).
+    model_name = cfg.get("model_name", "tcam1dcnn").lower()
+    is_abdoli = model_name in {"abdoli1dcnn", "abdoli"}
+    sample_rate = int(cfg.get("sample_rate", 16000))
+
+    # Framing policy
+    #   Abdoli paper: real clip length, skip near-silent frames, no 4 s zero canvas.
+    #   TCAM / legacy: pad every clip to 4.0 s (previous research pipeline).
+    if "pad_to_seconds" in cfg:
+        pad_to_seconds = cfg["pad_to_seconds"]  # may be null
+    else:
+        pad_to_seconds = None if is_abdoli else 4.0
+    if pad_to_seconds is not None:
+        pad_to_seconds = float(pad_to_seconds)
+
+    skip_near_zero = bool(cfg.get("skip_near_zero_frames", True if is_abdoli else False))
+    zero_abs_threshold = float(cfg.get("zero_abs_threshold", DEFAULT_ZERO_ABS_THRESHOLD))
+    max_seconds = cfg.get("max_seconds", 4.0)
+    if max_seconds is not None:
+        max_seconds = float(max_seconds)
+
     # 1. Parse dataset (8732 standard clips, rail_vehicle filtered)
     clip_records = parse_dataset(csv_path, audio_base, class_names)
 
-    # 2. Preload waveforms to RAM (eliminating Disk I/O bottlenecks)
-    print("\nPre-loading and resampling all audio clips to RAM (~2.2 GB memory)...")
+    # 2. Preload waveforms to RAM
+    print(
+        f"\nPre-loading audio to RAM | sr={sample_rate} | "
+        f"pad_to_seconds={pad_to_seconds} | max_seconds={max_seconds} | "
+        f"skip_near_zero={skip_near_zero}"
+    )
     cached_waveforms = {}
     start_preload = time.time()
-    
+
     paths = [r["path"] for r in clip_records]
-    # Limit worker count to protect CPU overhead
     max_workers = min(os.cpu_count() or 4, 8)
+
+    def _load_one(p):
+        return load_audio_to_ram(
+            p,
+            sample_rate=sample_rate,
+            pad_to_seconds=pad_to_seconds,
+            max_seconds=max_seconds,
+        )
+
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        results = executor.map(lambda p: load_audio_to_ram(p, cfg.get("sample_rate", 16000)), paths)
-        for path, w in results:
+        for path, w in executor.map(_load_one, paths):
             cached_waveforms[path] = w
-            
-    print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
+
+    length_stats = summarize_length_stats(cached_waveforms, sample_rate=sample_rate)
+    print(
+        f"Pre-loading done in {time.time() - start_preload:.2f}s | "
+        f"clips={length_stats['n']} | "
+        f"duration mean={length_stats['seconds_mean']:.2f}s "
+        f"[{length_stats['seconds_min']:.2f}, {length_stats['seconds_max']:.2f}] | "
+        f"shorter_than_1s={length_stats['n_shorter_than_1s']} "
+        f"shorter_than_2s={length_stats['n_shorter_than_2s']}"
+    )
 
     # 3. Setup split.
     print(f"\n=================== TRAINING FOLD {args.fold} ({protocol}) ===================")
@@ -258,38 +305,101 @@ def main():
     source_overlap = source_label_overlap_summary(train_clips, test_records)
     if source_overlap["count"] is not None:
         print(f"Source-label overlap (fsID+classID) between train/test: {source_overlap['count']}")
-    
-    random.shuffle(train_clips)
-    
-    frame_length = int(cfg.get("frame_length", 8000))
-    frame_hop = int(cfg.get("frame_hop", frame_length // 2))
 
-    train_frames = generate_frame_records(train_clips, frame_length=frame_length, frame_hop=frame_hop)
-    val_frames = generate_frame_records(val_clips, frame_length=frame_length, frame_hop=frame_hop) if uses_validation else []
-    
+    random.shuffle(train_clips)
+
+    # Frame geometry + Abdoli hard checks (block accidental TCAM 8k defaults).
+    if is_abdoli:
+        if "frame_length" not in cfg:
+            raise ValueError(
+                "Abdoli1DCNN requires explicit 'frame_length' in config "
+                "(paper 16k variants use 16000). Refusing silent TCAM default 8000."
+            )
+        frame_length = int(cfg["frame_length"])
+        variant = str(cfg.get("variant", "gamma")).lower()
+        allow_non_paper = bool(cfg.get("allow_non_paper_framing", False))
+        if variant == "gamma":
+            default_hop = 8000  # 50% overlap — Table 3 best (89%)
+        elif variant == "rand":
+            default_hop = 4000  # 75% overlap — Table 3 best rand (87%)
+        else:
+            default_hop = frame_length // 2
+        frame_hop = int(cfg.get("frame_hop", default_hop))
+        if not allow_non_paper:
+            if variant in {"gamma", "rand"} and frame_length != 16000:
+                raise ValueError(
+                    f"Abdoli variant='{variant}' expects frame_length=16000 (paper Table 1), "
+                    f"got {frame_length}. Set allow_non_paper_framing=true to override."
+                )
+            if variant == "gamma" and frame_hop != 8000:
+                raise ValueError(
+                    f"Abdoli gamma paper hop is 8000 (50% overlap), got {frame_hop}. "
+                    "Set allow_non_paper_framing=true to override."
+                )
+            if variant == "rand" and frame_hop != 4000:
+                raise ValueError(
+                    f"Abdoli rand paper hop is 4000 (75% overlap), got {frame_hop}. "
+                    "Set allow_non_paper_framing=true to override."
+                )
+    else:
+        frame_length = int(cfg.get("frame_length", 8000))
+        frame_hop = int(cfg.get("frame_hop", frame_length // 2))
+
+    train_frames, train_frame_stats = generate_frame_records(
+        train_clips,
+        cached_waveforms,
+        frame_length=frame_length,
+        frame_hop=frame_hop,
+        skip_near_zero=skip_near_zero,
+        zero_abs_threshold=zero_abs_threshold,
+    )
+    if uses_validation:
+        val_frames, val_frame_stats = generate_frame_records(
+            val_clips,
+            cached_waveforms,
+            frame_length=frame_length,
+            frame_hop=frame_hop,
+            skip_near_zero=skip_near_zero,
+            zero_abs_threshold=zero_abs_threshold,
+        )
+    else:
+        val_frames, val_frame_stats = [], {
+            "candidate_frames": 0, "kept_frames": 0, "skipped_near_zero": 0,
+            "short_clips": 0, "fallback_energy_clips": 0, "skip_rate": 0.0, "clips": 0,
+        }
+
     print(f"Clips: Train={len(train_clips)}, Val={len(val_clips)}, Test={len(test_records)}")
-    print(f"Frames: Train={len(train_frames)}, Val={len(val_frames)} (Length={frame_length}, Hop={frame_hop})")
+    print(
+        f"Frames: Train kept={train_frame_stats['kept_frames']}/"
+        f"{train_frame_stats['candidate_frames']} "
+        f"(skip_near_zero={train_frame_stats['skipped_near_zero']}, "
+        f"rate={train_frame_stats['skip_rate']*100:.2f}%, "
+        f"short_clips={train_frame_stats['short_clips']}, "
+        f"fallback={train_frame_stats['fallback_energy_clips']}) | "
+        f"Val kept={val_frame_stats['kept_frames']} | "
+        f"L={frame_length}, hop={frame_hop}"
+    )
+    if len(train_frames) == 0:
+        raise RuntimeError("No training frames generated — check framing / audio cache.")
 
     # Dataloader
     train_dataset = CachedUrbanSoundFrameDataset(train_frames, cached_waveforms, frame_length=frame_length)
-    
+
     num_workers = cfg.get("num_workers", 0)
     loader_kwargs = {
         "batch_size": cfg.get("batch_size", 96),
         "shuffle": True,
         "num_workers": num_workers,
         "pin_memory": True,
-        "drop_last": True
+        "drop_last": True,
     }
     if num_workers > 0:
         loader_kwargs["persistent_workers"] = True
         loader_kwargs["prefetch_factor"] = 2
-        
+
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
     # Instantiate model
-    model_name = cfg.get("model_name", "tcam1dcnn").lower()
-    is_abdoli = model_name in {"abdoli1dcnn", "abdoli"}
     model = build_model(model_name, cfg, frame_length, device)
     if is_abdoli:
         n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -368,7 +478,9 @@ def main():
         frame_length=frame_length,
         frame_hop=frame_hop,
         aggregation=aggregation,
-        sample_rate=cfg.get("sample_rate", 16000),
+        sample_rate=sample_rate,
+        skip_near_zero=skip_near_zero,
+        zero_abs_threshold=zero_abs_threshold,
     )
 
     stopped_early = False
@@ -526,8 +638,15 @@ def main():
         "test_clip_count": len(test_records),
         "train_frame_count": len(train_frames),
         "val_frame_count": len(val_frames),
+        "train_frame_stats": train_frame_stats,
+        "val_frame_stats": val_frame_stats,
+        "waveform_length_stats": length_stats,
         "frame_length": frame_length,
         "frame_hop": frame_hop,
+        "pad_to_seconds": pad_to_seconds,
+        "max_seconds": max_seconds,
+        "skip_near_zero_frames": skip_near_zero,
+        "zero_abs_threshold": zero_abs_threshold,
         "aggregation": aggregation,
         "epochs": epochs,
         "final_epoch": final_epoch,

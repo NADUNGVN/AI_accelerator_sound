@@ -42,6 +42,7 @@ data/raw/
 Config bám sát paper (Table 1 + Table 3 best 89%):
 - Model: `Abdoli1DCNN` variant `gamma` (CL1 Gammatone 64×512, **frozen**)
 - Input: 16 000 samples (1 s @ 16 kHz), hop 8000 (**50% overlap**), rectangular window
+- Framing: **độ dài clip thật** (`pad_to_seconds=null`), bỏ frame gần im lặng; không ép canvas 4 s zero như pipeline TCAM cũ
 - Loss: MSLE (Eq. 4) · Optimizer: Adadelta lr=1.0 · batch=100 · epochs≤100 + early stop
 - Protocol: `clean_8_1_1` (8 train / 1 val / 1 test, official US8K folds)
 - Aggregation: **sum rule** trên softmax của các frame

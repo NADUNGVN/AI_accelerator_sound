@@ -6,6 +6,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import defaultdict
 
+from src.data import extract_clip_frame_tensors, DEFAULT_ZERO_ABS_THRESHOLD
+
+
 class Trainer:
     """
     Manages the training epoch loop, evaluation, learning rate schedules,
@@ -107,20 +110,24 @@ class Trainer:
         models,
         records,
         cached_waveforms,
-        frame_length=8000,
+        frame_length=16000,
         frame_hop=None,
         return_predictions=False,
         aggregation="sum",
         sample_rate=16000,
-        clip_seconds=4.0,
+        skip_near_zero=True,
+        zero_abs_threshold=DEFAULT_ZERO_ABS_THRESHOLD,
     ):
         """
-        Evaluate whole audio clips by sliding a window over each waveform and
-        aggregating per-frame softmax predictions.
+        Evaluate whole audio clips by sliding a window over each **real-length**
+        waveform and aggregating per-frame softmax predictions.
 
         Aggregation rules (Abdoli et al. 2019, Sec. 2.4):
           * "sum"      — sum rule (Eq. 6 / Table 2 best for 16k)
           * "majority" — majority vote over argmax frame predictions (Eq. 5)
+
+        Near-silent frames can be skipped (default) so zero-pad tails from the
+        legacy 4 s canvas do not dominate the vote.
         """
         if frame_hop is None:
             frame_hop = frame_length // 2
@@ -131,7 +138,6 @@ class Trainer:
         for m in models:
             m.eval()
 
-        # Group records by audio path (one entry per clip is enough for label)
         clips = {}
         for r in records:
             if r["path"] not in clips:
@@ -139,33 +145,25 @@ class Trainer:
 
         correct = 0
         total = len(clips)
+        if total == 0:
+            return (0.0, []) if return_predictions else 0.0
+
         predictions = []
-
-        # Sliding-window offsets over a fixed-length padded clip
-        total_samples = int(sample_rate * clip_seconds)
-        if total_samples <= frame_length:
-            offsets = [0]
-        else:
-            max_start = total_samples - frame_length
-            offsets = list(range(0, max_start + 1, frame_hop))
-
-        num_frames = len(offsets)
         num_classes = 10
 
         with torch.no_grad():
             for path, label in clips.items():
-                waveform = torch.from_numpy(cached_waveforms[path])
+                waveform_np = cached_waveforms[path]
+                frames = extract_clip_frame_tensors(
+                    waveform_np,
+                    frame_length=frame_length,
+                    frame_hop=frame_hop,
+                    skip_near_zero=skip_near_zero,
+                    zero_abs_threshold=zero_abs_threshold,
+                )
+                batch_tensor = torch.stack(frames).to(self.device)
+                num_frames = batch_tensor.size(0)
 
-                batch_frames = []
-                for offset in offsets:
-                    frame = waveform[:, offset:offset + frame_length]
-                    if frame.shape[-1] < frame_length:
-                        frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
-                    batch_frames.append(frame)
-
-                batch_tensor = torch.stack(batch_frames).to(self.device)
-
-                # Average ensemble members first, then aggregate over frames
                 sum_probs = torch.zeros((num_frames, num_classes), device=self.device)
                 for m in models:
                     with torch.amp.autocast(
@@ -179,11 +177,9 @@ class Trainer:
                 mean_probs = sum_probs / len(models)
 
                 if aggregation == "sum":
-                    # Eq. 6: y_i = (1/S) Σ o_ji  (mean is equivalent to sum for argmax)
                     clip_score = mean_probs.sum(dim=0)
                     predicted_class = int(torch.argmax(clip_score).item())
                 else:
-                    # Eq. 5: majority vote over frame-level argmax
                     frame_preds = torch.argmax(mean_probs, dim=-1)
                     votes = torch.bincount(frame_preds, minlength=num_classes)
                     predicted_class = int(torch.argmax(votes).item())
@@ -193,6 +189,7 @@ class Trainer:
                         "path": path,
                         "label": label,
                         "predicted": predicted_class,
+                        "n_frames": num_frames,
                     })
 
                 if predicted_class == label:
