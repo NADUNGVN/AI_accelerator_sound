@@ -54,13 +54,17 @@ python train.py --fold 1 --config configs/paper_abdoli_gamma.json --exp_name pap
 # Random-init setup (reported 87%)
 python train.py --fold 1 --config configs/paper_abdoli_rand.json --exp_name paper_abdoli_rand
 
-# Full 10-fold CV (mean accuracy across folds)
-for f in $(seq 1 10); do
-  python train.py --fold $f --config configs/paper_abdoli_gamma.json --exp_name paper_abdoli_gamma
-done
+# Full 10-fold CV (gamma) — recommended on server
+bash scripts/run_paper_abdoli_10fold.sh
+
+# Resume from fold 2 if fold 1 already done
+bash scripts/run_paper_abdoli_10fold.sh --start_fold 2 --end_fold 10
+
+# Aggregate mean ± std
+python scripts/summarize_10fold.py --exp_name paper_abdoli_gamma
 ```
 
-Metric chính để so với paper: **Best Validation Model Test Accuracy** trong log / `metrics.json`.
+Metric chính để so với paper: **Mean test (best-val model)** từ `summarize_10fold.py` / từng `metrics.json` field `test_acc_best_val_model`.
 
 ### Bước 3b: TCAM / research baselines
 
