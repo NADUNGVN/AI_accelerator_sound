@@ -28,6 +28,7 @@ class Trainer:
         distillation_cfg=None,
         teacher_model=None,
         ema=None,
+        machinery_source_robust_cfg=None,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -43,6 +44,7 @@ class Trainer:
         self.hard_negative_pairs = self._build_hard_negative_pairs(self.hard_negative_margin_cfg)
         self.supervised_contrastive_cfg = supervised_contrastive_cfg or {}
         self.distillation_cfg = distillation_cfg or {}
+        self.machinery_source_robust_cfg = machinery_source_robust_cfg or {}
         self.teacher_model = teacher_model
         if self.teacher_model is not None:
             self.teacher_model.eval()
@@ -93,6 +95,38 @@ class Trainer:
         if not losses:
             return logits.new_zeros(())
         return torch.stack(losses).mean()
+
+    def machinery_source_robust_loss(self, logits, targets, source_ids):
+        """Source-group robust CE on machinery classes + optional use of pair term externally."""
+        cfg = self.machinery_source_robust_cfg
+        if not cfg.get("enabled", False) or source_ids is None:
+            return logits.new_zeros(())
+
+        machinery = {int(x) for x in cfg.get("machinery_classes", [0, 4, 5, 7])}
+        mask = torch.zeros_like(targets, dtype=torch.bool)
+        for c in machinery:
+            mask = mask | (targets == c)
+        if not mask.any():
+            return logits.new_zeros(())
+
+        # per-sample CE on machinery subset
+        per = F.cross_entropy(logits.float(), targets, reduction="none")
+        m_logits_ids = source_ids[mask]
+        m_losses = per[mask]
+        # group by source id
+        unique = torch.unique(m_logits_ids)
+        group_means = []
+        for s in unique.tolist():
+            sm = m_logits_ids == s
+            if sm.any():
+                group_means.append(m_losses[sm].mean())
+        if not group_means:
+            return logits.new_zeros(())
+        stacked = torch.stack(group_means)
+        tau = max(float(cfg.get("source_temperature", 0.1)), 1e-4)
+        # smooth max over train sources present in batch
+        return tau * torch.logsumexp(stacked / tau, dim=0)
+
 
     def supervised_contrastive_loss(self, features, targets, source_ids=None):
         cfg = self.supervised_contrastive_cfg
@@ -224,6 +258,15 @@ class Trainer:
                     else:
                         margin_loss = logits.new_zeros(())
                     raw_loss = raw_loss + float(hard_negative_cfg.get("weight", 0.05)) * margin_loss
+                msr_cfg = self.machinery_source_robust_cfg
+                if msr_cfg.get("enabled", False):
+                    apply_to_mixup = bool(msr_cfg.get("apply_to_mixup", False))
+                    if mixup_enabled and lam < 1.0 and not apply_to_mixup:
+                        src_loss = logits.new_zeros(())
+                    else:
+                        # use non-mixed targets for source grouping
+                        src_loss = self.machinery_source_robust_loss(logits, targets, source_ids)
+                    raw_loss = raw_loss + float(msr_cfg.get("source_weight", 0.15)) * src_loss
                 distillation_cfg = self.distillation_cfg
                 if distillation_cfg.get("enabled", False) and self.teacher_model is not None:
                     apply_to_mixup = bool(distillation_cfg.get("apply_to_mixup", False))

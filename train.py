@@ -917,14 +917,19 @@ def main():
         source_batch_cfg = supcon_source_batch_cfg
         source_batch_origin = "supervised_contrastive.source_aware_batch_sampler"
     use_source_batch_sampler = bool(source_batch_cfg.get("enabled", False))
-    needs_source_ids = supervised_contrastive_enabled or use_source_batch_sampler
+    machinery_source_robust_cfg = cfg.get("machinery_source_robust", {}) or {}
+    machinery_source_robust_enabled = bool(machinery_source_robust_cfg.get("enabled", False))
+    needs_source_ids = (
+        supervised_contrastive_enabled or use_source_batch_sampler or machinery_source_robust_enabled
+    )
     if needs_source_ids:
         source_to_id = attach_source_ids(train_frames)
         print(
             "[Source Data Setup] "
             f"source_groups={len(source_to_id)} | "
             f"supcon={supervised_contrastive_enabled} | "
-            f"source_batch_sampler={use_source_batch_sampler}"
+            f"source_batch_sampler={use_source_batch_sampler} | "
+            f"machinery_source_robust={machinery_source_robust_enabled}"
         )
 
     # 3. Preload waveforms to RAM after optional smoke subsetting.
@@ -948,7 +953,7 @@ def main():
         cached_waveforms,
         frame_length=frame_length,
         augment_cfg=cfg.get("augment", None),
-        return_source_id=supervised_contrastive_enabled,
+        return_source_id=supervised_contrastive_enabled or machinery_source_robust_enabled,
     )
     
     num_workers = cfg.get("num_workers", 0)
@@ -1175,6 +1180,7 @@ def main():
         distillation_cfg=distillation_cfg,
         teacher_model=teacher_model,
         ema=ema,
+        machinery_source_robust_cfg=machinery_source_robust_cfg,
     )
     if cfg.get("mixup", {}).get("enabled", False):
         print(
@@ -1190,6 +1196,14 @@ def main():
             f"apply_to_mixup={bool(hard_negative_cfg.get('apply_to_mixup', False))} | "
             f"groups={hard_negative_cfg.get('groups', [])} | "
             f"pairs={hard_negative_cfg.get('pairs', [])}"
+        )
+    if machinery_source_robust_cfg.get("enabled", False):
+        print(
+            "[MC-ISR Setup] machinery_source_robust enabled | "
+            f"source_weight={float(machinery_source_robust_cfg.get('source_weight', 0.15)):g} | "
+            f"source_temperature={float(machinery_source_robust_cfg.get('source_temperature', 0.1)):g} | "
+            f"machinery_classes={machinery_source_robust_cfg.get('machinery_classes', [0, 4, 5, 7])} | "
+            f"apply_to_mixup={bool(machinery_source_robust_cfg.get('apply_to_mixup', False))}"
         )
     if supervised_contrastive_cfg.get("enabled", False):
         print(

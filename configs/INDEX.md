@@ -16,7 +16,9 @@ Configs stay in `configs/*.json` (stable paths for scripts/history).
 
 | File | Protocol | Role |
 |---|---|---|
-| **`kv260_ds1d_pyramid_mixup_ema_val.json`** | `source_group_8_1_1` | **Canonical** full-clip DS1D + mixup + EMA + **val** + best-val selection |
+| **`kv260_ds1d_pyramid_mixup_ema_val.json`** | `source_group_8_1_1` | Legacy source-group MAIN (peak 79.08 fold1, different split) |
+| **`kv260_ds1d_pyramid_mixup_ema_clean811_val.json`** | `clean_8_1_1` | **Active US8K baseline** (test f1 / val f2 / train 3–10) |
+| **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_val.json`** | `clean_8_1_1` | **MC-ISR** algorithm (machinery cluster + source robust); see `docs/main/ALGORITHM_MCISR.md` |
 
 ---
 
