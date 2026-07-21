@@ -17,10 +17,12 @@
 ## Read next
 
 1. [SETUP_DEPLOY_SOURCE_SAFE.md](SETUP_DEPLOY_SOURCE_SAFE.md) — full setup lock  
-2. [DECISIONS_LOG.md](DECISIONS_LOG.md) — what we accepted / rejected  
-3. [ACTIVE_ROADMAP.md](ACTIVE_ROADMAP.md) — what to run next  
-4. [../experiments/REGISTRY.md](../experiments/REGISTRY.md) — all exp names + status (avoid re-runs)  
-5. [../../configs/INDEX.md](../../configs/INDEX.md) — config catalog by status  
+2. [../data/README.md](../data/README.md) — **data + result analysis standard**  
+3. [DECISIONS_LOG.md](DECISIONS_LOG.md) — what we accepted / rejected  
+4. [ACTIVE_ROADMAP.md](ACTIVE_ROADMAP.md) — what to run next  
+5. [../experiments/REGISTRY.md](../experiments/REGISTRY.md) — all exp names + status (avoid re-runs)  
+6. [../../configs/INDEX.md](../../configs/INDEX.md) — config catalog by status  
+7. [PROMOTE_TO_MAIN.md](PROMOTE_TO_MAIN.md) — merge research → git `main`  
 
 ## Not main path
 
