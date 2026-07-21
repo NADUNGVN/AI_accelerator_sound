@@ -1,79 +1,82 @@
-# TCAM1DCNN Training Project for RTX 3090 Server
+# AI accelerator sound — UrbanSound8K 1D-CNN → KV260
 
-Dự án này triển khai mô hình mạng nơ-ron tích chập 1 chiều kết hợp cơ chế chú ý (TCAM1DCNN) với mục tiêu tái tạo và tối ưu hóa hiệu năng mô hình nhận diện âm thanh môi trường trên tập dữ liệu UrbanSound8K, thiết kế mô-đun hóa chuyên nghiệp và tối ưu hóa tối đa hiệu năng cho cấu hình phần cứng server chứa **GPU NVIDIA RTX 3090 (24GB VRAM)**.
+Source-safe environmental sound classification with a **deployable 1D-CNN student** (~102k params), targeting **KV260**-class budgets.
 
-## 1. Cấu trúc thư mục dự án
-*   `train.py`: entrypoint train chính, giữ ở root để các lệnh server hiện tại không cần đổi.
-*   `configs/`: cấu hình thí nghiệm và cấu hình phần cứng/server.
-*   `src/`: package nguồn chính, gồm `data/`, `models/`, `training/`, `evaluation/`, `utils/`.
-*   `tools/`: script phân tích, kiểm thử reproduction và kiểm tra FLOPs.
-*   `docs/architecture/`: ghi chú kiến trúc, tham số và FLOPs.
-*   `docs/reproduction/`: kế hoạch tái lập, diagnostic report và kết luận thí nghiệm.
-*   `docs/hardware/`: thông tin phần cứng server/workstation.
+**Paper hardware wording:** report **RTX 3090** for training compute used in this repo’s main results. Other GPUs (local / second 3090 / RTX 8000) are for lab throughput only and need not appear in the paper.
 
-## 2. Điểm tối ưu hóa đặc biệt dành riêng cho RTX 3090 (24GB VRAM)
-1.  **Batch Size trực tiếp:** Vì RTX 3090 sở hữu dung lượng VRAM lớn lên tới 24 GB, chúng ta thiết lập kích thước lô vật lý trực tiếp bằng **96** (`batch_size: 96`), loại bỏ sự cần thiết của Gradient Accumulation như trên các dòng card laptop (RTX 5060/4060). Điều này giúp tối đa hóa khả năng tính toán song song của Tensor Cores trên GPU.
-2.  **RAM Caching:** Toàn bộ 8,732 file âm thanh sau khi giải mã và resample về 16kHz (mono, dài 4s) chỉ chiếm khoảng **2.2 GB RAM**. Server của chúng ta có 32 GB RAM, do đó toàn bộ tập dữ liệu được lưu trực tiếp trên RAM vật lý. Việc này loại bỏ hoàn toàn hiện tượng nghẽn cổ chai đọc đĩa cứng (Disk I/O bottleneck) và giúp tốc độ train tăng đột biến từ **50 đến 100 lần**.
-3.  **Tự động hóa Mixed Precision (AMP):** Huấn luyện ở chế độ FP16 tự động giúp GPU tính toán cực nhanh và tiết kiệm băng thông bộ nhớ.
+---
 
-## 3. Hướng dẫn cài đặt và sử dụng
+## Canonical path (main)
 
-### Bước 1: Cài đặt thư viện
-Cài đặt các gói phụ thuộc từ tệp `requirements.txt`:
+| Item | Value |
+|------|--------|
+| **Model** | `kv260_audio_net_ds1d` full-clip |
+| **Params / MAC** | ~101.7k / ~61.9M |
+| **Config** | `configs/kv260_ds1d_pyramid_mixup_ema_val.json` |
+| **Protocol** | `source_group_8_1_1` + **val** + **best-val checkpoint** |
+| **Seed** | 83 (reproducibility) |
+| **Docs** | [`docs/main/README.md`](docs/main/README.md) |
+| **Achieved numbers** | [`docs/main/ACHIEVED.md`](docs/main/ACHIEVED.md) |
+| **Config catalog** | [`configs/INDEX.md`](configs/INDEX.md) |
+| **Exp registry** | [`docs/experiments/REGISTRY.md`](docs/experiments/REGISTRY.md) |
+| **Data analysis standard** | [`docs/data/README.md`](docs/data/README.md) |
+
+### Phase A — accuracy targets (before SoC / quant / board)
+
+| Track | Target | Best achieved (research) |
+|-------|--------|--------------------------:|
+| 1. Single model | 80–85% | **79.08%** best-val test |
+| 2. Ensemble (last-2) | 80–85% | **79.89%** |
+| 3. KD teacher → student | 80–85% student | **80.00%** (ens 80.23%); teacher ~90%+ |
+
+### Phase B — later
+
+SoC design → quantization → **KV260 deploy**.
+
+---
+
+## Repo layout
+
+```text
+train.py           # training entry
+configs/           # MAIN config + INDEX (status tags); legacy configs kept for history
+src/               # data, models, training, …
+tools/             # multifold, analyze, FLOPs, …
+scripts/           # server runners
+docs/main/         # canonical decisions + ACHIEVED
+docs/data/         # dataset + analysis checklist
+docs/experiments/  # REGISTRY + notes
+docs/architecture|hardware|reproduction|notebooks/
+```
+
+`experiments/`, `logs/`, `checkpoints/`, `data/` are **runtime artifacts** (gitignore). Do not commit large `.pt` files. Push light metrics on `results/*` branches with `git add -f` when needed.
+
+---
+
+## Quick start (source-safe fold 1)
+
 ```bash
 pip install -r requirements.txt
+# place UrbanSound8K under data/UrbanSound8K (see train defaults / server tar)
+
+python tools/run_multifold.py \
+  --config configs/kv260_ds1d_pyramid_mixup_ema_val.json \
+  --exp_name my_run_f1_50ep \
+  --folds 1 \
+  --epochs 50 \
+  --analyze \
+  --eval_modes
 ```
 
-### Bước 2: Chuẩn bị dữ liệu
-Hiện tại tập dữ liệu đang được lưu trữ sẵn tại thư mục:
-```text
-data/raw/
-└── UrbanSound8K/
-    ├── metadata/
-    │   └── UrbanSound8K.csv
-    └── audio/
-        ├── fold1/
-        ├── fold2/
-        ...
-```
-*(Đường dẫn mặc định trong mã nguồn đã được cấu hình trỏ thẳng tới `data/raw/UrbanSound8K`)*.
+Primary metric: **`test_acc_best_val_model`**. Secondary: last snapshot, ensemble.
 
-### Bước 3: Chạy huấn luyện (Official 10-Fold CV)
-Để huấn luyện mô hình cho một fold cụ thể (ví dụ Fold 1):
-```bash
-python train.py --fold 1 --config configs/reproduce_msle.json --exp_name paper9_msle
-```
+---
 
-Mặc định các config reproduce dùng protocol `paper_9_1`: train trên 9 fold và test trên 1 fold, không chọn checkpoint theo validation. Các config này cũng dùng baseline FP32 (`amp: false`), không gradient clipping (`gradient_clip: null`) và `adam_eps: 1e-7` để gần cấu hình paper hơn trước khi bật tối ưu hiệu năng. Nếu cần thí nghiệm sạch có validation riêng, gọi rõ:
+## Not the main path
 
-```bash
-python train.py --fold 1 --config configs/reproduce_msle.json --protocol clean_8_1_1 --exp_name cleanval_msle
-```
+- Official `paper_9_1` full-10 without val (optional literature only)
+- Rejected texture recipes (see REGISTRY)
+- Random-split “high accuracy” without source-safe claim
+- Old TCAM-only reproduce narrative as the project headline
 
-Để kiểm tra đối chứng xem kết quả paper có thể đến từ random clip split thay vì official UrbanSound8K fold split hay không:
-
-```bash
-python train.py --fold 1 --config configs/random_clip_msle.json --exp_name randomclip_msle_fp32
-```
-
-Để kiểm tra split ngẫu nhiên nhưng không cho trùng nguồn `fsID+classID` giữa train/test:
-
-```bash
-python train.py --fold 1 --config configs/source_group_msle.json --exp_name sourcegroup_msle_fp32
-```
-
-Nhánh đề xuất không còn bám sát paper, dùng augmentation/regularization để tối ưu accuracy nguồn độc lập:
-
-```bash
-python train.py --fold 1 --config configs/proposed_tcam_aug_ce.json --exp_name proposed_tcam_aug_ce
-```
-
-Nhánh đề xuất hiệu quả hơn về tham số/MAC dùng full-clip 1D-CNN depthwise-separable:
-
-```bash
-python train.py --fold 1 --config configs/proposed_efficient_fullclip.json --exp_name proposed_efficient_fullclip
-```
-
-Kết quả huấn luyện sẽ được lưu tự động gồm history, metrics, predictions và các snapshot checkpoint theo chu kỳ cosine.
-
-Các thư mục `experiments/`, `checkpoints/`, `logs/`, `results/` và `data/` là artifact/local data sinh ra trong quá trình chạy, không track trong Git; phần kết luận nghiên cứu được giữ trong `docs/`.
+Legacy reproduce configs remain under `configs/reproduce_*.json` for archaeology, not as the default entry.
