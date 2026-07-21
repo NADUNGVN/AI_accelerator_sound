@@ -8,13 +8,25 @@
 - [x] Doc structure + experiment registry
 - [x] Data analysis standard (`docs/data/`) + promote-to-main procedure
 
-## Next (in order)
+## Next (in order) — Phase A accuracy first
 
-1. **Stand on H0** — apply [../data/ANALYSIS_STANDARD.md](../data/ANALYSIS_STANDARD.md) as template for every future run.
-2. **Only new runs** that can beat **76.90% best-val test** under same protocol (or documented KD).
-3. **Optional KD (Track T)** — reuse AST/logits; student still DS1D; full analysis standard.
-4. **Hardware metrics** — params/MAC already; latency/power when board ready.
-5. **Promote to git `main`** when stable — [PROMOTE_TO_MAIN.md](PROMOTE_TO_MAIN.md) (diverged history → PR/merge carefully).
+See [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md).
+
+1. **Track 1 — Single 80–85%**  
+   Improve `test_acc_best_val_model` under source-safe + val (H0 server ~76.9%, local ~79.1%).  
+   Gate: ≥80% fold1, then multi-fold; analysis per [../data/ANALYSIS_STANDARD.md](../data/ANALYSIS_STANDARD.md).
+
+2. **Track 2 — Ensemble 80–85%**  
+   Same runs report `test_acc_ensemble` (last-2). Local already ~79.9%; push server ensemble into band without faking single.
+
+3. **Track 3 — Distill teacher → DS1D 80–85%**  
+   Teacher already ~90%+ (AST train/cache). Reuse logits/ckpts; student best-val test target 80–85% (kdprotect f1 already ~80%).
+
+4. **Phase B (only after Phase A credible)**  
+   SoC design, quantization, KV260 deploy, board latency/power.
+
+5. **Promote git `main`** when Phase A path + docs stable — [PROMOTE_TO_MAIN.md](PROMOTE_TO_MAIN.md).
+
 6. **Do not** full-10 paper_9_1 unless side-table needed.
 
 ## Command template (main)

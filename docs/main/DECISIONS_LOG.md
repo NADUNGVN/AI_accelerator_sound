@@ -7,8 +7,13 @@
 | Main model = `kv260_audio_net_ds1d` full-clip ~102k | Beats frame16k, MIL no-teacher; within KV260 budget |
 | Main protocol = `source_group_8_1_1` + val + best-val test | Deploy-oriented; source leak = 0; checkpoint selectable |
 | Keep `seed=83` | Reproducible splits/init — not “official paper seed work” |
-| Deploy story = **one** student checkpoint | 10-fold is evaluation, not 10 firmware images |
-| Official `paper_9_1` without val | **Not required** for hardware main path |
+| **Three accuracy tracks @ 80–85% before SoC/quant/KV260** | See [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md) |
+| Track 1: **single** model best-val test 80–85% | Current ~77–79% fold1 |
+| Track 2: **ensemble** (last-2) 80–85% | Local ~79.9% near band |
+| Track 3: **KD** teacher→student 80–85% (teacher already ~90%+) | kdprotect f1 ~80%; teacher AST ~92% train/cache |
+| Deploy story = **one** student checkpoint | Ensemble/KD teacher are train-time or multi-ckpt research |
+| Official `paper_9_1` without val | **Not required** for hardware main path; optional side table |
+| SoC / quantization / KV260 | **Phase B** after accuracy tracks |
 
 ## Reject / do not re-run as main
 
