@@ -42,6 +42,7 @@ class Trainer:
         self.mixup_cfg = mixup_cfg or {}
         self.hard_negative_margin_cfg = hard_negative_margin_cfg or {}
         self.hard_negative_pairs = self._build_hard_negative_pairs(self.hard_negative_margin_cfg)
+        self.hard_negative_pair_specs = self._build_hard_negative_pair_specs(self.hard_negative_margin_cfg)
         self.supervised_contrastive_cfg = supervised_contrastive_cfg or {}
         self.distillation_cfg = distillation_cfg or {}
         self.machinery_source_robust_cfg = machinery_source_robust_cfg or {}
@@ -78,23 +79,65 @@ class Trainer:
                 unique_pairs.append(pair)
         return unique_pairs
 
+    @staticmethod
+    def _build_hard_negative_pair_specs(cfg):
+        """List of (target, negative, relative_weight, margin) for optional per-pair scaling."""
+        if not cfg.get("enabled", False):
+            return []
+        pairs = []
+        for group in cfg.get("groups", []):
+            group = [int(class_id) for class_id in group]
+            for target in group:
+                for negative in group:
+                    if negative != target:
+                        pairs.append((target, negative))
+        for pair in cfg.get("pairs", []):
+            if len(pair) != 2:
+                raise ValueError(f"hard_negative_margin pair must have 2 class ids, got {pair}")
+            target, negative = int(pair[0]), int(pair[1])
+            if target != negative:
+                pairs.append((target, negative))
+        # dedupe preserving order
+        unique = []
+        for p in pairs:
+            if p not in unique:
+                unique.append(p)
+        default_margin = float(cfg.get("margin", 0.5))
+        pair_weights = cfg.get("pair_weights")
+        pair_margins = cfg.get("pair_margins")
+        specs = []
+        for i, (t, n) in enumerate(unique):
+            w = 1.0
+            m = default_margin
+            if isinstance(pair_weights, (list, tuple)) and i < len(pair_weights):
+                w = float(pair_weights[i])
+            if isinstance(pair_margins, (list, tuple)) and i < len(pair_margins):
+                m = float(pair_margins[i])
+            specs.append((t, n, w, m))
+        return specs
+
     def hard_negative_margin_loss(self, logits, targets):
         cfg = self.hard_negative_margin_cfg
-        if not cfg.get("enabled", False) or not self.hard_negative_pairs:
+        specs = self.hard_negative_pair_specs
+        if not cfg.get("enabled", False) or not specs:
             return logits.new_zeros(())
 
-        margin = float(cfg.get("margin", 0.5))
         losses = []
-        for target_class, negative_class in self.hard_negative_pairs:
+        weights = []
+        for target_class, negative_class, rel_weight, margin in specs:
             mask = targets == target_class
             if mask.any():
                 target_logits = logits[mask, target_class]
                 negative_logits = logits[mask, negative_class]
                 losses.append(F.relu(negative_logits - target_logits + margin).mean())
+                weights.append(float(rel_weight))
 
         if not losses:
             return logits.new_zeros(())
-        return torch.stack(losses).mean()
+        stacked = torch.stack(losses)
+        w = torch.tensor(weights, device=stacked.device, dtype=stacked.dtype)
+        w = w / w.sum().clamp_min(1e-6)
+        return (stacked * w).sum()
 
     def machinery_source_robust_loss(self, logits, targets, source_ids):
         """Source-group robust CE on machinery classes + optional use of pair term externally."""

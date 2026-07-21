@@ -18,7 +18,8 @@ Configs stay in `configs/*.json` (stable paths for scripts/history).
 |---|---|---|
 | **`kv260_ds1d_pyramid_mixup_ema_val.json`** | `source_group_8_1_1` | Legacy source-group MAIN (peak 79.08 fold1, different split) |
 | **`kv260_ds1d_pyramid_mixup_ema_clean811_val.json`** | `clean_8_1_1` | **Active US8K baseline** (test f1 / val f2 / train 3–10) |
-| **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_val.json`** | `clean_8_1_1` | **MC-ISR** algorithm (machinery cluster + source robust); see `docs/main/ALGORITHM_MCISR.md` |
+| **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_val.json`** | `clean_8_1_1` | **MC-ISR v1** (machinery cluster + source robust) |
+| **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_v2_val.json`** | `clean_8_1_1` | **MC-ISR v2** — boost jackhammer↔drilling pairs only |
 
 ---
 

@@ -126,6 +126,14 @@ Default \(\lambda_{\mathrm{src}}=0.15\).
 3. CE + src only (`λ_pair=0`)  
 4. Full MC-ISR  
 
+### v2 (after v1 partial win)
+
+v1 improved AC/engine/jack overall but **jack→drill stayed ~36–37**.  
+v2 keeps \(L_{src}\) and other pairs; **only** strengthens pairs `(7,4)` and `(4,7)` via `pair_weights` / `pair_margins` (rel weight 2.5, margin 0.40 vs 0.25).  
+Config: `configs/kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_v2_val.json`  
+Compare to: `server3090_clean811_mcisr_f1_50ep` @ **67.70%** best-val test.  
+
+
 ---
 
 ## 5. Expected paper story
