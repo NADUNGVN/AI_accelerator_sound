@@ -20,11 +20,30 @@ Machine (laptop / 3090) only matters for *where files live*, not for *which numb
 
 | Track | Target | **Best achieved** | Exp (canonical evidence) | Status vs 80–85% |
 |---|---|---:|---|---|
-| **1. Single model** | 80–85% | **79.08%** best-val test | `local_multifold_pyramid_base_f1_f3_50ep` / fold_1 (same recipe as H0 config) | **Below 80%** (~−0.9 pp) |
-| **2. Ensemble** | 80–85% | **79.89%** ensemble | same exp fold_1 | **Near 80%** (~−0.1 pp) |
+| **1. Single model** | 80–85% | **79.08%** best-val test (**fold1 peak**) | `local_multifold_pyramid_base_f1_f3_50ep` / fold_1 | **Below 80%**; see variance note |
+| **2. Ensemble** | 80–85% | **79.89%** ensemble (**fold1 peak**) | same exp fold_1 | **Near 80%** on that fold only |
 | **3. KD student** | 80–85% | **80.00%** best-val test / **80.23%** ens | `local_finetune_kdprotect_f1_20ep` / fold_1 | **Hits 80% band** (not yet 85%) |
 
-**Teacher (not deploy acc):** AST train/cache evidence ~**92.4%** (fold2 logits doc) — used only for Track 3 training.
+### Variance note (79% is not “guaranteed recipe output”)
+
+Same MAIN-family config `kv260_ds1d_pyramid_mixup_ema_val.json`, seed **83**, no-teacher:
+
+| Evidence | best-val test |
+|---|---:|
+| Fold1 “79.08%” files | **79.08%** — **two paths, identical metrics** → **1 run duplicated**, not 2 independent seeds |
+| Same multifold exp **fold2** | **67.67%** |
+| Same multifold exp **fold3** | **66.93%** |
+| Folds 1–3 **mean** bvt | **~71.2%** (std ~5.6) |
+| 3090 MAIN 50ep refresh | **77.70%** |
+| 3090 notacher long run | **76.90%** |
+| Local same cfg fold1 **200ep** | **76.21%** |
+| 3090 100ep+ES | **67.82%** (reject) |
+
+**Interpretation:** 79.08% / 79.89% = **fold1 high-water mark** for this seed/recipe, **not** a multi-fold or multi-seed mean.  
+**Working 3090 fold1 band** for MAIN 50ep: about **76.9–77.7%** single.  
+Claiming “the model is 79%” without saying **fold1** overstates stability.
+
+**Teacher (not deploy acc):** AST train/cache ~**92.4%** (fold2 doc) — Track 3 only.
 
 ### Same stack, other verified runs (do not override table above)
 
