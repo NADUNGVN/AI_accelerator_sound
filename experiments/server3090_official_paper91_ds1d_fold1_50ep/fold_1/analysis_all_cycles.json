@@ -1,0 +1,8071 @@
+{
+  "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_official_paper91_ds1d_fold1_50ep/fold_1",
+  "fold": 1,
+  "model": "all_cycles",
+  "metrics": {
+    "fold": 1,
+    "protocol": "paper_9_1",
+    "random_split_algorithm": null,
+    "source_group_split_algorithm": null,
+    "uses_validation": false,
+    "official_train_folds": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "val_fold": null,
+    "test_fold": 1,
+    "official_test_folds": [
+      1
+    ],
+    "source_label_overlap_train_test": {
+      "count": 0,
+      "examples": []
+    },
+    "train_clip_count": 7859,
+    "val_clip_count": 0,
+    "test_clip_count": 873,
+    "train_frame_count": 7859,
+    "val_frame_count": 0,
+    "model_name": "kv260_audio_net_ds1d",
+    "model_params": {
+      "params_with_bias": 101674,
+      "params_trainable": 101674,
+      "params_no_bias": 100400
+    },
+    "model_conv_linear_macs_per_input": 61854400,
+    "model_conv_linear_macs_per_clip_eval": 61854400,
+    "deployment_budget": {
+      "max_params": 300000,
+      "max_macs_per_clip": 300000000,
+      "flops_equivalent_convention": "FLOPs = 2 * MACs"
+    },
+    "input_features": "waveform",
+    "classifier_input_channels": 1,
+    "classifier_input_length": 64000,
+    "frame_length": 64000,
+    "frame_hop": 64000,
+    "frames_per_clip": 1,
+    "drop_silent_tail_frames": false,
+    "eval_drop_silent_tail_frames": false,
+    "epochs": 50,
+    "completed_epochs": 50,
+    "cycles": 4,
+    "snapshot_epochs": [
+      13,
+      26,
+      39,
+      50
+    ],
+    "last_snapshot_epoch": 50,
+    "early_stopping": null,
+    "early_stopped": false,
+    "early_stop_epoch": null,
+    "early_stopping_best_val_acc": null,
+    "seed": 83,
+    "loss_type": "crossentropy",
+    "focal_gamma": null,
+    "label_smoothing": 0.04,
+    "class_weighting": "balanced",
+    "class_weight_multipliers": [
+      1.05,
+      1.3,
+      1.0,
+      1.1,
+      1.0,
+      1.0,
+      1.0,
+      1.45,
+      1.0,
+      1.0
+    ],
+    "weighted_sampler": {
+      "enabled": false,
+      "class_multipliers": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "source_aware_batch_sampler": null,
+    "pool_type": "pyramid_avgmax",
+    "pool_bins": [
+      1,
+      2,
+      4
+    ],
+    "stem_type": "single",
+    "extra_late_blocks": 0,
+    "mixup": {
+      "enabled": true,
+      "alpha": 0.2,
+      "prob": 0.7
+    },
+    "supervised_contrastive": null,
+    "hard_negative_margin": null,
+    "distillation": null,
+    "initial_checkpoint": null,
+    "initial_checkpoint_path": null,
+    "teacher_checkpoint_path": null,
+    "teacher_config_path": null,
+    "ema": {
+      "enabled": true,
+      "decay": 0.995,
+      "use_for_validation": false
+    },
+    "use_ema_for_validation": false,
+    "amp": true,
+    "gradient_clip": 5.0,
+    "optimizer": "adamw",
+    "weight_decay": 0.0008,
+    "adam_eps": 1e-08,
+    "momentum": 0.9,
+    "nesterov": false,
+    "lr_schedule": {
+      "type": "cosine_restart"
+    },
+    "batch_size": 64,
+    "accum_steps": 1,
+    "max_train_clips": null,
+    "max_val_clips": null,
+    "max_test_clips": null,
+    "config_path": "configs/kv260_ds1d_pyramid_mixup_ema_paper91.json",
+    "git_commit": "e18d030a3be262695baebceb893ad1ed88576a76",
+    "best_val_clip_acc": null,
+    "test_acc_best_val_model": null,
+    "test_acc_last_snapshot": 0.6678121420389461,
+    "test_acc_ensemble": 0.6712485681557846
+  },
+  "final_train_frame_acc": 0.6655993852459017,
+  "cycles": [
+    {
+      "cycle": 1,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_official_paper91_ds1d_fold1_50ep/fold_1/checkpoints/tcam_fold_1_cycle_1.pt",
+      "test": {
+        "accuracy": 0.6391752577319587,
+        "clip_count": 873,
+        "confusion_matrix": [
+          [
+            40,
+            1,
+            2,
+            10,
+            7,
+            10,
+            0,
+            6,
+            2,
+            22
+          ],
+          [
+            0,
+            35,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            8,
+            66,
+            3,
+            1,
+            0,
+            0,
+            2,
+            7,
+            6
+          ],
+          [
+            1,
+            8,
+            11,
+            72,
+            0,
+            2,
+            2,
+            3,
+            0,
+            1
+          ],
+          [
+            8,
+            20,
+            4,
+            0,
+            54,
+            3,
+            3,
+            4,
+            2,
+            2
+          ],
+          [
+            19,
+            0,
+            0,
+            0,
+            0,
+            39,
+            1,
+            8,
+            29,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            34,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            23,
+            3,
+            0,
+            92,
+            0,
+            0
+          ],
+          [
+            0,
+            2,
+            7,
+            0,
+            1,
+            5,
+            1,
+            0,
+            70,
+            0
+          ],
+          [
+            9,
+            1,
+            8,
+            0,
+            8,
+            7,
+            0,
+            4,
+            7,
+            56
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "air_conditioner",
+            "support": 100,
+            "correct": 40,
+            "accuracy": 0.4,
+            "predicted_count": 85,
+            "top_confusions": [
+              {
+                "predicted": "street_music",
+                "count": 22
+              },
+              {
+                "predicted": "dog_bark",
+                "count": 10
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 10
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "car_horn",
+            "support": 36,
+            "correct": 35,
+            "accuracy": 0.9722222222222222,
+            "predicted_count": 77,
+            "top_confusions": [
+              {
+                "predicted": "gun_shot",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "children_playing",
+            "support": 100,
+            "correct": 66,
+            "accuracy": 0.66,
+            "predicted_count": 98,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 8
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 7
+              },
+              {
+                "predicted": "siren",
+                "count": 7
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "dog_bark",
+            "support": 100,
+            "correct": 72,
+            "accuracy": 0.72,
+            "predicted_count": 85,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 11
+              },
+              {
+                "predicted": "car_horn",
+                "count": 8
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "drilling",
+            "support": 100,
+            "correct": 54,
+            "accuracy": 0.54,
+            "predicted_count": 94,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 20
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 8
+              },
+              {
+                "predicted": "children_playing",
+                "count": 4
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "engine_idling",
+            "support": 96,
+            "correct": 39,
+            "accuracy": 0.40625,
+            "predicted_count": 69,
+            "top_confusions": [
+              {
+                "predicted": "siren",
+                "count": 29
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 19
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "gun_shot",
+            "support": 35,
+            "correct": 34,
+            "accuracy": 0.9714285714285714,
+            "predicted_count": 42,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 7,
+            "class_name": "jackhammer",
+            "support": 120,
+            "correct": 92,
+            "accuracy": 0.7666666666666667,
+            "predicted_count": 119,
+            "top_confusions": [
+              {
+                "predicted": "drilling",
+                "count": 23
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 3
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "siren",
+            "support": 86,
+            "correct": 70,
+            "accuracy": 0.813953488372093,
+            "predicted_count": 117,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 7
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 5
+              },
+              {
+                "predicted": "car_horn",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "street_music",
+            "support": 100,
+            "correct": 56,
+            "accuracy": 0.56,
+            "predicted_count": 87,
+            "top_confusions": [
+              {
+                "predicted": "air_conditioner",
+                "count": 9
+              },
+              {
+                "predicted": "children_playing",
+                "count": 8
+              },
+              {
+                "predicted": "drilling",
+                "count": 8
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.6380297823596792,
+          "clip_count": 873,
+          "correct": 557,
+          "confusion_matrix": [
+            [
+              40,
+              1,
+              2,
+              10,
+              7,
+              10,
+              0,
+              6,
+              2,
+              22
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              8,
+              65,
+              3,
+              1,
+              0,
+              0,
+              2,
+              7,
+              7
+            ],
+            [
+              1,
+              8,
+              11,
+              72,
+              0,
+              2,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              8,
+              20,
+              4,
+              0,
+              54,
+              3,
+              3,
+              4,
+              2,
+              2
+            ],
+            [
+              19,
+              0,
+              0,
+              0,
+              0,
+              39,
+              1,
+              8,
+              29,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              23,
+              3,
+              0,
+              92,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              0,
+              1,
+              5,
+              1,
+              0,
+              70,
+              0
+            ],
+            [
+              9,
+              1,
+              8,
+              0,
+              8,
+              7,
+              0,
+              4,
+              7,
+              56
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 40,
+              "accuracy": 0.4,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "street_music",
+                  "count": 22
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 77,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 97,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 72,
+              "accuracy": 0.72,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 54,
+              "accuracy": 0.54,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 39,
+              "accuracy": 0.40625,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 29
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 34,
+              "accuracy": 0.9714285714285714,
+              "predicted_count": 42,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 92,
+              "accuracy": 0.7666666666666667,
+              "predicted_count": 119,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 23
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 70,
+              "accuracy": 0.813953488372093,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 5
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 56,
+              "accuracy": 0.56,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 8
+                },
+                {
+                  "predicted": "drilling",
+                  "count": 8
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.6380297823596792,
+          "clip_count": 873,
+          "correct": 557,
+          "confusion_matrix": [
+            [
+              40,
+              1,
+              2,
+              10,
+              7,
+              10,
+              0,
+              6,
+              2,
+              22
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              8,
+              65,
+              3,
+              1,
+              0,
+              0,
+              2,
+              7,
+              7
+            ],
+            [
+              1,
+              8,
+              11,
+              72,
+              0,
+              2,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              8,
+              20,
+              4,
+              0,
+              54,
+              3,
+              3,
+              4,
+              2,
+              2
+            ],
+            [
+              19,
+              0,
+              0,
+              0,
+              0,
+              39,
+              1,
+              8,
+              29,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              23,
+              3,
+              0,
+              92,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              0,
+              1,
+              5,
+              1,
+              0,
+              70,
+              0
+            ],
+            [
+              9,
+              1,
+              8,
+              0,
+              8,
+              7,
+              0,
+              4,
+              7,
+              56
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 40,
+              "accuracy": 0.4,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "street_music",
+                  "count": 22
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 77,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 97,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 72,
+              "accuracy": 0.72,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 54,
+              "accuracy": 0.54,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 39,
+              "accuracy": 0.40625,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 29
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 34,
+              "accuracy": 0.9714285714285714,
+              "predicted_count": 42,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 92,
+              "accuracy": 0.7666666666666667,
+              "predicted_count": 119,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 23
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 70,
+              "accuracy": 0.813953488372093,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 5
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 56,
+              "accuracy": 0.56,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 8
+                },
+                {
+                  "predicted": "drilling",
+                  "count": 8
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.6380297823596792,
+          "clip_count": 873,
+          "correct": 557,
+          "confusion_matrix": [
+            [
+              40,
+              1,
+              2,
+              10,
+              7,
+              10,
+              0,
+              6,
+              2,
+              22
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              8,
+              65,
+              3,
+              1,
+              0,
+              0,
+              2,
+              7,
+              7
+            ],
+            [
+              1,
+              8,
+              11,
+              72,
+              0,
+              2,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              8,
+              20,
+              4,
+              0,
+              54,
+              3,
+              3,
+              4,
+              2,
+              2
+            ],
+            [
+              19,
+              0,
+              0,
+              0,
+              0,
+              39,
+              1,
+              8,
+              29,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              23,
+              3,
+              0,
+              92,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              0,
+              1,
+              5,
+              1,
+              0,
+              70,
+              0
+            ],
+            [
+              9,
+              1,
+              8,
+              0,
+              8,
+              7,
+              0,
+              4,
+              7,
+              56
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 40,
+              "accuracy": 0.4,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "street_music",
+                  "count": 22
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 77,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 97,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 72,
+              "accuracy": 0.72,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 54,
+              "accuracy": 0.54,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 39,
+              "accuracy": 0.40625,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 29
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 34,
+              "accuracy": 0.9714285714285714,
+              "predicted_count": 42,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 92,
+              "accuracy": 0.7666666666666667,
+              "predicted_count": 119,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 23
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 70,
+              "accuracy": 0.813953488372093,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 5
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 56,
+              "accuracy": 0.56,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 8
+                },
+                {
+                  "predicted": "drilling",
+                  "count": 8
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.6380297823596792,
+          "clip_count": 873,
+          "correct": 557,
+          "confusion_matrix": [
+            [
+              40,
+              1,
+              2,
+              10,
+              7,
+              10,
+              0,
+              6,
+              2,
+              22
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              8,
+              65,
+              3,
+              1,
+              0,
+              0,
+              2,
+              7,
+              7
+            ],
+            [
+              1,
+              8,
+              11,
+              72,
+              0,
+              2,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              8,
+              20,
+              4,
+              0,
+              54,
+              3,
+              3,
+              4,
+              2,
+              2
+            ],
+            [
+              19,
+              0,
+              0,
+              0,
+              0,
+              39,
+              1,
+              8,
+              29,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              23,
+              3,
+              0,
+              92,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              0,
+              1,
+              5,
+              1,
+              0,
+              70,
+              0
+            ],
+            [
+              9,
+              1,
+              8,
+              0,
+              8,
+              7,
+              0,
+              4,
+              7,
+              56
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 40,
+              "accuracy": 0.4,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "street_music",
+                  "count": 22
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 77,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 97,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 72,
+              "accuracy": 0.72,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 54,
+              "accuracy": 0.54,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 39,
+              "accuracy": 0.40625,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 29
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 34,
+              "accuracy": 0.9714285714285714,
+              "predicted_count": 42,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 92,
+              "accuracy": 0.7666666666666667,
+              "predicted_count": 119,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 23
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 70,
+              "accuracy": 0.813953488372093,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 5
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 56,
+              "accuracy": 0.56,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 8
+                },
+                {
+                  "predicted": "drilling",
+                  "count": 8
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.6380297823596792,
+          "clip_count": 873,
+          "correct": 557,
+          "confusion_matrix": [
+            [
+              40,
+              1,
+              2,
+              10,
+              7,
+              10,
+              0,
+              6,
+              2,
+              22
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              8,
+              65,
+              3,
+              1,
+              0,
+              0,
+              2,
+              7,
+              7
+            ],
+            [
+              1,
+              8,
+              11,
+              72,
+              0,
+              2,
+              2,
+              3,
+              0,
+              1
+            ],
+            [
+              8,
+              20,
+              4,
+              0,
+              54,
+              3,
+              3,
+              4,
+              2,
+              2
+            ],
+            [
+              19,
+              0,
+              0,
+              0,
+              0,
+              39,
+              1,
+              8,
+              29,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              34,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              23,
+              3,
+              0,
+              92,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              0,
+              1,
+              5,
+              1,
+              0,
+              70,
+              0
+            ],
+            [
+              9,
+              1,
+              8,
+              0,
+              8,
+              7,
+              0,
+              4,
+              7,
+              56
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 40,
+              "accuracy": 0.4,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "street_music",
+                  "count": 22
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 77,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 97,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 72,
+              "accuracy": 0.72,
+              "predicted_count": 85,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 8
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 54,
+              "accuracy": 0.54,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 39,
+              "accuracy": 0.40625,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 29
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 34,
+              "accuracy": 0.9714285714285714,
+              "predicted_count": 42,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 92,
+              "accuracy": 0.7666666666666667,
+              "predicted_count": 119,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 23
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 70,
+              "accuracy": 0.813953488372093,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 5
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 56,
+              "accuracy": 0.56,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 8
+                },
+                {
+                  "predicted": "drilling",
+                  "count": 8
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    },
+    {
+      "cycle": 2,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_official_paper91_ds1d_fold1_50ep/fold_1/checkpoints/tcam_fold_1_cycle_2.pt",
+      "test": {
+        "accuracy": 0.6494845360824743,
+        "clip_count": 873,
+        "confusion_matrix": [
+          [
+            45,
+            0,
+            2,
+            8,
+            1,
+            10,
+            0,
+            26,
+            1,
+            7
+          ],
+          [
+            0,
+            36,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            10,
+            69,
+            4,
+            2,
+            1,
+            0,
+            0,
+            3,
+            8
+          ],
+          [
+            1,
+            7,
+            9,
+            76,
+            0,
+            0,
+            2,
+            3,
+            1,
+            1
+          ],
+          [
+            8,
+            14,
+            4,
+            2,
+            52,
+            3,
+            4,
+            2,
+            4,
+            7
+          ],
+          [
+            12,
+            1,
+            0,
+            0,
+            2,
+            45,
+            1,
+            8,
+            27,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            35,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0,
+            0,
+            34,
+            12,
+            0,
+            70,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            9,
+            0,
+            0,
+            2,
+            0,
+            0,
+            74,
+            0
+          ],
+          [
+            10,
+            2,
+            7,
+            1,
+            3,
+            2,
+            0,
+            3,
+            7,
+            65
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "air_conditioner",
+            "support": 100,
+            "correct": 45,
+            "accuracy": 0.45,
+            "predicted_count": 83,
+            "top_confusions": [
+              {
+                "predicted": "jackhammer",
+                "count": 26
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 10
+              },
+              {
+                "predicted": "dog_bark",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "car_horn",
+            "support": 36,
+            "correct": 36,
+            "accuracy": 1.0,
+            "predicted_count": 71,
+            "top_confusions": []
+          },
+          {
+            "class_id": 2,
+            "class_name": "children_playing",
+            "support": 100,
+            "correct": 69,
+            "accuracy": 0.69,
+            "predicted_count": 100,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 10
+              },
+              {
+                "predicted": "street_music",
+                "count": 8
+              },
+              {
+                "predicted": "dog_bark",
+                "count": 4
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "dog_bark",
+            "support": 100,
+            "correct": 76,
+            "accuracy": 0.76,
+            "predicted_count": 91,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 9
+              },
+              {
+                "predicted": "car_horn",
+                "count": 7
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "drilling",
+            "support": 100,
+            "correct": 52,
+            "accuracy": 0.52,
+            "predicted_count": 94,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 14
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 8
+              },
+              {
+                "predicted": "street_music",
+                "count": 7
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "engine_idling",
+            "support": 96,
+            "correct": 45,
+            "accuracy": 0.46875,
+            "predicted_count": 75,
+            "top_confusions": [
+              {
+                "predicted": "siren",
+                "count": 27
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 12
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "gun_shot",
+            "support": 35,
+            "correct": 35,
+            "accuracy": 1.0,
+            "predicted_count": 42,
+            "top_confusions": []
+          },
+          {
+            "class_id": 7,
+            "class_name": "jackhammer",
+            "support": 120,
+            "correct": 70,
+            "accuracy": 0.5833333333333334,
+            "predicted_count": 112,
+            "top_confusions": [
+              {
+                "predicted": "drilling",
+                "count": 34
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 12
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 4
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "siren",
+            "support": 86,
+            "correct": 74,
+            "accuracy": 0.8604651162790697,
+            "predicted_count": 117,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 9
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 2
+              },
+              {
+                "predicted": "car_horn",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "street_music",
+            "support": 100,
+            "correct": 65,
+            "accuracy": 0.65,
+            "predicted_count": 88,
+            "top_confusions": [
+              {
+                "predicted": "air_conditioner",
+                "count": 10
+              },
+              {
+                "predicted": "children_playing",
+                "count": 7
+              },
+              {
+                "predicted": "siren",
+                "count": 7
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.6494845360824743,
+          "clip_count": 873,
+          "correct": 567,
+          "confusion_matrix": [
+            [
+              45,
+              0,
+              2,
+              8,
+              1,
+              10,
+              0,
+              26,
+              1,
+              7
+            ],
+            [
+              0,
+              36,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              69,
+              4,
+              2,
+              1,
+              0,
+              0,
+              3,
+              8
+            ],
+            [
+              1,
+              7,
+              9,
+              76,
+              0,
+              0,
+              2,
+              3,
+              1,
+              1
+            ],
+            [
+              8,
+              14,
+              4,
+              2,
+              52,
+              3,
+              4,
+              2,
+              4,
+              7
+            ],
+            [
+              12,
+              1,
+              0,
+              0,
+              2,
+              45,
+              1,
+              8,
+              27,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              34,
+              12,
+              0,
+              70,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              9,
+              0,
+              0,
+              2,
+              0,
+              0,
+              74,
+              0
+            ],
+            [
+              10,
+              2,
+              7,
+              1,
+              3,
+              2,
+              0,
+              3,
+              7,
+              65
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 83,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 26
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 36,
+              "accuracy": 1.0,
+              "predicted_count": 71,
+              "top_confusions": []
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 69,
+              "accuracy": 0.69,
+              "predicted_count": 100,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 76,
+              "accuracy": 0.76,
+              "predicted_count": 91,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 7
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 52,
+              "accuracy": 0.52,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 45,
+              "accuracy": 0.46875,
+              "predicted_count": 75,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 27
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 12
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 70,
+              "accuracy": 0.5833333333333334,
+              "predicted_count": 112,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 34
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 74,
+              "accuracy": 0.8604651162790697,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 2
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.6494845360824743,
+          "clip_count": 873,
+          "correct": 567,
+          "confusion_matrix": [
+            [
+              45,
+              0,
+              2,
+              8,
+              1,
+              10,
+              0,
+              26,
+              1,
+              7
+            ],
+            [
+              0,
+              36,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              69,
+              4,
+              2,
+              1,
+              0,
+              0,
+              3,
+              8
+            ],
+            [
+              1,
+              7,
+              9,
+              76,
+              0,
+              0,
+              2,
+              3,
+              1,
+              1
+            ],
+            [
+              8,
+              14,
+              4,
+              2,
+              52,
+              3,
+              4,
+              2,
+              4,
+              7
+            ],
+            [
+              12,
+              1,
+              0,
+              0,
+              2,
+              45,
+              1,
+              8,
+              27,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              34,
+              12,
+              0,
+              70,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              9,
+              0,
+              0,
+              2,
+              0,
+              0,
+              74,
+              0
+            ],
+            [
+              10,
+              2,
+              7,
+              1,
+              3,
+              2,
+              0,
+              3,
+              7,
+              65
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 83,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 26
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 36,
+              "accuracy": 1.0,
+              "predicted_count": 71,
+              "top_confusions": []
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 69,
+              "accuracy": 0.69,
+              "predicted_count": 100,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 76,
+              "accuracy": 0.76,
+              "predicted_count": 91,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 7
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 52,
+              "accuracy": 0.52,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 45,
+              "accuracy": 0.46875,
+              "predicted_count": 75,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 27
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 12
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 70,
+              "accuracy": 0.5833333333333334,
+              "predicted_count": 112,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 34
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 74,
+              "accuracy": 0.8604651162790697,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 2
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.6494845360824743,
+          "clip_count": 873,
+          "correct": 567,
+          "confusion_matrix": [
+            [
+              45,
+              0,
+              2,
+              8,
+              1,
+              10,
+              0,
+              26,
+              1,
+              7
+            ],
+            [
+              0,
+              36,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              69,
+              4,
+              2,
+              1,
+              0,
+              0,
+              3,
+              8
+            ],
+            [
+              1,
+              7,
+              9,
+              76,
+              0,
+              0,
+              2,
+              3,
+              1,
+              1
+            ],
+            [
+              8,
+              14,
+              4,
+              2,
+              52,
+              3,
+              4,
+              2,
+              4,
+              7
+            ],
+            [
+              12,
+              1,
+              0,
+              0,
+              2,
+              45,
+              1,
+              8,
+              27,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              34,
+              12,
+              0,
+              70,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              9,
+              0,
+              0,
+              2,
+              0,
+              0,
+              74,
+              0
+            ],
+            [
+              10,
+              2,
+              7,
+              1,
+              3,
+              2,
+              0,
+              3,
+              7,
+              65
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 83,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 26
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 36,
+              "accuracy": 1.0,
+              "predicted_count": 71,
+              "top_confusions": []
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 69,
+              "accuracy": 0.69,
+              "predicted_count": 100,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 76,
+              "accuracy": 0.76,
+              "predicted_count": 91,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 7
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 52,
+              "accuracy": 0.52,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 45,
+              "accuracy": 0.46875,
+              "predicted_count": 75,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 27
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 12
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 70,
+              "accuracy": 0.5833333333333334,
+              "predicted_count": 112,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 34
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 74,
+              "accuracy": 0.8604651162790697,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 2
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.6494845360824743,
+          "clip_count": 873,
+          "correct": 567,
+          "confusion_matrix": [
+            [
+              45,
+              0,
+              2,
+              8,
+              1,
+              10,
+              0,
+              26,
+              1,
+              7
+            ],
+            [
+              0,
+              36,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              69,
+              4,
+              2,
+              1,
+              0,
+              0,
+              3,
+              8
+            ],
+            [
+              1,
+              7,
+              9,
+              76,
+              0,
+              0,
+              2,
+              3,
+              1,
+              1
+            ],
+            [
+              8,
+              14,
+              4,
+              2,
+              52,
+              3,
+              4,
+              2,
+              4,
+              7
+            ],
+            [
+              12,
+              1,
+              0,
+              0,
+              2,
+              45,
+              1,
+              8,
+              27,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              34,
+              12,
+              0,
+              70,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              9,
+              0,
+              0,
+              2,
+              0,
+              0,
+              74,
+              0
+            ],
+            [
+              10,
+              2,
+              7,
+              1,
+              3,
+              2,
+              0,
+              3,
+              7,
+              65
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 83,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 26
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 36,
+              "accuracy": 1.0,
+              "predicted_count": 71,
+              "top_confusions": []
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 69,
+              "accuracy": 0.69,
+              "predicted_count": 100,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 76,
+              "accuracy": 0.76,
+              "predicted_count": 91,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 7
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 52,
+              "accuracy": 0.52,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 45,
+              "accuracy": 0.46875,
+              "predicted_count": 75,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 27
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 12
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 70,
+              "accuracy": 0.5833333333333334,
+              "predicted_count": 112,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 34
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 74,
+              "accuracy": 0.8604651162790697,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 2
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.6494845360824743,
+          "clip_count": 873,
+          "correct": 567,
+          "confusion_matrix": [
+            [
+              45,
+              0,
+              2,
+              8,
+              1,
+              10,
+              0,
+              26,
+              1,
+              7
+            ],
+            [
+              0,
+              36,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              69,
+              4,
+              2,
+              1,
+              0,
+              0,
+              3,
+              8
+            ],
+            [
+              1,
+              7,
+              9,
+              76,
+              0,
+              0,
+              2,
+              3,
+              1,
+              1
+            ],
+            [
+              8,
+              14,
+              4,
+              2,
+              52,
+              3,
+              4,
+              2,
+              4,
+              7
+            ],
+            [
+              12,
+              1,
+              0,
+              0,
+              2,
+              45,
+              1,
+              8,
+              27,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              34,
+              12,
+              0,
+              70,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              9,
+              0,
+              0,
+              2,
+              0,
+              0,
+              74,
+              0
+            ],
+            [
+              10,
+              2,
+              7,
+              1,
+              3,
+              2,
+              0,
+              3,
+              7,
+              65
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 83,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 26
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 10
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 36,
+              "accuracy": 1.0,
+              "predicted_count": 71,
+              "top_confusions": []
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 69,
+              "accuracy": 0.69,
+              "predicted_count": 100,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 76,
+              "accuracy": 0.76,
+              "predicted_count": 91,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 7
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 52,
+              "accuracy": 0.52,
+              "predicted_count": 94,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 45,
+              "accuracy": 0.46875,
+              "predicted_count": 75,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 27
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 12
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 70,
+              "accuracy": 0.5833333333333334,
+              "predicted_count": 112,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 34
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 74,
+              "accuracy": 0.8604651162790697,
+              "predicted_count": 117,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 2
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 65,
+              "accuracy": 0.65,
+              "predicted_count": 88,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 7
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    },
+    {
+      "cycle": 3,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_official_paper91_ds1d_fold1_50ep/fold_1/checkpoints/tcam_fold_1_cycle_3.pt",
+      "test": {
+        "accuracy": 0.6586483390607102,
+        "clip_count": 873,
+        "confusion_matrix": [
+          [
+            45,
+            2,
+            2,
+            7,
+            3,
+            6,
+            1,
+            29,
+            1,
+            4
+          ],
+          [
+            0,
+            35,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            11,
+            70,
+            4,
+            1,
+            4,
+            0,
+            0,
+            1,
+            5
+          ],
+          [
+            1,
+            9,
+            6,
+            80,
+            0,
+            0,
+            1,
+            1,
+            0,
+            2
+          ],
+          [
+            8,
+            14,
+            3,
+            4,
+            55,
+            2,
+            3,
+            1,
+            4,
+            6
+          ],
+          [
+            21,
+            1,
+            0,
+            0,
+            4,
+            42,
+            1,
+            8,
+            19,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            35,
+            0,
+            0,
+            0
+          ],
+          [
+            4,
+            0,
+            0,
+            0,
+            37,
+            11,
+            0,
+            68,
+            0,
+            0
+          ],
+          [
+            0,
+            2,
+            2,
+            0,
+            0,
+            4,
+            0,
+            0,
+            78,
+            0
+          ],
+          [
+            10,
+            2,
+            6,
+            1,
+            3,
+            2,
+            0,
+            3,
+            6,
+            67
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "air_conditioner",
+            "support": 100,
+            "correct": 45,
+            "accuracy": 0.45,
+            "predicted_count": 93,
+            "top_confusions": [
+              {
+                "predicted": "jackhammer",
+                "count": 29
+              },
+              {
+                "predicted": "dog_bark",
+                "count": 7
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 6
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "car_horn",
+            "support": 36,
+            "correct": 35,
+            "accuracy": 0.9722222222222222,
+            "predicted_count": 76,
+            "top_confusions": [
+              {
+                "predicted": "gun_shot",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "children_playing",
+            "support": 100,
+            "correct": 70,
+            "accuracy": 0.7,
+            "predicted_count": 89,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 11
+              },
+              {
+                "predicted": "street_music",
+                "count": 5
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 4
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "dog_bark",
+            "support": 100,
+            "correct": 80,
+            "accuracy": 0.8,
+            "predicted_count": 96,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 9
+              },
+              {
+                "predicted": "children_playing",
+                "count": 6
+              },
+              {
+                "predicted": "street_music",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "drilling",
+            "support": 100,
+            "correct": 55,
+            "accuracy": 0.55,
+            "predicted_count": 103,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 14
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 8
+              },
+              {
+                "predicted": "street_music",
+                "count": 6
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "engine_idling",
+            "support": 96,
+            "correct": 42,
+            "accuracy": 0.4375,
+            "predicted_count": 71,
+            "top_confusions": [
+              {
+                "predicted": "air_conditioner",
+                "count": 21
+              },
+              {
+                "predicted": "siren",
+                "count": 19
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "gun_shot",
+            "support": 35,
+            "correct": 35,
+            "accuracy": 1.0,
+            "predicted_count": 42,
+            "top_confusions": []
+          },
+          {
+            "class_id": 7,
+            "class_name": "jackhammer",
+            "support": 120,
+            "correct": 68,
+            "accuracy": 0.5666666666666667,
+            "predicted_count": 110,
+            "top_confusions": [
+              {
+                "predicted": "drilling",
+                "count": 37
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 11
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 4
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "siren",
+            "support": 86,
+            "correct": 78,
+            "accuracy": 0.9069767441860465,
+            "predicted_count": 109,
+            "top_confusions": [
+              {
+                "predicted": "engine_idling",
+                "count": 4
+              },
+              {
+                "predicted": "car_horn",
+                "count": 2
+              },
+              {
+                "predicted": "children_playing",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "street_music",
+            "support": 100,
+            "correct": 67,
+            "accuracy": 0.67,
+            "predicted_count": 84,
+            "top_confusions": [
+              {
+                "predicted": "air_conditioner",
+                "count": 10
+              },
+              {
+                "predicted": "children_playing",
+                "count": 6
+              },
+              {
+                "predicted": "siren",
+                "count": 6
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.6586483390607102,
+          "clip_count": 873,
+          "correct": 575,
+          "confusion_matrix": [
+            [
+              45,
+              2,
+              2,
+              7,
+              3,
+              6,
+              1,
+              29,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              11,
+              70,
+              4,
+              1,
+              4,
+              0,
+              0,
+              1,
+              5
+            ],
+            [
+              1,
+              9,
+              6,
+              80,
+              0,
+              0,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              8,
+              14,
+              3,
+              4,
+              55,
+              2,
+              3,
+              1,
+              4,
+              6
+            ],
+            [
+              21,
+              1,
+              0,
+              0,
+              4,
+              42,
+              1,
+              8,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              37,
+              11,
+              0,
+              68,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              2,
+              0,
+              0,
+              4,
+              0,
+              0,
+              78,
+              0
+            ],
+            [
+              10,
+              2,
+              6,
+              1,
+              3,
+              2,
+              0,
+              3,
+              6,
+              67
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 93,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 29
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 76,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 70,
+              "accuracy": 0.7,
+              "predicted_count": 89,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 11
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 5
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 80,
+              "accuracy": 0.8,
+              "predicted_count": 96,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 55,
+              "accuracy": 0.55,
+              "predicted_count": 103,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 42,
+              "accuracy": 0.4375,
+              "predicted_count": 71,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 21
+                },
+                {
+                  "predicted": "siren",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 68,
+              "accuracy": 0.5666666666666667,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 37
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 78,
+              "accuracy": 0.9069767441860465,
+              "predicted_count": 109,
+              "top_confusions": [
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 67,
+              "accuracy": 0.67,
+              "predicted_count": 84,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.6586483390607102,
+          "clip_count": 873,
+          "correct": 575,
+          "confusion_matrix": [
+            [
+              45,
+              2,
+              2,
+              7,
+              3,
+              6,
+              1,
+              29,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              11,
+              70,
+              4,
+              1,
+              4,
+              0,
+              0,
+              1,
+              5
+            ],
+            [
+              1,
+              9,
+              6,
+              80,
+              0,
+              0,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              8,
+              14,
+              3,
+              4,
+              55,
+              2,
+              3,
+              1,
+              4,
+              6
+            ],
+            [
+              21,
+              1,
+              0,
+              0,
+              4,
+              42,
+              1,
+              8,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              37,
+              11,
+              0,
+              68,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              2,
+              0,
+              0,
+              4,
+              0,
+              0,
+              78,
+              0
+            ],
+            [
+              10,
+              2,
+              6,
+              1,
+              3,
+              2,
+              0,
+              3,
+              6,
+              67
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 93,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 29
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 76,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 70,
+              "accuracy": 0.7,
+              "predicted_count": 89,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 11
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 5
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 80,
+              "accuracy": 0.8,
+              "predicted_count": 96,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 55,
+              "accuracy": 0.55,
+              "predicted_count": 103,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 42,
+              "accuracy": 0.4375,
+              "predicted_count": 71,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 21
+                },
+                {
+                  "predicted": "siren",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 68,
+              "accuracy": 0.5666666666666667,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 37
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 78,
+              "accuracy": 0.9069767441860465,
+              "predicted_count": 109,
+              "top_confusions": [
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 67,
+              "accuracy": 0.67,
+              "predicted_count": 84,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.6586483390607102,
+          "clip_count": 873,
+          "correct": 575,
+          "confusion_matrix": [
+            [
+              45,
+              2,
+              2,
+              7,
+              3,
+              6,
+              1,
+              29,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              11,
+              70,
+              4,
+              1,
+              4,
+              0,
+              0,
+              1,
+              5
+            ],
+            [
+              1,
+              9,
+              6,
+              80,
+              0,
+              0,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              8,
+              14,
+              3,
+              4,
+              55,
+              2,
+              3,
+              1,
+              4,
+              6
+            ],
+            [
+              21,
+              1,
+              0,
+              0,
+              4,
+              42,
+              1,
+              8,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              37,
+              11,
+              0,
+              68,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              2,
+              0,
+              0,
+              4,
+              0,
+              0,
+              78,
+              0
+            ],
+            [
+              10,
+              2,
+              6,
+              1,
+              3,
+              2,
+              0,
+              3,
+              6,
+              67
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 93,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 29
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 76,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 70,
+              "accuracy": 0.7,
+              "predicted_count": 89,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 11
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 5
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 80,
+              "accuracy": 0.8,
+              "predicted_count": 96,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 55,
+              "accuracy": 0.55,
+              "predicted_count": 103,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 42,
+              "accuracy": 0.4375,
+              "predicted_count": 71,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 21
+                },
+                {
+                  "predicted": "siren",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 68,
+              "accuracy": 0.5666666666666667,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 37
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 78,
+              "accuracy": 0.9069767441860465,
+              "predicted_count": 109,
+              "top_confusions": [
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 67,
+              "accuracy": 0.67,
+              "predicted_count": 84,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.6586483390607102,
+          "clip_count": 873,
+          "correct": 575,
+          "confusion_matrix": [
+            [
+              45,
+              2,
+              2,
+              7,
+              3,
+              6,
+              1,
+              29,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              11,
+              70,
+              4,
+              1,
+              4,
+              0,
+              0,
+              1,
+              5
+            ],
+            [
+              1,
+              9,
+              6,
+              80,
+              0,
+              0,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              8,
+              14,
+              3,
+              4,
+              55,
+              2,
+              3,
+              1,
+              4,
+              6
+            ],
+            [
+              21,
+              1,
+              0,
+              0,
+              4,
+              42,
+              1,
+              8,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              37,
+              11,
+              0,
+              68,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              2,
+              0,
+              0,
+              4,
+              0,
+              0,
+              78,
+              0
+            ],
+            [
+              10,
+              2,
+              6,
+              1,
+              3,
+              2,
+              0,
+              3,
+              6,
+              67
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 93,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 29
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 76,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 70,
+              "accuracy": 0.7,
+              "predicted_count": 89,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 11
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 5
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 80,
+              "accuracy": 0.8,
+              "predicted_count": 96,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 55,
+              "accuracy": 0.55,
+              "predicted_count": 103,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 42,
+              "accuracy": 0.4375,
+              "predicted_count": 71,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 21
+                },
+                {
+                  "predicted": "siren",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 68,
+              "accuracy": 0.5666666666666667,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 37
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 78,
+              "accuracy": 0.9069767441860465,
+              "predicted_count": 109,
+              "top_confusions": [
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 67,
+              "accuracy": 0.67,
+              "predicted_count": 84,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.6586483390607102,
+          "clip_count": 873,
+          "correct": 575,
+          "confusion_matrix": [
+            [
+              45,
+              2,
+              2,
+              7,
+              3,
+              6,
+              1,
+              29,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              11,
+              70,
+              4,
+              1,
+              4,
+              0,
+              0,
+              1,
+              5
+            ],
+            [
+              1,
+              9,
+              6,
+              80,
+              0,
+              0,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              8,
+              14,
+              3,
+              4,
+              55,
+              2,
+              3,
+              1,
+              4,
+              6
+            ],
+            [
+              21,
+              1,
+              0,
+              0,
+              4,
+              42,
+              1,
+              8,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              37,
+              11,
+              0,
+              68,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              2,
+              0,
+              0,
+              4,
+              0,
+              0,
+              78,
+              0
+            ],
+            [
+              10,
+              2,
+              6,
+              1,
+              3,
+              2,
+              0,
+              3,
+              6,
+              67
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 45,
+              "accuracy": 0.45,
+              "predicted_count": 93,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 29
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 76,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 70,
+              "accuracy": 0.7,
+              "predicted_count": 89,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 11
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 5
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 80,
+              "accuracy": 0.8,
+              "predicted_count": 96,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 9
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 55,
+              "accuracy": 0.55,
+              "predicted_count": 103,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 14
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "street_music",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 42,
+              "accuracy": 0.4375,
+              "predicted_count": 71,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 21
+                },
+                {
+                  "predicted": "siren",
+                  "count": 19
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 42,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 68,
+              "accuracy": 0.5666666666666667,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 37
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 78,
+              "accuracy": 0.9069767441860465,
+              "predicted_count": 109,
+              "top_confusions": [
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 2
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 67,
+              "accuracy": 0.67,
+              "predicted_count": 84,
+              "top_confusions": [
+                {
+                  "predicted": "air_conditioner",
+                  "count": 10
+                },
+                {
+                  "predicted": "children_playing",
+                  "count": 6
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    },
+    {
+      "cycle": "final",
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_official_paper91_ds1d_fold1_50ep/fold_1/checkpoints/tcam_fold_1_cycle_final.pt",
+      "test": {
+        "accuracy": 0.6678121420389461,
+        "clip_count": 873,
+        "confusion_matrix": [
+          [
+            46,
+            1,
+            6,
+            7,
+            2,
+            7,
+            1,
+            25,
+            1,
+            4
+          ],
+          [
+            0,
+            35,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            10,
+            74,
+            3,
+            2,
+            4,
+            1,
+            0,
+            1,
+            2
+          ],
+          [
+            1,
+            6,
+            7,
+            79,
+            0,
+            1,
+            1,
+            3,
+            0,
+            2
+          ],
+          [
+            8,
+            12,
+            2,
+            8,
+            59,
+            2,
+            0,
+            1,
+            4,
+            4
+          ],
+          [
+            11,
+            1,
+            1,
+            1,
+            0,
+            53,
+            1,
+            8,
+            20,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            35,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            0,
+            0,
+            0,
+            35,
+            11,
+            0,
+            69,
+            0,
+            0
+          ],
+          [
+            0,
+            3,
+            11,
+            0,
+            0,
+            3,
+            0,
+            0,
+            67,
+            2
+          ],
+          [
+            7,
+            1,
+            9,
+            1,
+            4,
+            1,
+            0,
+            5,
+            6,
+            66
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "air_conditioner",
+            "support": 100,
+            "correct": 46,
+            "accuracy": 0.46,
+            "predicted_count": 81,
+            "top_confusions": [
+              {
+                "predicted": "jackhammer",
+                "count": 25
+              },
+              {
+                "predicted": "dog_bark",
+                "count": 7
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 7
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "car_horn",
+            "support": 36,
+            "correct": 35,
+            "accuracy": 0.9722222222222222,
+            "predicted_count": 69,
+            "top_confusions": [
+              {
+                "predicted": "gun_shot",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "children_playing",
+            "support": 100,
+            "correct": 74,
+            "accuracy": 0.74,
+            "predicted_count": 110,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 10
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 4
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "dog_bark",
+            "support": 100,
+            "correct": 79,
+            "accuracy": 0.79,
+            "predicted_count": 99,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 7
+              },
+              {
+                "predicted": "car_horn",
+                "count": 6
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "drilling",
+            "support": 100,
+            "correct": 59,
+            "accuracy": 0.59,
+            "predicted_count": 102,
+            "top_confusions": [
+              {
+                "predicted": "car_horn",
+                "count": 12
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 8
+              },
+              {
+                "predicted": "dog_bark",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "engine_idling",
+            "support": 96,
+            "correct": 53,
+            "accuracy": 0.5520833333333334,
+            "predicted_count": 82,
+            "top_confusions": [
+              {
+                "predicted": "siren",
+                "count": 20
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 11
+              },
+              {
+                "predicted": "jackhammer",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "gun_shot",
+            "support": 35,
+            "correct": 35,
+            "accuracy": 1.0,
+            "predicted_count": 40,
+            "top_confusions": []
+          },
+          {
+            "class_id": 7,
+            "class_name": "jackhammer",
+            "support": 120,
+            "correct": 69,
+            "accuracy": 0.575,
+            "predicted_count": 111,
+            "top_confusions": [
+              {
+                "predicted": "drilling",
+                "count": 35
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 11
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 5
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "siren",
+            "support": 86,
+            "correct": 67,
+            "accuracy": 0.7790697674418605,
+            "predicted_count": 99,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 11
+              },
+              {
+                "predicted": "car_horn",
+                "count": 3
+              },
+              {
+                "predicted": "engine_idling",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "street_music",
+            "support": 100,
+            "correct": 66,
+            "accuracy": 0.66,
+            "predicted_count": 80,
+            "top_confusions": [
+              {
+                "predicted": "children_playing",
+                "count": 9
+              },
+              {
+                "predicted": "air_conditioner",
+                "count": 7
+              },
+              {
+                "predicted": "siren",
+                "count": 6
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.6678121420389461,
+          "clip_count": 873,
+          "correct": 583,
+          "confusion_matrix": [
+            [
+              46,
+              1,
+              6,
+              7,
+              2,
+              7,
+              1,
+              25,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              74,
+              3,
+              2,
+              4,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              6,
+              7,
+              79,
+              0,
+              1,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              8,
+              12,
+              2,
+              8,
+              59,
+              2,
+              0,
+              1,
+              4,
+              4
+            ],
+            [
+              11,
+              1,
+              1,
+              1,
+              0,
+              53,
+              1,
+              8,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              35,
+              11,
+              0,
+              69,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              11,
+              0,
+              0,
+              3,
+              0,
+              0,
+              67,
+              2
+            ],
+            [
+              7,
+              1,
+              9,
+              1,
+              4,
+              1,
+              0,
+              5,
+              6,
+              66
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 46,
+              "accuracy": 0.46,
+              "predicted_count": 81,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 25
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 74,
+              "accuracy": 0.74,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 79,
+              "accuracy": 0.79,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 6
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 59,
+              "accuracy": 0.59,
+              "predicted_count": 102,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 53,
+              "accuracy": 0.5520833333333334,
+              "predicted_count": 82,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 11
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 40,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 69,
+              "accuracy": 0.575,
+              "predicted_count": 111,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 35
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 5
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 67,
+              "accuracy": 0.7790697674418605,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 3
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 66,
+              "accuracy": 0.66,
+              "predicted_count": 80,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.6678121420389461,
+          "clip_count": 873,
+          "correct": 583,
+          "confusion_matrix": [
+            [
+              46,
+              1,
+              6,
+              7,
+              2,
+              7,
+              1,
+              25,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              74,
+              3,
+              2,
+              4,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              6,
+              7,
+              79,
+              0,
+              1,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              8,
+              12,
+              2,
+              8,
+              59,
+              2,
+              0,
+              1,
+              4,
+              4
+            ],
+            [
+              11,
+              1,
+              1,
+              1,
+              0,
+              53,
+              1,
+              8,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              35,
+              11,
+              0,
+              69,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              11,
+              0,
+              0,
+              3,
+              0,
+              0,
+              67,
+              2
+            ],
+            [
+              7,
+              1,
+              9,
+              1,
+              4,
+              1,
+              0,
+              5,
+              6,
+              66
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 46,
+              "accuracy": 0.46,
+              "predicted_count": 81,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 25
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 74,
+              "accuracy": 0.74,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 79,
+              "accuracy": 0.79,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 6
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 59,
+              "accuracy": 0.59,
+              "predicted_count": 102,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 53,
+              "accuracy": 0.5520833333333334,
+              "predicted_count": 82,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 11
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 40,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 69,
+              "accuracy": 0.575,
+              "predicted_count": 111,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 35
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 5
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 67,
+              "accuracy": 0.7790697674418605,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 3
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 66,
+              "accuracy": 0.66,
+              "predicted_count": 80,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.6678121420389461,
+          "clip_count": 873,
+          "correct": 583,
+          "confusion_matrix": [
+            [
+              46,
+              1,
+              6,
+              7,
+              2,
+              7,
+              1,
+              25,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              74,
+              3,
+              2,
+              4,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              6,
+              7,
+              79,
+              0,
+              1,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              8,
+              12,
+              2,
+              8,
+              59,
+              2,
+              0,
+              1,
+              4,
+              4
+            ],
+            [
+              11,
+              1,
+              1,
+              1,
+              0,
+              53,
+              1,
+              8,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              35,
+              11,
+              0,
+              69,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              11,
+              0,
+              0,
+              3,
+              0,
+              0,
+              67,
+              2
+            ],
+            [
+              7,
+              1,
+              9,
+              1,
+              4,
+              1,
+              0,
+              5,
+              6,
+              66
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 46,
+              "accuracy": 0.46,
+              "predicted_count": 81,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 25
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 74,
+              "accuracy": 0.74,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 79,
+              "accuracy": 0.79,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 6
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 59,
+              "accuracy": 0.59,
+              "predicted_count": 102,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 53,
+              "accuracy": 0.5520833333333334,
+              "predicted_count": 82,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 11
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 40,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 69,
+              "accuracy": 0.575,
+              "predicted_count": 111,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 35
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 5
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 67,
+              "accuracy": 0.7790697674418605,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 3
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 66,
+              "accuracy": 0.66,
+              "predicted_count": 80,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.6678121420389461,
+          "clip_count": 873,
+          "correct": 583,
+          "confusion_matrix": [
+            [
+              46,
+              1,
+              6,
+              7,
+              2,
+              7,
+              1,
+              25,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              74,
+              3,
+              2,
+              4,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              6,
+              7,
+              79,
+              0,
+              1,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              8,
+              12,
+              2,
+              8,
+              59,
+              2,
+              0,
+              1,
+              4,
+              4
+            ],
+            [
+              11,
+              1,
+              1,
+              1,
+              0,
+              53,
+              1,
+              8,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              35,
+              11,
+              0,
+              69,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              11,
+              0,
+              0,
+              3,
+              0,
+              0,
+              67,
+              2
+            ],
+            [
+              7,
+              1,
+              9,
+              1,
+              4,
+              1,
+              0,
+              5,
+              6,
+              66
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 46,
+              "accuracy": 0.46,
+              "predicted_count": 81,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 25
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 74,
+              "accuracy": 0.74,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 79,
+              "accuracy": 0.79,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 6
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 59,
+              "accuracy": 0.59,
+              "predicted_count": 102,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 53,
+              "accuracy": 0.5520833333333334,
+              "predicted_count": 82,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 11
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 40,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 69,
+              "accuracy": 0.575,
+              "predicted_count": 111,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 35
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 5
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 67,
+              "accuracy": 0.7790697674418605,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 3
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 66,
+              "accuracy": 0.66,
+              "predicted_count": 80,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.6678121420389461,
+          "clip_count": 873,
+          "correct": 583,
+          "confusion_matrix": [
+            [
+              46,
+              1,
+              6,
+              7,
+              2,
+              7,
+              1,
+              25,
+              1,
+              4
+            ],
+            [
+              0,
+              35,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              10,
+              74,
+              3,
+              2,
+              4,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              6,
+              7,
+              79,
+              0,
+              1,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              8,
+              12,
+              2,
+              8,
+              59,
+              2,
+              0,
+              1,
+              4,
+              4
+            ],
+            [
+              11,
+              1,
+              1,
+              1,
+              0,
+              53,
+              1,
+              8,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              35,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              35,
+              11,
+              0,
+              69,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              11,
+              0,
+              0,
+              3,
+              0,
+              0,
+              67,
+              2
+            ],
+            [
+              7,
+              1,
+              9,
+              1,
+              4,
+              1,
+              0,
+              5,
+              6,
+              66
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "air_conditioner",
+              "support": 100,
+              "correct": 46,
+              "accuracy": 0.46,
+              "predicted_count": 81,
+              "top_confusions": [
+                {
+                  "predicted": "jackhammer",
+                  "count": 25
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 7
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "car_horn",
+              "support": 36,
+              "correct": 35,
+              "accuracy": 0.9722222222222222,
+              "predicted_count": 69,
+              "top_confusions": [
+                {
+                  "predicted": "gun_shot",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "children_playing",
+              "support": 100,
+              "correct": 74,
+              "accuracy": 0.74,
+              "predicted_count": 110,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 10
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 4
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "dog_bark",
+              "support": 100,
+              "correct": 79,
+              "accuracy": 0.79,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 7
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 6
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "drilling",
+              "support": 100,
+              "correct": 59,
+              "accuracy": 0.59,
+              "predicted_count": 102,
+              "top_confusions": [
+                {
+                  "predicted": "car_horn",
+                  "count": 12
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 8
+                },
+                {
+                  "predicted": "dog_bark",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "engine_idling",
+              "support": 96,
+              "correct": 53,
+              "accuracy": 0.5520833333333334,
+              "predicted_count": 82,
+              "top_confusions": [
+                {
+                  "predicted": "siren",
+                  "count": 20
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 11
+                },
+                {
+                  "predicted": "jackhammer",
+                  "count": 8
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "gun_shot",
+              "support": 35,
+              "correct": 35,
+              "accuracy": 1.0,
+              "predicted_count": 40,
+              "top_confusions": []
+            },
+            {
+              "class_id": 7,
+              "class_name": "jackhammer",
+              "support": 120,
+              "correct": 69,
+              "accuracy": 0.575,
+              "predicted_count": 111,
+              "top_confusions": [
+                {
+                  "predicted": "drilling",
+                  "count": 35
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 11
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 5
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "siren",
+              "support": 86,
+              "correct": 67,
+              "accuracy": 0.7790697674418605,
+              "predicted_count": 99,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 11
+                },
+                {
+                  "predicted": "car_horn",
+                  "count": 3
+                },
+                {
+                  "predicted": "engine_idling",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "street_music",
+              "support": 100,
+              "correct": 66,
+              "accuracy": 0.66,
+              "predicted_count": 80,
+              "top_confusions": [
+                {
+                  "predicted": "children_playing",
+                  "count": 9
+                },
+                {
+                  "predicted": "air_conditioner",
+                  "count": 7
+                },
+                {
+                  "predicted": "siren",
+                  "count": 6
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    }
+  ]
+}
