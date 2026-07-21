@@ -13,7 +13,13 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
 from src.data import LogMelFeatureExtractor, load_audio_to_ram, parse_dataset
-from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260AudioNetDS1DDeep, KV260LogMelNetDS1D
+from src.models import (
+    TCAMAttn1DNet,
+    DSRes1DSENet,
+    DSConv2DH1PyramidNet,
+    DSConv2DH1PyramidNetDeep,
+    DSConv2DH1LogMelNet,
+)
 from src.training import Trainer
 
 
@@ -54,17 +60,17 @@ def read_json(path):
 
 
 def build_model(cfg, metrics, num_classes):
-    model_name = (metrics or {}).get("model_name", cfg.get("model_name", "tcam1dcnn")).lower()
-    if model_name == "tcam1dcnn":
-        return TCAM1DCNN(num_classes=num_classes)
-    if model_name == "efficient_audio_cnn1d":
-        return EfficientAudioCNN1D(
+    model_name = (metrics or {}).get("model_name", cfg.get("model_name", "ds_conv2d_h1_pyramid")).lower()
+    if model_name in {"tcam_attn1d", "tcam1dcnn"}:
+        return TCAMAttn1DNet(num_classes=num_classes)
+    if model_name in {"ds_res1d_se", "efficient_audio_cnn1d"}:
+        return DSRes1DSENet(
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.25)),
         )
-    if model_name == "kv260_audio_net_ds1d":
-        return KV260AudioNetDS1D(
+    if model_name in {"ds_conv2d_h1_pyramid", "kv260_audio_net_ds1d"}:
+        return DSConv2DH1PyramidNet(
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
@@ -73,8 +79,8 @@ def build_model(cfg, metrics, num_classes):
             stem_type=cfg.get("stem_type", "single"),
             extra_late_blocks=int((metrics or {}).get("extra_late_blocks", cfg.get("extra_late_blocks", 0))),
         )
-    if model_name == "kv260_audio_net_ds1d_deep":
-        return KV260AudioNetDS1DDeep(
+    if model_name in {"ds_conv2d_h1_pyramid_deep", "kv260_audio_net_ds1d_deep"}:
+        return DSConv2DH1PyramidNetDeep(
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.20)),
@@ -82,8 +88,8 @@ def build_model(cfg, metrics, num_classes):
             pool_bins=cfg.get("pool_bins", None),
             stem_type=cfg.get("stem_type", "single"),
         )
-    if model_name == "kv260_logmel_net_ds1d":
-        return KV260LogMelNetDS1D(
+    if model_name in {"ds_conv2d_h1_logmel", "kv260_logmel_net_ds1d"}:
+        return DSConv2DH1LogMelNet(
             num_classes=num_classes,
             input_channels=int(cfg.get("n_mels", 64)),
             width_mult=float(cfg.get("width_mult", 1.0)),

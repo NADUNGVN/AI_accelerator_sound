@@ -16,7 +16,18 @@ from collections import defaultdict
 # Ensure local src directory is on the path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from src.models import TCAM1DCNN, EfficientAudioCNN1D, KV260AudioNetDS1D, KV260AudioNetDS1DDeep, KV260LogMelNetDS1D
+from src.models import (
+    TCAMAttn1DNet,
+    TCAM1DCNN,
+    DSRes1DSENet,
+    EfficientAudioCNN1D,
+    DSConv2DH1PyramidNet,
+    DSConv2DH1PyramidNetDeep,
+    DSConv2DH1LogMelNet,
+    KV260AudioNetDS1D,
+    KV260AudioNetDS1DDeep,
+    KV260LogMelNetDS1D,
+)
 from src.data import (
     CachedUrbanSoundFrameDataset,
     LogMelFeatureExtractor,
@@ -226,17 +237,20 @@ def source_label_overlap_summary(train_clips, test_records, limit=10):
 
 
 def build_model(cfg, num_classes):
-    model_name = cfg.get("model_name", "tcam1dcnn").lower()
-    if model_name == "tcam1dcnn":
-        model = TCAM1DCNN(num_classes=num_classes)
-    elif model_name == "efficient_audio_cnn1d":
-        model = EfficientAudioCNN1D(
+    """Build model from config. Prefer paper names; legacy keys remain valid."""
+    model_name = cfg.get("model_name", "ds_conv2d_h1_pyramid").lower()
+
+    # Canonical paper names (preferred) and legacy aliases.
+    if model_name in {"tcam_attn1d", "tcam1dcnn"}:
+        model = TCAMAttn1DNet(num_classes=num_classes)
+    elif model_name in {"ds_res1d_se", "efficient_audio_cnn1d"}:
+        model = DSRes1DSENet(
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.25)),
         )
-    elif model_name == "kv260_audio_net_ds1d":
-        model = KV260AudioNetDS1D(
+    elif model_name in {"ds_conv2d_h1_pyramid", "kv260_audio_net_ds1d"}:
+        model = DSConv2DH1PyramidNet(
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.15)),
@@ -245,8 +259,8 @@ def build_model(cfg, num_classes):
             stem_type=cfg.get("stem_type", "single"),
             extra_late_blocks=int(cfg.get("extra_late_blocks", 0)),
         )
-    elif model_name == "kv260_audio_net_ds1d_deep":
-        model = KV260AudioNetDS1DDeep(
+    elif model_name in {"ds_conv2d_h1_pyramid_deep", "kv260_audio_net_ds1d_deep"}:
+        model = DSConv2DH1PyramidNetDeep(
             num_classes=num_classes,
             width_mult=float(cfg.get("width_mult", 1.0)),
             dropout=float(cfg.get("dropout", 0.20)),
@@ -254,8 +268,8 @@ def build_model(cfg, num_classes):
             pool_bins=cfg.get("pool_bins", None),
             stem_type=cfg.get("stem_type", "single"),
         )
-    elif model_name == "kv260_logmel_net_ds1d":
-        model = KV260LogMelNetDS1D(
+    elif model_name in {"ds_conv2d_h1_logmel", "kv260_logmel_net_ds1d"}:
+        model = DSConv2DH1LogMelNet(
             num_classes=num_classes,
             input_channels=int(cfg.get("n_mels", 64)),
             width_mult=float(cfg.get("width_mult", 1.0)),
@@ -264,9 +278,10 @@ def build_model(cfg, num_classes):
         )
     else:
         raise ValueError(
-            f"Unsupported model_name '{model_name}'. Use 'tcam1dcnn', "
-            "'efficient_audio_cnn1d', 'kv260_audio_net_ds1d', "
-            "'kv260_audio_net_ds1d_deep', or 'kv260_logmel_net_ds1d'."
+            f"Unsupported model_name '{model_name}'. Prefer paper names: "
+            "'ds_conv2d_h1_pyramid', 'ds_res1d_se', 'tcam_attn1d', "
+            "'ds_conv2d_h1_pyramid_deep', 'ds_conv2d_h1_logmel'. "
+            "Legacy: 'kv260_audio_net_ds1d', 'efficient_audio_cnn1d', 'tcam1dcnn'."
         )
     return model_name, model
 
@@ -701,7 +716,9 @@ class ModelEMA:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train SOTA TCAM1DCNN on RTX 3090 (Modular Structure)")
+    parser = argparse.ArgumentParser(
+        description="Train environmental sound CNN (DS-Conv2D-H1 / DS-Res1D-SE / TCAM-Attn1D)"
+    )
     parser.add_argument("--data_dir", type=str, default=default_data_dir(), help="Path to UrbanSound8K folder")
     parser.add_argument("--config", type=str, default="configs/rtx3090_config.json", help="Path to RTX 3090 config JSON")
     parser.add_argument("--fold", type=int, default=1, help="Test fold for 10-fold CV (1-10)")

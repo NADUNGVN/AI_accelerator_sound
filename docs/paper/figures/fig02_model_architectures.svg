@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620">
+<rect width="1100" height="620" fill="#fafafa"/>
+<text x="550" y="28" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#111827">Two no-teacher approaches vs classic framed 1D-CNN / Transformer teacher</text>
+<rect x="20" y="50" width="340" height="540" rx="6" fill="#f0fdf4" stroke="#15803d" stroke-width="2"/>
+<text x="190" y="78" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#14532d">A. DS-Conv2D-H1 Pyramid</text>
+<text x="190" y="98" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#166534">(deployable student · MAIN)</text>
+<text x="190" y="125" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Input  [B,1,64000]  →  reshape [B,1,1,T]</text>
+<rect x="50" y="145" width="280" height="52" rx="6" fill="#bbf7d0" stroke="#1f2937" stroke-width="1.5"/>
+<text x="190.0" y="177" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Stem Conv2D-H1 k31 s4</text>
+<line x1="190.0" y1="197" x2="190.0" y2="213" stroke="#166534" stroke-width="2"/>
+<rect x="50" y="215" width="280" height="52" rx="6" fill="#86efac" stroke="#1f2937" stroke-width="1.5"/>
+<text x="190.0" y="247" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">DSBlock DW→PW  ×6 (+ optional Res)</text>
+<line x1="190.0" y1="267" x2="190.0" y2="283" stroke="#166534" stroke-width="2"/>
+<rect x="50" y="285" width="280" height="52" rx="6" fill="#4ade80" stroke="#1f2937" stroke-width="1.5"/>
+<text x="190.0" y="317" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Pyramid Avg+Max bins {1,2,4}</text>
+<line x1="190.0" y1="337" x2="190.0" y2="353" stroke="#166534" stroke-width="2"/>
+<rect x="50" y="355" width="280" height="52" rx="6" fill="#22c55e" stroke="#1f2937" stroke-width="1.5"/>
+<text x="190.0" y="387" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Dropout → Linear → 10 logits</text>
+<text x="190" y="445" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Params: 101,674</text>
+<text x="190" y="465" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">MACs/clip: 61.85 M</text>
+<text x="190" y="485" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">FLOPs (×2 MACs): ≈123.7 M</text>
+<text x="190" y="510" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Operators: Conv2d(H=1), BN2d,</text>
+<text x="190" y="528" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">ReLU, AdaptivePool2d, Linear</text>
+<text x="190" y="555" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#14532d">DPU / Vitis-AI friendly</text>
+<rect x="380" y="50" width="340" height="540" rx="6" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+<text x="550" y="78" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e3a8a">B. DS-Res1D-SE</text>
+<text x="550" y="98" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#1e40af">(pure Conv1d no-teacher)</text>
+<text x="550" y="125" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Input  [B,1,64000]  native Conv1d</text>
+<rect x="410" y="145" width="280" height="52" rx="6" fill="#bfdbfe" stroke="#1f2937" stroke-width="1.5"/>
+<text x="550.0" y="177" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Multi-scale stem k={9,31,63} s4</text>
+<line x1="550.0" y1="197" x2="550.0" y2="213" stroke="#1d4ed8" stroke-width="2"/>
+<rect x="410" y="215" width="280" height="52" rx="6" fill="#93c5fd" stroke="#1f2937" stroke-width="1.5"/>
+<text x="550.0" y="247" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">DSResBlock DW+PW+SE+Res ×7</text>
+<line x1="550.0" y1="267" x2="550.0" y2="283" stroke="#1d4ed8" stroke-width="2"/>
+<rect x="410" y="285" width="280" height="52" rx="6" fill="#60a5fa" stroke="#1f2937" stroke-width="1.5"/>
+<text x="550.0" y="317" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Global Avg ∥ Max pool → 320-d</text>
+<line x1="550.0" y1="337" x2="550.0" y2="353" stroke="#1d4ed8" stroke-width="2"/>
+<rect x="410" y="355" width="280" height="52" rx="6" fill="#3b82f6" stroke="#1f2937" stroke-width="1.5"/>
+<text x="550.0" y="387" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">BN → Dropout → Linear → 10</text>
+<text x="550" y="445" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#111827">Params: 149,088</text>
+<text x="550" y="465" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">MACs/clip: ≈98.7 M</text>
+<text x="550" y="485" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">FLOPs (×2 MACs): ≈197 M</text>
+<text x="550" y="510" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Operators: Conv1d, BN1d, SiLU,</text>
+<text x="550" y="528" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">SE, Dropout1d, Linear</text>
+<text x="550" y="555" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e3a8a">Software baseline (not DPU-packed)</text>
+<rect x="740" y="50" width="340" height="250" rx="6" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+<text x="910" y="78" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#92400e">Classic framed 1D-CNN</text>
+<text x="910" y="98" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">TCAM-Attn1D (Xu et al.)</text>
+<text x="910" y="125" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Frame 0.5 s (T=8000) × 15</text>
+<text x="910" y="145" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Conv1d + TAM + CAM each stage</text>
+<text x="910" y="165" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Params ≈ 410 k</text>
+<text x="910" y="185" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">MACs ≈ 230 M / frame</text>
+<text x="910" y="205" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#111827">≈ 3.45 B MACs / clip (×15)</text>
+<text x="910" y="230" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#9a3412">Not the deployable main path</text>
+<text x="910" y="255" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="normal" text-anchor="middle" fill="#111827">(attention 1D-CNN literature baseline)</text>
+<rect x="740" y="320" width="340" height="270" rx="6" fill="#fae8ff" stroke="#7e22ce" stroke-width="2"/>
+<text x="910" y="348" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#6b21a8">Teacher: AST Transformer</text>
+<text x="910" y="370" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">(Track 3 KD only)</text>
+<text x="910" y="398" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">log-mel patches → patch embed</text>
+<text x="910" y="418" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Transformer encoder (MHA)</text>
+<text x="910" y="438" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">AudioSet-pretrained HF AST</text>
+<text x="910" y="458" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Fine-tune ~90%+ train/cache</text>
+<text x="910" y="485" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#6b21a8">NOT deployed on KV260</text>
+<text x="910" y="510" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#111827">Distills into DS-Conv2D-H1 student</text>
+<text x="910" y="545" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#111827">Layer family ≠ 1D-CNN</text>
+</svg>

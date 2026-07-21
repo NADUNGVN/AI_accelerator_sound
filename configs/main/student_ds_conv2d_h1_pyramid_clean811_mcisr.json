@@ -1,0 +1,142 @@
+{
+  "model_name": "kv260_audio_net_ds1d",
+  "width_mult": 1.0,
+  "dropout": 0.25,
+  "pool_type": "pyramid_avgmax",
+  "pool_bins": [
+    1,
+    2,
+    4
+  ],
+  "stem_type": "single",
+  "deployment_budget": {
+    "max_params": 300000,
+    "max_macs_per_clip": 300000000,
+    "flops_equivalent_convention": "FLOPs = 2 * MACs"
+  },
+  "batch_size": 64,
+  "accum_steps": 1,
+  "epochs": 50,
+  "lr": 0.001,
+  "optimizer": "adamw",
+  "weight_decay": 0.0008,
+  "num_workers": 6,
+  "sample_rate": 16000,
+  "clip_seconds": 4.0,
+  "frame_length": 64000,
+  "frame_hop": 64000,
+  "frames_per_clip": 1,
+  "drop_silent_tail_frames": false,
+  "eval_drop_silent_tail_frames": false,
+  "cycles": 4,
+  "seed": 83,
+  "protocol": "clean_8_1_1",
+  "amp": true,
+  "gradient_clip": 5.0,
+  "adam_eps": 1e-08,
+  "loss": "crossentropy",
+  "label_smoothing": 0.04,
+  "class_weighting": "balanced",
+  "class_weight_multipliers": [
+    1.25,
+    1.3,
+    1.0,
+    1.1,
+    1.15,
+    1.25,
+    1.0,
+    1.35,
+    1.0,
+    1.0
+  ],
+  "weighted_sampler": {
+    "enabled": false,
+    "class_multipliers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "mixup": {
+    "enabled": true,
+    "alpha": 0.2,
+    "prob": 0.7
+  },
+  "ema": {
+    "enabled": true,
+    "decay": 0.995,
+    "use_for_validation": true
+  },
+  "augment": {
+    "enabled": true,
+    "gain_db": 5.0,
+    "noise_prob": 0.25,
+    "noise_snr_db_min": 20.0,
+    "noise_snr_db_max": 38.0,
+    "shift_prob": 0.5,
+    "shift_max_fraction": 0.08,
+    "polarity_prob": 0.1,
+    "time_mask_prob": 0.18,
+    "time_mask_max_fraction": 0.06
+  },
+  "notes": {
+    "algorithm": "MC-ISR: audit pairs + source-group robust CE on machinery cluster",
+    "protocol": "clean_8_1_1 test f1 val f2 train 3-10",
+    "baseline_compare": "server3090_clean811_base_f1_50ep @ 65.06% best-val test",
+    "no_kd": true,
+    "no_early_stopping": true,
+    "doc": "docs/main/ALGORITHM_MCISR.md"
+  },
+  "hard_negative_margin": {
+    "enabled": true,
+    "weight": 0.02,
+    "margin": 0.25,
+    "apply_to_mixup": false,
+    "groups": [],
+    "pairs": [
+      [
+        5,
+        0
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        5,
+        7
+      ]
+    ]
+  },
+  "machinery_source_robust": {
+    "enabled": true,
+    "machinery_classes": [
+      0,
+      4,
+      5,
+      7
+    ],
+    "source_weight": 0.15,
+    "source_temperature": 0.1,
+    "apply_to_mixup": false
+  }
+}

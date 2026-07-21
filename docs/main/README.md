@@ -11,12 +11,12 @@ Full write-up: [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md).
 | **2. Ensemble** | **80–85%** | last-2 ensemble | **79.89%** |
 | **3. Distill teacher → 1D-CNN** | **80–85% student** | student best-val test | **80.00%** (ens 80.23%); teacher ~90%+ |
 
-Shared stack: `kv260_audio_net_ds1d` full-clip, source-safe + **val**, seed 83.
+Shared stack: **DS-Conv2D-H1 Pyramid** (`ds_conv2d_h1_pyramid`, legacy `kv260_audio_net_ds1d`) full-clip, source-safe + **val**, seed 83.
 
 | Item | Canonical choice |
 |---|---|
-| Model | `kv260_audio_net_ds1d` full-clip (~101.7k params, ~61.9M MAC/clip) |
-| Config | [`configs/kv260_ds1d_pyramid_mixup_ema_val.json`](../../configs/kv260_ds1d_pyramid_mixup_ema_val.json) (+ KD configs for Track 3) |
+| Model | **DS-Conv2D-H1 Pyramid** full-clip (~101.7k params, ~61.9M MAC/clip) |
+| Config | [`configs/main/student_ds_conv2d_h1_pyramid_sourcegroup.json`](../../configs/main/student_ds_conv2d_h1_pyramid_sourcegroup.json) (alias of historical `kv260_ds1d_pyramid_mixup_ema_val.json`; + KD configs for Track 3) |
 | Protocol | `source_group_8_1_1` + `fsid_classid_balanced_v1` |
 | Seed | `83` (reproducibility only) |
 | Splits | train / **val** / test |

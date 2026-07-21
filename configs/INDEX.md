@@ -1,6 +1,7 @@
 # Config index
 
 Configs stay in `configs/*.json` (stable paths for scripts/history).  
+**Prefer `configs/main/` for paper entrypoints** (same recipes, clearer names).  
 **Use status below** before launching a run.
 
 | Status | Meaning |
@@ -10,16 +11,29 @@ Configs stay in `configs/*.json` (stable paths for scripts/history).
 | **OPTIONAL** | Side experiments / KD / literature |
 | **LEGACY** | Older reproduce/TCAM paths |
 
+**Model registry (paper names):** `ds_conv2d_h1_pyramid` (MAIN student), `ds_res1d_se`, `tcam_attn1d`; legacy keys still accepted. See `docs/paper/MODELS.md`.
+
 ---
 
-## MAIN
+## MAIN (paper shortcuts)
+
+| File under `configs/main/` | Equivalent historical | Protocol | Role |
+|---|---|---|---|
+| **`student_ds_conv2d_h1_pyramid_sourcegroup.json`** | `kv260_ds1d_pyramid_mixup_ema_val.json` | `source_group_8_1_1` | Source-group MAIN (peak 79.08 fold1) |
+| **`student_ds_conv2d_h1_pyramid_clean811.json`** | `kv260_ds1d_pyramid_mixup_ema_clean811_val.json` | `clean_8_1_1` | Strict-fold baseline |
+| **`student_ds_conv2d_h1_pyramid_clean811_mcisr.json`** | `kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_val.json` | `clean_8_1_1` | MC-ISR v1 |
+| **`student_ds_res1d_se_fullclip.json`** | `proposed_efficient_fullclip.json` | (see file) | DS-Res1D-SE baseline |
+
+---
+
+## MAIN (historical paths)
 
 | File | Protocol | Role |
 |---|---|---|
-| **`kv260_ds1d_pyramid_mixup_ema_val.json`** | `source_group_8_1_1` | Legacy source-group MAIN (peak 79.08 fold1, different split) |
+| **`kv260_ds1d_pyramid_mixup_ema_val.json`** | `source_group_8_1_1` | Source-group MAIN (peak 79.08 fold1) |
 | **`kv260_ds1d_pyramid_mixup_ema_clean811_val.json`** | `clean_8_1_1` | **Active US8K baseline** (test f1 / val f2 / train 3–10) |
 | **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_val.json`** | `clean_8_1_1` | **MC-ISR v1** (machinery cluster + source robust) |
-| **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_v2_val.json`** | `clean_8_1_1` | **MC-ISR v2** — boost jackhammer↔drilling pairs only |
+| **`kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_v2_val.json`** | `clean_8_1_1` | **MC-ISR v2** — **REJECTED** (worse than v1) |
 
 ---
 

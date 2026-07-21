@@ -1,0 +1,97 @@
+{
+  "model_name": "kv260_audio_net_ds1d",
+  "width_mult": 1.0,
+  "dropout": 0.25,
+  "pool_type": "pyramid_avgmax",
+  "pool_bins": [
+    1,
+    2,
+    4
+  ],
+  "stem_type": "single",
+  "deployment_budget": {
+    "max_params": 300000,
+    "max_macs_per_clip": 300000000,
+    "flops_equivalent_convention": "FLOPs = 2 * MACs"
+  },
+  "batch_size": 64,
+  "accum_steps": 1,
+  "epochs": 50,
+  "lr": 0.001,
+  "optimizer": "adamw",
+  "weight_decay": 0.0008,
+  "num_workers": 6,
+  "sample_rate": 16000,
+  "clip_seconds": 4.0,
+  "frame_length": 64000,
+  "frame_hop": 64000,
+  "frames_per_clip": 1,
+  "drop_silent_tail_frames": false,
+  "eval_drop_silent_tail_frames": false,
+  "cycles": 4,
+  "seed": 83,
+  "protocol": "source_group_8_1_1",
+  "source_group_split_algorithm": "fsid_classid_balanced_v1",
+  "amp": true,
+  "gradient_clip": 5.0,
+  "adam_eps": 1e-08,
+  "loss": "crossentropy",
+  "label_smoothing": 0.04,
+  "class_weighting": "balanced",
+  "class_weight_multipliers": [
+    1.05,
+    1.3,
+    1.0,
+    1.1,
+    1.0,
+    1.0,
+    1.0,
+    1.45,
+    1.0,
+    1.0
+  ],
+  "weighted_sampler": {
+    "enabled": false,
+    "class_multipliers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "mixup": {
+    "enabled": true,
+    "alpha": 0.2,
+    "prob": 0.7
+  },
+  "ema": {
+    "enabled": true,
+    "decay": 0.995,
+    "use_for_validation": true
+  },
+  "augment": {
+    "enabled": true,
+    "gain_db": 5.0,
+    "noise_prob": 0.25,
+    "noise_snr_db_min": 20.0,
+    "noise_snr_db_max": 38.0,
+    "shift_prob": 0.5,
+    "shift_max_fraction": 0.08,
+    "polarity_prob": 0.1,
+    "time_mask_prob": 0.18,
+    "time_mask_max_fraction": 0.06
+  },
+  "notes": {
+    "role": "MAIN deploy/thesis config",
+    "protocol": "source_group_8_1_1 with val; select best val checkpoint; report test of that ckpt",
+    "not_primary": "paper_9_1 full-10 without val is optional literature table only",
+    "model": "kv260_audio_net_ds1d full-clip ~101.7k",
+    "dataloader": "num_workers=6 for CPU-FPGA-GPU (i7-8700K 6c/12t). Waveforms RAM-cached; workers speed augment+collate. pin_memory+persistent_workers+prefetch_factor=2 set in train.py when workers>0. Local 5060 8GB: try workers 2-4 if spawn issues."
+  }
+}

@@ -9,8 +9,8 @@
 
 | Item | Lock |
 |---|---|
-| Backbone | `kv260_audio_net_ds1d` full-clip (**101 674** params) |
-| Config (no-teacher) | `configs/kv260_ds1d_pyramid_mixup_ema_val.json` |
+| Backbone | **DS-Conv2D-H1 Pyramid** (`ds_conv2d_h1_pyramid`; legacy `kv260_audio_net_ds1d`) full-clip (**101 674** params) |
+| Config (no-teacher) | `configs/main/student_ds_conv2d_h1_pyramid_sourcegroup.json` |
 | Protocol | `source_group_8_1_1`, seed **83**, val + best-val selection |
 | Single metric | `test_acc_best_val_model` |
 | Ensemble metric | `test_acc_ensemble` (last-2) |

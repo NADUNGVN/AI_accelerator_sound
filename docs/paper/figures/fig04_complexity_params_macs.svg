@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+<rect width="900" height="420" fill="#fafafa"/>
+<text x="450.0" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#111827">Complexity comparison: parameters (k) and MACs (M) per inference unit</text>
+<text x="450.0" y="52" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#4b5563">Convention: MAC lower-bound for Conv/Linear; FLOPs ≈ 2×MACs (see docs/paper/MODELS.md)</text>
+<text x="20" y="108" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#111827">DS-Conv2D-H1 Pyramid</text>
+<text x="20" y="128" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#374151">params 101.7k</text>
+<rect x="220" y="90" width="92.85" height="28" rx="4" fill="#16a34a" stroke="#16a34a" stroke-width="0"/>
+<text x="322.85" y="109" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">61.9 M MACs</text>
+<text x="20" y="198" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#111827">DS-Res1D-SE</text>
+<text x="20" y="218" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#374151">params 149.1k</text>
+<rect x="220" y="180" width="148.05" height="28" rx="4" fill="#2563eb" stroke="#2563eb" stroke-width="0"/>
+<text x="378.05" y="199" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">98.7 M MACs</text>
+<text x="20" y="288" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#111827">TCAM / frame</text>
+<text x="20" y="308" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#374151">params 410.2k</text>
+<rect x="220" y="270" width="345.3" height="28" rx="4" fill="#d97706" stroke="#d97706" stroke-width="0"/>
+<text x="575.3" y="289" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">230.2 M MACs</text>
+<text x="20" y="370" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="start" fill="#991b1b">TCAM multi-frame SUM ≈ 230.2 M × 15 ≈ 3.45 B MACs/clip — outside KV260-class budget.</text>
+<text x="20" y="395" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#14532d">Student MAIN (DS-Conv2D-H1) stays at 61.9 M MACs/clip and 101.7k params.</text>
+</svg>

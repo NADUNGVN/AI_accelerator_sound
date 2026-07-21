@@ -7,9 +7,9 @@ Machine (laptop / 3090) only matters for *where files live*, not for *which numb
 
 | Item | Value |
 |---|---|
-| Model | `kv260_audio_net_ds1d` full-clip |
+| Model | **DS-Conv2D-H1 Pyramid** (`ds_conv2d_h1_pyramid`; legacy `kv260_audio_net_ds1d`) full-clip |
 | Params / MAC | **101 674** / **61 854 400** |
-| Config (no-teacher) | `configs/kv260_ds1d_pyramid_mixup_ema_val.json` |
+| Config (no-teacher) | `configs/main/student_ds_conv2d_h1_pyramid_sourcegroup.json` (= `configs/kv260_ds1d_pyramid_mixup_ema_val.json`) |
 | Protocol | `source_group_8_1_1`, seed **83**, train/val/test, best-val checkpoint |
 | Primary single metric | `test_acc_best_val_model` |
 | Ensemble metric | `test_acc_ensemble` (last-2) |

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="480" viewBox="0 0 920 480">
+<rect width="920" height="480" fill="#fafafa"/>
+<text x="460.0" y="32" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#111827">Current results — best-val test accuracy (%)</text>
+<rect x="795.5555555555555" y="60" width="32.22222222222217" height="370" fill="#dcfce7" opacity="0.7"/>
+<line x1="795.5555555555555" y1="60" x2="795.5555555555555" y2="430" stroke="#16a34a" stroke-dasharray="4,3" stroke-width="1.5"/>
+<line x1="827.7777777777777" y1="60" x2="827.7777777777777" y2="430" stroke="#15803d" stroke-dasharray="4,3" stroke-width="1.5"/>
+<text x="795.5555555555555" y="52" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="normal" text-anchor="middle" fill="#166534">80%</text>
+<text x="827.7777777777777" y="52" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="normal" text-anchor="middle" fill="#14532d">85%</text>
+<rect x="280" y="69.25" width="509.6266666666666" height="28.675" rx="3" fill="#16a34a" stroke="#16a34a" stroke-width="0"/>
+<text x="270" y="89.32249999999999" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">Single peak (src-group f1)</text>
+<text x="797.6266666666666" y="89.32249999999999" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">79.08%</text>
+<rect x="280" y="115.5" width="514.8466666666667" height="28.675" rx="3" fill="#15803d" stroke="#15803d" stroke-width="0"/>
+<text x="270" y="135.5725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">Ensemble last-2</text>
+<text x="802.8466666666667" y="135.5725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">79.89%</text>
+<rect x="280" y="161.75" width="515.5555555555555" height="28.675" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="0"/>
+<text x="270" y="181.8225" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">KD student single</text>
+<text x="803.5555555555555" y="181.8225" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">80.00%</text>
+<rect x="280" y="208.0" width="500.73333333333335" height="28.675" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="0"/>
+<text x="270" y="228.0725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">3090 MAIN refresh</text>
+<text x="788.7333333333333" y="228.0725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">77.70%</text>
+<rect x="280" y="254.25" width="495.57777777777784" height="28.675" rx="3" fill="#3b82f6" stroke="#3b82f6" stroke-width="0"/>
+<text x="270" y="274.3225" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">3090 H0 baseline</text>
+<text x="783.5777777777778" y="274.3225" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">76.90%</text>
+<rect x="280" y="300.5" width="419.27555555555557" height="28.675" rx="3" fill="#f59e0b" stroke="#f59e0b" stroke-width="0"/>
+<text x="270" y="320.5725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">clean811 base</text>
+<text x="707.2755555555556" y="320.5725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">65.06%</text>
+<rect x="280" y="346.75" width="436.2888888888889" height="28.675" rx="3" fill="#d97706" stroke="#d97706" stroke-width="0"/>
+<text x="270" y="366.8225" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">clean811 MC-ISR v1</text>
+<text x="724.2888888888889" y="366.8225" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">67.70%</text>
+<rect x="280" y="393.0" width="418.56666666666666" height="28.675" rx="3" fill="#dc2626" stroke="#dc2626" stroke-width="0"/>
+<text x="270" y="413.0725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="end" fill="#111827">clean811 MC-ISR v2</text>
+<text x="706.5666666666666" y="413.0725" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#111827">64.95%</text>
+<text x="460.0" y="464" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="normal" text-anchor="middle" fill="#4b5563">Green band = Phase A target 80–85%. MC-ISR v2 rejected. Peak 79.08% is fold-1 high-water mark.</text>
+</svg>
