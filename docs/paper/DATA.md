@@ -26,15 +26,15 @@ WAV → mono resample 16 kHz → pad/crop 4 s → float tensor [1, 64000]
 
 No mel/MFCC is required for MAIN waveform students. Log-mel is used only for secondary log-mel nets and for the AST teacher front-end.
 
-### Seed / split protocols
+### Seed / split protocols (paper names)
 
-| Protocol | Structure | Seed | Trained in repo? |
-|---|---|---:|---|
-| `source_group_8_1_1` + `fsid_classid_balanced_v1` | 8/1/1 source buckets | **83** | **Yes** (Tracks 1–3) |
-| `clean_8_1_1` | test fold1, val fold2, train 3–10 | 83 | **Yes** (baseline + MC-ISR) |
-| `paper_9_1` | 9 train folds / no val / 1 test | — | Optional literature only |
+| Paper name | Short | Internal key | Structure | Seed | Trained? |
+|---|---|---|---|---:|---|
+| **Source-Disjoint Protocol** | **SDP 8-1-1** | `source_group_8_1_1` + `fsid_classid_balanced_v1` | 8/1/1 source buckets | **83** | **Yes** (Tracks 1–3) |
+| **Official-Fold Protocol** | **OFP 8-1-1** | `clean_8_1_1` | test fold1, val fold2, train 3–10 | 83 | **Yes** (OFP Baseline + MC-ISR) |
+| **Literature 9+1 Protocol** | **L91** | `paper_9_1` | 9 train folds / no val / 1 test | — | Optional only |
 
-Figure: `docs/paper/figures/fig01_data_pipeline_and_seed.svg`.
+Figures: `fig01_pipeline_framing_fullclip.png`, `fig01b_protocol_seed_status.png`. Full map: [NAMING.md](NAMING.md).
 
 ### Class names (label order)
 

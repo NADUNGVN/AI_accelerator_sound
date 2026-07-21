@@ -1,0 +1,25 @@
+{
+  "figures": [
+    "fig01_pipeline_framing_fullclip.png",
+    "fig01b_protocol_seed_status.png",
+    "fig02a_model_noteacher_79p08.png",
+    "fig02b_model_kd_student_80p00.png",
+    "fig02c_inference_aggregation.png",
+    "fig02d_stem_filter_frequency_response.png",
+    "fig03_results_accuracy_bars.png"
+  ],
+  "protocol_names": {
+    "source_group_8_1_1": "Source-Disjoint Protocol (SDP 8-1-1)",
+    "clean_8_1_1": "Official-Fold Protocol (OFP 8-1-1)"
+  },
+  "headline_models": {
+    "A_noteacher": {
+      "acc": 79.08,
+      "file": "fig02a_model_noteacher_79p08.png"
+    },
+    "B_kd_student": {
+      "acc": 80.0,
+      "file": "fig02b_model_kd_student_80p00.png"
+    }
+  }
+}

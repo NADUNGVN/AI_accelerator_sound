@@ -1,0 +1,211 @@
+{
+  "label": "sdp_kd_student_f1_80p00",
+  "source_checkpoint": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound\\experiments\\local_finetune_kdprotect_f1_20ep\\fold_1\\checkpoints\\tcam_fold_1_best.pt",
+  "params_total": 104217,
+  "params_weights": 102943,
+  "params_biases": 1274,
+  "num_bias_tensors": 16,
+  "bias_tensors": [
+    {
+      "name": "stem.bn.bias",
+      "shape": [
+        24
+      ],
+      "numel": 24,
+      "kind": "bias",
+      "mean": 0.0981694832444191,
+      "std": 0.0791405439376831,
+      "min": -0.03470933809876442,
+      "max": 0.25512418150901794
+    },
+    {
+      "name": "blocks.0.depthwise.bn.bias",
+      "shape": [
+        24
+      ],
+      "numel": 24,
+      "kind": "bias",
+      "mean": 0.0228425320237875,
+      "std": 0.04150702431797981,
+      "min": -0.06858450919389725,
+      "max": 0.09961861371994019
+    },
+    {
+      "name": "blocks.0.pointwise.bn.bias",
+      "shape": [
+        32
+      ],
+      "numel": 32,
+      "kind": "bias",
+      "mean": 0.04511372745037079,
+      "std": 0.06439719349145889,
+      "min": -0.11320501565933228,
+      "max": 0.22920948266983032
+    },
+    {
+      "name": "blocks.1.depthwise.bn.bias",
+      "shape": [
+        32
+      ],
+      "numel": 32,
+      "kind": "bias",
+      "mean": 0.04096240550279617,
+      "std": 0.05937565490603447,
+      "min": -0.07023422420024872,
+      "max": 0.16721539199352264
+    },
+    {
+      "name": "blocks.1.pointwise.bn.bias",
+      "shape": [
+        48
+      ],
+      "numel": 48,
+      "kind": "bias",
+      "mean": 0.0625034049153328,
+      "std": 0.0628022775053978,
+      "min": -0.09331651031970978,
+      "max": 0.18189889192581177
+    },
+    {
+      "name": "blocks.2.depthwise.bn.bias",
+      "shape": [
+        48
+      ],
+      "numel": 48,
+      "kind": "bias",
+      "mean": 0.044510047882795334,
+      "std": 0.062262896448373795,
+      "min": -0.08957917243242264,
+      "max": 0.19398407638072968
+    },
+    {
+      "name": "blocks.2.pointwise.bn.bias",
+      "shape": [
+        64
+      ],
+      "numel": 64,
+      "kind": "bias",
+      "mean": 0.05112861469388008,
+      "std": 0.0762203261256218,
+      "min": -0.09223970025777817,
+      "max": 0.3787876069545746
+    },
+    {
+      "name": "blocks.3.depthwise.bn.bias",
+      "shape": [
+        64
+      ],
+      "numel": 64,
+      "kind": "bias",
+      "mean": 0.021902618929743767,
+      "std": 0.06641682982444763,
+      "min": -0.10087531059980392,
+      "max": 0.1427701711654663
+    },
+    {
+      "name": "blocks.3.pointwise.bn.bias",
+      "shape": [
+        96
+      ],
+      "numel": 96,
+      "kind": "bias",
+      "mean": 0.03767797350883484,
+      "std": 0.06769447028636932,
+      "min": -0.18937842547893524,
+      "max": 0.21676668524742126
+    },
+    {
+      "name": "blocks.4.depthwise.bn.bias",
+      "shape": [
+        96
+      ],
+      "numel": 96,
+      "kind": "bias",
+      "mean": 0.007641300559043884,
+      "std": 0.07370813935995102,
+      "min": -0.20440079271793365,
+      "max": 0.1978011280298233
+    },
+    {
+      "name": "blocks.4.pointwise.bn.bias",
+      "shape": [
+        128
+      ],
+      "numel": 128,
+      "kind": "bias",
+      "mean": 0.023777376860380173,
+      "std": 0.06928108632564545,
+      "min": -0.11849832534790039,
+      "max": 0.23137284815311432
+    },
+    {
+      "name": "blocks.5.depthwise.bn.bias",
+      "shape": [
+        128
+      ],
+      "numel": 128,
+      "kind": "bias",
+      "mean": -0.006075250916182995,
+      "std": 0.07277444005012512,
+      "min": -0.1513155847787857,
+      "max": 0.18715162575244904
+    },
+    {
+      "name": "blocks.5.pointwise.bn.bias",
+      "shape": [
+        160
+      ],
+      "numel": 160,
+      "kind": "bias",
+      "mean": -0.006486949510872364,
+      "std": 0.09749481827020645,
+      "min": -0.3083786368370056,
+      "max": 0.38849732279777527
+    },
+    {
+      "name": "blocks.6.depthwise.bn.bias",
+      "shape": [
+        160
+      ],
+      "numel": 160,
+      "kind": "bias",
+      "mean": -0.02545173093676567,
+      "std": 0.08600984513759613,
+      "min": -0.2855098843574524,
+      "max": 0.17379812896251678
+    },
+    {
+      "name": "blocks.6.pointwise.bn.bias",
+      "shape": [
+        160
+      ],
+      "numel": 160,
+      "kind": "bias",
+      "mean": -0.22179536521434784,
+      "std": 0.05491998791694641,
+      "min": -0.3692411482334137,
+      "max": -0.09688203036785126
+    },
+    {
+      "name": "fc.bias",
+      "shape": [
+        10
+      ],
+      "numel": 10,
+      "kind": "bias",
+      "mean": 0.0008237931178882718,
+      "std": 0.03465797007083893,
+      "min": -0.052544381469488144,
+      "max": 0.06730719655752182
+    }
+  ],
+  "explanation": {
+    "what_is_bias": "In a linear map y = Wx + b, the vector b is the bias. It shifts the activation so a neuron need not rely only on zero-mean inputs. In this student, Conv2d layers use bias=False; affine offsets appear as BatchNorm \u03b2 (.bn.bias) and the final Linear classifier .fc.bias.",
+    "why_separate_file": "Deployment and audit often pack convolutions (weights) separately from BN scale/shift and classifier bias. The full .pt is still required for training resume and exact PyTorch eval; the bias file is an export aid."
+  },
+  "files": {
+    "full_pt": "sdp_kd_student_f1_80p00_full.pt",
+    "weights_pt": "sdp_kd_student_f1_80p00_weights.pt",
+    "biases_pt": "sdp_kd_student_f1_80p00_biases.pt"
+  }
+}
