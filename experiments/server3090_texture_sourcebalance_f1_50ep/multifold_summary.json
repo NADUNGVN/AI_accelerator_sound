@@ -1,0 +1,112 @@
+{
+  "exp_root": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_texture_sourcebalance_f1_50ep",
+  "folds": [
+    1
+  ],
+  "rows": [
+    {
+      "fold": 1,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/server3090_texture_sourcebalance_f1_50ep/fold_1",
+      "has_metrics": true,
+      "has_analysis": true,
+      "config_path": "configs/kv260_ds1d_pyramid_sourcebalance_ce_val.json",
+      "params": 101674,
+      "macs_per_clip": 61854400,
+      "best_val_acc_pct": 70.43879907621246,
+      "best_val_test_acc_pct": 73.5632183908046,
+      "final_test_acc_pct": 77.93103448275862,
+      "ensemble_test_acc_pct": 79.42528735632183,
+      "final_cycle_test_acc_pct": 77.93103448275862,
+      "final_cycle_val_acc_pct": 67.6674364896074,
+      "planned_epochs": 50,
+      "completed_epochs": 50,
+      "early_stopped": false,
+      "final_per_class_pct": {
+        "air_conditioner": 70.0,
+        "car_horn": 77.5,
+        "children_playing": 70.0,
+        "dog_bark": 71.0,
+        "drilling": 86.0,
+        "engine_idling": 83.0,
+        "gun_shot": 100.0,
+        "jackhammer": 80.61224489795919,
+        "siren": 84.94623655913979,
+        "street_music": 70.58823529411765
+      },
+      "final_worst_class": "air_conditioner",
+      "final_worst_class_acc_pct": 70.0
+    }
+  ],
+  "aggregate": {
+    "best_val_acc_pct": {
+      "mean": 70.43879907621246,
+      "std": 0.0
+    },
+    "best_val_test_acc_pct": {
+      "mean": 73.5632183908046,
+      "std": 0.0
+    },
+    "final_test_acc_pct": {
+      "mean": 77.93103448275862,
+      "std": 0.0
+    },
+    "ensemble_test_acc_pct": {
+      "mean": 79.42528735632183,
+      "std": 0.0
+    },
+    "final_cycle_test_acc_pct": {
+      "mean": 77.93103448275862,
+      "std": 0.0
+    },
+    "final_cycle_val_acc_pct": {
+      "mean": 67.6674364896074,
+      "std": 0.0
+    },
+    "final_worst_class_acc_pct": {
+      "mean": 70.0,
+      "std": 0.0
+    }
+  },
+  "per_class_final_test": {
+    "air_conditioner": {
+      "mean": 70.0,
+      "std": 0.0
+    },
+    "car_horn": {
+      "mean": 77.5,
+      "std": 0.0
+    },
+    "children_playing": {
+      "mean": 70.0,
+      "std": 0.0
+    },
+    "dog_bark": {
+      "mean": 71.0,
+      "std": 0.0
+    },
+    "drilling": {
+      "mean": 86.0,
+      "std": 0.0
+    },
+    "engine_idling": {
+      "mean": 83.0,
+      "std": 0.0
+    },
+    "gun_shot": {
+      "mean": 100.0,
+      "std": 0.0
+    },
+    "jackhammer": {
+      "mean": 80.61224489795919,
+      "std": 0.0
+    },
+    "siren": {
+      "mean": 84.94623655913979,
+      "std": 0.0
+    },
+    "street_music": {
+      "mean": 70.58823529411765,
+      "std": 0.0
+    }
+  }
+}

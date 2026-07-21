@@ -1,0 +1,176 @@
+{
+  "fold": 1,
+  "protocol": "source_group_8_1_1",
+  "random_split_algorithm": null,
+  "source_group_split_algorithm": "fsid_classid_balanced_v1",
+  "uses_validation": true,
+  "official_train_folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "val_fold": 2,
+  "test_fold": 1,
+  "official_test_folds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "source_label_overlap_train_test": {
+    "count": 0,
+    "examples": []
+  },
+  "train_clip_count": 6996,
+  "val_clip_count": 866,
+  "test_clip_count": 870,
+  "train_frame_count": 6996,
+  "val_frame_count": 866,
+  "model_name": "kv260_audio_net_ds1d",
+  "model_params": {
+    "params_with_bias": 101674,
+    "params_trainable": 101674,
+    "params_no_bias": 100400
+  },
+  "model_conv_linear_macs_per_input": 61854400,
+  "model_conv_linear_macs_per_clip_eval": 61854400,
+  "deployment_budget": {
+    "max_params": 300000,
+    "max_macs_per_clip": 300000000,
+    "flops_equivalent_convention": "FLOPs = 2 * MACs"
+  },
+  "input_features": "waveform",
+  "classifier_input_channels": 1,
+  "classifier_input_length": 64000,
+  "frame_length": 64000,
+  "frame_hop": 64000,
+  "frames_per_clip": 1,
+  "drop_silent_tail_frames": false,
+  "eval_drop_silent_tail_frames": false,
+  "epochs": 50,
+  "completed_epochs": 50,
+  "cycles": 4,
+  "snapshot_epochs": [
+    13,
+    26,
+    39,
+    50
+  ],
+  "last_snapshot_epoch": 50,
+  "early_stopping": null,
+  "early_stopped": false,
+  "early_stop_epoch": null,
+  "early_stopping_best_val_acc": null,
+  "seed": 83,
+  "loss_type": "crossentropy",
+  "focal_gamma": null,
+  "label_smoothing": 0.04,
+  "class_weighting": "balanced",
+  "class_weight_multipliers": [
+    1.05,
+    1.3,
+    1.0,
+    1.1,
+    1.0,
+    1.0,
+    1.0,
+    1.45,
+    1.0,
+    1.0
+  ],
+  "weighted_sampler": {
+    "enabled": false,
+    "class_multipliers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "source_aware_batch_sampler": {
+    "enabled": true,
+    "classes_per_batch": 8,
+    "sources_per_class": 2,
+    "samples_per_source": 4,
+    "class_multipliers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "pool_type": "pyramid_avgmax",
+  "pool_bins": [
+    1,
+    2,
+    4
+  ],
+  "stem_type": "single",
+  "extra_late_blocks": 0,
+  "mixup": {
+    "enabled": true,
+    "alpha": 0.2,
+    "prob": 0.7
+  },
+  "supervised_contrastive": null,
+  "hard_negative_margin": {
+    "enabled": false
+  },
+  "distillation": null,
+  "initial_checkpoint": null,
+  "initial_checkpoint_path": null,
+  "teacher_checkpoint_path": null,
+  "teacher_config_path": null,
+  "ema": {
+    "enabled": true,
+    "decay": 0.995,
+    "use_for_validation": true
+  },
+  "use_ema_for_validation": true,
+  "amp": true,
+  "gradient_clip": 5.0,
+  "optimizer": "adamw",
+  "weight_decay": 0.0008,
+  "adam_eps": 1e-08,
+  "momentum": 0.9,
+  "nesterov": false,
+  "lr_schedule": {
+    "type": "cosine_restart"
+  },
+  "batch_size": 64,
+  "accum_steps": 1,
+  "max_train_clips": null,
+  "max_val_clips": null,
+  "max_test_clips": null,
+  "config_path": "configs/kv260_ds1d_pyramid_sourcebalance_ce_val.json",
+  "git_commit": "ec442d5f93f7d94c8e9af0040cb76d091f4f5155",
+  "best_val_clip_acc": 0.7043879907621247,
+  "test_acc_best_val_model": 0.735632183908046,
+  "test_acc_last_snapshot": 0.7793103448275862,
+  "test_acc_ensemble": 0.7942528735632184
+}
