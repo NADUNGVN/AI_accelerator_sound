@@ -1,8 +1,14 @@
 # Official paper_9_1 full-10: DS1D pyramid mixup+EMA
 
+> **Status (2026-07-21): NOT the main path.**  
+> Deploy/thesis primary setup is **source-safe + val + best-val checkpoint**:  
+> `configs/kv260_ds1d_pyramid_mixup_ema_val.json` and  
+> `docs/experiments/MAIN_SETUP_DEPLOY_SOURCE_SAFE.md`.  
+> This paper_9_1 runbook is **optional literature side-table only**. Do not block hardware work on full-10.
+
 ## Goal
 
-Journal-comparable UrbanSound8K evaluation:
+Journal-comparable UrbanSound8K evaluation (optional):
 
 - Protocol: **`paper_9_1`** (train 9 official folds, test 1 fold, **no validation fold**)
 - Model: **`kv260_audio_net_ds1d`** (~101.7k params)
