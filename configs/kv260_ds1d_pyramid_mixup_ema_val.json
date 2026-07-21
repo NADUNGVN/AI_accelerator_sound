@@ -20,7 +20,7 @@
   "lr": 0.001,
   "optimizer": "adamw",
   "weight_decay": 0.0008,
-  "num_workers": 0,
+  "num_workers": 6,
   "sample_rate": 16000,
   "clip_seconds": 4.0,
   "frame_length": 64000,
@@ -91,6 +91,7 @@
     "role": "MAIN deploy/thesis config",
     "protocol": "source_group_8_1_1 with val; select best val checkpoint; report test of that ckpt",
     "not_primary": "paper_9_1 full-10 without val is optional literature table only",
-    "model": "kv260_audio_net_ds1d full-clip ~101.7k"
+    "model": "kv260_audio_net_ds1d full-clip ~101.7k",
+    "dataloader": "num_workers=6 for CPU-FPGA-GPU (i7-8700K 6c/12t). Waveforms RAM-cached; workers speed augment+collate. pin_memory+persistent_workers+prefetch_factor=2 set in train.py when workers>0. Local 5060 8GB: try workers 2-4 if spawn issues."
   }
 }
