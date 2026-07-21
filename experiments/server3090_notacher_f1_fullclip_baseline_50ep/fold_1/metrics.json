@@ -60,16 +60,16 @@
   "frames_per_clip": 1,
   "drop_silent_tail_frames": false,
   "eval_drop_silent_tail_frames": false,
-  "epochs": 50,
-  "completed_epochs": 50,
+  "epochs": 200,
+  "completed_epochs": 200,
   "cycles": 4,
   "snapshot_epochs": [
-    13,
-    26,
-    39,
-    50
+    50,
+    100,
+    150,
+    200
   ],
-  "last_snapshot_epoch": 50,
+  "last_snapshot_epoch": 200,
   "early_stopping": null,
   "early_stopped": false,
   "early_stop_epoch": null,
@@ -149,9 +149,9 @@
   "max_val_clips": null,
   "max_test_clips": null,
   "config_path": "configs/kv260_ds1d_pyramid_mixup_ema_val.json",
-  "git_commit": "5a4be54f6f00c945d8554be8a31f98f4b6b45d9c",
-  "best_val_clip_acc": 0.7020785219399538,
-  "test_acc_best_val_model": 0.7770114942528735,
-  "test_acc_last_snapshot": 0.7862068965517242,
-  "test_acc_ensemble": 0.7850574712643679
+  "git_commit": "bf5815b0317b4e00fd3446268d80a7cd3f46eb6e",
+  "best_val_clip_acc": 0.7251732101616628,
+  "test_acc_best_val_model": 0.7689655172413793,
+  "test_acc_last_snapshot": 0.7574712643678161,
+  "test_acc_ensemble": 0.7540229885057471
 }

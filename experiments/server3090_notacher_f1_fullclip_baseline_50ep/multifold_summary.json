@@ -12,14 +12,14 @@
       "config_path": "configs/kv260_ds1d_pyramid_mixup_ema_val.json",
       "params": 101674,
       "macs_per_clip": 61854400,
-      "best_val_acc_pct": 70.20785219399538,
-      "best_val_test_acc_pct": 77.70114942528735,
-      "final_test_acc_pct": 78.62068965517241,
-      "ensemble_test_acc_pct": 78.50574712643679,
+      "best_val_acc_pct": 72.51732101616628,
+      "best_val_test_acc_pct": 76.89655172413794,
+      "final_test_acc_pct": 75.74712643678161,
+      "ensemble_test_acc_pct": 75.40229885057471,
       "final_cycle_test_acc_pct": 78.62068965517241,
       "final_cycle_val_acc_pct": 69.63048498845265,
-      "planned_epochs": 50,
-      "completed_epochs": 50,
+      "planned_epochs": 200,
+      "completed_epochs": 200,
       "early_stopped": false,
       "final_per_class_pct": {
         "air_conditioner": 65.0,
@@ -39,19 +39,19 @@
   ],
   "aggregate": {
     "best_val_acc_pct": {
-      "mean": 70.20785219399538,
+      "mean": 72.51732101616628,
       "std": 0.0
     },
     "best_val_test_acc_pct": {
-      "mean": 77.70114942528735,
+      "mean": 76.89655172413794,
       "std": 0.0
     },
     "final_test_acc_pct": {
-      "mean": 78.62068965517241,
+      "mean": 75.74712643678161,
       "std": 0.0
     },
     "ensemble_test_acc_pct": {
-      "mean": 78.50574712643679,
+      "mean": 75.40229885057471,
       "std": 0.0
     },
     "final_cycle_test_acc_pct": {

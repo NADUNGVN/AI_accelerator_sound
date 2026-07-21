@@ -6,16 +6,16 @@ Folds: 1
 
 | Fold | Epochs | Early stop | Best val | Best-val test | Final test | Ensemble | Worst final class | Worst final acc |
 |---:|---:|:---:|---:|---:|---:|---:|---|---:|
-| 1 | 50/50 | no | 70.21% | 77.70% | 78.62% | 78.51% | air_conditioner | 65.00% |
+| 1 | 200/200 | no | 72.52% | 76.90% | 75.75% | 75.40% | air_conditioner | 65.00% |
 
 ## Aggregate
 
 | Metric | Mean | Std |
 |---|---:|---:|
-| Best validation | 70.21% | 0.00% |
-| Validation-selected test | 77.70% | 0.00% |
-| Final test | 78.62% | 0.00% |
-| Last-2 ensemble | 78.51% | 0.00% |
+| Best validation | 72.52% | 0.00% |
+| Validation-selected test | 76.90% | 0.00% |
+| Final test | 75.75% | 0.00% |
+| Last-2 ensemble | 75.40% | 0.00% |
 | Worst final class | 65.00% | 0.00% |
 
 ## Final Test Per Class

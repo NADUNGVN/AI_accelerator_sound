@@ -58,7 +58,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-19.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-2.wav",
@@ -123,7 +123,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-33.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-35.wav",
@@ -173,17 +173,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-115.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-116.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-117.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-125.wav",
@@ -193,7 +193,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-137.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-140.wav",
@@ -218,12 +218,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-165.wav",
       "label": 0,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-17.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-18.wav",
@@ -238,12 +238,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-35.wav",
       "label": 0,
-      "predicted": 0
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-38.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-43.wav",
@@ -258,7 +258,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-64.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-8.wav",
@@ -283,7 +283,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-93.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-0.wav",
@@ -333,7 +333,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-17.wav",
       "label": 0,
-      "predicted": 0
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-2.wav",
@@ -488,12 +488,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-1.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-2.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-3.wav",
@@ -518,17 +518,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-1-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-2-0.wav",
       "label": 1,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-3-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-4-0.wav",
@@ -548,7 +548,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-0-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-1-0.wav",
@@ -558,17 +558,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-2-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-3-0.wav",
       "label": 1,
-      "predicted": 6
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-4-0.wav",
       "label": 1,
-      "predicted": 9
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-5-0.wav",
@@ -623,7 +623,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/155129-1-2-0.wav",
       "label": 1,
-      "predicted": 5
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/26177-1-0-0.wav",
@@ -633,7 +633,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/26177-1-1-0.wav",
       "label": 1,
-      "predicted": 8
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/26177-1-2-0.wav",
@@ -678,7 +678,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/175847-1-0-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/179862-1-0-0.wav",
@@ -703,7 +703,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-19.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-21.wav",
@@ -728,7 +728,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-37.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-38.wav",
@@ -738,7 +738,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-49.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/178521-2-0-18.wav",
@@ -868,7 +868,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-12.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-15.wav",
@@ -888,7 +888,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-4.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-54.wav",
@@ -898,7 +898,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-56.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/175296-2-0-123.wav",
@@ -953,17 +953,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-32.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-33.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-46.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-54.wav",
@@ -983,17 +983,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-40.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-46.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-50.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-55.wav",
@@ -1003,12 +1003,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-7.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-76.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-80.wav",
@@ -1048,7 +1048,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/9223-2-0-5.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/9223-2-0-9.wav",
@@ -1098,7 +1098,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-25.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-26.wav",
@@ -1108,7 +1108,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-37.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-40.wav",
@@ -1123,17 +1123,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-8.wav",
       "label": 2,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-103.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-107.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-110.wav",
@@ -1153,7 +1153,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-90.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-99.wav",
@@ -1198,7 +1198,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/196078-2-0-0.wav",
       "label": 2,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/204919-3-0-0.wav",
@@ -1218,7 +1218,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/204919-3-4-0.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/29936-3-0-0.wav",
@@ -1233,7 +1233,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/29936-3-2-0.wav",
       "label": 3,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/29936-3-3-0.wav",
@@ -1248,7 +1248,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/173995-3-0-11.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/173995-3-0-27.wav",
@@ -1283,7 +1283,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-1-0.wav",
       "label": 3,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-1-1.wav",
@@ -1323,17 +1323,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-25.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-39.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-51.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-52.wav",
@@ -1388,32 +1388,32 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-0.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-1.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-3.wav",
       "label": 3,
-      "predicted": 0
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-105.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-67.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-7.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-79.wav",
@@ -1423,12 +1423,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-12.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-14.wav",
       "label": 3,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-19.wav",
@@ -1528,7 +1528,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/43787-3-1-0.wav",
       "label": 3,
-      "predicted": 6
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/43787-3-2-0.wav",
@@ -1628,7 +1628,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/13577-3-5-0.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/203355-3-0-0.wav",
@@ -1953,7 +1953,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-4.wav",
       "label": 4,
-      "predicted": 0
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-5.wav",
@@ -2123,7 +2123,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/14111-4-0-7.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/39532-4-0-0.wav",
@@ -2178,7 +2178,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/71087-4-0-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/71087-4-1-0.wav",
@@ -2193,7 +2193,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/50414-4-0-1.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/19007-4-0-0.wav",
@@ -2358,12 +2358,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/144007-5-1-7.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/144007-5-1-8.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/144007-5-1-9.wav",
@@ -2383,27 +2383,27 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-10.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-11.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-12.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-13.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-14.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-15.wav",
@@ -2413,17 +2413,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-16.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-17.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-18.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-19.wav",
@@ -2438,12 +2438,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-3.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-4.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-5.wav",
@@ -2663,17 +2663,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-0.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-1.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-2.wav",
       "label": 5,
-      "predicted": 2
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49769-5-0-0.wav",
@@ -2683,7 +2683,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49769-5-1-0.wav",
       "label": 5,
-      "predicted": 1
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/44736-5-0-0.wav",
@@ -2888,7 +2888,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-0.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-1.wav",
@@ -2903,37 +2903,37 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-11.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-12.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-13.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-14.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-15.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-16.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-17.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-18.wav",
@@ -2953,12 +2953,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-20.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-21.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-22.wav",
@@ -2968,12 +2968,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-23.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-24.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-25.wav",
@@ -2993,7 +2993,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-28.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-29.wav",
@@ -3003,12 +3003,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-3.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-30.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-31.wav",
@@ -3018,12 +3018,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-4.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-5.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-6.wav",
@@ -3088,12 +3088,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-7.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-8.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-9.wav",
@@ -3103,7 +3103,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-2-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-2-1.wav",
@@ -3178,7 +3178,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/171305-7-20-0.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/171305-7-21-0.wav",
@@ -3268,7 +3268,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-0-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-1-0.wav",
@@ -3288,12 +3288,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-12-0.wav",
       "label": 7,
-      "predicted": 2
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-2-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-3-0.wav",
@@ -3313,17 +3313,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-6-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-7-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-8-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-9-0.wav",
@@ -3333,7 +3333,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/165774-7-0-0.wav",
       "label": 7,
-      "predicted": 1
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/165774-7-1-0.wav",
@@ -3563,7 +3563,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/159747-8-0-17.wav",
       "label": 8,
-      "predicted": 8
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/159747-8-0-18.wav",
@@ -3628,7 +3628,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-0.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-1.wav",
@@ -3658,12 +3658,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-2.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-3.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-4.wav",
@@ -3673,12 +3673,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-5.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-6.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-7.wav",
@@ -3713,22 +3713,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-2.wav",
       "label": 8,
-      "predicted": 8
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-3.wav",
       "label": 8,
-      "predicted": 8
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-4.wav",
       "label": 8,
-      "predicted": 8
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-5.wav",
       "label": 8,
-      "predicted": 1
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-6.wav",
@@ -3838,12 +3838,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/113160-8-0-0.wav",
       "label": 8,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-12.wav",
       "label": 9,
-      "predicted": 3
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-25.wav",
@@ -3853,12 +3853,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-30.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-39.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-5.wav",
@@ -3868,7 +3868,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-50.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-7.wav",
@@ -3893,7 +3893,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/145390-9-0-26.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/145390-9-0-3.wav",
@@ -3973,7 +3973,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-4.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-52.wav",
@@ -3988,7 +3988,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-64.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-66.wav",
@@ -4018,7 +4018,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/98681-9-0-5.wav",
       "label": 9,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/98681-9-0-6.wav",
@@ -4048,7 +4048,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/149254-9-0-42.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/149254-9-0-51.wav",
@@ -4128,12 +4128,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-0-2.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-10.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-21.wav",
@@ -4148,12 +4148,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-39.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-138.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-142.wav",
@@ -4168,7 +4168,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-24.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-28.wav",
@@ -4248,7 +4248,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/155202-9-0-126.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/155202-9-0-135.wav",
@@ -4273,7 +4273,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/179039-9-0-22.wav",
       "label": 9,
-      "predicted": 4
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/179039-9-0-23.wav",
@@ -4303,7 +4303,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-11.wav",
       "label": 9,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-14.wav",
@@ -4333,7 +4333,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/109263-9-0-39.wav",
       "label": 9,
-      "predicted": 3
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/109263-9-0-54.wav",
@@ -4435,7 +4435,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-24.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-25.wav",
@@ -4475,7 +4475,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-33.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-35.wav",
@@ -4525,27 +4525,27 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-115.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-116.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-117.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-125.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-137.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-140.wav",
@@ -4555,12 +4555,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-151.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-154.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-155.wav",
@@ -4575,67 +4575,67 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-17.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-18.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-25.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-35.wav",
       "label": 0,
-      "predicted": 0
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-38.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-43.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-47.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-64.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-8.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-80.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-86.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-87.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-93.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-0.wav",
@@ -4685,7 +4685,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-17.wav",
       "label": 0,
-      "predicted": 0
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-2.wav",
@@ -4815,7 +4815,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/80589-0-0-1.wav",
       "label": 0,
-      "predicted": 1
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/80589-0-0-2.wav",
@@ -4835,22 +4835,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-0.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-1.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-2.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-3.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-0-0.wav",
@@ -4875,12 +4875,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-2-0.wav",
       "label": 1,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-3-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-4-0.wav",
@@ -4900,7 +4900,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-0-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-1-0.wav",
@@ -4910,7 +4910,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-2-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-3-0.wav",
@@ -4920,22 +4920,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-4-0.wav",
       "label": 1,
-      "predicted": 9
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-5-0.wav",
       "label": 1,
-      "predicted": 3
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-6-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-7-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/54187-1-0-0.wav",
@@ -4975,7 +4975,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/155129-1-2-0.wav",
       "label": 1,
-      "predicted": 5
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/26177-1-0-0.wav",
@@ -5030,7 +5030,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/175847-1-0-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/179862-1-0-0.wav",
@@ -5055,7 +5055,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-19.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-21.wav",
@@ -5065,7 +5065,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-30.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-32.wav",
@@ -5080,7 +5080,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-37.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-38.wav",
@@ -5090,7 +5090,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-49.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/178521-2-0-18.wav",
@@ -5220,7 +5220,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-12.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-15.wav",
@@ -5240,7 +5240,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-4.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-54.wav",
@@ -5305,12 +5305,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-32.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-33.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-46.wav",
@@ -5340,7 +5340,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-46.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-50.wav",
@@ -5355,12 +5355,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-7.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-76.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-80.wav",
@@ -5455,7 +5455,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-26.wav",
       "label": 2,
-      "predicted": 7
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-37.wav",
@@ -5470,12 +5470,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-5.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-8.wav",
       "label": 2,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-103.wav",
@@ -5485,7 +5485,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-107.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-110.wav",
@@ -5495,7 +5495,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-135.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-5.wav",
@@ -5540,17 +5540,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/196070-2-0-5.wav",
       "label": 2,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/196080-2-0-0.wav",
       "label": 2,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/196078-2-0-0.wav",
       "label": 2,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/204919-3-0-0.wav",
@@ -5585,7 +5585,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/29936-3-2-0.wav",
       "label": 3,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/29936-3-3-0.wav",
@@ -5605,7 +5605,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/173995-3-0-27.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/173995-3-0-3.wav",
@@ -5635,7 +5635,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-1-0.wav",
       "label": 3,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-1-1.wav",
@@ -5650,7 +5650,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-2-2.wav",
       "label": 3,
-      "predicted": 5
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/125791-3-0-12.wav",
@@ -5675,7 +5675,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-25.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-39.wav",
@@ -5685,12 +5685,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-51.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-52.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/157649-3-0-0.wav",
@@ -5745,17 +5745,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-1.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-3.wav",
       "label": 3,
-      "predicted": 0
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-105.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-67.wav",
@@ -5765,7 +5765,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-7.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-79.wav",
@@ -5780,12 +5780,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-14.wav",
       "label": 3,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-19.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-4.wav",
@@ -5880,7 +5880,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/43787-3-1-0.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/43787-3-2-0.wav",
@@ -5905,7 +5905,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/54823-3-2-1.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/181725-3-0-16.wav",
@@ -5920,7 +5920,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/181725-3-0-37.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/207124-3-0-0.wav",
@@ -5980,7 +5980,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/13577-3-5-0.wav",
       "label": 3,
-      "predicted": 9
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/203355-3-0-0.wav",
@@ -6025,7 +6025,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/85663-3-0-0.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/146343-3-0-0.wav",
@@ -6115,7 +6115,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/76086-4-0-32.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/76086-4-0-36.wav",
@@ -6130,7 +6130,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/76086-4-0-43.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/76086-4-0-50.wav",
@@ -6260,7 +6260,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-0-2.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-0-3.wav",
@@ -6270,7 +6270,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-1-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-2-0.wav",
@@ -6285,22 +6285,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-1.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-2.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-3.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-4.wav",
@@ -6310,17 +6310,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-5.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-6.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-7.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-8.wav",
@@ -6470,12 +6470,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/14111-4-0-6.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/14111-4-0-7.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/39532-4-0-0.wav",
@@ -6550,7 +6550,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/19007-4-0-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/144007-5-0-0.wav",
@@ -6735,17 +6735,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-10.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-11.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-12.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-13.wav",
@@ -6755,7 +6755,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-14.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-15.wav",
@@ -6775,7 +6775,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-18.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-19.wav",
@@ -6790,7 +6790,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-3.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-4.wav",
@@ -6975,7 +6975,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/91209-5-1-4.wav",
       "label": 5,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/91209-5-1-5.wav",
@@ -6985,7 +6985,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/39854-5-0-0.wav",
       "label": 5,
-      "predicted": 6
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/39854-5-1-0.wav",
@@ -7015,12 +7015,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-0.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-1.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-2.wav",
@@ -7035,7 +7035,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49769-5-1-0.wav",
       "label": 5,
-      "predicted": 1
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/44736-5-0-0.wav",
@@ -7050,7 +7050,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/23218-5-0-0.wav",
       "label": 5,
-      "predicted": 6
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/162432-6-0-0.wav",
@@ -7240,7 +7240,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-0.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-1.wav",
@@ -7255,47 +7255,47 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-11.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-12.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-13.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-14.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-15.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-16.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-17.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-18.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-19.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-2.wav",
@@ -7305,62 +7305,62 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-20.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-21.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-22.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-23.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-24.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-25.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-26.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-27.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-28.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-29.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-3.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-30.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-31.wav",
@@ -7370,22 +7370,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-4.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-5.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-6.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-7.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-8.wav",
@@ -7400,67 +7400,67 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-0.wav",
       "label": 7,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-1.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-10.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-2.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-3.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-4.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-5.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-6.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-7.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-8.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-9.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-2-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-2-1.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/171305-7-0-0.wav",
@@ -7620,7 +7620,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-0-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-1-0.wav",
@@ -7630,7 +7630,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-10-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-11-0.wav",
@@ -7640,12 +7640,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-12-0.wav",
       "label": 7,
-      "predicted": 2
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-2-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-3-0.wav",
@@ -7665,17 +7665,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-6-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-7-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-8-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-9-0.wav",
@@ -7685,7 +7685,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/165774-7-0-0.wav",
       "label": 7,
-      "predicted": 6
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/165774-7-1-0.wav",
@@ -8010,7 +8010,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-2.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-3.wav",
@@ -8025,7 +8025,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-5.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-6.wav",
@@ -8070,7 +8070,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-3.wav",
       "label": 8,
-      "predicted": 8
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-4.wav",
@@ -8085,7 +8085,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-6.wav",
       "label": 8,
-      "predicted": 1
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-7.wav",
@@ -8190,27 +8190,27 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/113160-8-0-0.wav",
       "label": 8,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-12.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-25.wav",
       "label": 9,
-      "predicted": 5
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-30.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-39.wav",
       "label": 9,
-      "predicted": 3
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-5.wav",
@@ -8310,7 +8310,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/161702-9-0-45.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/161702-9-0-6.wav",
@@ -8335,12 +8335,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-6.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-64.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-66.wav",
@@ -8355,7 +8355,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/98681-9-0-0.wav",
       "label": 9,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/98681-9-0-11.wav",
@@ -8480,7 +8480,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-0-2.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-10.wav",
@@ -8500,17 +8500,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-39.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-138.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-142.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-154.wav",
@@ -8525,12 +8525,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-28.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-91.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/178099-9-0-0.wav",
@@ -8600,7 +8600,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/155202-9-0-126.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/155202-9-0-135.wav",
@@ -8625,7 +8625,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/179039-9-0-22.wav",
       "label": 9,
-      "predicted": 4
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/179039-9-0-23.wav",
@@ -8655,12 +8655,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-11.wav",
       "label": 9,
-      "predicted": 4
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-14.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-2.wav",
@@ -8670,12 +8670,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-3.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-5.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/109263-9-0-34.wav",
@@ -8827,7 +8827,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-33.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/146845-0-0-35.wav",
@@ -8877,27 +8877,27 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-115.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-116.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-117.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-125.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-137.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-140.wav",
@@ -8907,7 +8907,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-151.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-154.wav",
@@ -8927,57 +8927,57 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-17.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-18.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-25.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-35.wav",
       "label": 0,
-      "predicted": 0
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-38.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-43.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-47.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-64.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-8.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-80.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-86.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-87.wav",
@@ -8987,7 +8987,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/146690-0-0-93.wav",
       "label": 0,
-      "predicted": 5
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/189981-0-0-0.wav",
@@ -9187,22 +9187,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-0.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-1.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-2.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/153261-0-0-3.wav",
       "label": 0,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-0-0.wav",
@@ -9227,12 +9227,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-2-0.wav",
       "label": 1,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-3-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/99812-1-4-0.wav",
@@ -9252,7 +9252,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-0-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-1-0.wav",
@@ -9267,27 +9267,27 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-3-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-4-0.wav",
       "label": 1,
-      "predicted": 9
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-5-0.wav",
       "label": 1,
-      "predicted": 3
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-6-0.wav",
       "label": 1,
-      "predicted": 3
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/185436-1-7-0.wav",
       "label": 1,
-      "predicted": 1
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/54187-1-0-0.wav",
@@ -9327,7 +9327,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/155129-1-2-0.wav",
       "label": 1,
-      "predicted": 5
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/26177-1-0-0.wav",
@@ -9382,7 +9382,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/175847-1-0-0.wav",
       "label": 1,
-      "predicted": 4
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/179862-1-0-0.wav",
@@ -9407,7 +9407,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-19.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-21.wav",
@@ -9417,7 +9417,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-30.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-32.wav",
@@ -9432,7 +9432,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-37.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-38.wav",
@@ -9442,7 +9442,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/160010-2-0-49.wav",
       "label": 2,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/178521-2-0-18.wav",
@@ -9492,7 +9492,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/178520-2-0-23.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/178520-2-0-27.wav",
@@ -9572,7 +9572,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-12.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-15.wav",
@@ -9592,7 +9592,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-4.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/151149-2-0-54.wav",
@@ -9657,12 +9657,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-32.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-33.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/193699-2-0-46.wav",
@@ -9692,7 +9692,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-46.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-50.wav",
@@ -9707,12 +9707,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-7.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-76.wav",
       "label": 2,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/76266-2-0-80.wav",
@@ -9752,7 +9752,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/9223-2-0-5.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/9223-2-0-9.wav",
@@ -9807,7 +9807,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-26.wav",
       "label": 2,
-      "predicted": 7
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-37.wav",
@@ -9822,12 +9822,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-5.wav",
       "label": 2,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/160016-2-0-8.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-103.wav",
@@ -9837,7 +9837,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-107.wav",
       "label": 2,
-      "predicted": 8
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-110.wav",
@@ -9847,7 +9847,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-135.wav",
       "label": 2,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/193697-2-0-5.wav",
@@ -9897,12 +9897,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/196080-2-0-0.wav",
       "label": 2,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/196078-2-0-0.wav",
       "label": 2,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/204919-3-0-0.wav",
@@ -9957,7 +9957,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/173995-3-0-27.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/173995-3-0-3.wav",
@@ -9987,7 +9987,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-1-0.wav",
       "label": 3,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-1-1.wav",
@@ -10002,7 +10002,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/174026-3-2-2.wav",
       "label": 3,
-      "predicted": 5
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/125791-3-0-12.wav",
@@ -10027,22 +10027,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-25.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-39.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-51.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/173993-3-0-52.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/157649-3-0-0.wav",
@@ -10092,22 +10092,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-0.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-1.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/71700-3-4-3.wav",
       "label": 3,
-      "predicted": 0
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-105.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-67.wav",
@@ -10117,7 +10117,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-7.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/77233-3-0-79.wav",
@@ -10127,22 +10127,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-12.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-14.wav",
       "label": 3,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-19.wav",
       "label": 3,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/20015-3-0-4.wav",
       "label": 3,
-      "predicted": 0
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/164312-3-0-0.wav",
@@ -10257,7 +10257,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/54823-3-2-1.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/181725-3-0-16.wav",
@@ -10272,7 +10272,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/181725-3-0-37.wav",
       "label": 3,
-      "predicted": 3
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/207124-3-0-0.wav",
@@ -10327,7 +10327,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/13577-3-0-2.wav",
       "label": 3,
-      "predicted": 0
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/13577-3-5-0.wav",
@@ -10467,7 +10467,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/76086-4-0-32.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold2/76086-4-0-36.wav",
@@ -10612,7 +10612,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-0-2.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-0-3.wav",
@@ -10622,7 +10622,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-1-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-2-0.wav",
@@ -10637,47 +10637,47 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-1.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-2.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-3.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-4.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-5.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-6.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-7.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/156362-4-3-8.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/205874-4-0-0.wav",
@@ -10822,12 +10822,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/14111-4-0-6.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/14111-4-0-7.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/39532-4-0-0.wav",
@@ -10902,7 +10902,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/19007-4-0-0.wav",
       "label": 4,
-      "predicted": 4
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/144007-5-0-0.wav",
@@ -11087,7 +11087,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-10.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-11.wav",
@@ -11097,7 +11097,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-12.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-13.wav",
@@ -11117,7 +11117,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-16.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-17.wav",
@@ -11142,7 +11142,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-3.wav",
       "label": 5,
-      "predicted": 4
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/15544-5-0-4.wav",
@@ -11327,7 +11327,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/91209-5-1-4.wav",
       "label": 5,
-      "predicted": 2
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold8/91209-5-1-5.wav",
@@ -11367,12 +11367,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-0.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-1.wav",
       "label": 5,
-      "predicted": 5
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/194962-5-0-2.wav",
@@ -11402,7 +11402,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/23218-5-0-0.wav",
       "label": 5,
-      "predicted": 6
+      "predicted": 1
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/162432-6-0-0.wav",
@@ -11592,7 +11592,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-0.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-1.wav",
@@ -11607,47 +11607,47 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-11.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-12.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-13.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-14.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-15.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-16.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-17.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-18.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-19.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-2.wav",
@@ -11657,62 +11657,62 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-20.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-21.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-22.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-23.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-24.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-25.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-26.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-27.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-28.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-29.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-3.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-30.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-31.wav",
@@ -11722,22 +11722,22 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-4.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-5.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-6.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-7.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-8.wav",
@@ -11747,72 +11747,72 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-0-9.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-0.wav",
       "label": 7,
-      "predicted": 5
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-1.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-10.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-2.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-3.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-4.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-5.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-6.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-7.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-8.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-1-9.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-2-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold7/177537-7-2-1.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/171305-7-0-0.wav",
@@ -11882,7 +11882,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/171305-7-20-0.wav",
       "label": 7,
-      "predicted": 7
+      "predicted": 6
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/171305-7-21-0.wav",
@@ -11972,7 +11972,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-0-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-1-0.wav",
@@ -11982,7 +11982,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-10-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-11-0.wav",
@@ -11992,12 +11992,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-12-0.wav",
       "label": 7,
-      "predicted": 2
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-2-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-3-0.wav",
@@ -12017,17 +12017,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-6-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 3
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-7-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-8-0.wav",
       "label": 7,
-      "predicted": 4
+      "predicted": 7
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/188824-7-9-0.wav",
@@ -12352,7 +12352,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-12.wav",
       "label": 8,
-      "predicted": 6
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-13.wav",
@@ -12362,7 +12362,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-2.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-3.wav",
@@ -12377,12 +12377,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-5.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-6.wav",
       "label": 8,
-      "predicted": 2
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159744-8-0-7.wav",
@@ -12422,7 +12422,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-3.wav",
       "label": 8,
-      "predicted": 6
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-4.wav",
@@ -12432,12 +12432,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-5.wav",
       "label": 8,
-      "predicted": 1
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-6.wav",
       "label": 8,
-      "predicted": 1
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/159745-8-1-7.wav",
@@ -12542,12 +12542,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold4/113160-8-0-0.wav",
       "label": 8,
-      "predicted": 3
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-12.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-25.wav",
@@ -12557,12 +12557,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-30.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-39.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 5
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/21684-9-0-5.wav",
@@ -12662,12 +12662,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/161702-9-0-45.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/161702-9-0-6.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/161702-9-0-8.wav",
@@ -12687,12 +12687,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-6.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-64.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold9/52411-9-0-66.wav",
@@ -12707,7 +12707,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/98681-9-0-0.wav",
       "label": 9,
-      "predicted": 3
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/98681-9-0-11.wav",
@@ -12832,7 +12832,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-0-2.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-10.wav",
@@ -12852,17 +12852,17 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold10/136558-9-1-39.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 8
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-138.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-142.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-154.wav",
@@ -12877,12 +12877,12 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-28.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 0
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold3/49485-9-0-91.wav",
       "label": 9,
-      "predicted": 2
+      "predicted": 4
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold5/178099-9-0-0.wav",
@@ -12952,7 +12952,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/155202-9-0-126.wav",
       "label": 9,
-      "predicted": 9
+      "predicted": 2
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold1/155202-9-0-135.wav",
@@ -13007,7 +13007,7 @@
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-11.wav",
       "label": 9,
-      "predicted": 4
+      "predicted": 9
     },
     {
       "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/UrbanSound8K/audio/fold6/98680-9-0-14.wav",
