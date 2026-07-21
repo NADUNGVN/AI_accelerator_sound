@@ -15,13 +15,18 @@ Artifacts live under `experiments/<exp_name>/` (gitignored locally; some metrics
 
 ---
 
-## BASELINE (main)
+## BASELINE / BEST ACHIEVED (main — one research truth)
 
-| exp_name | Where | Protocol | Config | Primary metric | Notes |
-|---|---|---|---|---:|---|
-| `local_multifold_pyramid_base_f1_f3_50ep` | local | source_group_8_1_1 | `kv260_ds1d_pyramid_mixup_ema_val.json` | fold1 bvt **79.08%**, ens **79.89%**; f1–3 ens mean **~72.3%** | Same architecture as server H0 |
-| `local_priority_pyramid_mixup_ema_50ep` | local | same | same | same fold1 numbers | Duplicate evidence of 79.89% ens |
-| `server3090_notacher_f1_fullclip_baseline_50ep` | `results/server3090-notacher-f1` | source_group_8_1_1 | same | bvt **76.90%**, last 75.75%, ens 75.40% | **Server H0 — deploy baseline** |
+Do **not** headline “local vs server”. Use [../main/ACHIEVED.md](../main/ACHIEVED.md).
+
+| Role | exp_name | Single (bvt) | Ensemble | Config |
+|---|---|---:|---:|---|
+| **Best single + best ens (no-teacher)** | `local_multifold_pyramid_base_f1_f3_50ep` fold1 | **79.08%** | **79.89%** | `kv260_ds1d_pyramid_mixup_ema_val.json` |
+| Duplicate of above numbers | `local_priority_pyramid_mixup_ema_50ep` fold1 | 79.08% | 79.89% | same |
+| **Best KD student** | `local_finetune_kdprotect_f1_20ep` fold1 | **80.00%** | **80.23%** | kdprotect family |
+| Weaker same-stack artifact | `server3090_notacher_f1_fullclip_baseline_50ep` | 76.90% | 75.40% | same no-teacher config — **not** headline |
+
+Multi-fold note: base f1–3 ens mean ~**72.3%** (not yet 80–85% mean).
 
 ---
 

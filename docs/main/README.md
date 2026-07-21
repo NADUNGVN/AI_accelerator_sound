@@ -5,11 +5,11 @@
 
 Full write-up: [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md).
 
-| Track | Target | Metric | Where we are (approx.) |
+| Track | Target | Metric | **Best achieved (research)** |
 |---|---|---|---|
-| **1. Single model** | **80–85%** | best-val → test | local ~79.1%, server H0 ~76.9% |
-| **2. Ensemble** | **80–85%** | last-2 ensemble | local ~79.9% (near 80%); server H0 ~75.4% |
-| **3. Distill teacher → 1D-CNN** | **80–85% student** | student best-val test | teacher ~90%+; student kdprotect f1 ~80% |
+| **1. Single model** | **80–85%** | best-val → test | **79.08%** — [ACHIEVED.md](ACHIEVED.md) |
+| **2. Ensemble** | **80–85%** | last-2 ensemble | **79.89%** |
+| **3. Distill teacher → 1D-CNN** | **80–85% student** | student best-val test | **80.00%** (ens 80.23%); teacher ~90%+ |
 
 Shared stack: `kv260_audio_net_ds1d` full-clip, source-safe + **val**, seed 83.
 
@@ -27,8 +27,9 @@ Shared stack: `kv260_audio_net_ds1d` full-clip, source-safe + **val**, seed 83.
 
 ## Read next
 
-1. [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md) — **three goals 80–85%**  
-2. [SETUP_DEPLOY_SOURCE_SAFE.md](SETUP_DEPLOY_SOURCE_SAFE.md) — full setup lock  
+1. [ACHIEVED.md](ACHIEVED.md) — **what is already achieved (single table)**  
+2. [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md) — **three goals 80–85%**  
+3. [SETUP_DEPLOY_SOURCE_SAFE.md](SETUP_DEPLOY_SOURCE_SAFE.md) — full setup lock  
 3. [../data/README.md](../data/README.md) — **data + result analysis standard**  
 4. [DECISIONS_LOG.md](DECISIONS_LOG.md) — what we accepted / rejected  
 5. [ACTIVE_ROADMAP.md](ACTIVE_ROADMAP.md) — what to run next  

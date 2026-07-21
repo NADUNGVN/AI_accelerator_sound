@@ -12,15 +12,16 @@
 
 See [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md).
 
+0. **Numbers in main** — [ACHIEVED.md](ACHIEVED.md): single **79.08%**, ens **79.89%**, KD student **80.00%** (one table, no local/server split).
+
 1. **Track 1 — Single 80–85%**  
-   Improve `test_acc_best_val_model` under source-safe + val (H0 server ~76.9%, local ~79.1%).  
-   Gate: ≥80% fold1, then multi-fold; analysis per [../data/ANALYSIS_STANDARD.md](../data/ANALYSIS_STANDARD.md).
+   From **79.08%** → ≥80% (then 85%). Same stack; analysis [../data/ANALYSIS_STANDARD.md](../data/ANALYSIS_STANDARD.md).
 
 2. **Track 2 — Ensemble 80–85%**  
-   Same runs report `test_acc_ensemble` (last-2). Local already ~79.9%; push server ensemble into band without faking single.
+   From **79.89%** → ≥80% (then 85%). Same runs as Track 1 when possible.
 
 3. **Track 3 — Distill teacher → DS1D 80–85%**  
-   Teacher already ~90%+ (AST train/cache). Reuse logits/ckpts; student best-val test target 80–85% (kdprotect f1 already ~80%).
+   Already **80.00%** student; push toward **85%**. Teacher ~90%+ reuse only.
 
 4. **Phase B (only after Phase A credible)**  
    SoC design, quantization, KV260 deploy, board latency/power.
