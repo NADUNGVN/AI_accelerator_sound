@@ -11,7 +11,8 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 
 from src.models import TCAM1DCNN, TCAMBlock
 
@@ -30,6 +31,7 @@ CLASS_NAMES = [
 ]
 
 RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
+SOURCE_GROUP_SPLIT_ALGORITHM = "fsid_classid_balanced_v1"
 
 EXPECTED_TABLE2_SHAPES = {
     "conv1": [1, 32, 8000],
@@ -43,10 +45,9 @@ EXPECTED_TABLE2_SHAPES = {
 
 
 def default_data_dir():
-    repo_dir = Path(__file__).resolve().parent
     candidates = [
-        repo_dir / "data" / "raw" / "UrbanSound8K",
-        repo_dir.parents[2] / "data" / "UrbanSound8K",
+        REPO_ROOT / "data" / "raw" / "UrbanSound8K",
+        REPO_ROOT.parents[2] / "data" / "UrbanSound8K",
     ]
     for candidate in candidates:
         if (candidate / "metadata" / "UrbanSound8K.csv").exists():
@@ -204,13 +205,51 @@ def random_clip_split(records, test_bucket=1, seed=83, num_buckets=10):
     return train, test
 
 
+def source_group_split(records, test_bucket=1, seed=83, num_buckets=10):
+    rng = random.Random(seed)
+    groups_by_class = collections.defaultdict(dict)
+    for record in records:
+        key = (str(record["fsID"]), int(record["classID"]))
+        groups_by_class[record["label"]].setdefault(key, []).append(record)
+
+    train = []
+    test = []
+    for label in sorted(groups_by_class):
+        groups = sorted(
+            groups_by_class[label].items(),
+            key=lambda item: (
+                min(r["fold"] for r in item[1]),
+                item[0][0],
+                item[0][1],
+                min(r["slice_file_name"] for r in item[1]),
+            ),
+        )
+        rng.shuffle(groups)
+        groups.sort(key=lambda item: len(item[1]), reverse=True)
+
+        buckets = [[] for _ in range(num_buckets)]
+        bucket_counts = [0 for _ in range(num_buckets)]
+        for _, group_records in groups:
+            min_count = min(bucket_counts)
+            candidates = [idx for idx, count in enumerate(bucket_counts) if count == min_count]
+            bucket_idx = rng.choice(candidates)
+            buckets[bucket_idx].extend(group_records)
+            bucket_counts[bucket_idx] += len(group_records)
+
+        for idx, group_records in enumerate(buckets, start=1):
+            if idx == test_bucket:
+                test.extend(group_records)
+            else:
+                train.extend(group_records)
+    return train, test
+
+
 def split_overlap(train, test):
     train_source_label = {(r["fsID"], r["classID"]) for r in train}
     test_source_label = {(r["fsID"], r["classID"]) for r in test}
     train_source = {r["fsID"] for r in train}
     test_source = {r["fsID"] for r in test}
     return {
-        "random_split_algorithm": RANDOM_SPLIT_ALGORITHM,
         "train_clips": len(train),
         "test_clips": len(test),
         "fsID_classID_overlap": len(train_source_label & test_source_label),
@@ -514,6 +553,19 @@ def write_markdown(report, path):
             f"{item['fsID_classID_overlap']} | {item['fsID_only_overlap']} |"
         )
     lines.append("")
+    lines.append("## Random Control Splits")
+    lines.append("")
+    lines.append("| Split | Algorithm | Train | Test | fsID+classID overlap | fsID-only overlap |")
+    lines.append("|---|---|---:|---:|---:|---:|")
+    for split_name, item in [
+        ("random_clip_9_1", report["dataset"]["random_clip_split_control"]),
+        ("source_group_9_1", report["dataset"]["source_group_split_control"]),
+    ]:
+        lines.append(
+            f"| {split_name} | {item['split_algorithm']} | {item['train_clips']} | "
+            f"{item['test_clips']} | {item['fsID_classID_overlap']} | {item['fsID_only_overlap']} |"
+        )
+    lines.append("")
     lines.append("## Frame Padding")
     pad = report["dataset"]["padding"]
     lines.append(
@@ -589,7 +641,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Research diagnostics for TCAM1DCNN reproduction.")
     parser.add_argument("--data_dir", default=str(default_data_dir()))
     parser.add_argument("--output_json", default="results/diagnostics/research_diagnostics.json")
-    parser.add_argument("--output_md", default="docs/Reproduction_Deep_Diagnostics.md")
+    parser.add_argument("--output_md", default="docs/reproduction/Reproduction_Deep_Diagnostics.md")
     parser.add_argument("--random_seed", type=int, default=83)
     parser.add_argument("--random_test_bucket", type=int, default=1)
     return parser.parse_args()
@@ -597,10 +649,15 @@ def parse_args():
 
 def main():
     args = parse_args()
-    repo_dir = Path(__file__).resolve().parent
+    repo_dir = REPO_ROOT
     data_dir = Path(args.data_dir)
     records, raw_class_counts = load_records(data_dir)
     train_random, test_random = random_clip_split(
+        records,
+        test_bucket=args.random_test_bucket,
+        seed=args.random_seed,
+    )
+    train_source_group, test_source_group = source_group_split(
         records,
         test_bucket=args.random_test_bucket,
         seed=args.random_seed,
@@ -615,7 +672,14 @@ def main():
             "fold_stats": fold_statistics(records),
             "padding": frame_padding_counts(records),
             "official_overlap": official_overlap(records),
-            "random_clip_split_control": split_overlap(train_random, test_random),
+            "random_clip_split_control": {
+                "split_algorithm": RANDOM_SPLIT_ALGORITHM,
+                **split_overlap(train_random, test_random),
+            },
+            "source_group_split_control": {
+                "split_algorithm": SOURCE_GROUP_SPLIT_ALGORITHM,
+                **split_overlap(train_source_group, test_source_group),
+            },
         },
         "model": model_diagnostics(),
         "artifacts": artifact_summary(repo_dir),

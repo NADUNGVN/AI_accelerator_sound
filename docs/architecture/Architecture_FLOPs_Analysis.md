@@ -85,7 +85,7 @@ Therefore, if the architecture really has Table 2's Conv2 with input length 8000
 Run:
 
 ```bash
-python flops_lower_bound_check.py
+python tools/flops_lower_bound_check.py
 ```
 
 Expected key output:

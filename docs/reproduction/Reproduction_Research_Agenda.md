@@ -157,14 +157,28 @@ python train.py --fold 2 --config configs/rtx3090_config.json --exp_name paper9_
 Analyze fold 2:
 
 ```bash
-python analyze_experiment.py --exp_dir experiments/paper9_msle_fp32/fold_2 --fold 2 --config configs/rtx3090_config.json --eval_all_cycles --eval_modes --eval_train
+python tools/analyze_experiment.py --exp_dir experiments/paper9_msle_fp32/fold_2 --fold 2 --config configs/rtx3090_config.json --eval_all_cycles --eval_modes --eval_train
 ```
 
 If fold 2 is also low while random split is high, the main reproduction fork is confirmed as split protocol/source leakage.
 
 ### Phase 2: Source-Group Split
 
-Add a source-group split control where `fsID+classID` cannot overlap, even under random splitting. This will answer:
+Status: implemented in `train.py`, `tools/analyze_experiment.py`, and `tools/research_diagnostics.py` as `source_group_9_1`.
+
+Run the source-group control where `fsID+classID` cannot overlap, even under random splitting:
+
+```bash
+python train.py --fold 1 --config configs/source_group_msle.json --exp_name sourcegroup_msle_fp32
+```
+
+Analyze it:
+
+```bash
+python tools/analyze_experiment.py --exp_dir experiments/sourcegroup_msle_fp32/fold_1 --fold 1 --config configs/source_group_msle.json --eval_all_cycles --eval_modes --eval_train
+```
+
+This will answer:
 
 - Does paper-like accuracy require source-label overlap?
 - How much of random split accuracy comes from source leakage?

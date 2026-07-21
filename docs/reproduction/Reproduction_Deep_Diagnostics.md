@@ -1,8 +1,8 @@
 # Reproduction Deep Diagnostics
 
 ## Split Outcome
-- official_fold1: protocol=paper_9_1, test=873, last=55.67%, ensemble=55.90%, fsID+classID overlap=None
-- random_clip_fold1: protocol=random_clip_9_1, test=874, last=93.25%, ensemble=93.36%, fsID+classID overlap=492
+- Current local `experiments/` artifacts are not present in this workspace snapshot, so this regenerated diagnostics report cannot re-read prior checkpoints/metrics.
+- Prior recorded context in `Reproduction_Research_Agenda.md`: official fold 1 reached about 55.90% ensemble accuracy, while random clip fold 1 reached about 93.36% ensemble accuracy with source-label overlap.
 
 ## Official Fold Source Overlap
 
@@ -18,6 +18,13 @@
 | 8 | 7926 | 806 | 0 | 1 |
 | 9 | 7916 | 816 | 0 | 1 |
 | 10 | 7895 | 837 | 0 | 0 |
+
+## Random Control Splits
+
+| Split | Algorithm | Train | Test | fsID+classID overlap | fsID-only overlap |
+|---|---|---:|---:|---:|---:|
+| random_clip_9_1 | stable_metadata_v2 | 7858 | 874 | 489 | 487 |
+| source_group_9_1 | fsid_classid_balanced_v1 | 7862 | 870 | 0 | 0 |
 
 ## Frame Padding
 - All-zero padded frames: 11625/130980 (8.88%).

@@ -1,0 +1,64 @@
+{
+  "model_name": "kv260_audio_net_ds1d",
+  "width_mult": 1.25,
+  "dropout": 0.25,
+  "pool_type": "pyramid_avgmax",
+  "pool_bins": [1, 2, 4],
+  "stem_type": "single",
+  "deployment_budget": {
+    "max_params": 300000,
+    "max_macs_per_clip": 300000000,
+    "flops_equivalent_convention": "FLOPs = 2 * MACs"
+  },
+  "batch_size": 64,
+  "accum_steps": 1,
+  "epochs": 50,
+  "lr": 0.001,
+  "optimizer": "adamw",
+  "weight_decay": 0.0008,
+  "num_workers": 0,
+  "sample_rate": 16000,
+  "clip_seconds": 4.0,
+  "frame_length": 64000,
+  "frame_hop": 64000,
+  "frames_per_clip": 1,
+  "drop_silent_tail_frames": false,
+  "eval_drop_silent_tail_frames": false,
+  "cycles": 4,
+  "seed": 83,
+  "protocol": "source_group_8_1_1",
+  "source_group_split_algorithm": "fsid_classid_balanced_v1",
+  "amp": true,
+  "gradient_clip": 5.0,
+  "adam_eps": 1e-8,
+  "loss": "crossentropy",
+  "label_smoothing": 0.04,
+  "class_weighting": "balanced",
+  "class_weight_multipliers": [1.05, 1.30, 1.00, 1.10, 1.00, 1.00, 1.00, 1.80, 1.00, 1.00],
+  "weighted_sampler": {
+    "enabled": false,
+    "class_multipliers": [1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00]
+  },
+  "mixup": {
+    "enabled": true,
+    "alpha": 0.20,
+    "prob": 0.70
+  },
+  "ema": {
+    "enabled": true,
+    "decay": 0.995,
+    "use_for_validation": true
+  },
+  "augment": {
+    "enabled": true,
+    "gain_db": 5.0,
+    "noise_prob": 0.25,
+    "noise_snr_db_min": 20.0,
+    "noise_snr_db_max": 38.0,
+    "shift_prob": 0.50,
+    "shift_max_fraction": 0.08,
+    "polarity_prob": 0.10,
+    "time_mask_prob": 0.18,
+    "time_mask_max_fraction": 0.06
+  }
+}
