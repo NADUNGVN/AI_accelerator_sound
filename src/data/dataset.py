@@ -79,15 +79,21 @@ class CachedUrbanSoundFrameDataset(Dataset):
         frame_length=8000,
         augment_cfg=None,
         return_source_id=False,
+        teacher_logits_by_key=None,
     ):
         self.records = records
         self.cached_waveforms = cached_waveforms
         self.frame_length = frame_length
         self.augment = WaveformAugment(augment_cfg)
         self.return_source_id = bool(return_source_id)
+        # Optional AST/offline teacher soft labels keyed by foldX/slice_file_name
+        self.teacher_logits_by_key = teacher_logits_by_key
 
     def __len__(self):
         return len(self.records)
+
+    def _teacher_cache_key(self, record):
+        return f"fold{int(record['fold'])}/{record['slice_file_name']}"
 
     def __getitem__(self, index):
         record = self.records[index]
@@ -110,8 +116,20 @@ class CachedUrbanSoundFrameDataset(Dataset):
 
         frame = self.augment(frame.float())
 
+        source_id = int(record.get("source_id", -1))
+        if self.teacher_logits_by_key is not None:
+            key = self._teacher_cache_key(record)
+            if key not in self.teacher_logits_by_key:
+                raise KeyError(
+                    f"Missing teacher logits for key '{key}'. "
+                    "Re-run tools/cache_ast_teacher_logits.py on the train split."
+                )
+            teacher_logits = self.teacher_logits_by_key[key].float()
+            # Always return source_id slot for stable batch packing when KD cache is on.
+            return frame, label, source_id, teacher_logits
+
         if self.return_source_id:
-            return frame, label, int(record.get("source_id", -1))
+            return frame, label, source_id
         return frame, label
 
 def parse_dataset(csv_path, audio_base_dir, class_names):

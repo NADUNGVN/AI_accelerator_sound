@@ -374,8 +374,41 @@ def format_teacher_checkpoint_path(template, fold):
 
 
 def load_teacher_model(student_cfg, distillation_cfg, fold, device):
+    """Load live same-arch teacher OR offline AST cached logits.
+
+    Returns:
+        teacher_name, teacher_model, checkpoint_or_cache_path, teacher_config_path, teacher_logits_by_key
+    """
     if not distillation_cfg.get("enabled", False):
-        return None, None, None, None
+        return None, None, None, None, None
+
+    mode = str(distillation_cfg.get("mode", "live_model")).lower()
+    logits_template = distillation_cfg.get("teacher_logits_template")
+    use_cached = mode in {"cached_logits", "ast_cached_logits"} or bool(logits_template)
+
+    if use_cached:
+        if not logits_template:
+            raise ValueError(
+                "distillation.teacher_logits_template is required when mode is cached_logits."
+            )
+        cache_path = format_teacher_checkpoint_path(logits_template, fold)
+        if not os.path.exists(cache_path):
+            raise FileNotFoundError(
+                f"Teacher logits cache not found: {cache_path}. "
+                "Run tools/cache_ast_teacher_logits.py first."
+            )
+        blob = torch.load(cache_path, map_location="cpu", weights_only=False)
+        if not isinstance(blob, dict) or "logits_by_key" not in blob:
+            raise ValueError(f"Invalid teacher logits cache format: {cache_path}")
+        logits_by_key = blob["logits_by_key"]
+        meta = blob.get("metadata") or {}
+        print(
+            "[Distillation Setup] mode=cached_logits | "
+            f"cache={cache_path} | keys={len(logits_by_key)} | "
+            f"teacher_checkpoint={meta.get('teacher_checkpoint')} | "
+            f"protocol={meta.get('protocol')} seed={meta.get('seed')}"
+        )
+        return "ast_cached_logits", None, cache_path, None, logits_by_key
 
     teacher_config_path = distillation_cfg.get("teacher_config")
     if teacher_config_path:
@@ -414,7 +447,7 @@ def load_teacher_model(student_cfg, distillation_cfg, fold, device):
     for parameter in teacher_model.parameters():
         parameter.requires_grad_(False)
 
-    return teacher_name, teacher_model, checkpoint_path, teacher_config_resolved
+    return teacher_name, teacher_model, checkpoint_path, teacher_config_resolved, None
 
 
 def load_initial_model_weights(model, cfg, fold, device):
@@ -964,6 +997,14 @@ def main():
 
     print(f"Pre-loading completed in {time.time() - start_preload:.2f} seconds! RAM Caching is active.")
 
+    distillation_cfg = cfg.get("distillation", {})
+    teacher_name, teacher_model, teacher_checkpoint_path, teacher_config_path, teacher_logits_by_key = load_teacher_model(
+        cfg,
+        distillation_cfg,
+        args.fold,
+        device,
+    )
+
     # Dataloader
     train_dataset = CachedUrbanSoundFrameDataset(
         train_frames,
@@ -971,6 +1012,7 @@ def main():
         frame_length=frame_length,
         augment_cfg=cfg.get("augment", None),
         return_source_id=supervised_contrastive_enabled or machinery_source_robust_enabled,
+        teacher_logits_by_key=teacher_logits_by_key,
     )
     
     num_workers = cfg.get("num_workers", 0)
@@ -1063,22 +1105,16 @@ def main():
             f"[Feature Setup] input_features={cfg.get('input_features')} | "
             f"classifier_input_channels={model_input_channels} | classifier_input_length={model_input_length}"
         )
-    distillation_cfg = cfg.get("distillation", {})
-    teacher_name, teacher_model, teacher_checkpoint_path, teacher_config_path = load_teacher_model(
-        cfg,
-        distillation_cfg,
-        args.fold,
-        device,
-    )
-    if teacher_model is not None:
+    if distillation_cfg.get("enabled", False) and (teacher_model is not None or teacher_logits_by_key is not None):
         print(
             "[Distillation Setup] enabled=True | "
             f"teacher={teacher_name} | "
-            f"checkpoint={teacher_checkpoint_path} | "
+            f"source={teacher_checkpoint_path} | "
             f"weight={float(distillation_cfg.get('weight', 0.2)):g} | "
             f"temperature={float(distillation_cfg.get('temperature', 2.0)):g} | "
             f"protect_classes={distillation_cfg.get('protect_classes', [])} | "
-            f"apply_to_mixup={bool(distillation_cfg.get('apply_to_mixup', False))}"
+            f"apply_to_mixup={bool(distillation_cfg.get('apply_to_mixup', False))} | "
+            f"cached_keys={0 if teacher_logits_by_key is None else len(teacher_logits_by_key)}"
         )
     
     loss_type = cfg.get("loss", "crossentropy").lower()

@@ -204,7 +204,7 @@ class Trainer:
 
     def protected_distillation_loss(self, student_logits, teacher_logits, targets):
         cfg = self.distillation_cfg
-        if not cfg.get("enabled", False) or self.teacher_model is None:
+        if not cfg.get("enabled", False) or teacher_logits is None:
             return student_logits.new_zeros(())
 
         temperature = max(float(cfg.get("temperature", 2.0)), 1e-6)
@@ -241,7 +241,10 @@ class Trainer:
         supcon_enabled = bool(self.supervised_contrastive_cfg.get("enabled", False))
 
         for batch_idx, batch in enumerate(loader):
-            if len(batch) == 3:
+            cached_teacher_logits = None
+            if len(batch) == 4:
+                inputs, targets, source_ids, cached_teacher_logits = batch
+            elif len(batch) == 3:
                 inputs, targets, source_ids = batch
             else:
                 inputs, targets = batch
@@ -251,6 +254,8 @@ class Trainer:
             targets = targets.to(self.device, non_blocking=True)
             if source_ids is not None:
                 source_ids = source_ids.to(self.device, non_blocking=True)
+            if cached_teacher_logits is not None:
+                cached_teacher_logits = cached_teacher_logits.to(self.device, non_blocking=True)
             inputs = self.transform_inputs(inputs)
             mixup_enabled = bool(self.mixup_cfg.get("enabled", False)) and inputs.size(0) > 1
             if mixup_enabled and random.random() < float(self.mixup_cfg.get("prob", 1.0)):
@@ -260,11 +265,20 @@ class Trainer:
                 mixed_inputs = lam * inputs + (1.0 - lam) * inputs[index]
                 targets_a = targets
                 targets_b = targets[index]
+                if cached_teacher_logits is not None:
+                    # Soft labels are clip-level; under mixup only use KD when apply_to_mixup
+                    # and mix teacher logits the same way (linear in logit space is approximate).
+                    mixed_teacher_logits = (
+                        lam * cached_teacher_logits + (1.0 - lam) * cached_teacher_logits[index]
+                    )
+                else:
+                    mixed_teacher_logits = None
             else:
                 lam = 1.0
                 mixed_inputs = inputs
                 targets_a = targets
                 targets_b = targets
+                mixed_teacher_logits = cached_teacher_logits
             
             with torch.amp.autocast(
                 device_type="cuda" if "cuda" in self.device.type else "cpu",
@@ -311,11 +325,17 @@ class Trainer:
                         src_loss = self.machinery_source_robust_loss(logits, targets, source_ids)
                     raw_loss = raw_loss + float(msr_cfg.get("source_weight", 0.15)) * src_loss
                 distillation_cfg = self.distillation_cfg
-                if distillation_cfg.get("enabled", False) and self.teacher_model is not None:
+                if distillation_cfg.get("enabled", False):
                     apply_to_mixup = bool(distillation_cfg.get("apply_to_mixup", False))
-                    if lam >= 1.0 or apply_to_mixup:
-                        with torch.no_grad():
-                            teacher_logits = self.teacher_model(mixed_inputs)
+                    use_kd = lam >= 1.0 or apply_to_mixup
+                    teacher_logits = None
+                    if use_kd:
+                        if mixed_teacher_logits is not None:
+                            teacher_logits = mixed_teacher_logits
+                        elif self.teacher_model is not None:
+                            with torch.no_grad():
+                                teacher_logits = self.teacher_model(mixed_inputs)
+                    if teacher_logits is not None:
                         if mixup_enabled and lam < 1.0 and apply_to_mixup:
                             distill_loss = (
                                 lam * self.protected_distillation_loss(logits, teacher_logits, targets_a)
@@ -323,9 +343,7 @@ class Trainer:
                             )
                         else:
                             distill_loss = self.protected_distillation_loss(logits, teacher_logits, targets)
-                    else:
-                        distill_loss = logits.new_zeros(())
-                    raw_loss = raw_loss + float(distillation_cfg.get("weight", 0.2)) * distill_loss
+                        raw_loss = raw_loss + float(distillation_cfg.get("weight", 0.2)) * distill_loss
                 loss = raw_loss / self.accumulation_steps
                 
             self.scaler.scale(loss).backward()
