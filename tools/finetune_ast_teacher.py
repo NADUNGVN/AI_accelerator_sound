@@ -51,12 +51,17 @@ def json_safe(value):
     return value
 
 
-def class_weights(records, device):
+def class_weights(records, device, extra_multipliers=None):
     counts = torch.zeros(len(CLASS_NAMES), dtype=torch.float32)
     for record in records:
         counts[int(record["label"])] += 1.0
     counts = counts.clamp_min(1.0)
     weights = counts.sum() / (len(CLASS_NAMES) * counts)
+    if extra_multipliers is not None:
+        mult = torch.tensor([float(v) for v in extra_multipliers], dtype=torch.float32)
+        if mult.numel() != len(CLASS_NAMES):
+            raise ValueError(f"extra_multipliers must have length {len(CLASS_NAMES)}, got {mult.numel()}")
+        weights = weights * mult
     return weights.to(device)
 
 
@@ -339,8 +344,20 @@ def main():
     parser.add_argument("--protocol", default="source_group_8_1_1")
     parser.add_argument("--seed", type=int, default=83)
     parser.add_argument("--model_name", default="MIT/ast-finetuned-audioset-10-10-0.4593")
+    parser.add_argument(
+        "--init_checkpoint",
+        default=None,
+        help="Optional HF directory (e.g. .../checkpoints/best) to continue fine-tune from. "
+        "Uses the 10-class US8K head already trained; does not re-download AudioSet head.",
+    )
     parser.add_argument("--hf_cache_dir", default="experiments/smoke_ast_embedding_probe/hf_cache")
     parser.add_argument("--local_files_only", action="store_true")
+    parser.add_argument(
+        "--class_weight_multipliers",
+        default=None,
+        help="Optional comma-separated 10 floats to reweight balanced CE "
+        "(e.g. boost engine_idling/jackhammer: 1,1,1,1,1,1.5,1,1.3,1,1).",
+    )
     parser.add_argument("--sample_rate", type=int, default=16000)
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--batch_size", type=int, default=4)
@@ -408,15 +425,27 @@ def main():
     )
     id2label = {idx: name for idx, name in enumerate(CLASS_NAMES)}
     label2id = {name: idx for idx, name in id2label.items()}
-    model = AutoModelForAudioClassification.from_pretrained(
-        args.model_name,
-        cache_dir=str(cache_dir),
-        local_files_only=args.local_files_only,
-        num_labels=len(CLASS_NAMES),
-        id2label=id2label,
-        label2id=label2id,
-        ignore_mismatched_sizes=True,
-    ).to(device)
+    if args.init_checkpoint:
+        init_path = Path(args.init_checkpoint)
+        if not init_path.is_absolute():
+            init_path = (REPO_ROOT / init_path).resolve()
+        if not init_path.exists():
+            raise FileNotFoundError(f"--init_checkpoint not found: {init_path}")
+        print(f"[Model Setup] continue fine-tune from {init_path}")
+        model = AutoModelForAudioClassification.from_pretrained(
+            str(init_path),
+            local_files_only=args.local_files_only,
+        ).to(device)
+    else:
+        model = AutoModelForAudioClassification.from_pretrained(
+            args.model_name,
+            cache_dir=str(cache_dir),
+            local_files_only=args.local_files_only,
+            num_labels=len(CLASS_NAMES),
+            id2label=id2label,
+            label2id=label2id,
+            ignore_mismatched_sizes=True,
+        ).to(device)
 
     train_dataset = UrbanSoundClipDataset(
         split["train"],
@@ -450,17 +479,26 @@ def main():
     val_loader = DataLoader(val_dataset, **eval_loader_kwargs)
     test_loader = DataLoader(test_dataset, **eval_loader_kwargs)
 
-    weights = class_weights(split["train"], device) if args.balanced_loss else None
+    extra_mult = None
+    if args.class_weight_multipliers:
+        extra_mult = [float(x.strip()) for x in args.class_weight_multipliers.split(",")]
+    weights = (
+        class_weights(split["train"], device, extra_multipliers=extra_mult)
+        if args.balanced_loss
+        else None
+    )
     criterion = torch.nn.CrossEntropyLoss(weight=weights, label_smoothing=args.label_smoothing)
     scaler = torch.amp.GradScaler("cuda", enabled=args.amp and device.type == "cuda")
 
+    # Stage-2 from init_checkpoint: usually freeze_base_epochs=0 (full model trainable).
     set_base_trainable(model, trainable=args.freeze_base_epochs <= 0)
     optimizer = build_optimizer(model, args)
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
     total_params = sum(p.numel() for p in model.parameters())
     print(
         "[Model Setup] "
-        f"model={args.model_name} | params={total_params:,} | trainable={trainable:,} | "
+        f"model={args.model_name} | init={args.init_checkpoint or 'hf_pretrained'} | "
+        f"params={total_params:,} | trainable={trainable:,} | "
         f"device={device} | batch={args.batch_size} | accum={args.accum_steps}"
     )
     if weights is not None:
