@@ -50,6 +50,7 @@ def default_data_dir():
     """
     repo_root = os.path.dirname(os.path.abspath(__file__))
     candidates = [
+        os.path.join(repo_root, "data", "UrbanSound8K"),
         os.path.join(repo_root, "data", "raw", "UrbanSound8K"),
         os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "UrbanSound8K")),
     ]
