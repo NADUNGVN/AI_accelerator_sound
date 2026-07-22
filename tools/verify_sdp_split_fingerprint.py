@@ -2,6 +2,8 @@
 """Verify SDP 8-1-1 split fingerprint matches student contract (seed 83).
 
 Expect fold1: train=6996, val=866, test=870, train/test overlap=0.
+
+Does NOT import sklearn (safe for minimal teacher env).
 """
 
 from __future__ import annotations
@@ -16,9 +18,24 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
-from tools.source_safe_feature_probe import CLASS_NAMES, make_split  # noqa: E402
 from src.data import parse_dataset  # noqa: E402
-from train import source_label_overlap_summary  # noqa: E402
+from train import (  # noqa: E402
+    make_stratified_source_group_train_val_test_split,
+    source_label_overlap_summary,
+)
+
+CLASS_NAMES = [
+    "air_conditioner",
+    "car_horn",
+    "children_playing",
+    "dog_bark",
+    "drilling",
+    "engine_idling",
+    "gun_shot",
+    "jackhammer",
+    "siren",
+    "street_music",
+]
 
 EXPECTED_F1 = {"train": 6996, "val": 866, "test": 870}
 
@@ -34,12 +51,39 @@ def default_data_dir() -> str:
     return str(candidates[0])
 
 
-def fingerprint(paths: list[str]) -> str:
+def fingerprint(keys: list[str]) -> str:
     h = hashlib.sha1()
-    for p in sorted(paths):
+    for p in sorted(keys):
         h.update(p.encode("utf-8", errors="replace"))
         h.update(b"\n")
     return h.hexdigest()[:16]
+
+
+def row_key(r) -> str:
+    for k in ("path", "filepath", "file", "slice_file_name", "filename"):
+        if k in r and r[k]:
+            return str(r[k])
+    return json.dumps(r, sort_keys=True, default=str)
+
+
+def make_split(clip_records, fold, protocol, seed):
+    protocol = protocol.lower()
+    if protocol == "source_group_8_1_1":
+        train_clips, val_clips, test_records, val_bucket = make_stratified_source_group_train_val_test_split(
+            clip_records,
+            test_bucket=fold,
+            seed=seed,
+        )
+        return {
+            "fold": fold,
+            "protocol": protocol,
+            "train": train_clips,
+            "val": val_clips,
+            "test": test_records,
+            "uses_validation": True,
+            "val_bucket": val_bucket,
+        }
+    raise ValueError(f"This verifier only supports source_group_8_1_1, got {protocol}")
 
 
 def main() -> None:
@@ -62,20 +106,6 @@ def main() -> None:
     ov_tt = source_label_overlap_summary(split["train"], split["test"])
     ov_tv = source_label_overlap_summary(split["train"], split["val"])
 
-    def paths(rows):
-        return [r.get("path") or r.get("filepath") or r.get("file") or str(r) for r in rows]
-
-    # robust path key
-    def row_key(r):
-        for k in ("path", "filepath", "file", "slice_file_name", "filename"):
-            if k in r and r[k]:
-                return str(r[k])
-        return json.dumps(r, sort_keys=True, default=str)
-
-    train_fp = fingerprint([row_key(r) for r in split["train"]])
-    val_fp = fingerprint([row_key(r) for r in split["val"]])
-    test_fp = fingerprint([row_key(r) for r in split["test"]])
-
     report = {
         "data_dir": args.data_dir,
         "protocol": args.protocol,
@@ -84,7 +114,11 @@ def main() -> None:
         "counts": {"train": n_train, "val": n_val, "test": n_test},
         "overlap_train_test": ov_tt.get("count"),
         "overlap_train_val": ov_tv.get("count"),
-        "fingerprints": {"train": train_fp, "val": val_fp, "test": test_fp},
+        "fingerprints": {
+            "train": fingerprint([row_key(r) for r in split["train"]]),
+            "val": fingerprint([row_key(r) for r in split["val"]]),
+            "test": fingerprint([row_key(r) for r in split["test"]]),
+        },
     }
     print(json.dumps(report, indent=2))
 
@@ -103,7 +137,7 @@ def main() -> None:
             ok = False
 
     if ok:
-        print("[OK] SDP fingerprint matches student contract (or non-f1 check passed counts).")
+        print("[OK] SDP fingerprint matches student contract.")
         sys.exit(0)
     print("[FAIL] fix data_dir or split code before training teacher.")
     sys.exit(1)

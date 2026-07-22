@@ -12,13 +12,9 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, confusion_matrix
-from sklearn.neural_network import MLPClassifier
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import LinearSVC, SVC
+
+# sklearn is only needed for probe classifiers — not for make_split / AST fine-tune.
+# Lazy-import so SDP verify and teacher train work without scikit-learn installed.
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
@@ -32,6 +28,34 @@ from train import (
     make_stratified_source_group_train_val_test_split,
     source_label_overlap_summary,
 )
+
+
+def _require_sklearn():
+    try:
+        from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.metrics import accuracy_score, confusion_matrix
+        from sklearn.neural_network import MLPClassifier
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.svm import LinearSVC, SVC
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(
+            "scikit-learn is required for feature-probe classifiers only. "
+            "Install with: pip install scikit-learn"
+        ) from exc
+    return {
+        "ExtraTreesClassifier": ExtraTreesClassifier,
+        "RandomForestClassifier": RandomForestClassifier,
+        "LogisticRegression": LogisticRegression,
+        "accuracy_score": accuracy_score,
+        "confusion_matrix": confusion_matrix,
+        "MLPClassifier": MLPClassifier,
+        "make_pipeline": make_pipeline,
+        "StandardScaler": StandardScaler,
+        "LinearSVC": LinearSVC,
+        "SVC": SVC,
+    }
 
 
 CLASS_NAMES = [
@@ -311,6 +335,16 @@ def build_feature_cache(selected_records, args, exp_dir):
 
 
 def build_estimator(name, seed, n_jobs, n_estimators):
+    sk = _require_sklearn()
+    make_pipeline = sk["make_pipeline"]
+    StandardScaler = sk["StandardScaler"]
+    LogisticRegression = sk["LogisticRegression"]
+    LinearSVC = sk["LinearSVC"]
+    SVC = sk["SVC"]
+    ExtraTreesClassifier = sk["ExtraTreesClassifier"]
+    RandomForestClassifier = sk["RandomForestClassifier"]
+    MLPClassifier = sk["MLPClassifier"]
+
     name = name.lower()
     if name == "logreg":
         return make_pipeline(
@@ -379,6 +413,7 @@ def build_estimator(name, seed, n_jobs, n_estimators):
 
 
 def per_class_rows(y_true, y_pred):
+    confusion_matrix = _require_sklearn()["confusion_matrix"]
     matrix = confusion_matrix(y_true, y_pred, labels=list(range(len(CLASS_NAMES))))
     rows = []
     for class_id, class_name in enumerate(CLASS_NAMES):
@@ -451,6 +486,7 @@ def evaluate_estimator(name, estimator, split, feature_by_path, args):
     fit_seconds = time.time() - start_time
 
     test_pred = estimator.predict(x_test)
+    accuracy_score = _require_sklearn()["accuracy_score"]
     test_acc = accuracy_score(y_test, test_pred)
     val_acc = None
     if x_val is not None:
