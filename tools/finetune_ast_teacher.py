@@ -382,6 +382,14 @@ def main():
     parser.add_argument("--early_stop_warmup", type=int, default=6)
     parser.add_argument("--early_stop_patience", type=int, default=5)
     parser.add_argument("--early_stop_min_delta", type=float, default=0.001)
+    parser.add_argument(
+        "--best_selection_start_epoch",
+        type=int,
+        default=1,
+        help="Only update best checkpoint for epoch >= this (1-based). "
+        "Use freeze_base_epochs+2 to skip the first unstable full-finetune epoch "
+        "after unfreeze (still val-only selection; never uses test).",
+    )
     parser.add_argument("--eval_test_each_epoch", action="store_true", default=False)
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--max_train_clips", type=int, default=None)
@@ -509,6 +517,12 @@ def main():
     best_payload = None
     epochs_without_improvement = 0
     early_stopped = False
+    selection_start = max(1, int(args.best_selection_start_epoch))
+    print(
+        f"[Selection] best checkpoint by VAL only | "
+        f"best_selection_start_epoch={selection_start} | "
+        f"test is logged only (never used to pick best)"
+    )
 
     for epoch_idx in range(args.epochs):
         epoch = epoch_idx + 1
@@ -526,6 +540,7 @@ def main():
             "train": train_metrics,
             "val": val_metrics,
             "test": test_metrics,
+            "eligible_for_best": epoch >= selection_start,
         }
         history.append(row)
         test_text = fmt_pct(pct(test_metrics["accuracy"])) if test_metrics is not None else "deferred"
@@ -538,7 +553,13 @@ def main():
         )
 
         val_acc = float(val_metrics["accuracy"])
-        if val_acc > best_val + args.early_stop_min_delta:
+        # Val-only selection, optionally delayed until after first full-finetune epoch(s).
+        if epoch < selection_start:
+            print(
+                f"  [Selection] epoch {epoch} < start {selection_start}: "
+                f"skip best update (val={fmt_pct(pct(val_acc))} logged only)"
+            )
+        elif val_acc > best_val + args.early_stop_min_delta:
             best_val = val_acc
             epochs_without_improvement = 0
             best_payload = {
@@ -549,17 +570,37 @@ def main():
             }
             test_acc_for_state = test_metrics["accuracy"] if test_metrics is not None else None
             save_checkpoint(exp_dir / "checkpoints" / "best", model, epoch, val_acc, test_acc_for_state, args)
-            print(f"--> Saved best checkpoint at epoch {epoch}.")
+            print(f"--> Saved best checkpoint at epoch {epoch} (val-only, eligible window).")
         else:
             epochs_without_improvement += 1
 
-        if epoch >= args.early_stop_warmup and epochs_without_improvement >= args.early_stop_patience:
+        # Early stop only counts after selection window has started.
+        es_warmup = max(args.early_stop_warmup, selection_start)
+        if epoch >= es_warmup and epochs_without_improvement >= args.early_stop_patience:
             early_stopped = True
             print(
                 f"Early stopping at epoch {epoch}: no val improvement for "
-                f"{epochs_without_improvement} epochs."
+                f"{epochs_without_improvement} epochs (after selection start)."
             )
             break
+
+    if best_payload is None:
+        # Fallback: best val among eligible history rows (should be rare).
+        eligible_rows = [r for r in history if r.get("eligible_for_best")]
+        if not eligible_rows:
+            eligible_rows = history
+        best_row = max(eligible_rows, key=lambda r: float(r["val"]["accuracy"]))
+        best_payload = {
+            "epoch": best_row["epoch"],
+            "train": best_row["train"],
+            "val": best_row["val"],
+            "test": best_row["test"],
+        }
+        print(
+            f"[Selection] WARNING: no in-loop best save; "
+            f"fallback payload epoch={best_payload['epoch']} "
+            f"(reload not available — rerun if checkpoint missing)"
+        )
 
     final_payload = history[-1]
     final_test_metrics = evaluate(model, test_loader, split["test"], device, args)
