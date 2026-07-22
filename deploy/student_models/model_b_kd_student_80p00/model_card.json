@@ -24,8 +24,27 @@
     "pool_bins": [1, 2, 4],
     "stem_type": "single",
     "dropout_train": 0.25,
-    "same_topology_as": "model_a_noteacher_79p08",
-    "training_difference": "KD from AST teacher (teacher weights NOT included in this bundle)"
+    "same_topology_as": "model_a_noteacher_79p08"
+  },
+  "training_recipe": {
+    "name": "kdprotect_finetune",
+    "experiment": "local_finetune_kdprotect_f1_20ep",
+    "teacher_kind": "same_family_ds1d_kdprotect",
+    "not_ast_teacher": true,
+    "teacher_checkpoint": "experiments/local_multifold_pyramid_base_f1_f3_50ep/fold_1/checkpoints/tcam_fold_1_cycle_final.pt",
+    "initial_checkpoint": "experiments/local_multifold_pyramid_base_f1_f3_50ep/fold_1/checkpoints/tcam_fold_1_cycle_final.pt",
+    "teacher_accuracy_lineage_note": "Same No-Teacher lineage ~79% (Model A best-val test 79.08%)",
+    "kd_weight": 0.6,
+    "temperature": 2.0,
+    "protect_classes": [1, 4, 6, 7, 8],
+    "epochs": 20,
+    "lr": 0.0002
+  },
+  "ast_research_note": {
+    "ast_teacher_fold1_best_val_test": 0.8989,
+    "ast_teacher_fold1_final_test": 0.9023,
+    "ast_kd_student_fold1_approx": 0.754,
+    "included_in_this_bundle": false
   },
   "classes": [
     "air_conditioner",
@@ -41,10 +60,13 @@
   ],
   "source_experiment": "experiments/local_finetune_kdprotect_f1_20ep/fold_1",
   "source_checkpoint_name": "tcam_fold_1_best.pt",
-  "dpu_note": "Deploy student only. Convert float .pt; no teacher on board. Retrain only if QAT needed after quant.",
+  "dpu_note": "Deploy student only. Teacher (same-family offline) is not in this folder. AST not required.",
+  "narrative_doc": "docs/paper/MODEL_B_KD.md",
   "files": {
     "full": "model_full.pt",
     "weights": "model_weights.pt",
-    "biases": "model_biases.pt"
+    "biases": "model_biases.pt",
+    "h5": "model_weights.h5",
+    "mem": "model_weights.mem"
   }
 }

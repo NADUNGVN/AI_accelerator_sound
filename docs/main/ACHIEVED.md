@@ -24,6 +24,18 @@ Machine (laptop / 3090) only matters for *where files live*, not for *which numb
 | **2. Ensemble** | 80–85% | **79.89%** ensemble (**fold1 peak**) | same exp fold_1 | **Near 80%** on that fold only |
 | **3. KD student** | 80–85% | **80.00%** best-val test / **80.23%** ens | `local_finetune_kdprotect_f1_20ep` / fold_1 | **Hits 80% band** (not yet 85%) |
 
+### Track 3 teacher clarity (do not mix)
+
+| Role | What it is | Accuracy (SDP fold 1 unless noted) |
+|------|------------|-------------------------------------|
+| **Model B student (deliverable)** | DS-Conv2D-H1 after **KD-protect** fine-tune | **80.00%** bvt / **80.23%** ens |
+| **Teacher of that 80% run** | **Same-family** DS1D `cycle_final` (not AST) | ~**79%** lineage (Model A best **79.08%**) |
+| **AST teacher (research only)** | Fine-tuned `MIT/ast-finetuned-audioset-…` | best-val test **89.89%**; final test **90.23%** |
+| **AST train-cache (fold 2 doc)** | Soft-label cache quality on **train** | ~**92.4%** — **not** deploy test |
+| **AST→student KD (fold 1)** | `local_fold1_kv260_ast_teacher_kd_50ep` | student ~**75.4%** — **weaker** than Model B |
+
+Full narrative: [`docs/paper/MODEL_B_KD.md`](../paper/MODEL_B_KD.md).
+
 ### Variance note (79% is not “guaranteed recipe output”)
 
 Same MAIN-family config `kv260_ds1d_pyramid_mixup_ema_val.json`, seed **83**, no-teacher:
@@ -43,14 +55,15 @@ Same MAIN-family config `kv260_ds1d_pyramid_mixup_ema_val.json`, seed **83**, no
 **Working 3090 fold1 band** for MAIN 50ep: about **76.9–77.7%** single.  
 Claiming “the model is 79%” without saying **fold1** overstates stability.
 
-**Teacher (not deploy acc):** AST train/cache ~**92.4%** (fold2 doc) — Track 3 only.
+**Do not write:** “Track 3 teacher = 92% AST” as the teacher of the 80% student.  
+**Do write:** Track 3 deliverable = KD-protect student 80%; AST ~90% is a separate research teacher; AST-KD student ~75%.
 
 ### Same stack, other verified runs (do not override table above)
 
 | Run | Single (bvt) | Ensemble | Role |
 |---|---:|---:|---|
 | `server3090_notacher_f1_fullclip_baseline_50ep` | 76.90% | 75.40% | Same config; **weaker** than best single/ens — keep as server artifact, **not** research headline |
-| AST-KD `local_fold1_kv260_ast_teacher_kd_50ep` | ~75.4% | ~77.6% | Weaker than kdprotect on fold1 |
+| AST-KD `local_fold1_kv260_ast_teacher_kd_50ep` | ~75.4% | ~77.6% | **Weaker** than Model B kdprotect; not the deliverable |
 | Texture T1/T2/H2 | ≤74.6% bvt | up to 79.4% ens (T1) | **REJECTED** for single; T1 ens does not beat 79.89% best ens |
 
 ---
@@ -69,9 +82,11 @@ Headline claims:
 |---|---|
 | Best **single** no-teacher (research) | **79.08%** |
 | Best **ensemble** no-teacher (research) | **79.89%** |
-| Best **KD student** single (research) | **80.00%** |
+| Best **KD student** single (research) — Model B KD-protect | **80.00%** |
 | Best **KD student** ensemble | **80.23%** |
-| Teacher (train/cache, not deploy) | **~90%+** |
+| Teacher of Model B 80% run | same-family DS1D ~**79%** |
+| AST teacher research (fold1 test, not deploy) | ~**90%** |
+| AST train-cache fold2 (not deploy) | ~**92.4%** |
 
 **Not** achieved: single **85%**, ensemble **85%**, KD student **85%**, multi-fold mean 80–85%.
 

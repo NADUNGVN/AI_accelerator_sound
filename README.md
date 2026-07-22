@@ -101,9 +101,11 @@ Headline accuracies come from **two training recipes on the same DS-Conv2D-H1 Py
 | Model | Recipe | Protocol | Best-val test | Ensemble |
 |-------|--------|----------|-------------:|---------:|
 | **A. No-Teacher** | CE + class weights + mixup + EMA | SDP 8-1-1 | **79.08%** | **79.89%** |
-| **B. KD-Student** | AST teacher → KD-protect fine-tune | SDP 8-1-1 | **80.00%** | **80.23%** |
+| **B. KD-Student** | **KD-protect** fine-tune; teacher = **same-family DS1D** (`cycle_final` ~79%) — **not** AST | SDP 8-1-1 | **80.00%** | **80.23%** |
 
 Shared stack: **101 674** params · **61.85 M** MACs/clip · full-clip input `[B,1,64000]`.
+
+> **Teacher clarity:** The shipped Model B **80%** student was **not** distilled from AST. AST (~**90%** fold-1 test as a research teacher; train-cache fold2 ~**92%**) was explored separately; AST→student KD on fold 1 is only ~**75%**. Full story: [`docs/paper/MODEL_B_KD.md`](docs/paper/MODEL_B_KD.md).
 
 ### 2.1 Model A — No-Teacher (79.08%)
 
@@ -125,9 +127,23 @@ Evidence: `local_multifold_pyramid_base_f1_f3_50ep` / fold_1.
 
 ![Model B architecture](docs/paper/figures/fig02b_model_kd_student_80p00.png)
 
-**Same layer stack as Model A.** Difference is the **training recipe**: an **AST Transformer teacher** (log-mel patches + multi-head attention; train-time only) distills into this student. **Deployed weights are always the student** — teacher never goes to KV260.
+**Same layer stack as Model A.** Difference is the **training recipe** (not a second topology):
 
-Evidence: `local_finetune_kdprotect_f1_20ep` / fold_1.
+| Item | Model B (deliverable) |
+|------|------------------------|
+| Exp | `local_finetune_kdprotect_f1_20ep` / fold_1 |
+| Init + teacher | No-Teacher `cycle_final` (same DS-Conv2D-H1, ~**79%** lineage) |
+| Method | KD-protect (KD weight 0.6, T=2, `protect_classes` weak set) · 20 ep · lr 2e-4 |
+| Student | **80.00%** best-val test · **80.23%** ens |
+| On chip / DPU | **Student only** |
+
+| Not Model B | Number | Role |
+|-------------|-------:|------|
+| AST fine-tune teacher (fold 1 test) | ~**90%** | Research ceiling only |
+| AST train-cache (fold 2) | ~**92%** | Soft-label cache on **train**, not deploy |
+| AST→student KD (fold 1) | ~**75%** | Weaker student; **not** the bundle |
+
+Canonical write-up: [`docs/paper/MODEL_B_KD.md`](docs/paper/MODEL_B_KD.md) · claims table: [`docs/main/ACHIEVED.md`](docs/main/ACHIEVED.md).
 
 ### 2.3 Stem filter frequency response (interpretability)
 
@@ -157,7 +173,7 @@ Methodology: [`docs/paper/MODELS.md`](docs/paper/MODELS.md) §4 · [fvcore](http
 |-------|--------|--------------:|--------|
 | 1. Single (No-Teacher) | 80–85% | **79.08%** | Below 80%; **fold-1 peak** |
 | 2. Ensemble last-2 | 80–85% | **79.89%** | Near 80% on that fold |
-| 3. KD-Student | 80–85% | **80.00%** (ens 80.23%) | Hits 80% band |
+| 3. KD-Student (KD-protect, not AST-KD) | 80–85% | **80.00%** (ens 80.23%) | Hits 80% band |
 
 ### 3.2 Comparative table (paper names)
 

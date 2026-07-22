@@ -5,10 +5,22 @@ They are intended for **SoC / DPU / Vitis-AI work by students** — not for re-t
 
 | Model | Folder | Acc (SDP fold-1, best-val test) | Role |
 |-------|--------|--------------------------------:|------|
-| **A. No-Teacher** | `model_a_noteacher_79p08/` | **79.08%** | Main no-teacher recipe |
-| **B. KD-Student** | `model_b_kd_student_80p00/` | **80.00%** (ens 80.23%) | Distilled student (teacher **not** included) |
+| **A. No-Teacher** | `model_a_noteacher_79p08/` | **79.08%** | CE + mixup + EMA |
+| **B. KD-Student** | `model_b_kd_student_80p00/` | **80.00%** (ens 80.23%) | **KD-protect** student; teacher offline **not** in bundle |
 
 **Architecture (both):** DS-Conv2D-H1 Pyramid · ~101.7k trainable params · ~61.9 M MACs/clip · input `[1, 64000]` @ 16 kHz mono · 10 classes.
+
+### Model B training (read before assuming AST)
+
+| Fact | Value |
+|------|--------|
+| Deliverable student | **80.00%** best-val test |
+| Teacher of this run | **Same-family DS1D** (`cycle_final` ~79%) — **not** AST |
+| Recipe name | KD-protect fine-tune (`local_finetune_kdprotect_f1_20ep`) |
+| AST (~90% teacher research) | Explored separately; **not** packed here |
+| AST→student KD (~75% fold1) | Weaker path; **not** this folder |
+
+Full narrative: [`docs/paper/MODEL_B_KD.md`](../../docs/paper/MODEL_B_KD.md).
 
 ---
 
@@ -35,7 +47,7 @@ They are intended for **SoC / DPU / Vitis-AI work by students** — not for re-t
 
 Only if step 5 accuracy is unacceptable, open a **QAT** track (retrain with fake-quant). That is **Phase B refinement**, not a prerequisite to start chip design.
 
-Teacher (AST) is **never** deployed. Model B already is the **student** weights after KD.
+**No teacher is deployed.** Model B weights are the **student after KD-protect** (same-family teacher offline). AST is not required to use this folder.
 
 ---
 

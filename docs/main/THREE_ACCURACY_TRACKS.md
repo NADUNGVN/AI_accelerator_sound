@@ -40,10 +40,14 @@
 
 | | |
 |---|---|
-| Meaning | Teacher ~90%+ → KD → student DS1D deployable |
+| Meaning | Offline teacher → KD → **student** DS1D deployable |
 | Metric | **student** best-val test |
-| **Best achieved** | Student **80.00%** (ens **80.23%**); teacher ~**90%+** |
+| **Best achieved (deliverable)** | Student **80.00%** (ens **80.23%**) via **KD-protect**, teacher = **same-family DS1D ~79%** — **not** AST |
+| AST research teacher (separate) | Fine-tune fold1 test ~**90%**; train-cache fold2 ~**92%** — not deploy |
+| AST-KD student (secondary) | fold1 ~**75%** — weaker than deliverable |
 | Gap to 85% student | **~5 pp** |
+
+Canonical: [../paper/MODEL_B_KD.md](../paper/MODEL_B_KD.md).
 
 ---
 
