@@ -8,6 +8,8 @@
 /checkpoints/
 /experiments/
 *.pt
+# Allow the frozen student deliverable for DPU / chip-design (two best models only)
+!deploy/student_models/**/*.pt
 
 # Exclude training logs and output results
 /logs/

@@ -190,7 +190,18 @@ Same SDP MAIN recipe, seed 83: fold-1 peak **79.08%**; folds 1–3 mean **~71.2%
 
 ---
 
-## 5. Checkpoints, weights, and bias
+## 5. Checkpoints for students / DPU (no retrain required)
+
+**Frozen deliverable (in git):** [`deploy/student_models/`](deploy/student_models/)
+
+| Model | Path | Acc |
+|-------|------|----:|
+| A. No-Teacher | `deploy/student_models/model_a_noteacher_79p08/model_full.pt` | 79.08% |
+| B. KD-Student | `deploy/student_models/model_b_kd_student_80p00/model_full.pt` | 80.00% |
+
+**DPU path:** convert float `.pt` → PTQ quantize → compile for DPU. **Retrain only if** INT8 accuracy is unacceptable (then QAT). Details: [`docs/hardware/DPU_FROM_CHECKPOINT.md`](docs/hardware/DPU_FROM_CHECKPOINT.md), [`deploy/student_models/README.md`](deploy/student_models/README.md).
+
+## 5b. Checkpoints, weights, and bias
 
 ### What is a **bias**?
 

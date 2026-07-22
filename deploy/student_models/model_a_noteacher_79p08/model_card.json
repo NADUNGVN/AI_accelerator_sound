@@ -1,0 +1,61 @@
+{
+  "paper_name": "DS-Conv2D-H1 Pyramid — No-Teacher",
+  "label": "model_a_noteacher_79p08",
+  "model_class": "DSConv2DH1PyramidNet",
+  "model_name_config": "ds_conv2d_h1_pyramid",
+  "legacy_model_name": "kv260_audio_net_ds1d",
+  "protocol_paper": "Source-Disjoint Protocol (SDP 8-1-1)",
+  "protocol_internal": "source_group_8_1_1",
+  "seed": 83,
+  "fold": 1,
+  "metric": "test_acc_best_val_model",
+  "accuracy_best_val_test": 0.7908045977011494,
+  "accuracy_ensemble_last2": 0.7988505747126436,
+  "params_trainable_approx": 101674,
+  "macs_per_clip": 61854400,
+  "input": {
+    "shape": [1, 64000],
+    "sample_rate_hz": 16000,
+    "clip_seconds": 4.0,
+    "features": "waveform"
+  },
+  "architecture": {
+    "pool_type": "pyramid_avgmax",
+    "pool_bins": [1, 2, 4],
+    "stem_type": "single",
+    "dropout_train": 0.25,
+    "layer_shapes_C_at_L": [
+      "1@64000",
+      "24@16000",
+      "32@8000",
+      "48@4000",
+      "64@2000",
+      "96@1000",
+      "128@500",
+      "160@250",
+      "160@250",
+      "2240 (pyramid flatten)",
+      "10 (logits)"
+    ]
+  },
+  "classes": [
+    "air_conditioner",
+    "car_horn",
+    "children_playing",
+    "dog_bark",
+    "drilling",
+    "engine_idling",
+    "gun_shot",
+    "jackhammer",
+    "siren",
+    "street_music"
+  ],
+  "source_experiment": "experiments/local_multifold_pyramid_base_f1_f3_50ep/fold_1",
+  "source_checkpoint_name": "tcam_fold_1_best.pt",
+  "dpu_note": "Float checkpoint for convert/quantize. Retrain not required unless QAT after PTQ drop.",
+  "files": {
+    "full": "model_full.pt",
+    "weights": "model_weights.pt",
+    "biases": "model_biases.pt"
+  }
+}
