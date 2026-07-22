@@ -115,8 +115,9 @@ class UrbanSoundClipDataset(Dataset):
 
     def __getitem__(self, index):
         record = self.records[index]
-        _, waveform, _real = load_audio_to_ram(record["path"], self.sample_rate)
-        waveform = waveform[0].astype(np.float32)
+        # load_audio_to_ram returns (path, waveform_numpy[C, T]) — not 3-tuple
+        _, waveform = load_audio_to_ram(record["path"], self.sample_rate)
+        waveform = np.asarray(waveform[0], dtype=np.float32)
         waveform = self.augment(waveform)
         return waveform, int(record["label"]), index
 

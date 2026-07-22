@@ -274,7 +274,7 @@ def load_waveform_batch(paths, sample_rate, load_workers):
         loaded = [load_audio_to_ram(path, sample_rate)[1] for path in paths]
     else:
         with ThreadPoolExecutor(max_workers=load_workers) as executor:
-            loaded = [wave for _, wave, _real in executor.map(lambda p: load_audio_to_ram(p, sample_rate), paths)]
+            loaded = [wave for _, wave in executor.map(lambda p: load_audio_to_ram(p, sample_rate), paths)]
     return torch.from_numpy(np.stack(loaded, axis=0))
 
 
