@@ -1,0 +1,2186 @@
+{
+  "label": "model_b_kd_student_80p00",
+  "retrain_required": false,
+  "source": {
+    "pytorch_full": "model_full.pt",
+    "note": "Converted from float checkpoint; no retrain."
+  },
+  "outputs": {
+    "h5": "model_weights.h5",
+    "mem": "model_weights.mem"
+  },
+  "h5": {
+    "layers": [
+      {
+        "name": "blocks.0.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/0/depthwise/bn/bias",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": -0.06858450919389725,
+        "max": 0.09961861371994019
+      },
+      {
+        "name": "blocks.0.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/0/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.0.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/0/depthwise/bn/running_mean",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": -0.19949810206890106,
+        "max": 0.20940636098384857
+      },
+      {
+        "name": "blocks.0.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/0/depthwise/bn/running_var",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": 0.022018764168024063,
+        "max": 0.12084333598613739
+      },
+      {
+        "name": "blocks.0.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/0/depthwise/bn/weight",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": 0.9081289768218994,
+        "max": 1.1322972774505615
+      },
+      {
+        "name": "blocks.0.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/0/depthwise/conv/weight",
+        "shape": [
+          24,
+          1,
+          1,
+          15
+        ],
+        "numel": 360,
+        "dtype": "float32",
+        "min": -0.2691342532634735,
+        "max": 0.2781602144241333
+      },
+      {
+        "name": "blocks.0.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/0/pointwise/bn/bias",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": -0.11320501565933228,
+        "max": 0.22920948266983032
+      },
+      {
+        "name": "blocks.0.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/0/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.0.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/0/pointwise/bn/running_mean",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": -0.8609472513198853,
+        "max": 0.5655849575996399
+      },
+      {
+        "name": "blocks.0.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/0/pointwise/bn/running_var",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": 0.3708671033382416,
+        "max": 1.4786509275436401
+      },
+      {
+        "name": "blocks.0.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/0/pointwise/bn/weight",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": 0.7342457175254822,
+        "max": 1.2182855606079102
+      },
+      {
+        "name": "blocks.0.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/0/pointwise/conv/weight",
+        "shape": [
+          32,
+          24,
+          1,
+          1
+        ],
+        "numel": 768,
+        "dtype": "float32",
+        "min": -0.707661509513855,
+        "max": 0.7120195031166077
+      },
+      {
+        "name": "blocks.1.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/1/depthwise/bn/bias",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": -0.07023422420024872,
+        "max": 0.16721539199352264
+      },
+      {
+        "name": "blocks.1.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/1/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.1.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/1/depthwise/bn/running_mean",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": -0.30304017663002014,
+        "max": 0.2707741856575012
+      },
+      {
+        "name": "blocks.1.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/1/depthwise/bn/running_var",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": 0.004521743394434452,
+        "max": 0.18643443286418915
+      },
+      {
+        "name": "blocks.1.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/1/depthwise/bn/weight",
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "dtype": "float32",
+        "min": 0.870556116104126,
+        "max": 1.2024098634719849
+      },
+      {
+        "name": "blocks.1.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/1/depthwise/conv/weight",
+        "shape": [
+          32,
+          1,
+          1,
+          15
+        ],
+        "numel": 480,
+        "dtype": "float32",
+        "min": -0.2375129908323288,
+        "max": 0.22132986783981323
+      },
+      {
+        "name": "blocks.1.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/1/pointwise/bn/bias",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": -0.09331651031970978,
+        "max": 0.18189889192581177
+      },
+      {
+        "name": "blocks.1.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/1/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.1.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/1/pointwise/bn/running_mean",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": -0.9949695467948914,
+        "max": 0.731629490852356
+      },
+      {
+        "name": "blocks.1.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/1/pointwise/bn/running_var",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": 0.3170924484729767,
+        "max": 1.3399189710617065
+      },
+      {
+        "name": "blocks.1.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/1/pointwise/bn/weight",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": 0.7553433179855347,
+        "max": 1.1225184202194214
+      },
+      {
+        "name": "blocks.1.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/1/pointwise/conv/weight",
+        "shape": [
+          48,
+          32,
+          1,
+          1
+        ],
+        "numel": 1536,
+        "dtype": "float32",
+        "min": -0.6754876375198364,
+        "max": 0.7506606578826904
+      },
+      {
+        "name": "blocks.2.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/2/depthwise/bn/bias",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": -0.08957917243242264,
+        "max": 0.19398407638072968
+      },
+      {
+        "name": "blocks.2.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/2/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.2.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/2/depthwise/bn/running_mean",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": -0.24641400575637817,
+        "max": 0.26164084672927856
+      },
+      {
+        "name": "blocks.2.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/2/depthwise/bn/running_var",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": 0.006195710971951485,
+        "max": 0.14602960646152496
+      },
+      {
+        "name": "blocks.2.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/2/depthwise/bn/weight",
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "dtype": "float32",
+        "min": 0.8821497559547424,
+        "max": 1.110561728477478
+      },
+      {
+        "name": "blocks.2.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/2/depthwise/conv/weight",
+        "shape": [
+          48,
+          1,
+          1,
+          11
+        ],
+        "numel": 528,
+        "dtype": "float32",
+        "min": -0.3250250518321991,
+        "max": 0.2667591869831085
+      },
+      {
+        "name": "blocks.2.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/2/pointwise/bn/bias",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": -0.09223970025777817,
+        "max": 0.3787876069545746
+      },
+      {
+        "name": "blocks.2.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/2/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.2.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/2/pointwise/bn/running_mean",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": -1.2587641477584839,
+        "max": 0.7848635911941528
+      },
+      {
+        "name": "blocks.2.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/2/pointwise/bn/running_var",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": 0.43795308470726013,
+        "max": 1.933912992477417
+      },
+      {
+        "name": "blocks.2.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/2/pointwise/bn/weight",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": 0.5156726241111755,
+        "max": 1.129324197769165
+      },
+      {
+        "name": "blocks.2.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/2/pointwise/conv/weight",
+        "shape": [
+          64,
+          48,
+          1,
+          1
+        ],
+        "numel": 3072,
+        "dtype": "float32",
+        "min": -0.6102187633514404,
+        "max": 0.6344107985496521
+      },
+      {
+        "name": "blocks.3.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/3/depthwise/bn/bias",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": -0.10087531059980392,
+        "max": 0.1427701711654663
+      },
+      {
+        "name": "blocks.3.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/3/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.3.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/3/depthwise/bn/running_mean",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": -0.23376838862895966,
+        "max": 0.2056630253791809
+      },
+      {
+        "name": "blocks.3.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/3/depthwise/bn/running_var",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": 0.005334640387445688,
+        "max": 0.09530285745859146
+      },
+      {
+        "name": "blocks.3.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/3/depthwise/bn/weight",
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "dtype": "float32",
+        "min": 0.8538018465042114,
+        "max": 1.1762968301773071
+      },
+      {
+        "name": "blocks.3.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/3/depthwise/conv/weight",
+        "shape": [
+          64,
+          1,
+          1,
+          9
+        ],
+        "numel": 576,
+        "dtype": "float32",
+        "min": -0.2558295726776123,
+        "max": 0.1763099879026413
+      },
+      {
+        "name": "blocks.3.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/3/pointwise/bn/bias",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": -0.18937842547893524,
+        "max": 0.21676668524742126
+      },
+      {
+        "name": "blocks.3.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/3/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.3.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/3/pointwise/bn/running_mean",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": -1.1106994152069092,
+        "max": 1.3504259586334229
+      },
+      {
+        "name": "blocks.3.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/3/pointwise/bn/running_var",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": 0.29753774404525757,
+        "max": 1.9178844690322876
+      },
+      {
+        "name": "blocks.3.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/3/pointwise/bn/weight",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": 0.7507491707801819,
+        "max": 1.2107758522033691
+      },
+      {
+        "name": "blocks.3.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/3/pointwise/conv/weight",
+        "shape": [
+          96,
+          64,
+          1,
+          1
+        ],
+        "numel": 6144,
+        "dtype": "float32",
+        "min": -0.6295778155326843,
+        "max": 0.5019910335540771
+      },
+      {
+        "name": "blocks.4.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/4/depthwise/bn/bias",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": -0.20440079271793365,
+        "max": 0.1978011280298233
+      },
+      {
+        "name": "blocks.4.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/4/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.4.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/4/depthwise/bn/running_mean",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": -0.28155243396759033,
+        "max": 0.2022535651922226
+      },
+      {
+        "name": "blocks.4.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/4/depthwise/bn/running_var",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": 0.005758121609687805,
+        "max": 0.1748095005750656
+      },
+      {
+        "name": "blocks.4.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/4/depthwise/bn/weight",
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "dtype": "float32",
+        "min": 0.8540361523628235,
+        "max": 1.2244831323623657
+      },
+      {
+        "name": "blocks.4.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/4/depthwise/conv/weight",
+        "shape": [
+          96,
+          1,
+          1,
+          9
+        ],
+        "numel": 864,
+        "dtype": "float32",
+        "min": -0.2580518424510956,
+        "max": 0.20758894085884094
+      },
+      {
+        "name": "blocks.4.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/4/pointwise/bn/bias",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": -0.11849832534790039,
+        "max": 0.23137284815311432
+      },
+      {
+        "name": "blocks.4.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/4/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.4.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/4/pointwise/bn/running_mean",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": -1.2613587379455566,
+        "max": 1.1782547235488892
+      },
+      {
+        "name": "blocks.4.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/4/pointwise/bn/running_var",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": 0.4135735332965851,
+        "max": 2.8161540031433105
+      },
+      {
+        "name": "blocks.4.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/4/pointwise/bn/weight",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": 0.7006221413612366,
+        "max": 1.192797064781189
+      },
+      {
+        "name": "blocks.4.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/4/pointwise/conv/weight",
+        "shape": [
+          128,
+          96,
+          1,
+          1
+        ],
+        "numel": 12288,
+        "dtype": "float32",
+        "min": -0.7414556741714478,
+        "max": 0.49480608105659485
+      },
+      {
+        "name": "blocks.5.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/5/depthwise/bn/bias",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": -0.1513155847787857,
+        "max": 0.18715162575244904
+      },
+      {
+        "name": "blocks.5.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/5/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.5.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/5/depthwise/bn/running_mean",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": -0.21204249560832977,
+        "max": 0.1666962057352066
+      },
+      {
+        "name": "blocks.5.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/5/depthwise/bn/running_var",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": 0.0038702446036040783,
+        "max": 0.0880272388458252
+      },
+      {
+        "name": "blocks.5.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/5/depthwise/bn/weight",
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "dtype": "float32",
+        "min": 0.815933883190155,
+        "max": 1.2167425155639648
+      },
+      {
+        "name": "blocks.5.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/5/depthwise/conv/weight",
+        "shape": [
+          128,
+          1,
+          1,
+          7
+        ],
+        "numel": 896,
+        "dtype": "float32",
+        "min": -0.17582206428050995,
+        "max": 0.19040603935718536
+      },
+      {
+        "name": "blocks.5.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/5/pointwise/bn/bias",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": -0.3083786368370056,
+        "max": 0.38849732279777527
+      },
+      {
+        "name": "blocks.5.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/5/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.5.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/5/pointwise/bn/running_mean",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": -1.8878124952316284,
+        "max": 1.697003722190857
+      },
+      {
+        "name": "blocks.5.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/5/pointwise/bn/running_var",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": 0.707061231136322,
+        "max": 4.115954875946045
+      },
+      {
+        "name": "blocks.5.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/5/pointwise/bn/weight",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": 0.5097472071647644,
+        "max": 1.1951225996017456
+      },
+      {
+        "name": "blocks.5.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/5/pointwise/conv/weight",
+        "shape": [
+          160,
+          128,
+          1,
+          1
+        ],
+        "numel": 20480,
+        "dtype": "float32",
+        "min": -0.4765896201133728,
+        "max": 0.48337316513061523
+      },
+      {
+        "name": "blocks.6.depthwise.bn.bias",
+        "h5_path": "tensors/blocks/6/depthwise/bn/bias",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": -0.2855098843574524,
+        "max": 0.17379812896251678
+      },
+      {
+        "name": "blocks.6.depthwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/6/depthwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.6.depthwise.bn.running_mean",
+        "h5_path": "tensors/blocks/6/depthwise/bn/running_mean",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": -0.3319522738456726,
+        "max": 0.29598528146743774
+      },
+      {
+        "name": "blocks.6.depthwise.bn.running_var",
+        "h5_path": "tensors/blocks/6/depthwise/bn/running_var",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": 0.006724038626998663,
+        "max": 0.2872413694858551
+      },
+      {
+        "name": "blocks.6.depthwise.bn.weight",
+        "h5_path": "tensors/blocks/6/depthwise/bn/weight",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": 0.8099077939987183,
+        "max": 1.2191479206085205
+      },
+      {
+        "name": "blocks.6.depthwise.conv.weight",
+        "h5_path": "tensors/blocks/6/depthwise/conv/weight",
+        "shape": [
+          160,
+          1,
+          1,
+          15
+        ],
+        "numel": 2400,
+        "dtype": "float32",
+        "min": -0.1430121809244156,
+        "max": 0.1314922720193863
+      },
+      {
+        "name": "blocks.6.pointwise.bn.bias",
+        "h5_path": "tensors/blocks/6/pointwise/bn/bias",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": -0.3692411482334137,
+        "max": -0.09688203036785126
+      },
+      {
+        "name": "blocks.6.pointwise.bn.num_batches_tracked",
+        "h5_path": "tensors/blocks/6/pointwise/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "blocks.6.pointwise.bn.running_mean",
+        "h5_path": "tensors/blocks/6/pointwise/bn/running_mean",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": -2.3568501472473145,
+        "max": 0.7652877569198608
+      },
+      {
+        "name": "blocks.6.pointwise.bn.running_var",
+        "h5_path": "tensors/blocks/6/pointwise/bn/running_var",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": 0.817424476146698,
+        "max": 16.90057945251465
+      },
+      {
+        "name": "blocks.6.pointwise.bn.weight",
+        "h5_path": "tensors/blocks/6/pointwise/bn/weight",
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "dtype": "float32",
+        "min": 0.45791104435920715,
+        "max": 0.917302668094635
+      },
+      {
+        "name": "blocks.6.pointwise.conv.weight",
+        "h5_path": "tensors/blocks/6/pointwise/conv/weight",
+        "shape": [
+          160,
+          160,
+          1,
+          1
+        ],
+        "numel": 25600,
+        "dtype": "float32",
+        "min": -0.609850287437439,
+        "max": 0.5818515419960022
+      },
+      {
+        "name": "fc.bias",
+        "h5_path": "tensors/fc/bias",
+        "shape": [
+          10
+        ],
+        "numel": 10,
+        "dtype": "float32",
+        "min": -0.052544381469488144,
+        "max": 0.06730719655752182
+      },
+      {
+        "name": "fc.weight",
+        "h5_path": "tensors/fc/weight",
+        "shape": [
+          10,
+          2240
+        ],
+        "numel": 22400,
+        "dtype": "float32",
+        "min": -0.23883095383644104,
+        "max": 0.17118322849273682
+      },
+      {
+        "name": "stem.bn.bias",
+        "h5_path": "tensors/stem/bn/bias",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": -0.03470933809876442,
+        "max": 0.25512418150901794
+      },
+      {
+        "name": "stem.bn.num_batches_tracked",
+        "h5_path": "tensors/stem/bn/num_batches_tracked",
+        "shape": [],
+        "numel": 1,
+        "dtype": "float32",
+        "min": 5886.0,
+        "max": 5886.0
+      },
+      {
+        "name": "stem.bn.running_mean",
+        "h5_path": "tensors/stem/bn/running_mean",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": -1.19297392302542e-05,
+        "max": 1.6360381778213196e-05
+      },
+      {
+        "name": "stem.bn.running_var",
+        "h5_path": "tensors/stem/bn/running_var",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": 0.00015811485354788601,
+        "max": 0.0039504412561655045
+      },
+      {
+        "name": "stem.bn.weight",
+        "h5_path": "tensors/stem/bn/weight",
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "dtype": "float32",
+        "min": 0.6462932825088501,
+        "max": 1.30133056640625
+      },
+      {
+        "name": "stem.conv.weight",
+        "h5_path": "tensors/stem/conv/weight",
+        "shape": [
+          24,
+          1,
+          1,
+          31
+        ],
+        "numel": 744,
+        "dtype": "float32",
+        "min": -0.21826402842998505,
+        "max": 0.1636946201324463
+      }
+    ],
+    "total_params": 104217
+  },
+  "mem": {
+    "path": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound\\deploy\\student_models\\model_b_kd_student_80p00\\model_weights.mem",
+    "bits": 16,
+    "total_words": 104217,
+    "total_bytes": 208434,
+    "regions": [
+      {
+        "name": "blocks.0.depthwise.bn.bias",
+        "start_word": 0,
+        "end_word": 23,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 3.0402116067976985e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.depthwise.bn.num_batches_tracked",
+        "start_word": 24,
+        "end_word": 24,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.depthwise.bn.running_mean",
+        "start_word": 25,
+        "end_word": 48,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 6.390770012019671e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.depthwise.bn.running_var",
+        "start_word": 49,
+        "end_word": 72,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 3.6879584944040462e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.depthwise.bn.weight",
+        "start_word": 73,
+        "end_word": 96,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 3.4556025191520784e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.depthwise.conv.weight",
+        "start_word": 97,
+        "end_word": 456,
+        "n_words": 360,
+        "shape": [
+          24,
+          1,
+          1,
+          15
+        ],
+        "scale_float_equals_q_times_scale": 8.489035139748322e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.pointwise.bn.bias",
+        "start_word": 457,
+        "end_word": 488,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 6.995131768847631e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.pointwise.bn.num_batches_tracked",
+        "start_word": 489,
+        "end_word": 489,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.pointwise.bn.running_mean",
+        "start_word": 490,
+        "end_word": 521,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 2.6274826847739653e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.pointwise.bn.running_var",
+        "start_word": 522,
+        "end_word": 553,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 4.512622234393262e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.pointwise.bn.weight",
+        "start_word": 554,
+        "end_word": 585,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 3.718025942588306e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.0.pointwise.conv.weight",
+        "start_word": 586,
+        "end_word": 1353,
+        "n_words": 768,
+        "shape": [
+          32,
+          24,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 2.1729773952959004e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.depthwise.bn.bias",
+        "start_word": 1354,
+        "end_word": 1385,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 5.103164525086906e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.depthwise.bn.num_batches_tracked",
+        "start_word": 1386,
+        "end_word": 1386,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.depthwise.bn.running_mean",
+        "start_word": 1387,
+        "end_word": 1418,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 9.248334502091133e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.depthwise.bn.running_var",
+        "start_word": 1419,
+        "end_word": 1450,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 5.6897010060179185e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.depthwise.bn.weight",
+        "start_word": 1451,
+        "end_word": 1482,
+        "n_words": 32,
+        "shape": [
+          32
+        ],
+        "scale_float_equals_q_times_scale": 3.669575681240226e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.depthwise.conv.weight",
+        "start_word": 1483,
+        "end_word": 1962,
+        "n_words": 480,
+        "shape": [
+          32,
+          1,
+          1,
+          15
+        ],
+        "scale_float_equals_q_times_scale": 7.248542461388861e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.pointwise.bn.bias",
+        "start_word": 1963,
+        "end_word": 2010,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 5.551283056911275e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.pointwise.bn.num_batches_tracked",
+        "start_word": 2011,
+        "end_word": 2011,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.pointwise.bn.running_mean",
+        "start_word": 2012,
+        "end_word": 2059,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 3.0364987542188523e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.pointwise.bn.running_var",
+        "start_word": 2060,
+        "end_word": 2107,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 4.08923298154151e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.pointwise.bn.weight",
+        "start_word": 2108,
+        "end_word": 2155,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 3.425758904444781e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.1.pointwise.conv.weight",
+        "start_word": 2156,
+        "end_word": 3691,
+        "n_words": 1536,
+        "shape": [
+          48,
+          32,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 2.2909044400851174e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.depthwise.bn.bias",
+        "start_word": 3692,
+        "end_word": 3739,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 5.920104873217862e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.depthwise.bn.num_batches_tracked",
+        "start_word": 3740,
+        "end_word": 3740,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.depthwise.bn.running_mean",
+        "start_word": 3741,
+        "end_word": 3788,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 7.984888660215417e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.depthwise.bn.running_var",
+        "start_word": 3789,
+        "end_word": 3836,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 4.45660592857219e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.depthwise.bn.weight",
+        "start_word": 3837,
+        "end_word": 3884,
+        "n_words": 48,
+        "shape": [
+          48
+        ],
+        "scale_float_equals_q_times_scale": 3.3892688634219736e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.depthwise.conv.weight",
+        "start_word": 3885,
+        "end_word": 4412,
+        "n_words": 528,
+        "shape": [
+          48,
+          1,
+          1,
+          11
+        ],
+        "scale_float_equals_q_times_scale": 9.919280124277447e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.pointwise.bn.bias",
+        "start_word": 4413,
+        "end_word": 4476,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 1.1560033172233484e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.pointwise.bn.num_batches_tracked",
+        "start_word": 4477,
+        "end_word": 4477,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.pointwise.bn.running_mean",
+        "start_word": 4478,
+        "end_word": 4541,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 3.841560557141282e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.pointwise.bn.running_var",
+        "start_word": 4542,
+        "end_word": 4605,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 5.902014198667614e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.pointwise.bn.weight",
+        "start_word": 4606,
+        "end_word": 4669,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 3.4465291231091193e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.2.pointwise.conv.weight",
+        "start_word": 4670,
+        "end_word": 7741,
+        "n_words": 3072,
+        "shape": [
+          64,
+          48,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 1.9361271967212504e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.depthwise.bn.bias",
+        "start_word": 7742,
+        "end_word": 7805,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 4.3571328216030245e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.depthwise.bn.num_batches_tracked",
+        "start_word": 7806,
+        "end_word": 7806,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.depthwise.bn.running_mean",
+        "start_word": 7807,
+        "end_word": 7870,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 7.1342627835615e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.depthwise.bn.running_var",
+        "start_word": 7871,
+        "end_word": 7934,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 2.9085011584396333e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.depthwise.bn.weight",
+        "start_word": 7935,
+        "end_word": 7998,
+        "n_words": 64,
+        "shape": [
+          64
+        ],
+        "scale_float_equals_q_times_scale": 3.589882595835161e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.depthwise.conv.weight",
+        "start_word": 7999,
+        "end_word": 8574,
+        "n_words": 576,
+        "shape": [
+          64,
+          1,
+          1,
+          9
+        ],
+        "scale_float_equals_q_times_scale": 7.807537238002024e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.pointwise.bn.bias",
+        "start_word": 8575,
+        "end_word": 8670,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 6.615396137803927e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.pointwise.bn.num_batches_tracked",
+        "start_word": 8671,
+        "end_word": 8671,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.pointwise.bn.running_mean",
+        "start_word": 8672,
+        "end_word": 8767,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 4.121298741518671e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.pointwise.bn.running_var",
+        "start_word": 8768,
+        "end_word": 8863,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 5.853097534202971e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.pointwise.bn.weight",
+        "start_word": 8864,
+        "end_word": 8959,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 3.69510743187771e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.3.pointwise.conv.weight",
+        "start_word": 8960,
+        "end_word": 15103,
+        "n_words": 6144,
+        "shape": [
+          96,
+          64,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 1.921377652921184e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.depthwise.bn.bias",
+        "start_word": 15104,
+        "end_word": 15199,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 6.238007529463596e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.depthwise.bn.num_batches_tracked",
+        "start_word": 15200,
+        "end_word": 15200,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.depthwise.bn.running_mean",
+        "start_word": 15201,
+        "end_word": 15296,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 8.592560624029979e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.depthwise.bn.running_var",
+        "start_word": 15297,
+        "end_word": 15392,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 5.334925399794477e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.depthwise.bn.weight",
+        "start_word": 15393,
+        "end_word": 15488,
+        "n_words": 96,
+        "shape": [
+          96
+        ],
+        "scale_float_equals_q_times_scale": 3.736940007819958e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.depthwise.conv.weight",
+        "start_word": 15489,
+        "end_word": 16352,
+        "n_words": 864,
+        "shape": [
+          96,
+          1,
+          1,
+          9
+        ],
+        "scale_float_equals_q_times_scale": 7.875357599142296e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.pointwise.bn.bias",
+        "start_word": 16353,
+        "end_word": 16480,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 7.0611544588492784e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.pointwise.bn.num_batches_tracked",
+        "start_word": 16481,
+        "end_word": 16481,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.pointwise.bn.running_mean",
+        "start_word": 16482,
+        "end_word": 16609,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 3.8494788596623326e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.pointwise.bn.running_var",
+        "start_word": 16610,
+        "end_word": 16737,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 8.594482263079655e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.pointwise.bn.weight",
+        "start_word": 16738,
+        "end_word": 16865,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 3.640238852446635e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.4.pointwise.conv.weight",
+        "start_word": 16866,
+        "end_word": 29153,
+        "n_words": 12288,
+        "shape": [
+          128,
+          96,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 2.2628122018233216e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.depthwise.bn.bias",
+        "start_word": 29154,
+        "end_word": 29281,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 5.711588663974396e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.depthwise.bn.num_batches_tracked",
+        "start_word": 29282,
+        "end_word": 29282,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.depthwise.bn.running_mean",
+        "start_word": 29283,
+        "end_word": 29410,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 6.4712209115369055e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.depthwise.bn.running_var",
+        "start_word": 29411,
+        "end_word": 29538,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 2.6864601228621843e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.depthwise.bn.weight",
+        "start_word": 29539,
+        "end_word": 29666,
+        "n_words": 128,
+        "shape": [
+          128
+        ],
+        "scale_float_equals_q_times_scale": 3.7133167991087524e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.depthwise.conv.weight",
+        "start_word": 29667,
+        "end_word": 30562,
+        "n_words": 896,
+        "shape": [
+          128,
+          1,
+          1,
+          7
+        ],
+        "scale_float_equals_q_times_scale": 5.8109085164093555e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.pointwise.bn.bias",
+        "start_word": 30563,
+        "end_word": 30722,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 1.1856359227203444e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.pointwise.bn.num_batches_tracked",
+        "start_word": 30723,
+        "end_word": 30723,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.pointwise.bn.running_mean",
+        "start_word": 30724,
+        "end_word": 30883,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 5.7613223524632355e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.pointwise.bn.running_var",
+        "start_word": 30884,
+        "end_word": 31043,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 0.00012561280788433621,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.pointwise.bn.weight",
+        "start_word": 31044,
+        "end_word": 31203,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 3.647336038092427e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.5.pointwise.conv.weight",
+        "start_word": 31204,
+        "end_word": 51683,
+        "n_words": 20480,
+        "shape": [
+          160,
+          128,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 1.4751828520481436e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.depthwise.bn.bias",
+        "start_word": 51684,
+        "end_word": 51843,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 8.713336111253773e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.depthwise.bn.num_batches_tracked",
+        "start_word": 51844,
+        "end_word": 51844,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.depthwise.bn.running_mean",
+        "start_word": 51845,
+        "end_word": 52004,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 1.0130688614937974e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.depthwise.bn.running_var",
+        "start_word": 52005,
+        "end_word": 52164,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 8.76617845655248e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.depthwise.bn.weight",
+        "start_word": 52165,
+        "end_word": 52324,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 3.7206577367733405e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.depthwise.conv.weight",
+        "start_word": 52325,
+        "end_word": 54724,
+        "n_words": 2400,
+        "shape": [
+          160,
+          1,
+          1,
+          15
+        ],
+        "scale_float_equals_q_times_scale": 4.364518598724802e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.pointwise.bn.bias",
+        "start_word": 54725,
+        "end_word": 54884,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 1.126868948128952e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.pointwise.bn.num_batches_tracked",
+        "start_word": 54885,
+        "end_word": 54885,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.pointwise.bn.running_mean",
+        "start_word": 54886,
+        "end_word": 55045,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 7.192755355227255e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.pointwise.bn.running_var",
+        "start_word": 55046,
+        "end_word": 55205,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 0.0005157804941714118,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.pointwise.bn.weight",
+        "start_word": 55206,
+        "end_word": 55365,
+        "n_words": 160,
+        "shape": [
+          160
+        ],
+        "scale_float_equals_q_times_scale": 2.7994710168603625e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "blocks.6.pointwise.conv.weight",
+        "start_word": 55366,
+        "end_word": 80965,
+        "n_words": 25600,
+        "shape": [
+          160,
+          160,
+          1,
+          1
+        ],
+        "scale_float_equals_q_times_scale": 1.8611721776099092e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "fc.bias",
+        "start_word": 80966,
+        "end_word": 80975,
+        "n_words": 10,
+        "shape": [
+          10
+        ],
+        "scale_float_equals_q_times_scale": 2.054115315943535e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "fc.weight",
+        "start_word": 80976,
+        "end_word": 103375,
+        "n_words": 22400,
+        "shape": [
+          10,
+          2240
+        ],
+        "scale_float_equals_q_times_scale": 7.288764727818874e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "stem.bn.bias",
+        "start_word": 103376,
+        "end_word": 103399,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 7.786009750938992e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "stem.bn.num_batches_tracked",
+        "start_word": 103400,
+        "end_word": 103400,
+        "n_words": 1,
+        "shape": [],
+        "scale_float_equals_q_times_scale": 0.17963194677571948,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "stem.bn.running_mean",
+        "start_word": 103401,
+        "end_word": 103424,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 4.992944663293312e-10,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "stem.bn.running_var",
+        "start_word": 103425,
+        "end_word": 103448,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 1.205615789106572e-07,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "stem.bn.weight",
+        "start_word": 103449,
+        "end_word": 103472,
+        "n_words": 24,
+        "shape": [
+          24
+        ],
+        "scale_float_equals_q_times_scale": 3.971466922227394e-05,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      },
+      {
+        "name": "stem.conv.weight",
+        "start_word": 103473,
+        "end_word": 104216,
+        "n_words": 744,
+        "shape": [
+          24,
+          1,
+          1,
+          31
+        ],
+        "scale_float_equals_q_times_scale": 6.661092819909819e-06,
+        "quant": "symmetric_int16",
+        "byte_order": "word_as_uint16_hex"
+      }
+    ]
+  },
+  "compliance": {
+    "h5_hdf5_weight_bank": true,
+    "h5_keras_load_model_compatible": false,
+    "mem_vivado_readmemh_hex": true,
+    "mem_bitwidth": 16,
+    "mem_quantization": "symmetric_int16_per_tensor_scale",
+    "needs_rtl_address_map_agreement": true,
+    "needs_hw_bitexact_verify": true
+  },
+  "student_usage": {
+    "h5": "Read float32 tensors (or re-quantize in your tool) via h5py / MATLAB hdf5read",
+    "mem": "Initialize BRAM/ROM with $readmemh(\"model_weights.mem\", mem); map regions via this manifest"
+  }
+}

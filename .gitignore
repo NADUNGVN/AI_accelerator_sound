@@ -10,6 +10,8 @@
 *.pt
 # Allow the frozen student deliverable for DPU / chip-design (two best models only)
 !deploy/student_models/**/*.pt
+!deploy/student_models/**/*.h5
+!deploy/student_models/**/*.mem
 
 # Exclude training logs and output results
 /logs/

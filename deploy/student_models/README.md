@@ -43,11 +43,20 @@ Teacher (AST) is **never** deployed. Model B already is the **student** weights 
 
 | File | Use |
 |------|-----|
-| `model_full.pt` | **Canonical** full `state_dict` (weights + BN affine + classifier bias) |
-| `model_weights.pt` | Weights only (kernels / BN-γ / FC-W) |
-| `model_biases.pt` | Bias sidecar (BN-β + FC bias) — useful when mapping separate on-chip bias buffers |
-| `model_card.json` | Shapes, params, protocol, metrics, class list |
-| `README.md` | Short pointer to this doc |
+| **`model_weights.h5`** | **Student file 1** — HDF5 weight bank (float32 tensors) |
+| **`model_weights.mem`** | **Student file 2** — Vivado `$readmemh` hex (INT16) for BRAM/ROM |
+| `export_h5_mem_manifest.json` | Address map + per-tensor INT16 scales for `.mem` |
+| `model_full.pt` | Canonical float PyTorch (golden software reference) |
+| `model_weights.pt` / `model_biases.pt` | Optional split packages |
+| `model_card.json` | Shapes, params, protocol, metrics |
+| `README.md` | Short pointer |
+
+**Retrain?** Not required to create `.h5`/`.mem` — convert from `model_full.pt`.  
+Details / compliance: [`docs/hardware/H5_MEM_REQUIREMENTS.md`](../../docs/hardware/H5_MEM_REQUIREMENTS.md).
+
+```bash
+python tools/export_h5_mem_for_fpga.py
+```
 
 Load example:
 
