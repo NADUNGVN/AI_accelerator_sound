@@ -106,64 +106,53 @@ Helper script: `scripts/setup_check_rtx8000.sh` (after clone).
 
 ---
 
-## 4. MVP train recipe (higher accuracy attempt)
+## 4. Results so far + v2 recipe (target >90%)
 
-**Locked (must not change without renaming protocol):**
+### 4.0 MVP v1 outcome (do not reuse as best teacher)
+
+| Run | Best val | Best-val test | Note |
+|-----|---------:|--------------:|------|
+| Local 12ep | 89.26% | **89.89%** | Still best teacher reference |
+| **MVP v1 RTX8000** `...mvp...24ep` | 88.45% @ep3 | **88.28%** | ES early; ep7–8 test ~89.5% but val lower |
+
+MVP problems: early-stop on val@3, weighted_sampler, freeze=1 / lr khác local.
+
+### 4.1 Locked split (unchanged)
 
 ```text
 protocol = source_group_8_1_1
 seed     = 83
-fold     = 1   # first MVP
+fold     = 1
 model    = MIT/ast-finetuned-audioset-10-10-0.4593
 ```
 
-**Changed vs prior local 12ep (use 48 GB):**
+### 4.2 Teacher v2 recipe (push toward 90–92%+)
 
-| Knob | Prior (local) | MVP RTX 8000 |
-|------|---------------|--------------|
-| epochs | 12 | **24** (ES patience 6 after warmup 8) |
-| batch | 4 × accum 4 | **8 × accum 2** (eff 16) or **16 × accum 1** if VRAM OK |
-| freeze_base_epochs | 2 | **1** (unfreeze encoder earlier) |
-| encoder_lr | 1e-5 | **1.5e-5** |
-| head_lr | 5e-4 | **3e-4** |
-| weighted_sampler | off | **on** (AST weak: engine_idling / machinery) |
-| num_workers | 0 | **8** |
-| eval_test_each_epoch | optional | **on** (log only; still select by **val**) |
+| Knob | Local ~90% | MVP v1 (fail) | **v2 (now)** |
+|------|------------|---------------|--------------|
+| epochs | 12 | 24 (ES@9) | **30** |
+| ES | soft | warmup 8 pat 6 | **warmup 12 pat 12** (patient) |
+| weighted_sampler | off | **on** | **off** |
+| freeze_base | 2 | 1 | **2** |
+| encoder_lr / head_lr | 1e-5 / 5e-4 | 1.5e-5 / 3e-4 | **1e-5 / 5e-4** |
+| batch × accum | 4×4 | 8×2 | **12×2** (eff 24, 48GB) |
+| num_workers | 0 | 8 | **10** |
 
-**Sampling note (same train set, reweight only):**  
-AST fold1 per-class showed **engine_idling ~66%** (jackhammer confusions). Weighted sampler + balanced CE targets that *inside* SDP train — **does not** move clips across train/val/test.
+**Realistic bar:** best-val test **> 89.89%** (beat local).  
+**Stretch:** **≥ 91%**.  
+**Hard ceiling note:** **95%** on SDP fold1 is optimistic with this AST; aim step-wise 90→92 first. engine_idling / fsID 144007 remains the main wall.
 
 ```bash
-screen -S ast_teacher_mvp
-
-python tools/finetune_ast_teacher.py \
-  --data_dir data/UrbanSound8K \
-  --exp_name server8000_ast_teacher_mvp_sdp811_f1_24ep \
-  --fold 1 \
-  --protocol source_group_8_1_1 \
-  --seed 83 \
-  --epochs 24 \
-  --batch_size 8 \
-  --accum_steps 2 \
-  --eval_batch_size 16 \
-  --encoder_lr 1.5e-5 \
-  --head_lr 3e-4 \
-  --freeze_base_epochs 1 \
-  --lr_warmup_epochs 2 \
-  --weighted_sampler \
-  --num_workers 8 \
-  --early_stop_warmup 8 \
-  --early_stop_patience 6 \
-  --eval_test_each_epoch \
-  --hf_cache_dir experiments/hf_cache \
-  --device cuda
+# after git pull e202ddb+ with v2 script
+source $HOME/miniconda3/etc/profile.d/conda.sh
+conda activate sound_ast
+cd $HOME/Dung_TDTU/AI_accelerator_sound
+screen -S ast_v2
+bash scripts/run_ast_teacher_mvp_sdp811.sh
+# Ctrl+A D to detach
 ```
 
-Or: `bash scripts/run_ast_teacher_mvp_sdp811.sh`
-
-**Primary metric:** `best_test` at **best val** epoch (same as before).  
-**Success bar (MVP):** beat **89.89%** best-val test on fold1; stretch **≥91%**.  
-**Fail bar:** ≤ prior without clear bug → do not claim improvement; analyze weak sources first.
+Exp folder: `experiments/server8000_ast_teacher_v2_sdp811_f1_30ep/`
 
 ---
 
