@@ -76,13 +76,13 @@ def data_pipeline_svg():
         text(
             490,
             452,
-            "ESC-50: planned secondary · loaders not implemented · NOT SEEDED · NOT TRAINED.",
+            "ESC-50: Phase 1 loader/config added · NOT FULL-TRAINED.",
             12,
         ),
         text(
             490,
             474,
-            "Speech Commands (subset): planned edge/short-clip · loaders not implemented · NOT SEEDED · NOT TRAINED.",
+            "Speech Commands (subset): Phase 1 loader/config added · NOT FULL-TRAINED.",
             12,
         ),
         "</svg>",

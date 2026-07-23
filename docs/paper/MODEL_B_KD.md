@@ -1,6 +1,6 @@
 # Model B — KD-Student (canonical narrative)
 
-**Status:** research truth for Track 3 deliverable (student **80.00%** / ensemble **80.23%**).  
+**Status:** main truth for Track 3 deliverable (student **80.00%** / ensemble **80.23%**).
 **Do not conflate** with AST-KD student runs (~75% on fold 1).
 
 ---

@@ -1,6 +1,6 @@
 # Texture T1/T2 failure analysis and controlled HP ablation
 
-**Branch:** `research/fpga-1dcnn-90acc` (no-teacher)  
+**Status:** historical/rejected texture analysis; use git `main` for any rerun.
 **Locked model:** `kv260_audio_net_ds1d` full-clip  
 **Full write-up (workspace guides):** see local `TEXTURE_T1_T2_FAILURE_ANALYSIS_AND_HP_PLAN.md` if present.
 
@@ -29,7 +29,9 @@ T2 top confusion included **jackhammer → air_conditioner (28)** after pairs `(
 1. H2 → 2. H3 → 3. H4 (optional)
 
 ```bash
-git pull origin research/fpga-1dcnn-90acc
+git fetch origin
+git checkout main
+git pull origin main
 nohup python tools/run_multifold.py \
   --config configs/kv260_ds1d_pyramid_hneg_ac_engine_val.json \
   --exp_name server3090_texture_h2_hneg_ac_engine_f1_50ep \

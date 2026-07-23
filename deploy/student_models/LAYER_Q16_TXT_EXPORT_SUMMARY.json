@@ -1,0 +1,16 @@
+[
+  {
+    "model_dir": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_a_noteacher_79p08",
+    "checkpoint": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_a_noteacher_79p08\\model_full.pt",
+    "out_dir": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_a_noteacher_79p08\\layer_q16_txt_bn_fused_sequential_decimal",
+    "layers": 16,
+    "txt_files": 32
+  },
+  {
+    "model_dir": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_b_kd_student_80p00",
+    "checkpoint": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_b_kd_student_80p00\\model_full.pt",
+    "out_dir": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_b_kd_student_80p00\\layer_q16_txt_bn_fused_sequential_decimal",
+    "layers": 16,
+    "txt_files": 32
+  }
+]

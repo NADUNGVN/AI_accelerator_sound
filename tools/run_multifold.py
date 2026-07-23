@@ -99,6 +99,9 @@ def collect_fold(exp_root, fold):
         "exp_dir": str(fold_dir),
         "has_metrics": metrics is not None,
         "has_analysis": analysis is not None,
+        "dataset": metrics.get("dataset") if metrics else None,
+        "class_names": metrics.get("class_names") if metrics else None,
+        "num_classes": metrics.get("num_classes") if metrics else None,
         "config_path": metrics.get("config_path") if metrics else None,
         "params": (metrics.get("model_params") or {}).get("params_with_bias") if metrics else None,
         "macs_per_clip": metrics.get("model_conv_linear_macs_per_clip_eval") if metrics else None,
@@ -129,6 +132,8 @@ def collect_fold(exp_root, fold):
 
 def build_summary(exp_root, folds):
     rows = [collect_fold(exp_root, fold) for fold in folds]
+    class_names = next((row["class_names"] for row in rows if row.get("class_names")), CLASS_NAMES)
+    dataset = next((row["dataset"] for row in rows if row.get("dataset")), None)
     metric_keys = [
         "best_val_acc_pct",
         "best_val_test_acc_pct",
@@ -144,13 +149,15 @@ def build_summary(exp_root, folds):
         aggregate[key] = {"mean": mean, "std": std}
 
     per_class = {}
-    for class_name in CLASS_NAMES:
+    for class_name in class_names:
         values = [row["final_per_class_pct"].get(class_name) for row in rows]
         mean, std = mean_std(values)
         per_class[class_name] = {"mean": mean, "std": std}
 
     return {
         "exp_root": str(exp_root),
+        "dataset": dataset,
+        "class_names": class_names,
         "folds": folds,
         "rows": rows,
         "aggregate": aggregate,
@@ -170,6 +177,12 @@ def write_summary_files(summary, exp_root):
     lines = []
     lines.append(f"# Multifold Summary: {exp_root.name}")
     lines.append("")
+    if summary.get("dataset"):
+        lines.append(f"Dataset: {summary['dataset']}")
+        lines.append("")
+    if summary.get("class_names"):
+        lines.append(f"Classes: {len(summary['class_names'])}")
+        lines.append("")
     lines.append(f"Folds: {', '.join(str(f) for f in summary['folds'])}")
     lines.append("")
     lines.append("## Fold Results")

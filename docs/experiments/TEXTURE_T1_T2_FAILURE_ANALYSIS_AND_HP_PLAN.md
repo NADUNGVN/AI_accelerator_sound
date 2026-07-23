@@ -212,11 +212,13 @@ Gọi \(B = 76.90\%\) best-val test baseline.
 
 ---
 
-## 7. Lệnh server (sau khi pull research)
+## 7. Lệnh server (main only)
 
 ```bash
 cd ~/Dung_TDTU/AI_accelerator_sound_source_tests
-git pull origin research/fpga-1dcnn-90acc
+git fetch origin
+git checkout main
+git pull origin main
 conda activate sound_env
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONUNBUFFERED=1

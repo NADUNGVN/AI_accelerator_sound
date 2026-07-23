@@ -1,0 +1,762 @@
+{
+  "format": "per_layer_q16_txt_v1",
+  "source_checkpoint": "D:\\Research\\Research_Development_System\\5_Thesis_Optimization_Guides\\1_ai_accelerator_sound\\repo\\Dung_TDTU\\1_ai_accelerator_sound_mainline\\deploy\\student_models\\model_a_noteacher_79p08\\model_full.pt",
+  "mode": "bn_fused",
+  "name_style": "sequential",
+  "number_format": "decimal",
+  "flatten_order": "pytorch_c_contiguous",
+  "quantization": {
+    "scheme": "symmetric_int16_per_tensor",
+    "range": [
+      -32768,
+      32767
+    ],
+    "reconstruction": "float_value_approx = q16_value * scale_float_equals_q_times_scale",
+    "scale_note": "Each exported weight file and bias file has its own scale."
+  },
+  "batchnorm": {
+    "folded_into_conv": true,
+    "eps": 1e-05
+  },
+  "counts": {
+    "layers": 16,
+    "conv_layers": 15,
+    "fc_layers": 1,
+    "txt_files": 32,
+    "total_q16_words": 100410
+  },
+  "warnings": [],
+  "layers": [
+    {
+      "index": 1,
+      "export_name": "conv01",
+      "kind": "conv",
+      "source_base": "stem.conv",
+      "source_names": [
+        "stem.conv.weight",
+        "stem.bn.weight",
+        "stem.bn.bias",
+        "stem.bn.running_mean",
+        "stem.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded stem.conv.weight with stem.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv01_weight_q16.txt",
+        "bias_q16_txt": "conv01_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          24,
+          1,
+          1,
+          31
+        ],
+        "numel": 744,
+        "float_min": -7.544992446899414,
+        "float_max": 7.00147008895874,
+        "q_min": -32767,
+        "q_max": 30407,
+        "scale_float_equals_q_times_scale": 0.000230261923487027,
+        "max_abs_error": 0.00011511142247255801
+      },
+      "bias": {
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "float_min": -0.0312516950070858,
+        "float_max": 0.22147028148174286,
+        "q_min": -4624,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 6.758942884052335e-06,
+        "max_abs_error": 3.2958908757312055e-06
+      }
+    },
+    {
+      "index": 2,
+      "export_name": "conv02",
+      "kind": "conv",
+      "source_base": "blocks.0.depthwise.conv",
+      "source_names": [
+        "blocks.0.depthwise.conv.weight",
+        "blocks.0.depthwise.bn.weight",
+        "blocks.0.depthwise.bn.bias",
+        "blocks.0.depthwise.bn.running_mean",
+        "blocks.0.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.0.depthwise.conv.weight with blocks.0.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv02_weight_q16.txt",
+        "bias_q16_txt": "conv02_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          24,
+          1,
+          1,
+          15
+        ],
+        "numel": 360,
+        "float_min": -1.1795501708984375,
+        "float_max": 1.4643683433532715,
+        "q_min": -26394,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 4.469033916297712e-05,
+        "max_abs_error": 2.2204226343275346e-05
+      },
+      "bias": {
+        "shape": [
+          24
+        ],
+        "numel": 24,
+        "float_min": -0.703782856464386,
+        "float_max": 0.7076981067657471,
+        "q_min": -32586,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 2.1597891377475724e-05,
+        "max_abs_error": 1.054263680289047e-05
+      }
+    },
+    {
+      "index": 3,
+      "export_name": "conv03",
+      "kind": "conv",
+      "source_base": "blocks.0.pointwise.conv",
+      "source_names": [
+        "blocks.0.pointwise.conv.weight",
+        "blocks.0.pointwise.bn.weight",
+        "blocks.0.pointwise.bn.bias",
+        "blocks.0.pointwise.bn.running_mean",
+        "blocks.0.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.0.pointwise.conv.weight with blocks.0.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv03_weight_q16.txt",
+        "bias_q16_txt": "conv03_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          32,
+          24,
+          1,
+          1
+        ],
+        "numel": 768,
+        "float_min": -0.9826284050941467,
+        "float_max": 0.9540664553642273,
+        "q_min": -32767,
+        "q_max": 31815,
+        "scale_float_equals_q_times_scale": 2.9988354292249724e-05,
+        "max_abs_error": 1.4983632142751002e-05
+      },
+      "bias": {
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "float_min": -0.6669291853904724,
+        "float_max": 1.1639783382415771,
+        "q_min": -18775,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 3.552288394548104e-05,
+        "max_abs_error": 1.748236955878557e-05
+      }
+    },
+    {
+      "index": 4,
+      "export_name": "conv04",
+      "kind": "conv",
+      "source_base": "blocks.1.depthwise.conv",
+      "source_names": [
+        "blocks.1.depthwise.conv.weight",
+        "blocks.1.depthwise.bn.weight",
+        "blocks.1.depthwise.bn.bias",
+        "blocks.1.depthwise.bn.running_mean",
+        "blocks.1.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.1.depthwise.conv.weight with blocks.1.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv04_weight_q16.txt",
+        "bias_q16_txt": "conv04_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          32,
+          1,
+          1,
+          15
+        ],
+        "numel": 480,
+        "float_min": -2.1874136924743652,
+        "float_max": 2.5020580291748047,
+        "q_min": -28646,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 7.635908167286613e-05,
+        "max_abs_error": 3.80307379598821e-05
+      },
+      "bias": {
+        "shape": [
+          32
+        ],
+        "numel": 32,
+        "float_min": -1.5463711023330688,
+        "float_max": 1.505282998085022,
+        "q_min": -32767,
+        "q_max": 31896,
+        "scale_float_equals_q_times_scale": 4.719294113995998e-05,
+        "max_abs_error": 2.323945390048099e-05
+      }
+    },
+    {
+      "index": 5,
+      "export_name": "conv05",
+      "kind": "conv",
+      "source_base": "blocks.1.pointwise.conv",
+      "source_names": [
+        "blocks.1.pointwise.conv.weight",
+        "blocks.1.pointwise.bn.weight",
+        "blocks.1.pointwise.bn.bias",
+        "blocks.1.pointwise.bn.running_mean",
+        "blocks.1.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.1.pointwise.conv.weight with blocks.1.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv05_weight_q16.txt",
+        "bias_q16_txt": "conv05_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          48,
+          32,
+          1,
+          1
+        ],
+        "numel": 1536,
+        "float_min": -0.8512584567070007,
+        "float_max": 0.7954563498497009,
+        "q_min": -32767,
+        "q_max": 30619,
+        "scale_float_equals_q_times_scale": 2.5979139277535346e-05,
+        "max_abs_error": 1.2988569164096297e-05
+      },
+      "bias": {
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "float_min": -0.781898558139801,
+        "float_max": 1.007344126701355,
+        "q_min": -25434,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 3.0742641276325415e-05,
+        "max_abs_error": 1.501924267552357e-05
+      }
+    },
+    {
+      "index": 6,
+      "export_name": "conv06",
+      "kind": "conv",
+      "source_base": "blocks.2.depthwise.conv",
+      "source_names": [
+        "blocks.2.depthwise.conv.weight",
+        "blocks.2.depthwise.bn.weight",
+        "blocks.2.depthwise.bn.bias",
+        "blocks.2.depthwise.bn.running_mean",
+        "blocks.2.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.2.depthwise.conv.weight with blocks.2.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv06_weight_q16.txt",
+        "bias_q16_txt": "conv06_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          48,
+          1,
+          1,
+          11
+        ],
+        "numel": 528,
+        "float_min": -1.7957746982574463,
+        "float_max": 2.140449285507202,
+        "q_min": -27491,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 6.532332180264296e-05,
+        "max_abs_error": 3.2625684967854673e-05
+      },
+      "bias": {
+        "shape": [
+          48
+        ],
+        "numel": 48,
+        "float_min": -1.9288734197616577,
+        "float_max": 1.5360208749771118,
+        "q_min": -32767,
+        "q_max": 26093,
+        "scale_float_equals_q_times_scale": 5.886634173899526e-05,
+        "max_abs_error": 2.895062918643887e-05
+      }
+    },
+    {
+      "index": 7,
+      "export_name": "conv07",
+      "kind": "conv",
+      "source_base": "blocks.2.pointwise.conv",
+      "source_names": [
+        "blocks.2.pointwise.conv.weight",
+        "blocks.2.pointwise.bn.weight",
+        "blocks.2.pointwise.bn.bias",
+        "blocks.2.pointwise.bn.running_mean",
+        "blocks.2.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.2.pointwise.conv.weight with blocks.2.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv07_weight_q16.txt",
+        "bias_q16_txt": "conv07_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          64,
+          48,
+          1,
+          1
+        ],
+        "numel": 3072,
+        "float_min": -0.8173829913139343,
+        "float_max": 0.8109017610549927,
+        "q_min": -32767,
+        "q_max": 32507,
+        "scale_float_equals_q_times_scale": 2.4945310565933236e-05,
+        "max_abs_error": 1.2471446527634322e-05
+      },
+      "bias": {
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "float_min": -0.9518874287605286,
+        "float_max": 1.479465126991272,
+        "q_min": -21082,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 4.5151070497490524e-05,
+        "max_abs_error": 2.2017096645121637e-05
+      }
+    },
+    {
+      "index": 8,
+      "export_name": "conv08",
+      "kind": "conv",
+      "source_base": "blocks.3.depthwise.conv",
+      "source_names": [
+        "blocks.3.depthwise.conv.weight",
+        "blocks.3.depthwise.bn.weight",
+        "blocks.3.depthwise.bn.bias",
+        "blocks.3.depthwise.bn.running_mean",
+        "blocks.3.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.3.depthwise.conv.weight with blocks.3.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv08_weight_q16.txt",
+        "bias_q16_txt": "conv08_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          64,
+          1,
+          1,
+          9
+        ],
+        "numel": 576,
+        "float_min": -2.1087136268615723,
+        "float_max": 1.8086280822753906,
+        "q_min": -32767,
+        "q_max": 28104,
+        "scale_float_equals_q_times_scale": 6.43547968035393e-05,
+        "max_abs_error": 3.212108440919792e-05
+      },
+      "bias": {
+        "shape": [
+          64
+        ],
+        "numel": 64,
+        "float_min": -1.1794979572296143,
+        "float_max": 1.463090419769287,
+        "q_min": -26416,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 4.4651338839969697e-05,
+        "max_abs_error": 2.2270119426320845e-05
+      }
+    },
+    {
+      "index": 9,
+      "export_name": "conv09",
+      "kind": "conv",
+      "source_base": "blocks.3.pointwise.conv",
+      "source_names": [
+        "blocks.3.pointwise.conv.weight",
+        "blocks.3.pointwise.bn.weight",
+        "blocks.3.pointwise.bn.bias",
+        "blocks.3.pointwise.bn.running_mean",
+        "blocks.3.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.3.pointwise.conv.weight with blocks.3.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv09_weight_q16.txt",
+        "bias_q16_txt": "conv09_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          96,
+          64,
+          1,
+          1
+        ],
+        "numel": 6144,
+        "float_min": -0.7367848753929138,
+        "float_max": 0.6972503662109375,
+        "q_min": -32767,
+        "q_max": 31009,
+        "scale_float_equals_q_times_scale": 2.248557620145005e-05,
+        "max_abs_error": 1.1237988863361734e-05
+      },
+      "bias": {
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "float_min": -1.4492065906524658,
+        "float_max": 1.233508586883545,
+        "q_min": -32767,
+        "q_max": 27890,
+        "scale_float_equals_q_times_scale": 4.4227625069504866e-05,
+        "max_abs_error": 2.1722696049220058e-05
+      }
+    },
+    {
+      "index": 10,
+      "export_name": "conv10",
+      "kind": "conv",
+      "source_base": "blocks.4.depthwise.conv",
+      "source_names": [
+        "blocks.4.depthwise.conv.weight",
+        "blocks.4.depthwise.bn.weight",
+        "blocks.4.depthwise.bn.bias",
+        "blocks.4.depthwise.bn.running_mean",
+        "blocks.4.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.4.depthwise.conv.weight with blocks.4.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv10_weight_q16.txt",
+        "bias_q16_txt": "conv10_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          96,
+          1,
+          1,
+          9
+        ],
+        "numel": 864,
+        "float_min": -1.4193497896194458,
+        "float_max": 1.4247441291809082,
+        "q_min": -32643,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 4.348106720727891e-05,
+        "max_abs_error": 2.1723863876055294e-05
+      },
+      "bias": {
+        "shape": [
+          96
+        ],
+        "numel": 96,
+        "float_min": -1.1499531269073486,
+        "float_max": 1.5807987451553345,
+        "q_min": -23836,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 4.824362148366755e-05,
+        "max_abs_error": 2.3835499438656926e-05
+      }
+    },
+    {
+      "index": 11,
+      "export_name": "conv11",
+      "kind": "conv",
+      "source_base": "blocks.4.pointwise.conv",
+      "source_names": [
+        "blocks.4.pointwise.conv.weight",
+        "blocks.4.pointwise.bn.weight",
+        "blocks.4.pointwise.bn.bias",
+        "blocks.4.pointwise.bn.running_mean",
+        "blocks.4.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.4.pointwise.conv.weight with blocks.4.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv11_weight_q16.txt",
+        "bias_q16_txt": "conv11_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          128,
+          96,
+          1,
+          1
+        ],
+        "numel": 12288,
+        "float_min": -0.5853366851806641,
+        "float_max": 0.5912494659423828,
+        "q_min": -32439,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 1.8044052429040888e-05,
+        "max_abs_error": 9.020613271376599e-06
+      },
+      "bias": {
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "float_min": -1.3223979473114014,
+        "float_max": 1.1001644134521484,
+        "q_min": -32767,
+        "q_max": 27260,
+        "scale_float_equals_q_times_scale": 4.0357614286062237e-05,
+        "max_abs_error": 2.0171206263852604e-05
+      }
+    },
+    {
+      "index": 12,
+      "export_name": "conv12",
+      "kind": "conv",
+      "source_base": "blocks.5.depthwise.conv",
+      "source_names": [
+        "blocks.5.depthwise.conv.weight",
+        "blocks.5.depthwise.bn.weight",
+        "blocks.5.depthwise.bn.bias",
+        "blocks.5.depthwise.bn.running_mean",
+        "blocks.5.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.5.depthwise.conv.weight with blocks.5.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv12_weight_q16.txt",
+        "bias_q16_txt": "conv12_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          128,
+          1,
+          1,
+          7
+        ],
+        "numel": 896,
+        "float_min": -1.9179251194000244,
+        "float_max": 1.5945677757263184,
+        "q_min": -32767,
+        "q_max": 27243,
+        "scale_float_equals_q_times_scale": 5.8532215930662695e-05,
+        "max_abs_error": 2.925305540851797e-05
+      },
+      "bias": {
+        "shape": [
+          128
+        ],
+        "numel": 128,
+        "float_min": -1.0420018434524536,
+        "float_max": 1.2794380187988281,
+        "q_min": -26686,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 3.904654130066311e-05,
+        "max_abs_error": 1.9332833019025664e-05
+      }
+    },
+    {
+      "index": 13,
+      "export_name": "conv13",
+      "kind": "conv",
+      "source_base": "blocks.5.pointwise.conv",
+      "source_names": [
+        "blocks.5.pointwise.conv.weight",
+        "blocks.5.pointwise.bn.weight",
+        "blocks.5.pointwise.bn.bias",
+        "blocks.5.pointwise.bn.running_mean",
+        "blocks.5.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.5.pointwise.conv.weight with blocks.5.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv13_weight_q16.txt",
+        "bias_q16_txt": "conv13_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          160,
+          128,
+          1,
+          1
+        ],
+        "numel": 20480,
+        "float_min": -0.41129282116889954,
+        "float_max": 0.4571015238761902,
+        "q_min": -29483,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 1.3950057187908267e-05,
+        "max_abs_error": 6.974356911618185e-06
+      },
+      "bias": {
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "float_min": -1.1833199262619019,
+        "float_max": 1.1785988807678223,
+        "q_min": -32767,
+        "q_max": 32636,
+        "scale_float_equals_q_times_scale": 3.611316038276015e-05,
+        "max_abs_error": 1.8010938535373278e-05
+      }
+    },
+    {
+      "index": 14,
+      "export_name": "conv14",
+      "kind": "conv",
+      "source_base": "blocks.6.depthwise.conv",
+      "source_names": [
+        "blocks.6.depthwise.conv.weight",
+        "blocks.6.depthwise.bn.weight",
+        "blocks.6.depthwise.bn.bias",
+        "blocks.6.depthwise.bn.running_mean",
+        "blocks.6.depthwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.6.depthwise.conv.weight with blocks.6.depthwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv14_weight_q16.txt",
+        "bias_q16_txt": "conv14_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          160,
+          1,
+          1,
+          15
+        ],
+        "numel": 2400,
+        "float_min": -1.410922884941101,
+        "float_max": 0.8901104927062988,
+        "q_min": -32767,
+        "q_max": 20672,
+        "scale_float_equals_q_times_scale": 4.305926343397629e-05,
+        "max_abs_error": 2.152816283821843e-05
+      },
+      "bias": {
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "float_min": -1.1089602708816528,
+        "float_max": 1.7142664194107056,
+        "q_min": -21197,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 5.2316855965169395e-05,
+        "max_abs_error": 2.5844673658292905e-05
+      }
+    },
+    {
+      "index": 15,
+      "export_name": "conv15",
+      "kind": "conv",
+      "source_base": "blocks.6.pointwise.conv",
+      "source_names": [
+        "blocks.6.pointwise.conv.weight",
+        "blocks.6.pointwise.bn.weight",
+        "blocks.6.pointwise.bn.bias",
+        "blocks.6.pointwise.bn.running_mean",
+        "blocks.6.pointwise.bn.running_var"
+      ],
+      "transform": "conv_bn_fused",
+      "note": "Folded blocks.6.pointwise.conv.weight with blocks.6.pointwise.bn using eps=1e-05.",
+      "files": {
+        "weight_q16_txt": "conv15_weight_q16.txt",
+        "bias_q16_txt": "conv15_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          160,
+          160,
+          1,
+          1
+        ],
+        "numel": 25600,
+        "float_min": -0.3603622615337372,
+        "float_max": 0.2920985519886017,
+        "q_min": -32767,
+        "q_max": 26560,
+        "scale_float_equals_q_times_scale": 1.0997719093409137e-05,
+        "max_abs_error": 5.4986446720237114e-06
+      },
+      "bias": {
+        "shape": [
+          160
+        ],
+        "numel": 160,
+        "float_min": -0.6425294280052185,
+        "float_max": 1.0023483037948608,
+        "q_min": -21004,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 3.0590176207613174e-05,
+        "max_abs_error": 1.525050513195847e-05
+      }
+    },
+    {
+      "index": 16,
+      "export_name": "fc01",
+      "kind": "fc",
+      "source_base": "fc",
+      "source_names": [
+        "fc.weight",
+        "fc.bias"
+      ],
+      "transform": "linear_raw",
+      "note": "Raw Linear weight/bias.",
+      "files": {
+        "weight_q16_txt": "fc01_weight_q16.txt",
+        "bias_q16_txt": "fc01_bias_q16.txt"
+      },
+      "weight": {
+        "shape": [
+          10,
+          2240
+        ],
+        "numel": 22400,
+        "float_min": -0.20376050472259521,
+        "float_max": 0.1598062813282013,
+        "q_min": -32767,
+        "q_max": 25699,
+        "scale_float_equals_q_times_scale": 6.218466894210493e-06,
+        "max_abs_error": 3.109218326293947e-06
+      },
+      "bias": {
+        "shape": [
+          10
+        ],
+        "numel": 10,
+        "float_min": -0.044336918741464615,
+        "float_max": 0.0543665885925293,
+        "q_min": -26722,
+        "q_max": 32767,
+        "scale_float_equals_q_times_scale": 1.6591872491387463e-06,
+        "max_abs_error": 8.08229965239271e-07
+      }
+    }
+  ]
+}

@@ -31,7 +31,8 @@ from src.models import (
 from src.data import (
     CachedUrbanSoundFrameDataset,
     LogMelFeatureExtractor,
-    parse_dataset,
+    parse_audio_dataset,
+    normalize_dataset_name,
     generate_frame_records,
     load_audio_to_ram,
 )
@@ -43,18 +44,38 @@ RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
 SOURCE_GROUP_SPLIT_ALGORITHM = "fsid_classid_balanced_v1"
 
 
-def default_data_dir():
+def default_data_dir(dataset_name="urbansound8k"):
     """
     Prefer the repo-local layout, but also support the shared research dataset
     layout used by this workspace.
     """
+    dataset_name = normalize_dataset_name(dataset_name)
     repo_root = os.path.dirname(os.path.abspath(__file__))
-    candidates = [
-        os.path.join(repo_root, "data", "raw", "UrbanSound8K"),
-        os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "UrbanSound8K")),
-    ]
+    if dataset_name == "urbansound8k":
+        candidates = [
+            os.path.join(repo_root, "data", "raw", "UrbanSound8K"),
+            os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "UrbanSound8K")),
+        ]
+        marker = os.path.join("metadata", "UrbanSound8K.csv")
+    elif dataset_name == "esc50":
+        candidates = [
+            os.path.join(repo_root, "data", "raw", "ESC-50"),
+            os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "ESC-50")),
+            os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "esc50")),
+        ]
+        marker = os.path.join("meta", "esc50.csv")
+    elif dataset_name == "speech_commands":
+        candidates = [
+            os.path.join(repo_root, "data", "raw", "speech_commands_v0.02"),
+            os.path.join(repo_root, "data", "raw", "SpeechCommands"),
+            os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "speech_commands_v0.02")),
+            os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "SpeechCommands")),
+        ]
+        marker = "validation_list.txt"
+    else:
+        raise ValueError(f"Unsupported dataset '{dataset_name}'.")
     for candidate in candidates:
-        if os.path.exists(os.path.join(candidate, "metadata", "UrbanSound8K.csv")):
+        if os.path.exists(os.path.join(candidate, marker)):
             return candidate
     return candidates[0]
 
@@ -236,6 +257,108 @@ def source_label_overlap_summary(train_clips, test_records, limit=10):
     }
 
 
+def sorted_unique(values):
+    return sorted(set(values), key=lambda value: str(value))
+
+
+def validate_fold_for_protocol(protocol, fold):
+    if protocol in {"esc50_3_1_1_foldk_valnext_v1", "esc50_official_4_1_cv"}:
+        if not 1 <= fold <= 5:
+            raise ValueError(f"--fold must be in [1, 5] for ESC-50 protocols, got {fold}")
+    elif protocol == "speech_commands_v2_official12":
+        if fold != 1:
+            raise ValueError("Speech Commands official split is not fold-based; use --fold 1.")
+    else:
+        if not 1 <= fold <= 10:
+            raise ValueError(f"--fold must be in [1, 10], got {fold}")
+
+
+def build_dataset_split(clip_records, dataset_name, protocol, fold, seed):
+    dataset_name = normalize_dataset_name(dataset_name)
+    val_fold = None
+    val_clips = []
+    uses_validation = False
+
+    if protocol == "paper_9_1":
+        test_records = [r for r in clip_records if r["fold"] == fold]
+        train_clips = [r for r in clip_records if r["fold"] != fold]
+        description = "paper_9_1 | Train=9 folds, Test=1 fold, no validation-based model selection."
+    elif protocol == "clean_8_1_1":
+        test_records = [r for r in clip_records if r["fold"] == fold]
+        val_fold = (fold % 10) + 1
+        train_clips = [r for r in clip_records if r["fold"] != fold and r["fold"] != val_fold]
+        val_clips = [r for r in clip_records if r["fold"] == val_fold]
+        uses_validation = True
+        description = f"clean_8_1_1 | Train=8 folds, Val=fold {val_fold}, Test=fold {fold}."
+    elif protocol == "random_clip_9_1":
+        train_clips, test_records = make_stratified_random_clip_split(
+            clip_records,
+            test_bucket=fold,
+            seed=seed,
+        )
+        description = (
+            "random_clip_9_1 | Stratified random clip-level 9/1 control, "
+            f"Test bucket={fold}, seed={seed}, split_algorithm={RANDOM_SPLIT_ALGORITHM}."
+        )
+    elif protocol == "source_group_9_1":
+        train_clips, test_records = make_stratified_source_group_split(
+            clip_records,
+            test_bucket=fold,
+            seed=seed,
+        )
+        description = (
+            "source_group_9_1 | Stratified random source-label-group 9/1 control, "
+            f"Test bucket={fold}, seed={seed}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
+        )
+    elif protocol == "source_group_8_1_1":
+        train_clips, val_clips, test_records, val_fold = make_stratified_source_group_train_val_test_split(
+            clip_records,
+            test_bucket=fold,
+            seed=seed,
+        )
+        uses_validation = True
+        description = (
+            "source_group_8_1_1 | Stratified random source-label-group split, "
+            f"Train=8 buckets, Val=bucket {val_fold}, Test=bucket {fold}, "
+            f"seed={seed}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
+        )
+    elif protocol == "esc50_3_1_1_foldk_valnext_v1":
+        if dataset_name != "esc50":
+            raise ValueError(f"Protocol {protocol} requires dataset='esc50'.")
+        val_fold = (fold % 5) + 1
+        test_records = [r for r in clip_records if r["fold"] == fold]
+        val_clips = [r for r in clip_records if r["fold"] == val_fold]
+        train_clips = [r for r in clip_records if r["fold"] not in {fold, val_fold}]
+        uses_validation = True
+        description = f"esc50_3_1_1 | Train=3 folds, Val=fold {val_fold}, Test=fold {fold}."
+    elif protocol == "esc50_official_4_1_cv":
+        if dataset_name != "esc50":
+            raise ValueError(f"Protocol {protocol} requires dataset='esc50'.")
+        test_records = [r for r in clip_records if r["fold"] == fold]
+        train_clips = [r for r in clip_records if r["fold"] != fold]
+        description = f"esc50_official_4_1_cv | Train=4 folds, Test=fold {fold}, no validation."
+    elif protocol == "speech_commands_v2_official12":
+        if dataset_name != "speech_commands":
+            raise ValueError(f"Protocol {protocol} requires dataset='speech_commands'.")
+        train_clips = [r for r in clip_records if r.get("split") == "train"]
+        val_clips = [r for r in clip_records if r.get("split") == "validation"]
+        test_records = [r for r in clip_records if r.get("split") == "test"]
+        val_fold = "validation"
+        uses_validation = True
+        description = "speech_commands_v2_official12 | Official train/validation/test split."
+    else:
+        raise ValueError(f"Unsupported protocol '{protocol}'.")
+
+    if not train_clips:
+        raise RuntimeError(f"Protocol {protocol} produced an empty train split.")
+    if not test_records:
+        raise RuntimeError(f"Protocol {protocol} produced an empty test split.")
+    if uses_validation and not val_clips:
+        raise RuntimeError(f"Protocol {protocol} requires validation but produced an empty val split.")
+
+    return train_clips, val_clips, test_records, val_fold, uses_validation, description
+
+
 def build_model(cfg, num_classes):
     """Build model from config. Prefer paper names; legacy keys remain valid."""
     model_name = cfg.get("model_name", "ds_conv2d_h1_pyramid").lower()
@@ -373,7 +496,7 @@ def format_teacher_checkpoint_path(template, fold):
     return resolve_repo_path(formatted)
 
 
-def load_teacher_model(student_cfg, distillation_cfg, fold, device):
+def load_teacher_model(student_cfg, distillation_cfg, fold, device, num_classes):
     if not distillation_cfg.get("enabled", False):
         return None, None, None, None
 
@@ -404,7 +527,7 @@ def load_teacher_model(student_cfg, distillation_cfg, fold, device):
     if not os.path.exists(checkpoint_path):
         raise FileNotFoundError(f"Teacher checkpoint not found: {checkpoint_path}")
 
-    teacher_name, teacher_model = build_model(teacher_cfg, num_classes=10)
+    teacher_name, teacher_model = build_model(teacher_cfg, num_classes=num_classes)
     state = torch.load(checkpoint_path, map_location=device, weights_only=True)
     if isinstance(state, dict) and "model_state_dict" in state:
         state = state["model_state_dict"]
@@ -719,9 +842,9 @@ def main():
     parser = argparse.ArgumentParser(
         description="Train environmental sound CNN (DS-Conv2D-H1 / DS-Res1D-SE / TCAM-Attn1D)"
     )
-    parser.add_argument("--data_dir", type=str, default=default_data_dir(), help="Path to UrbanSound8K folder")
+    parser.add_argument("--data_dir", type=str, default=None, help="Path to dataset folder; defaults by config dataset")
     parser.add_argument("--config", type=str, default="configs/rtx3090_config.json", help="Path to RTX 3090 config JSON")
-    parser.add_argument("--fold", type=int, default=1, help="Test fold for 10-fold CV (1-10)")
+    parser.add_argument("--fold", type=int, default=1, help="Test fold/bucket. US8K uses 1-10; ESC-50 uses 1-5; Speech Commands uses 1.")
     parser.add_argument("--epochs", type=int, default=None, help="Number of training epochs (overrides config)")
     parser.add_argument("--batch_size", type=int, default=None, help="Physical batch size (overrides config)")
     parser.add_argument("--lr", type=float, default=None, help="Learning rate (overrides config)")
@@ -733,8 +856,17 @@ def main():
         "--protocol",
         type=str,
         default=None,
-        choices=["paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1", "source_group_8_1_1"],
-        help="Evaluation protocol. paper_9_1 uses official folds; clean_8_1_1 keeps a validation fold; random_clip_9_1 is a stratified random clip-level control; source_group_9_1 is a source-label-grouped random control; source_group_8_1_1 adds a source-label grouped validation bucket."
+        choices=[
+            "paper_9_1",
+            "clean_8_1_1",
+            "random_clip_9_1",
+            "source_group_9_1",
+            "source_group_8_1_1",
+            "esc50_3_1_1_foldk_valnext_v1",
+            "esc50_official_4_1_cv",
+            "speech_commands_v2_official12",
+        ],
+        help="Evaluation protocol. US8K protocols remain unchanged; ESC-50 and Speech Commands protocols are Phase 1 dataset contracts."
     )
     args = parser.parse_args()
 
@@ -767,14 +899,27 @@ def main():
     if args.protocol is not None:
         cfg["protocol"] = args.protocol
 
+    dataset_name = normalize_dataset_name(cfg.get("dataset", cfg.get("dataset_name", "urbansound8k")))
+    data_dir = args.data_dir or cfg.get("data_dir") or default_data_dir(dataset_name)
     protocol = cfg.get("protocol", "paper_9_1").lower()
-    if protocol not in {"paper_9_1", "clean_8_1_1", "random_clip_9_1", "source_group_9_1", "source_group_8_1_1"}:
+    supported_protocols = {
+        "paper_9_1",
+        "clean_8_1_1",
+        "random_clip_9_1",
+        "source_group_9_1",
+        "source_group_8_1_1",
+        "esc50_3_1_1_foldk_valnext_v1",
+        "esc50_official_4_1_cv",
+        "speech_commands_v2_official12",
+    }
+    if protocol not in supported_protocols:
         raise ValueError(
             f"Unsupported protocol '{protocol}'. Use 'paper_9_1', 'clean_8_1_1', "
-            "'random_clip_9_1', 'source_group_9_1', or 'source_group_8_1_1'."
+            "'random_clip_9_1', 'source_group_9_1', 'source_group_8_1_1', "
+            "'esc50_3_1_1_foldk_valnext_v1', 'esc50_official_4_1_cv', "
+            "or 'speech_commands_v2_official12'."
         )
-    if not 1 <= args.fold <= 10:
-        raise ValueError(f"--fold must be in [1, 10], got {args.fold}")
+    validate_fold_for_protocol(protocol, args.fold)
 
     # Setup environment
     set_seed(cfg.get("seed", 83))
@@ -804,67 +949,31 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device designated for training: {device}")
 
-    # Standard 10 classes matching paper
-    class_names = [
-        'air_conditioner','car_horn','children_playing','dog_bark',
-        'drilling','engine_idling','gun_shot','jackhammer','siren','street_music'
-    ]
-
-    csv_path = os.path.join(args.data_dir, "metadata/UrbanSound8K.csv")
-    audio_base = os.path.join(args.data_dir, "audio")
-
-    # 1. Parse dataset (8732 standard clips, rail_vehicle filtered)
-    clip_records = parse_dataset(csv_path, audio_base, class_names)
+    clip_seconds = float(cfg.get("clip_seconds", 4.0))
+    clip_records, class_names, dataset_name = parse_audio_dataset(
+        dataset_name,
+        data_dir,
+        sample_rate=cfg.get("sample_rate", 16000),
+        clip_seconds=clip_seconds,
+    )
+    num_classes = len(class_names)
+    if cfg.get("num_classes") is not None and int(cfg["num_classes"]) != num_classes:
+        raise ValueError(
+            f"Config num_classes={cfg['num_classes']} does not match dataset "
+            f"{dataset_name} class count {num_classes}."
+        )
+    cfg["num_classes"] = num_classes
 
     # 2. Setup split.
-    print(f"\n=================== TRAINING FOLD {args.fold} ({protocol}) ===================")
-    val_fold = None
-    val_clips = []
-    uses_validation = False
-
-    if protocol == "paper_9_1":
-        test_records = [r for r in clip_records if r["fold"] == args.fold]
-        train_clips = [r for r in clip_records if r["fold"] != args.fold]
-        print("Protocol: paper_9_1 | Train=9 folds, Test=1 fold, no validation-based model selection.")
-    elif protocol == "clean_8_1_1":
-        test_records = [r for r in clip_records if r["fold"] == args.fold]
-        val_fold = (args.fold % 10) + 1
-        train_clips = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
-        val_clips = [r for r in clip_records if r["fold"] == val_fold]
-        uses_validation = True
-        print(f"Protocol: clean_8_1_1 | Train=8 folds, Val=fold {val_fold}, Test=fold {args.fold}.")
-    elif protocol == "random_clip_9_1":
-        train_clips, test_records = make_stratified_random_clip_split(
-            clip_records,
-            test_bucket=args.fold,
-            seed=cfg.get("seed", 83),
-        )
-        print(
-            "Protocol: random_clip_9_1 | Stratified random clip-level 9/1 control, "
-            f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={RANDOM_SPLIT_ALGORITHM}."
-        )
-    elif protocol == "source_group_9_1":
-        train_clips, test_records = make_stratified_source_group_split(
-            clip_records,
-            test_bucket=args.fold,
-            seed=cfg.get("seed", 83),
-        )
-        print(
-            "Protocol: source_group_9_1 | Stratified random source-label-group 9/1 control, "
-            f"Test bucket={args.fold}, seed={cfg.get('seed', 83)}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
-        )
-    else:
-        train_clips, val_clips, test_records, val_fold = make_stratified_source_group_train_val_test_split(
-            clip_records,
-            test_bucket=args.fold,
-            seed=cfg.get("seed", 83),
-        )
-        uses_validation = True
-        print(
-            "Protocol: source_group_8_1_1 | Stratified random source-label-group split, "
-            f"Train=8 buckets, Val=bucket {val_fold}, Test=bucket {args.fold}, "
-            f"seed={cfg.get('seed', 83)}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
-        )
+    print(f"\n=================== TRAINING FOLD {args.fold} ({dataset_name} | {protocol}) ===================")
+    train_clips, val_clips, test_records, val_fold, uses_validation, split_description = build_dataset_split(
+        clip_records,
+        dataset_name,
+        protocol,
+        args.fold,
+        cfg.get("seed", 83),
+    )
+    print(f"Protocol: {split_description}")
 
     if args.max_train_clips is not None or args.max_val_clips is not None or args.max_test_clips is not None:
         original_counts = (len(train_clips), len(val_clips), len(test_records))
@@ -955,10 +1064,17 @@ def main():
     cached_waveforms = {}
     start_preload = time.time()
 
-    paths = sorted({r["path"] for r in selected_clip_records})
+    path_clip_seconds = {}
+    for record in selected_clip_records:
+        current = path_clip_seconds.get(record["path"], clip_seconds)
+        path_clip_seconds[record["path"]] = None if record.get("cache_full_waveform") else current
+    paths = sorted(path_clip_seconds)
     max_workers = min(os.cpu_count() or 4, 8)
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        results = executor.map(lambda p: load_audio_to_ram(p, cfg.get("sample_rate", 16000)), paths)
+        results = executor.map(
+            lambda p: load_audio_to_ram(p, cfg.get("sample_rate", 16000), path_clip_seconds[p]),
+            paths,
+        )
         for path, w in results:
             cached_waveforms[path] = w
 
@@ -1019,7 +1135,7 @@ def main():
         if weighted_sampler_cfg.get("enabled", False):
             sampler = make_weighted_sampler(
                 train_frames,
-                num_classes=10,
+                num_classes=num_classes,
                 multipliers=weighted_sampler_cfg.get("class_multipliers"),
             )
             loader_kwargs["sampler"] = sampler
@@ -1032,7 +1148,7 @@ def main():
     train_loader = DataLoader(train_dataset, **loader_kwargs)
 
     # Instantiate model, loss, optimizer, scaler
-    model_name, model = build_model(cfg, num_classes=10)
+    model_name, model = build_model(cfg, num_classes=num_classes)
     model = model.to(device)
     initial_checkpoint_path = load_initial_model_weights(model, cfg, args.fold, device)
     input_transform = build_input_transform(cfg, device)
@@ -1069,6 +1185,7 @@ def main():
         distillation_cfg,
         args.fold,
         device,
+        num_classes,
     )
     if teacher_model is not None:
         print(
@@ -1102,7 +1219,7 @@ def main():
         class_weighting = cfg.get("class_weighting", "none").lower()
         ce_weights = None
         if class_weighting == "balanced":
-            ce_weights = balanced_class_weights(train_clips, num_classes=10, device=device)
+            ce_weights = balanced_class_weights(train_clips, num_classes=num_classes, device=device)
             ce_weights = apply_class_multipliers(
                 ce_weights,
                 cfg.get("class_weight_multipliers"),
@@ -1340,7 +1457,7 @@ def main():
 
     # Load and evaluate the best validation model only when the protocol has a validation fold.
     if uses_validation and os.path.exists(best_ckpt_path):
-        _, best_model = build_model(cfg, num_classes=10)
+        _, best_model = build_model(cfg, num_classes=num_classes)
         best_model = best_model.to(device)
         best_ckpt = torch.load(best_ckpt_path, map_location=device, weights_only=True)
         best_model.load_state_dict(best_ckpt["model_state_dict"] if "model_state_dict" in best_ckpt else best_ckpt)
@@ -1364,7 +1481,7 @@ def main():
 
     ensemble_models = []
     for i in range(len(snapshot_checkpoints) - 1, max(-1, len(snapshot_checkpoints) - 3), -1):
-        _, m = build_model(cfg, num_classes=10)
+        _, m = build_model(cfg, num_classes=num_classes)
         m = m.to(device)
         m.load_state_dict(torch.load(snapshot_checkpoints[i], weights_only=True))
         ensemble_models.append(m)
@@ -1419,10 +1536,14 @@ def main():
         "random_split_algorithm": RANDOM_SPLIT_ALGORITHM if protocol == "random_clip_9_1" else None,
         "source_group_split_algorithm": SOURCE_GROUP_SPLIT_ALGORITHM if protocol in {"source_group_9_1", "source_group_8_1_1"} else None,
         "uses_validation": uses_validation,
-        "official_train_folds": sorted({r["fold"] for r in train_clips}),
+        "dataset": dataset_name,
+        "data_dir": data_dir,
+        "class_names": class_names,
+        "num_classes": num_classes,
+        "official_train_folds": sorted_unique(r["fold"] for r in train_clips),
         "val_fold": val_fold,
         "test_fold": args.fold,
-        "official_test_folds": sorted({r["fold"] for r in test_records}),
+        "official_test_folds": sorted_unique(r["fold"] for r in test_records),
         "source_label_overlap_train_test": source_overlap,
         "train_clip_count": len(train_clips),
         "val_clip_count": len(val_clips),

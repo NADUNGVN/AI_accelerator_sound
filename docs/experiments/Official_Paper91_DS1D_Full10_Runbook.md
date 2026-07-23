@@ -42,8 +42,8 @@ conda activate sound_env
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONUNBUFFERED=1
 
-git checkout research/fpga-1dcnn-90acc
-git pull origin research/fpga-1dcnn-90acc
+git checkout main
+git pull origin main
 
 test -f configs/kv260_ds1d_pyramid_mixup_ema_paper91.json && echo OK_CONFIG
 test -d data/UrbanSound8K || tar -xzf data/UrbanSound8K_on_server.tar.gz -C data
@@ -82,7 +82,7 @@ BRANCH=results/server3090-official-paper91-full10
 MSG="Add server3090 official paper_9_1 DS1D full10 results"
 
 git fetch origin
-git checkout -B $BRANCH origin/research/fpga-1dcnn-90acc
+git checkout -B $BRANCH origin/main
 
 # Force-add metrics only (experiments/ is gitignored; do NOT add .pt)
 for f in 1 2 3 4 5 6 7 8 9 10; do

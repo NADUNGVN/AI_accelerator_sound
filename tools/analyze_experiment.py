@@ -12,7 +12,7 @@ import torch.nn.functional as F
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
-from src.data import LogMelFeatureExtractor, load_audio_to_ram, parse_dataset
+from src.data import LogMelFeatureExtractor, load_audio_to_ram, normalize_dataset_name, parse_audio_dataset
 from src.models import (
     TCAMAttn1DNet,
     DSRes1DSENet,
@@ -41,13 +41,33 @@ RANDOM_SPLIT_ALGORITHM = "stable_metadata_v2"
 SOURCE_GROUP_SPLIT_ALGORITHM = "fsid_classid_balanced_v1"
 
 
-def default_data_dir():
-    candidates = [
-        os.path.join(REPO_ROOT, "data", "raw", "UrbanSound8K"),
-        os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "UrbanSound8K")),
-    ]
+def default_data_dir(dataset_name="urbansound8k"):
+    dataset_name = normalize_dataset_name(dataset_name)
+    if dataset_name == "urbansound8k":
+        candidates = [
+            os.path.join(REPO_ROOT, "data", "raw", "UrbanSound8K"),
+            os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "UrbanSound8K")),
+        ]
+        marker = os.path.join("metadata", "UrbanSound8K.csv")
+    elif dataset_name == "esc50":
+        candidates = [
+            os.path.join(REPO_ROOT, "data", "raw", "ESC-50"),
+            os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "ESC-50")),
+            os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "esc50")),
+        ]
+        marker = os.path.join("meta", "esc50.csv")
+    elif dataset_name == "speech_commands":
+        candidates = [
+            os.path.join(REPO_ROOT, "data", "raw", "speech_commands_v0.02"),
+            os.path.join(REPO_ROOT, "data", "raw", "SpeechCommands"),
+            os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "speech_commands_v0.02")),
+            os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "SpeechCommands")),
+        ]
+        marker = "validation_list.txt"
+    else:
+        raise ValueError(f"Unsupported dataset '{dataset_name}'.")
     for candidate in candidates:
-        if os.path.exists(os.path.join(candidate, "metadata", "UrbanSound8K.csv")):
+        if os.path.exists(os.path.join(candidate, marker)):
             return candidate
     return candidates[0]
 
@@ -130,10 +150,10 @@ def eval_drop_silent_tail_frames(cfg, metrics):
     return bool((metrics or {}).get("eval_drop_silent_tail_frames", default_value))
 
 
-def load_model(checkpoint_path, device, cfg, metrics):
+def load_model(checkpoint_path, device, cfg, metrics, num_classes):
     if not os.path.exists(checkpoint_path):
         raise FileNotFoundError(checkpoint_path)
-    model = build_model(cfg, metrics, num_classes=len(CLASS_NAMES)).to(device)
+    model = build_model(cfg, metrics, num_classes=num_classes).to(device)
     state = torch.load(checkpoint_path, map_location=device, weights_only=True)
     if isinstance(state, dict) and "model_state_dict" in state:
         state = state["model_state_dict"]
@@ -142,12 +162,19 @@ def load_model(checkpoint_path, device, cfg, metrics):
     return model
 
 
-def preload_waveforms(records, sample_rate):
+def preload_waveforms(records, sample_rate, clip_seconds):
     cached = {}
-    paths = sorted({r["path"] for r in records})
+    path_clip_seconds = {}
+    for record in records:
+        current = path_clip_seconds.get(record["path"], clip_seconds)
+        path_clip_seconds[record["path"]] = None if record.get("cache_full_waveform") else current
+    paths = sorted(path_clip_seconds)
     max_workers = min(os.cpu_count() or 4, 8)
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for path, waveform in executor.map(lambda p: load_audio_to_ram(p, sample_rate), paths):
+        for path, waveform in executor.map(
+            lambda p: load_audio_to_ram(p, sample_rate, path_clip_seconds[p]),
+            paths,
+        ):
             cached[path] = waveform
     return cached
 
@@ -294,18 +321,18 @@ def make_stratified_source_group_train_val_test_split(clip_records, test_bucket,
     return train_records, val_records, test_records, val_bucket
 
 
-def confusion_from_predictions(predictions):
-    matrix = [[0 for _ in CLASS_NAMES] for _ in CLASS_NAMES]
+def confusion_from_predictions(predictions, class_names):
+    matrix = [[0 for _ in class_names] for _ in class_names]
     for item in predictions:
         label = int(item["label"])
         predicted = int(item["predicted"])
         matrix[label][predicted] += 1
 
     rows = []
-    for idx, name in enumerate(CLASS_NAMES):
+    for idx, name in enumerate(class_names):
         support = sum(matrix[idx])
         correct = matrix[idx][idx]
-        predicted_as = sum(matrix[row][idx] for row in range(len(CLASS_NAMES)))
+        predicted_as = sum(matrix[row][idx] for row in range(len(class_names)))
         rows.append(
             {
                 "class_id": idx,
@@ -314,15 +341,15 @@ def confusion_from_predictions(predictions):
                 "correct": correct,
                 "accuracy": correct / support if support else None,
                 "predicted_count": predicted_as,
-                "top_confusions": top_confusions(matrix[idx], idx),
+                "top_confusions": top_confusions(matrix[idx], idx, class_names),
             }
         )
     return matrix, rows
 
 
-def top_confusions(row, label_idx, limit=3):
+def top_confusions(row, label_idx, class_names, limit=3):
     pairs = [
-        (CLASS_NAMES[idx], count)
+        (class_names[idx], count)
         for idx, count in enumerate(row)
         if idx != label_idx and count > 0
     ]
@@ -354,6 +381,7 @@ def evaluate_split(
     frames_per_clip,
     drop_silent_tail_frames=False,
     sample_rate=16000,
+    class_names=None,
 ):
     acc, predictions = trainer.evaluate_clips(
         models,
@@ -366,7 +394,8 @@ def evaluate_split(
         sample_rate=sample_rate,
         return_predictions=True,
     )
-    matrix, rows = confusion_from_predictions(predictions)
+    class_names = class_names or CLASS_NAMES
+    matrix, rows = confusion_from_predictions(predictions, class_names)
     print(f"\n{name} clip accuracy: {acc * 100:.2f}% ({len(predictions)} clips)")
     print_class_table(f"{name} per-class accuracy", rows)
     return {
@@ -380,7 +409,7 @@ def evaluate_split(
 def grouped_clips(records):
     clips = collections.defaultdict(list)
     for record in records:
-        clips[record["path"]].append(record)
+        clips[record.get("clip_id", record["path"])].append(record)
     return clips
 
 
@@ -396,7 +425,10 @@ def predict_modes_for_clip(
     drop_silent_tail_frames=False,
     sample_rate=16000,
     input_transform=None,
+    num_classes=None,
+    base_frame_start=0,
 ):
+    num_classes = int(num_classes or len(CLASS_NAMES))
     waveform = torch.from_numpy(waveform_np)
     frames = []
     valid = []
@@ -407,14 +439,16 @@ def predict_modes_for_clip(
         offset = idx * frame_hop
         if duration_samples is not None and offset >= duration_samples:
             continue
-        frame = waveform[:, offset : offset + frame_length]
+        absolute_offset = int(base_frame_start) + offset
+        frame = waveform[:, absolute_offset : absolute_offset + frame_length]
         if frame.shape[-1] < frame_length:
             frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
         frames.append(frame)
         valid.append(float(frame.abs().max().item()) > zero_threshold)
 
     if not frames:
-        frame = waveform[:, :frame_length]
+        base_frame_start = int(base_frame_start)
+        frame = waveform[:, base_frame_start : base_frame_start + frame_length]
         if frame.shape[-1] < frame_length:
             frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode="constant")
         frames.append(frame)
@@ -426,7 +460,7 @@ def predict_modes_for_clip(
     batch_tensor = torch.stack(frames).to(device)
     if input_transform is not None:
         batch_tensor = input_transform(batch_tensor.float())
-    probs_sum = torch.zeros((len(frames), len(CLASS_NAMES)), device=device)
+    probs_sum = torch.zeros((len(frames), num_classes), device=device)
     with torch.no_grad():
         for model in models:
             logits = model(batch_tensor)
@@ -439,10 +473,10 @@ def predict_modes_for_clip(
 
     return {
         "sum_all": int(probs.sum(dim=0).argmax().item()),
-        "majority_all": int(torch.bincount(all_frame_preds, minlength=len(CLASS_NAMES)).argmax().item()),
+        "majority_all": int(torch.bincount(all_frame_preds, minlength=num_classes).argmax().item()),
         "sum_nonzero": int(probs[valid_mask].sum(dim=0).argmax().item()),
-        "majority_nonzero": int(torch.bincount(valid_frame_preds, minlength=len(CLASS_NAMES)).argmax().item()),
-        "max_frame_conf": int(probs.reshape(-1).argmax().item() % len(CLASS_NAMES)),
+        "majority_nonzero": int(torch.bincount(valid_frame_preds, minlength=num_classes).argmax().item()),
+        "max_frame_conf": int(probs.reshape(-1).argmax().item() % num_classes),
         "valid_frame_count": int(valid_mask.sum().item()),
     }
 
@@ -460,7 +494,9 @@ def evaluate_split_modes(
     drop_silent_tail_frames=False,
     sample_rate=16000,
     input_transform=None,
+    class_names=None,
 ):
+    class_names = class_names or CLASS_NAMES
     clips = grouped_clips(records)
     mode_predictions = {
         "sum_all": [],
@@ -471,7 +507,8 @@ def evaluate_split_modes(
     }
     valid_frame_counts = []
 
-    for path, frames in clips.items():
+    for _, frames in clips.items():
+        path = frames[0]["path"]
         label = frames[0]["label"]
         result = predict_modes_for_clip(
             models,
@@ -485,6 +522,8 @@ def evaluate_split_modes(
             drop_silent_tail_frames=drop_silent_tail_frames,
             sample_rate=sample_rate,
             input_transform=input_transform,
+            num_classes=len(class_names),
+            base_frame_start=int(frames[0].get("frame_start", 0)),
         )
         valid_frame_counts.append(result["valid_frame_count"])
         for mode in mode_predictions:
@@ -502,7 +541,7 @@ def evaluate_split_modes(
     total = len(clips)
     for mode, predictions in mode_predictions.items():
         correct = sum(1 for item in predictions if item["label"] == item["predicted"])
-        matrix, rows = confusion_from_predictions(predictions)
+        matrix, rows = confusion_from_predictions(predictions, class_names)
         acc = correct / total if total else 0.0
         report[mode] = {
             "accuracy": acc,
@@ -530,7 +569,7 @@ def evaluate_split_modes(
 def main():
     parser = argparse.ArgumentParser(description="Analyze a completed TCAM1DCNN experiment without retraining.")
     parser.add_argument("--exp_dir", required=True, help="Experiment fold directory, e.g. experiments/paper9_msle_fp32/fold_1")
-    parser.add_argument("--data_dir", default=default_data_dir())
+    parser.add_argument("--data_dir", default=None)
     parser.add_argument("--config", default="configs/rtx3090_config.json")
     parser.add_argument("--fold", type=int, default=1)
     parser.add_argument("--checkpoint", default=None, help="Checkpoint path. Defaults to cycle 4 inside exp_dir.")
@@ -545,9 +584,16 @@ def main():
     metrics = read_json(os.path.join(args.exp_dir, "metrics.json"))
     history = read_json(os.path.join(args.exp_dir, "history.json"))
 
+    dataset_name = normalize_dataset_name(
+        (metrics or {}).get("dataset", cfg.get("dataset", cfg.get("dataset_name", "urbansound8k")))
+    )
+    data_dir = args.data_dir or (metrics or {}).get("data_dir") or cfg.get("data_dir") or default_data_dir(dataset_name)
+    clip_seconds = float((metrics or {}).get("clip_seconds", cfg.get("clip_seconds", 4.0)))
+
     print("=== Experiment metadata ===")
     print(f"exp_dir: {args.exp_dir}")
-    print(f"data_dir: {args.data_dir}")
+    print(f"dataset: {dataset_name}")
+    print(f"data_dir: {data_dir}")
     print(f"fold: {args.fold}")
     if metrics:
         keys = [
@@ -565,9 +611,15 @@ def main():
     if history and history.get("train_acc"):
         print(f"final_train_frame_acc: {history['train_acc'][-1] * 100:.2f}%")
 
-    csv_path = os.path.join(args.data_dir, "metadata", "UrbanSound8K.csv")
-    audio_base = os.path.join(args.data_dir, "audio")
-    clip_records = parse_dataset(csv_path, audio_base, CLASS_NAMES)
+    clip_records, class_names, dataset_name = parse_audio_dataset(
+        dataset_name,
+        data_dir,
+        sample_rate=cfg.get("sample_rate", 16000),
+        clip_seconds=clip_seconds,
+    )
+    if metrics and metrics.get("class_names"):
+        class_names = list(metrics["class_names"])
+    num_classes = len(class_names)
     protocol = (metrics or {}).get("protocol", cfg.get("protocol", "paper_9_1"))
     val_records = []
     if protocol == "random_clip_9_1":
@@ -617,6 +669,23 @@ def main():
         train_records = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
         val_records = [r for r in clip_records if r["fold"] == val_fold]
         print(f"Reconstructed clean_8_1_1 split with test fold={args.fold}, val fold={val_fold}.")
+    elif protocol == "esc50_3_1_1_foldk_valnext_v1":
+        split_fold = int((metrics or {}).get("test_fold", args.fold))
+        val_fold = (split_fold % 5) + 1
+        test_records = [r for r in clip_records if r["fold"] == split_fold]
+        val_records = [r for r in clip_records if r["fold"] == val_fold]
+        train_records = [r for r in clip_records if r["fold"] not in {split_fold, val_fold}]
+        print(f"Reconstructed esc50_3_1_1 split with test fold={split_fold}, val fold={val_fold}.")
+    elif protocol == "esc50_official_4_1_cv":
+        split_fold = int((metrics or {}).get("test_fold", args.fold))
+        test_records = [r for r in clip_records if r["fold"] == split_fold]
+        train_records = [r for r in clip_records if r["fold"] != split_fold]
+        print(f"Reconstructed esc50_official_4_1_cv split with test fold={split_fold}.")
+    elif protocol == "speech_commands_v2_official12":
+        train_records = [r for r in clip_records if r.get("split") == "train"]
+        val_records = [r for r in clip_records if r.get("split") == "validation"]
+        test_records = [r for r in clip_records if r.get("split") == "test"]
+        print("Reconstructed Speech Commands official train/validation/test split.")
     else:
         test_records = [r for r in clip_records if r["fold"] == args.fold]
         train_records = [r for r in clip_records if r["fold"] != args.fold]
@@ -663,7 +732,7 @@ def main():
     if args.eval_train:
         selected_records.extend(train_records)
     print(f"\nPreloading {len({r['path'] for r in selected_records})} unique clips...")
-    cached_waveforms = preload_waveforms(selected_records, cfg.get("sample_rate", 16000))
+    cached_waveforms = preload_waveforms(selected_records, cfg.get("sample_rate", 16000), clip_seconds)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     input_transform = build_input_transform(cfg, device)
@@ -701,6 +770,8 @@ def main():
         report = {
             "exp_dir": args.exp_dir,
             "fold": args.fold,
+            "dataset": dataset_name,
+            "class_names": class_names,
             "model": "all_cycles",
             "metrics": metrics,
             "final_train_frame_acc": history["train_acc"][-1] if history and history.get("train_acc") else None,
@@ -710,7 +781,7 @@ def main():
             if not os.path.exists(checkpoint_path):
                 print(f"\nCycle {cycle_id}: checkpoint missing, skipped: {checkpoint_path}")
                 continue
-            models = [load_model(checkpoint_path, device, cfg, metrics)]
+            models = [load_model(checkpoint_path, device, cfg, metrics, num_classes)]
             print(f"\n--- Cycle {cycle_id}: {os.path.basename(checkpoint_path)} ---")
             cycle_report = {
                 "cycle": cycle_id,
@@ -726,6 +797,7 @@ def main():
                     frames_per_clip,
                     drop_eval_tail,
                     sample_rate,
+                    class_names,
                 ),
             }
             if val_records:
@@ -740,6 +812,7 @@ def main():
                     frames_per_clip,
                     drop_eval_tail,
                     sample_rate,
+                    class_names,
                 )
             if args.eval_modes:
                 cycle_report["test_modes"] = evaluate_split_modes(
@@ -755,6 +828,7 @@ def main():
                     drop_eval_tail,
                     sample_rate,
                     input_transform,
+                    class_names,
                 )
             report["cycles"].append(cycle_report)
 
@@ -769,7 +843,7 @@ def main():
             os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_3.pt"),
             os.path.join(args.exp_dir, "checkpoints", f"tcam_fold_{args.fold}_cycle_4.pt"),
         ]
-        models = [load_model(path, device, cfg, metrics) for path in checkpoint_paths]
+        models = [load_model(path, device, cfg, metrics, num_classes) for path in checkpoint_paths]
         model_name = "ensemble_last2"
     else:
         checkpoint_path = args.checkpoint or os.path.join(
@@ -777,13 +851,15 @@ def main():
             "checkpoints",
             f"tcam_fold_{args.fold}_cycle_4.pt",
         )
-        models = [load_model(checkpoint_path, device, cfg, metrics)]
+        models = [load_model(checkpoint_path, device, cfg, metrics, num_classes)]
         model_name = os.path.basename(checkpoint_path)
 
     print(f"\n=== Evaluating {model_name} on {device} ===")
     report = {
         "exp_dir": args.exp_dir,
         "fold": args.fold,
+        "dataset": dataset_name,
+        "class_names": class_names,
         "model": model_name,
         "metrics": metrics,
         "final_train_frame_acc": history["train_acc"][-1] if history and history.get("train_acc") else None,
@@ -799,6 +875,7 @@ def main():
         frames_per_clip,
         drop_eval_tail,
         sample_rate,
+        class_names,
     )
     if val_records:
         report["val"] = evaluate_split(
@@ -812,6 +889,7 @@ def main():
             frames_per_clip,
             drop_eval_tail,
             sample_rate,
+            class_names,
         )
     if args.eval_train:
         report["train"] = evaluate_split(
@@ -825,6 +903,7 @@ def main():
             frames_per_clip,
             drop_eval_tail,
             sample_rate,
+            class_names,
         )
     if args.eval_modes:
         report["test_modes"] = evaluate_split_modes(
@@ -840,6 +919,7 @@ def main():
             drop_eval_tail,
             sample_rate,
             input_transform,
+            class_names,
         )
         if args.eval_train:
             report["train_modes"] = evaluate_split_modes(
@@ -855,6 +935,7 @@ def main():
                 drop_eval_tail,
                 sample_rate,
                 input_transform,
+                class_names,
             )
 
     output_path = os.path.join(args.exp_dir, f"analysis_{model_name}.json")

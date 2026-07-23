@@ -8,8 +8,94 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset
 
 
+URBANSOUND8K_CLASS_NAMES = [
+    "air_conditioner",
+    "car_horn",
+    "children_playing",
+    "dog_bark",
+    "drilling",
+    "engine_idling",
+    "gun_shot",
+    "jackhammer",
+    "siren",
+    "street_music",
+]
+
+SPEECH_COMMANDS_WORDS = [
+    "down",
+    "go",
+    "left",
+    "no",
+    "off",
+    "on",
+    "right",
+    "stop",
+    "up",
+    "yes",
+]
+SPEECH_COMMANDS_SILENCE = "_silence_"
+SPEECH_COMMANDS_UNKNOWN = "_unknown_"
+SPEECH_COMMANDS_BACKGROUND_NOISE = "_background_noise_"
+SPEECH_COMMANDS_CLASS_NAMES = SPEECH_COMMANDS_WORDS + [
+    SPEECH_COMMANDS_SILENCE,
+    SPEECH_COMMANDS_UNKNOWN,
+]
+
+
 def _db_to_amplitude(db):
     return 10.0 ** (db / 20.0)
+
+
+def normalize_dataset_name(name):
+    value = str(name or "urbansound8k").strip().lower().replace("-", "_")
+    aliases = {
+        "us8k": "urbansound8k",
+        "urban_sound_8k": "urbansound8k",
+        "urban_sound8k": "urbansound8k",
+        "esc_50": "esc50",
+        "speechcommands": "speech_commands",
+        "speech_commands_v2": "speech_commands",
+        "gsc": "speech_commands",
+        "gsc_v2": "speech_commands",
+    }
+    return aliases.get(value, value)
+
+
+def get_default_class_names(dataset_name):
+    dataset_name = normalize_dataset_name(dataset_name)
+    if dataset_name == "urbansound8k":
+        return list(URBANSOUND8K_CLASS_NAMES)
+    if dataset_name == "speech_commands":
+        return list(SPEECH_COMMANDS_CLASS_NAMES)
+    if dataset_name == "esc50":
+        return None
+    raise ValueError(f"Unsupported dataset '{dataset_name}'.")
+
+
+def _required_csv_field(header, field, csv_path):
+    if field not in header:
+        raise RuntimeError(f"Metadata file {csv_path} is missing required column '{field}'.")
+    return header.index(field)
+
+
+def _read_path_list(path):
+    if not os.path.exists(path):
+        raise RuntimeError(f"Required split file not found: {path}")
+    values = set()
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            item = line.strip().replace("\\", "/")
+            if item:
+                values.add(item)
+    return values
+
+
+def _speech_speaker_id(filename):
+    base = os.path.basename(filename)
+    marker = "_nohash_"
+    if marker in base:
+        return base.split(marker, 1)[0]
+    return os.path.splitext(base)[0]
 
 
 class WaveformAugment:
@@ -203,6 +289,207 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
     print(f"Parsed {len(records)} standard audio clips (10 classes, rail_vehicle excluded).")
     return records
 
+
+def parse_esc50_dataset(data_dir):
+    csv_path = os.path.join(data_dir, "meta", "esc50.csv")
+    audio_base_dir = os.path.join(data_dir, "audio")
+    if not os.path.exists(csv_path):
+        raise RuntimeError(f"ESC-50 metadata not found: {csv_path}")
+    if not os.path.isdir(audio_base_dir):
+        raise RuntimeError(f"ESC-50 audio directory not found: {audio_base_dir}")
+
+    records = []
+    target_to_category = {}
+    missing_paths = []
+    with open(csv_path, "r", encoding="utf-8") as f:
+        r = csv.reader(f)
+        header = next(r)
+        filename_idx = _required_csv_field(header, "filename", csv_path)
+        fold_idx = _required_csv_field(header, "fold", csv_path)
+        target_idx = _required_csv_field(header, "target", csv_path)
+        category_idx = _required_csv_field(header, "category", csv_path)
+        src_file_idx = _required_csv_field(header, "src_file", csv_path)
+        take_idx = header.index("take") if "take" in header else None
+
+        for row in r:
+            filename = row[filename_idx]
+            fold = int(row[fold_idx])
+            target = int(row[target_idx])
+            category = row[category_idx]
+            src_file = row[src_file_idx]
+            target_to_category[target] = category
+            path = os.path.join(audio_base_dir, filename)
+            if not os.path.exists(path):
+                missing_paths.append(path)
+                continue
+            record = {
+                "path": path,
+                "slice_file_name": filename,
+                "label": target,
+                "fold": fold,
+                "cls_name": category,
+                "fsID": src_file,
+                "classID": target,
+                "src_file": src_file,
+                "clip_id": filename,
+            }
+            if take_idx is not None:
+                record["take"] = row[take_idx]
+            records.append(record)
+
+    if missing_paths:
+        examples = "\n".join(missing_paths[:20])
+        raise RuntimeError(
+            f"ESC-50 metadata references {len(missing_paths)} missing audio files. "
+            f"First missing paths:\n{examples}"
+        )
+    if len(records) != 2000:
+        raise RuntimeError(f"Expected 2000 ESC-50 clips, parsed {len(records)} from {csv_path}.")
+    if sorted(target_to_category) != list(range(50)):
+        raise RuntimeError(
+            f"Expected ESC-50 targets 0..49, found {sorted(target_to_category)}."
+        )
+
+    class_names = [target_to_category[idx] for idx in range(50)]
+    print("Parsed 2000 ESC-50 clips (50 classes, 5 folds).")
+    return records, class_names
+
+
+def parse_speech_commands_dataset(data_dir, sample_rate=16000, clip_seconds=1.0):
+    if not os.path.isdir(data_dir):
+        raise RuntimeError(f"Speech Commands directory not found: {data_dir}")
+
+    class_names = list(SPEECH_COMMANDS_CLASS_NAMES)
+    class_map = {name: idx for idx, name in enumerate(class_names)}
+    validation_paths = _read_path_list(os.path.join(data_dir, "validation_list.txt"))
+    testing_paths = _read_path_list(os.path.join(data_dir, "testing_list.txt"))
+
+    records = []
+    missing_paths = []
+    wav_paths = []
+    for root, dirs, files in os.walk(data_dir):
+        dirs[:] = [d for d in dirs if d != SPEECH_COMMANDS_BACKGROUND_NOISE]
+        for filename in files:
+            if filename.lower().endswith(".wav"):
+                wav_paths.append(os.path.join(root, filename))
+    available_rel_paths = {
+        os.path.relpath(path, data_dir).replace("\\", "/")
+        for path in wav_paths
+    }
+    missing_split_paths = sorted(
+        path
+        for path in (validation_paths | testing_paths)
+        if path not in available_rel_paths and not path.startswith(f"{SPEECH_COMMANDS_BACKGROUND_NOISE}/")
+    )
+    if missing_split_paths:
+        examples = "\n".join(missing_split_paths[:20])
+        raise RuntimeError(
+            f"Speech Commands split lists reference {len(missing_split_paths)} missing WAV files. "
+            f"First missing paths:\n{examples}"
+        )
+
+    for path in sorted(wav_paths):
+        rel = os.path.relpath(path, data_dir).replace("\\", "/")
+        word = rel.split("/", 1)[0].lower()
+        if word == SPEECH_COMMANDS_BACKGROUND_NOISE:
+            continue
+        if not os.path.exists(path):
+            missing_paths.append(path)
+            continue
+        split = "validation" if rel in validation_paths else "test" if rel in testing_paths else "train"
+        label_name = word if word in SPEECH_COMMANDS_WORDS else SPEECH_COMMANDS_UNKNOWN
+        label = class_map[label_name]
+        speaker_id = _speech_speaker_id(os.path.basename(path))
+        records.append({
+            "path": path,
+            "slice_file_name": rel,
+            "label": label,
+            "fold": split,
+            "split": split,
+            "cls_name": label_name,
+            "raw_word": word,
+            "fsID": speaker_id,
+            "classID": label,
+            "clip_id": rel,
+            "duration": clip_seconds,
+        })
+
+    noise_dir = os.path.join(data_dir, SPEECH_COMMANDS_BACKGROUND_NOISE)
+    if not os.path.isdir(noise_dir):
+        raise RuntimeError(
+            f"Speech Commands 12-label contract requires {SPEECH_COMMANDS_BACKGROUND_NOISE}: {noise_dir}"
+        )
+    window_len = int(sample_rate * clip_seconds)
+    silence_hop = max(1, window_len // 2)
+    for filename in sorted(os.listdir(noise_dir)):
+        if not filename.lower().endswith(".wav"):
+            continue
+        path = os.path.join(noise_dir, filename)
+        try:
+            info = torchaudio.info(path)
+            source_sr = int(info.sample_rate or sample_rate)
+            target_num_frames = int(float(info.num_frames) * sample_rate / max(source_sr, 1))
+            starts = list(range(0, max(1, target_num_frames - window_len), silence_hop)) or [0]
+        except Exception as exc:
+            raise RuntimeError(f"Failed to inspect background-noise file: {path}") from exc
+
+        split = "validation" if filename == "running_tap.wav" else "train"
+        for idx, start in enumerate(starts):
+            rel = os.path.relpath(path, data_dir).replace("\\", "/")
+            clip_id = f"{rel}#silence_{idx:04d}_{start}"
+            records.append({
+                "path": path,
+                "slice_file_name": clip_id,
+                "label": class_map[SPEECH_COMMANDS_SILENCE],
+                "fold": split,
+                "split": split,
+                "cls_name": SPEECH_COMMANDS_SILENCE,
+                "raw_word": SPEECH_COMMANDS_BACKGROUND_NOISE,
+                "fsID": f"{filename}",
+                "classID": class_map[SPEECH_COMMANDS_SILENCE],
+                "clip_id": clip_id,
+                "frame_start": start,
+                "duration": clip_seconds,
+                "cache_full_waveform": True,
+            })
+
+    if missing_paths:
+        examples = "\n".join(missing_paths[:20])
+        raise RuntimeError(
+            f"Speech Commands metadata references {len(missing_paths)} missing audio files. "
+            f"First missing paths:\n{examples}"
+        )
+    if not records:
+        raise RuntimeError(f"No Speech Commands WAV files found under {data_dir}.")
+
+    split_counts = {}
+    for record in records:
+        split_counts[record["split"]] = split_counts.get(record["split"], 0) + 1
+    print(f"Parsed {len(records)} Speech Commands records with split counts {split_counts}.")
+    return records, class_names
+
+
+def parse_audio_dataset(dataset_name, data_dir, class_names=None, sample_rate=16000, clip_seconds=None):
+    dataset_name = normalize_dataset_name(dataset_name)
+    if dataset_name == "urbansound8k":
+        names = list(class_names or URBANSOUND8K_CLASS_NAMES)
+        csv_path = os.path.join(data_dir, "metadata", "UrbanSound8K.csv")
+        audio_base = os.path.join(data_dir, "audio")
+        return parse_dataset(csv_path, audio_base, names), names, dataset_name
+    if dataset_name == "esc50":
+        records, names = parse_esc50_dataset(data_dir)
+        return records, names, dataset_name
+    if dataset_name == "speech_commands":
+        records, names = parse_speech_commands_dataset(
+            data_dir,
+            sample_rate=int(sample_rate),
+            clip_seconds=float(clip_seconds if clip_seconds is not None else 1.0),
+        )
+        return records, names, dataset_name
+    raise ValueError(
+        f"Unsupported dataset '{dataset_name}'. Use 'urbansound8k', 'esc50', or 'speech_commands'."
+    )
+
 def generate_frame_records(
     clip_records,
     frame_length=8000,
@@ -227,10 +514,12 @@ def generate_frame_records(
         duration_samples = None
         if drop_silent_tail_frames and "duration" in r:
             duration_samples = int(float(r["duration"]) * sample_rate)
+        base_frame_start = int(r.get("frame_start", 0))
         for i in range(frames_per_clip):
-            frame_start = i * frame_hop
-            if duration_samples is not None and frame_start >= duration_samples:
+            relative_frame_start = i * frame_hop
+            if duration_samples is not None and relative_frame_start >= duration_samples:
                 continue
+            frame_start = base_frame_start + relative_frame_start
             frame_records.append({
                 "path": r["path"],
                 "label": r["label"],
@@ -239,10 +528,11 @@ def generate_frame_records(
                 "slice_file_name": r.get("slice_file_name"),
                 "fsID": r.get("fsID"),
                 "classID": r.get("classID"),
+                "clip_id": r.get("clip_id", r["path"]),
             })
     return frame_records
 
-def load_audio_to_ram(path, sample_rate=16000):
+def load_audio_to_ram(path, sample_rate=16000, clip_seconds=4.0):
     """
     Helper function to load, resample, and pad a single audio file to RAM.
     Raises on any decode or waveform-integrity problem. Replacing failed clips
@@ -264,11 +554,12 @@ def load_audio_to_ram(path, sample_rate=16000):
         resampler = torchaudio.transforms.Resample(source_sr, sample_rate)
         waveform = resampler(waveform)
 
-    target_len = sample_rate * 4
-    if waveform.shape[-1] < target_len:
-        waveform = F.pad(waveform, (0, target_len - waveform.shape[-1]), mode='constant')
-    else:
-        waveform = waveform[:, :target_len]
+    if clip_seconds is not None:
+        target_len = int(sample_rate * float(clip_seconds))
+        if waveform.shape[-1] < target_len:
+            waveform = F.pad(waveform, (0, target_len - waveform.shape[-1]), mode='constant')
+        else:
+            waveform = waveform[:, :target_len]
 
     if not torch.isfinite(waveform).all():
         raise RuntimeError(f"Preprocessed waveform contains NaN or Inf: {path}")

@@ -1,5 +1,7 @@
 # Server 3090 Full-10 Runbook
 
+> **Status:** optional/archived full-10 scheduling note. New Phase 1 dataset work starts from `main` and follows [`../data/MULTIDATASET_PHASE1.md`](../data/MULTIDATASET_PHASE1.md) plus [`../main/SERVER_POLICY.md`](../main/SERVER_POLICY.md).
+
 Purpose:
 
 ```text
@@ -11,8 +13,8 @@ Branch:
 
 ```bash
 git fetch origin
-git checkout research/fpga-1dcnn-90acc
-git pull
+git checkout main
+git pull origin main
 ```
 
 Check environment:
@@ -29,7 +31,7 @@ NVIDIA RTX 3090
 VRAM: about 24GB
 ```
 
-The server configs use:
+The legacy 200-epoch server configs use:
 
 ```text
 batch_size=128
@@ -37,9 +39,10 @@ amp=true
 num_workers=0
 ```
 
-This is intentionally conservative for avoiding dataloader/cache issues while
-still using more VRAM than the local RTX 5060 setup. If CUDA OOM happens, rerun
-the same command with:
+This was intentionally conservative for avoiding dataloader/cache issues. For
+new main/Phase 1 configs on `CPU-FPGA-GPU`, prefer the canonical server default
+from [`../main/SERVER_POLICY.md`](../main/SERVER_POLICY.md): `batch_size=64`,
+`num_workers=6`, `amp=true`. If CUDA OOM happens, rerun the same command with:
 
 ```bash
 --batch_size 64 --skip_existing

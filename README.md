@@ -10,6 +10,7 @@
 | **Training hardware (paper)** | **NVIDIA RTX 3090** |
 | **Reproducibility seed** | **83** |
 | **Phase A target** | **80–85%** best-val test (single / ensemble / KD student) |
+| **Phase 1 expansion** | ESC-50 + Speech Commands contracts before training claims |
 | **Phase B (later)** | SoC → quantization → KV260 |
 
 **Paper naming** of splits and runs: [`docs/paper/NAMING.md`](docs/paper/NAMING.md) · **Bias & checkpoints:** [`docs/paper/BIAS_AND_CHECKPOINTS.md`](docs/paper/BIAS_AND_CHECKPOINTS.md) · **Achieved:** [`docs/main/ACHIEVED.md`](docs/main/ACHIEVED.md)
@@ -84,13 +85,13 @@ Primary metric when validation exists: **`test_acc_best_val_model`**.
 
 #### (iv) Multi-dataset seed status
 
-| Dataset | Role | Seeded | Trained |
-|---------|------|--------|---------|
+| Dataset | Role | Loader/config | Trained |
+|---------|------|---------------|---------|
 | **UrbanSound8K** | Primary | **yes** | **yes** |
-| **ESC-50** | Secondary | **not yet** | **not yet** |
-| **Speech Commands** (subset) | Edge / short-clip | **not yet** | **not yet** |
+| **ESC-50** | Secondary | **Phase 1 initial** | **not yet** |
+| **Speech Commands** (subset) | Edge / short-clip | **Phase 1 initial** | **not yet** |
 
-Details: [`docs/paper/DATA.md`](docs/paper/DATA.md), [`docs/paper/NAMING.md`](docs/paper/NAMING.md).
+Details: [`docs/paper/DATA.md`](docs/paper/DATA.md), [`docs/data/MULTIDATASET_PHASE1.md`](docs/data/MULTIDATASET_PHASE1.md), [`docs/paper/NAMING.md`](docs/paper/NAMING.md).
 
 ---
 
@@ -201,7 +202,7 @@ Same SDP MAIN recipe, seed 83: fold-1 peak **79.08%**; folds 1–3 mean **~71.2%
 | Near-term Track 1 | Stable **≥80%** SDP single (beyond one fold peak) |
 | Near-term Track 3 | KD-Student toward **82–85%** without deploying teacher |
 | Method (OFP) | Lift **OFP + MC-ISR** from 67.7% toward **≥75%** (do not re-run rejected v2 axis) |
-| Multi-dataset | Seed **ESC-50** + **Speech Commands** (now: not trained) |
+| Multi-dataset | Phase 1 seed **ESC-50** + **Speech Commands** loaders/splits before accuracy claims |
 | Phase B | Quant + KV260 after Phase A is credible |
 
 ---
@@ -239,6 +240,7 @@ Full explanation: [`docs/paper/BIAS_AND_CHECKPOINTS.md`](docs/paper/BIAS_AND_CHE
 | `*_weights.pt` | Kernels / BN-γ / FC-W only |
 | `*_biases.pt` | **Bias sidecar** (BN-β + FC bias) for deploy audit / DPU packing notes |
 | `*_package_manifest.json` | Per-tensor stats |
+| `layer_q16_txt_*/` | Optional per-layer Q16 `*_weight_q16.txt` / `*_bias_q16.txt` files for RTL/HLS |
 
 Export (local artifacts; `*.pt` is gitignored):
 
@@ -256,6 +258,16 @@ python tools/export_checkpoint_package.py \
 
 **Rule:** bias export **never replaces** the full `.pt`. Hardware buffers may split weight vs bias; research eval always reloads the full checkpoint.
 
+For FPGA/RTL teams that want one text file per layer tensor:
+
+```bash
+python tools/export_layer_q16_txt.py --export_deploy_models
+```
+
+Default Q16 text export is `bn_fused`, so Conv + BatchNorm become a single
+affine Conv weight/bias pair. Use `manifest_q16.json` for shapes, scales,
+source tensor names, and flatten order.
+
 ---
 
 ## 6. Repository layout
@@ -270,6 +282,7 @@ src/models/                   # DS-Conv2D-H1, DS-Res1D-SE, AST teacher, …
 tools/
   generate_paper_figures_v2.py
   export_checkpoint_package.py
+  export_layer_q16_txt.py
 docs/paper/                   # DATA, MODELS, NAMING, BIAS, figures/
 docs/main/                    # ACHIEVED, tracks, MC-ISR
 artifacts/checkpoints/        # local full.pt + biases.pt packages (gitignored .pt)
@@ -286,6 +299,8 @@ python tools/generate_paper_figures_v2.py
 ## 7. Quick start
 
 ```bash
+git checkout main
+
 pip install -r requirements.txt
 
 python tools/run_multifold.py \

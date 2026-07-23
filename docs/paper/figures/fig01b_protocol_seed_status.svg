@@ -2439,7 +2439,7 @@ z
     </g>
    </g>
    <g id="text_24">
-    <!-- ESC-50 — secondary comparison · loaders not implemented · NOT SEEDED · NOT TRAINED -->
+    <!-- ESC-50 — Phase 1 loader/config added · NOT FULL-TRAINED -->
     <g transform="translate(100.903125 287.079412) scale(0.1 -0.1)">
      <defs>
       <path id="DejaVuSans-35" d="M 691 4666 
@@ -2553,7 +2553,7 @@ z
     </g>
    </g>
    <g id="text_25">
-    <!-- Speech Commands (subset) — edge / short-clip · loaders not implemented · NOT SEEDED · NOT TRAINED -->
+    <!-- Speech Commands (subset) — Phase 1 loader/config added · NOT FULL-TRAINED -->
     <g transform="translate(64.480469 312.344212) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-53"/>
      <use xlink:href="#DejaVuSans-70" transform="translate(63.476562 0)"/>

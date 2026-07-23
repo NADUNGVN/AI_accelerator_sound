@@ -18,10 +18,12 @@ docs/
 | 1 | [main/README.md](main/README.md) |
 | 2 | [data/README.md](data/README.md) — **phân tích dữ liệu & kết quả chuẩn** |
 | 3 | [main/SETUP_DEPLOY_SOURCE_SAFE.md](main/SETUP_DEPLOY_SOURCE_SAFE.md) |
-| 4 | [main/DECISIONS_LOG.md](main/DECISIONS_LOG.md) |
-| 5 | [experiments/REGISTRY.md](experiments/REGISTRY.md) |
-| 6 | [../configs/INDEX.md](../configs/INDEX.md) |
-| 7 | [main/PROMOTE_TO_MAIN.md](main/PROMOTE_TO_MAIN.md) — research → `main` |
+| 4 | [main/SERVER_POLICY.md](main/SERVER_POLICY.md) — server `.9`, `main` only |
+| 5 | [data/MULTIDATASET_PHASE1.md](data/MULTIDATASET_PHASE1.md) — ESC-50 + Speech Commands contract |
+| 6 | [main/DECISIONS_LOG.md](main/DECISIONS_LOG.md) |
+| 7 | [experiments/REGISTRY.md](experiments/REGISTRY.md) |
+| 8 | [../configs/INDEX.md](../configs/INDEX.md) |
+| 9 | [main/PROMOTE_TO_MAIN.md](main/PROMOTE_TO_MAIN.md) — historical, promotion completed |
 
 ## Configs
 

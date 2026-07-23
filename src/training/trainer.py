@@ -380,10 +380,11 @@ class Trainer:
         for m in models:
             m.eval()
             
-        # Group records by audio path
+        # Group records by logical clip. Most datasets use one path per clip;
+        # Speech Commands silence windows can share one background-noise path.
         clips = defaultdict(list)
         for r in records:
-            clips[r["path"]].append(r)
+            clips[r.get("clip_id", r["path"])].append(r)
             
         correct = 0
         total = len(clips)
@@ -396,13 +397,15 @@ class Trainer:
         offsets = [i * frame_hop for i in range(frames_per_clip)]
         
         with torch.no_grad():
-            for path, frames in clips.items():
+            for _, frames in clips.items():
                 label = frames[0]["label"]
+                path = frames[0]["path"]
                 waveform_np = cached_waveforms[path]
                 waveform = torch.from_numpy(waveform_np)
                 duration_samples = None
                 if drop_silent_tail_frames and "duration" in frames[0]:
                     duration_samples = int(float(frames[0]["duration"]) * sample_rate)
+                base_frame_start = int(frames[0].get("frame_start", 0))
                     
                 # Extract clip frames. Duration-aware eval avoids summing padding-only
                 # frames for short events such as car horns.
@@ -410,12 +413,13 @@ class Trainer:
                 for offset in offsets:
                     if duration_samples is not None and offset >= duration_samples:
                         continue
-                    frame = waveform[:, offset:offset + frame_length]
+                    absolute_offset = base_frame_start + offset
+                    frame = waveform[:, absolute_offset:absolute_offset + frame_length]
                     if frame.shape[-1] < frame_length:
                         frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
                     batch_frames.append(frame)
                 if not batch_frames:
-                    frame = waveform[:, :frame_length]
+                    frame = waveform[:, base_frame_start:base_frame_start + frame_length]
                     if frame.shape[-1] < frame_length:
                         frame = F.pad(frame, (0, frame_length - frame.shape[-1]), mode='constant')
                     batch_frames.append(frame)
@@ -447,6 +451,7 @@ class Trainer:
                 if return_predictions:
                     predictions.append({
                         "path": path,
+                        "clip_id": frames[0].get("clip_id", path),
                         "label": label,
                         "predicted": predicted_class
                     })

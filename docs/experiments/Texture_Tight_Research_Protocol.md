@@ -102,6 +102,6 @@ Decision uses **(2)+(4)** primarily; (5) explains mechanism.
 
 ## F. Git / server hygiene
 
-- Code branch: `research/fpga-1dcnn-90acc`  
+- Code branch for any rerun: `main`
 - Results: force-add JSON/MD only on `results/server3090-texture-f1` (or new results branch)  
 - Never `git add .` for experiments (ignored); never commit `*.pt`

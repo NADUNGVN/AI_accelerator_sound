@@ -40,6 +40,17 @@ So “bias” here is **not** statistical estimation bias of the accuracy metric
 
 Hardware toolchains often store **MAC weights** and **bias/scale** in different on-chip memories. Exporting bias separately makes that mapping explicit **without** replacing the full PyTorch checkpoint.
 
+For custom RTL/HLS, there is also a per-layer Q16 text export:
+
+```bash
+python tools/export_layer_q16_txt.py --export_deploy_models
+```
+
+Its default `bn_fused` mode folds BatchNorm into each Conv layer and therefore
+creates an effective `*_bias_q16.txt` file for every Conv+BN block, even though
+the raw PyTorch Conv modules use `bias=False`. The generated
+`manifest_q16.json` records the source tensors, shape, scale, and flatten order.
+
 ## How to export
 
 ```bash

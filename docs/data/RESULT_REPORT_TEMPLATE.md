@@ -5,8 +5,9 @@ Copy into `docs/experiments/notes/` or lab log.
 ```markdown
 ## Exp: <exp_name>
 - Date:
-- Branch (code): research/fpga-1dcnn-90acc @ <sha>
+- Branch (code): main @ <sha>
 - Results branch:
+- Dataset:
 - Config:
 - Protocol / seed:
 - Folds / epochs:

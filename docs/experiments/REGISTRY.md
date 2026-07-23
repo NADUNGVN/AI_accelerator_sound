@@ -15,7 +15,7 @@ Artifacts live under `experiments/<exp_name>/` (gitignored locally; some metrics
 
 ---
 
-## BASELINE / BEST ACHIEVED (main — one research truth)
+## BASELINE / BEST ACHIEVED (main — one main truth)
 
 Do **not** headline “local vs server”. Use [../main/ACHIEVED.md](../main/ACHIEVED.md).
 

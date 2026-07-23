@@ -43,14 +43,14 @@ Figures: `fig01_pipeline_framing_fullclip.png`, `fig01b_protocol_seed_status.png
 
 ---
 
-## Secondary datasets (paper scope — **not yet seeded**)
+## Secondary datasets (Phase 1 scope — initial loader/config, not yet trained)
 
-| Dataset | Role | Loader | Seeded | Trained |
+| Dataset | Role | Phase 1 protocol | Loader | Trained |
 |---|---|---|---|---|
-| **ESC-50** | environmental multi-class comparison (50 classes, 5-fold) | **not implemented** | **No** | **No** |
-| **Speech Commands** (subset) | short-clip / edge / KV260 narrative | **not implemented** | **No** | **No** |
+| **ESC-50** | environmental multi-class comparison (50 classes, 5-fold) | `esc50_3_1_1_foldk_valnext_v1` for validation-selected runs; `esc50_official_4_1_cv` only for literature side table | **initial implemented** | **No** |
+| **Speech Commands** (subset) | short-clip / edge / KV260 narrative | `speech_commands_v2_official12` using official train/validation/test split | **initial implemented** | **No** |
 
-These appear in the paper plan as follow-on experiments. Do not report accuracy for them until loaders, splits, and metrics are committed.
+These appear in the paper plan as follow-on experiments. Do not report accuracy for them until dataset availability, split fingerprints, smoke runs, and metrics are committed. Canonical contract: [`../data/MULTIDATASET_PHASE1.md`](../data/MULTIDATASET_PHASE1.md).
 
 ---
 

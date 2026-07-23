@@ -1,7 +1,7 @@
 # Main setup (deploy / thesis) — re-locked
 
-**Date:** 2026-07-21  
-**Branch:** `research/fpga-1dcnn-90acc`
+**Date:** 2026-07-23
+**Branch:** `main`
 
 ## Dropped from the main path
 
@@ -22,7 +22,7 @@ Official 10-fold without val is a **literature leaderboard** protocol, not requi
 |---|---|
 | **Model** | `kv260_audio_net_ds1d` full-clip |
 | **Params / MAC** | ~101.7k / ~61.9M |
-| **Config** | `configs/kv260_ds1d_pyramid_mixup_ema_val.json` |
+| **Config** | `configs/main/student_ds_conv2d_h1_pyramid_sourcegroup.json` (`configs/kv260_ds1d_pyramid_mixup_ema_val.json` remains a legacy alias) |
 | **Protocol** | `source_group_8_1_1` + `fsid_classid_balanced_v1` |
 | **Seed** | `83` (reproducibility of splits/train; keep) |
 | **Data split** | Train / **Val** / Test (8+1+1 source buckets) |
@@ -35,8 +35,9 @@ Official 10-fold without val is a **literature leaderboard** protocol, not requi
 
 | Source | Best-val → test | Ensemble (secondary) |
 |---|---:|---:|
-| Local fold1 (existing) | ~79.08% | ~79.89% |
-| Server H0 fold1 (existing) | **~76.90%** | ~75.40% |
+| Model A no-teacher fold1 peak | **79.08%** | **79.89%** |
+| Model B KD-student fold1 peak | **80.00%** | **80.23%** |
+| Server H0 fold1 (secondary artifact) | ~76.90% | ~75.40% |
 
 ### Hardware story (main)
 
@@ -53,14 +54,19 @@ That is **not** the dropped “paper_9_1 seed of work”.
 
 1. **No** full-10 `paper_9_1` unless a reviewer later demands a side table.  
 2. Continue from **source-safe H0** as baseline (already on server).  
-3. Next experiments: only if they improve **best-val test** under same protocol (or KD student later).  
-4. Push results with `git add -f` on metrics JSON/MD only.
+3. Phase 1 dataset expansion: smoke **ESC-50** / **Speech Commands** loaders/configs before reporting any new accuracy.
+4. Next UrbanSound8K experiments: only if they improve **best-val test** under same protocol (or KD student later).
+5. Push results with `git add -f` on metrics JSON/MD only.
+
+Server policy: [SERVER_POLICY.md](SERVER_POLICY.md).
 
 ## Server quick check
 
 ```bash
 cd ~/Dung_TDTU/AI_accelerator_sound_source_tests
-git pull origin research/fpga-1dcnn-90acc
-test -f configs/kv260_ds1d_pyramid_mixup_ema_val.json && echo OK_MAIN
+git fetch origin
+git checkout main
+git pull origin main
+test -f configs/main/student_ds_conv2d_h1_pyramid_sourcegroup.json && echo OK_MAIN
 # protocol must be source_group_8_1_1 in that file
 ```

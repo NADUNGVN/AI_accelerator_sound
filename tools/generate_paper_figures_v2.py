@@ -200,8 +200,8 @@ def fig_protocol_seed():
                                 facecolor="#fef2f2", edgecolor="#dc2626", linewidth=1.8))
     ax.text(6.0, 2.5, "Multi-dataset paper scope — seed status", ha="center", fontsize=12, fontweight="bold", color="#991b1b")
     ax.text(6.0, 1.95, "UrbanSound8K — primary · SEEDED and TRAINED", ha="center", fontsize=10)
-    ax.text(6.0, 1.4, "ESC-50 — secondary comparison · loaders not implemented · NOT SEEDED · NOT TRAINED", ha="center", fontsize=10)
-    ax.text(6.0, 0.85, "Speech Commands (subset) — edge / short-clip · loaders not implemented · NOT SEEDED · NOT TRAINED", ha="center", fontsize=10)
+    ax.text(6.0, 1.4, "ESC-50 — Phase 1 loader/config added · NOT FULL-TRAINED", ha="center", fontsize=10)
+    ax.text(6.0, 0.85, "Speech Commands (subset) — Phase 1 loader/config added · NOT FULL-TRAINED", ha="center", fontsize=10)
 
     _save(fig, "fig01b_protocol_seed_status.png")
 

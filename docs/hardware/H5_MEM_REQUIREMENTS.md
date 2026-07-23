@@ -6,6 +6,7 @@
 |----------|--------|
 | **Need to retrain?** | **No** — float accuracy is already locked in `model_full.pt`. |
 | **Can we produce `.h5` + `.mem` now?** | **Yes** — by **export/convert** from `.pt` (tool: `tools/export_h5_mem_for_fpga.py`). |
+| **Can we produce one Q16 text file per layer?** | **Yes** — by **export/convert** from `.pt` (tool: `tools/export_layer_q16_txt.py`). |
 | **Are those two files “full standard-ready” for every RTL team?** | **Partially.** Format is industry-usable; **bit-width, address map, and quant scheme must still match the student RTL**. That is a **hardware contract**, not a training gap. |
 
 ---
@@ -39,7 +40,40 @@
 - Word width (we default **INT16**)
 - Per-tensor scale (stored in `export_h5_mem_manifest.json`)
 - Order of tensors (sorted parameter names)
-- Whether BN is fused offline into conv scales (we export **raw** BN γ/β separately)
+- Whether BN is fused offline into conv scales (`model_weights.mem` exports raw BN tensors separately; `layer_q16_txt_*` defaults to **BN-fused** Conv weight/bias pairs)
+
+### 3. Per-layer Q16 `.txt`
+
+Some RTL/HLS workflows prefer separate text files instead of one concatenated
+`.mem` bank:
+
+```text
+conv01_weight_q16.txt
+conv01_bias_q16.txt
+conv02_weight_q16.txt
+conv02_bias_q16.txt
+...
+fc01_weight_q16.txt
+fc01_bias_q16.txt
+manifest_q16.json
+```
+
+Generate them with:
+
+```bash
+python tools/export_layer_q16_txt.py --export_deploy_models
+```
+
+Default export is `bn_fused`, so each Conv+BatchNorm block becomes one affine
+Conv weight/bias pair. This is usually the right view for custom RTL. If the
+hardware team wants Conv/Linear files without BN folding, use:
+
+```bash
+python tools/export_layer_q16_txt.py --export_deploy_models --mode raw --name_style source
+```
+
+Every weight file and bias file has its own symmetric INT16 scale in
+`manifest_q16.json`.
 
 ---
 
@@ -71,6 +105,7 @@ deploy/student_models/model_a_noteacher_79p08/
   model_full.pt              # source of truth (float)
   model_weights.h5           # student file 1
   model_weights.mem          # student file 2
+  layer_q16_txt_*/           # optional per-layer Q16 text files
   export_h5_mem_manifest.json
 
 deploy/student_models/model_b_kd_student_80p00/
@@ -81,6 +116,7 @@ Regenerate:
 
 ```bash
 python tools/export_h5_mem_for_fpga.py
+python tools/export_layer_q16_txt.py --export_deploy_models
 ```
 
 ---
@@ -94,6 +130,7 @@ python tools/export_h5_mem_for_fpga.py
 | Includes weights | Yes | All conv / linear kernels |
 | Includes bias-like terms | Yes | BN β + FC bias (and BN γ as scale) |
 | Documented layer order / addresses | Yes | manifest `mem.regions` |
+| Per-layer Q16 `.txt` export | Yes | `manifest_q16.json` documents scale, shape, source tensors |
 | No retrain for export | Yes | From `model_full.pt` |
 | Drop-in for arbitrary Verilog NN core | **Conditional** | Core must use our layout or remap |
 | Official “IEEE single format for all FPGA courses” | **No such global standard** | Project must fix RTL interface |
@@ -105,7 +142,8 @@ python tools/export_h5_mem_for_fpga.py
 1. Treat **`model_full.pt`** as accuracy reference (software golden).  
 2. Use **`.h5`** for analysis / MATLAB / custom quant scripts.  
 3. Use **`.mem` + manifest** to fill BRAM in Vivado sim.  
-4. Run **bit-true or near-bit-true test vectors** (few clips) before claiming DPU/FPGA accuracy.  
-5. Only if step 4 fails badly → QAT retrain, then re-export `.h5`/`.mem`.
+4. Use **per-layer Q16 `.txt` + `manifest_q16.json`** when the RTL wants one buffer file per layer.
+5. Run **bit-true or near-bit-true test vectors** (few clips) before claiming DPU/FPGA accuracy.
+6. Only if step 5 fails badly → QAT retrain, then re-export `.h5`/`.mem`/Q16 `.txt`.
 
 References (format context): FPGA BRAM `.mem` init practices; Keras/HDF5 weight storage; academic pipelines that train → `.h5` → extract → `.mem` for ROM (e.g. BNN FPGA export literature).

@@ -1,9 +1,9 @@
-# Achieved (research truth — no local vs server split)
+# Achieved (main truth — no local vs server split)
 
 **Rule:** One research stack. Report the **best verified run** for each goal.  
 Machine (laptop / 3090) only matters for *where files live*, not for *which number is official research*.
 
-**Main path stack (in git `research` → to be `main`)**
+**Main path stack (in git `main`)**
 
 | Item | Value |
 |---|---|
@@ -68,9 +68,9 @@ Claiming “the model is 79%” without saying **fold1** overstates stability.
 
 ---
 
-## What is “in main” once promoted
+## What is in main
 
-Git **`main`** (after promote) must carry:
+Git **`main`** carries:
 
 1. **Code + MAIN config** above  
 2. **This ACHIEVED table** (and REGISTRY pointers)  

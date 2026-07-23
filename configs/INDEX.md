@@ -23,6 +23,8 @@ Configs stay in `configs/*.json` (stable paths for scripts/history).
 | **`student_ds_conv2d_h1_pyramid_clean811.json`** | `kv260_ds1d_pyramid_mixup_ema_clean811_val.json` | `clean_8_1_1` | Strict-fold baseline |
 | **`student_ds_conv2d_h1_pyramid_clean811_mcisr.json`** | `kv260_ds1d_pyramid_mixup_ema_clean811_mcisr_val.json` | `clean_8_1_1` | MC-ISR v1 |
 | **`student_ds_res1d_se_fullclip.json`** | `proposed_efficient_fullclip.json` | (see file) | DS-Res1D-SE baseline |
+| **`student_ds_conv2d_h1_pyramid_esc50_phase1.json`** | new | `esc50_3_1_1_foldk_valnext_v1` | Phase 1 ESC-50 smoke/full-fold |
+| **`student_ds_conv2d_h1_pyramid_speech_commands_phase1.json`** | new | `speech_commands_v2_official12` | Phase 1 Speech Commands smoke/full-split |
 
 ---
 

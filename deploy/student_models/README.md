@@ -58,6 +58,7 @@ Only if step 5 accuracy is unacceptable, open a **QAT** track (retrain with fake
 | **`model_weights.h5`** | **Student file 1** — HDF5 weight bank (float32 tensors) |
 | **`model_weights.mem`** | **Student file 2** — Vivado `$readmemh` hex (INT16) for BRAM/ROM |
 | `export_h5_mem_manifest.json` | Address map + per-tensor INT16 scales for `.mem` |
+| `layer_q16_txt_*/` | Optional per-layer `*_weight_q16.txt` / `*_bias_q16.txt` export for RTL/HLS |
 | `model_full.pt` | Canonical float PyTorch (golden software reference) |
 | `model_weights.pt` / `model_biases.pt` | Optional split packages |
 | `model_card.json` | Shapes, params, protocol, metrics |
@@ -69,6 +70,17 @@ Details / compliance: [`docs/hardware/H5_MEM_REQUIREMENTS.md`](../../docs/hardwa
 ```bash
 python tools/export_h5_mem_for_fpga.py
 ```
+
+Regenerate per-layer Q16 text files like `conv01_weight_q16.txt` and
+`conv01_bias_q16.txt`:
+
+```bash
+python tools/export_layer_q16_txt.py --export_deploy_models
+```
+
+Default mode is `bn_fused`: Conv + BatchNorm are folded into one affine Conv
+weight/bias pair. Use the generated `manifest_q16.json` for shapes, scales,
+source tensor names, and flatten order.
 
 Load example:
 
@@ -93,7 +105,8 @@ model.eval()
 1. **Topology** — `src/models/ds_conv2d_h1_pyramid.py` (Conv2D height=1, DS blocks, pyramid pool).  
 2. **Fixed shapes** — input `1×64000`, layer table in `model_card.json`.  
 3. **Weights** — `model_full.pt` (or weights+biases pair).  
-4. **Budget** — ~102k params, ~62 M MACs/clip (see paper docs).  
-5. **Quant plan** — start with INT8 PTQ; report drop vs float 79%/80%.
+4. **Per-layer Q16 files** — `layer_q16_txt_bn_fused_sequential_decimal/` when RTL wants one text file per layer tensor.
+5. **Budget** — ~102k params, ~62 M MACs/clip (see paper docs).
+6. **Quant plan** — start with INT8 PTQ; report drop vs float 79%/80%.
 
 Further reading: `docs/paper/BIAS_AND_CHECKPOINTS.md`, `docs/paper/MODELS.md`, `docs/hardware/`.

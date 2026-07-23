@@ -40,6 +40,6 @@
 <rect x="30" y="375" width="920" height="115" rx="6" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
 <text x="490" y="405" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#991b1b">Multi-dataset paper scope — seed status</text>
 <text x="490" y="430" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">UrbanSound8K: SEEDED and trained (primary).</text>
-<text x="490" y="452" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">ESC-50: planned secondary · loaders not implemented · NOT SEEDED · NOT TRAINED.</text>
-<text x="490" y="474" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">Speech Commands (subset): planned edge/short-clip · loaders not implemented · NOT SEEDED · NOT TRAINED.</text>
+<text x="490" y="452" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">ESC-50: Phase 1 loader/config added · NOT FULL-TRAINED.</text>
+<text x="490" y="474" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#111827">Speech Commands (subset): Phase 1 loader/config added · NOT FULL-TRAINED.</text>
 </svg>

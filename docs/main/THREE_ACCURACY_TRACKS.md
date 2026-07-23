@@ -2,7 +2,7 @@
 
 **Before** SoC design, quantization, and KV260 deploy, hit these targets.
 
-**One research truth** (no local vs server split in claims):  
+**One main truth** (no local vs server split in claims):
 → [ACHIEVED.md](ACHIEVED.md)
 
 **Shared stack (main)**

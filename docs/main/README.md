@@ -5,7 +5,7 @@
 
 Full write-up: [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md).
 
-| Track | Target | Metric | **Best achieved (research)** |
+| Track | Target | Metric | **Best achieved (main)** |
 |---|---|---|---|
 | **1. Single model** | **80–85%** | best-val → test | **79.08%** — [ACHIEVED.md](ACHIEVED.md) |
 | **2. Ensemble** | **80–85%** | last-2 ensemble | **79.89%** |
@@ -30,12 +30,14 @@ Shared stack: **DS-Conv2D-H1 Pyramid** (`ds_conv2d_h1_pyramid`, legacy `kv260_au
 1. [ACHIEVED.md](ACHIEVED.md) — **what is already achieved (single table)**  
 2. [THREE_ACCURACY_TRACKS.md](THREE_ACCURACY_TRACKS.md) — **three goals 80–85%**  
 3. [SETUP_DEPLOY_SOURCE_SAFE.md](SETUP_DEPLOY_SOURCE_SAFE.md) — full setup lock  
-3. [../data/README.md](../data/README.md) — **data + result analysis standard**  
-4. [DECISIONS_LOG.md](DECISIONS_LOG.md) — what we accepted / rejected  
-5. [ACTIVE_ROADMAP.md](ACTIVE_ROADMAP.md) — what to run next  
-6. [../experiments/REGISTRY.md](../experiments/REGISTRY.md) — all exp names + status  
-7. [../../configs/INDEX.md](../../configs/INDEX.md) — config catalog by status  
-8. [PROMOTE_TO_MAIN.md](PROMOTE_TO_MAIN.md) — merge research → git `main`  
+4. [SERVER_POLICY.md](SERVER_POLICY.md) — default server and branch rule
+5. [../data/README.md](../data/README.md) — **data + result analysis standard**
+6. [../data/MULTIDATASET_PHASE1.md](../data/MULTIDATASET_PHASE1.md) — ESC-50 + Speech Commands expansion contract
+7. [DECISIONS_LOG.md](DECISIONS_LOG.md) — what we accepted / rejected
+8. [ACTIVE_ROADMAP.md](ACTIVE_ROADMAP.md) — what to run next
+9. [../experiments/REGISTRY.md](../experiments/REGISTRY.md) — all exp names + status
+10. [../../configs/INDEX.md](../../configs/INDEX.md) — config catalog by status
+11. [PROMOTE_TO_MAIN.md](PROMOTE_TO_MAIN.md) — historical, promotion completed
 
 ## Not main path
 
