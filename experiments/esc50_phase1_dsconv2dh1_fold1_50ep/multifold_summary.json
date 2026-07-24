@@ -1,0 +1,368 @@
+{
+  "exp_root": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc50_phase1_dsconv2dh1_fold1_50ep",
+  "dataset": "esc50",
+  "class_names": [
+    "dog",
+    "rooster",
+    "pig",
+    "cow",
+    "frog",
+    "cat",
+    "hen",
+    "insects",
+    "sheep",
+    "crow",
+    "rain",
+    "sea_waves",
+    "crackling_fire",
+    "crickets",
+    "chirping_birds",
+    "water_drops",
+    "wind",
+    "pouring_water",
+    "toilet_flush",
+    "thunderstorm",
+    "crying_baby",
+    "sneezing",
+    "clapping",
+    "breathing",
+    "coughing",
+    "footsteps",
+    "laughing",
+    "brushing_teeth",
+    "snoring",
+    "drinking_sipping",
+    "door_wood_knock",
+    "mouse_click",
+    "keyboard_typing",
+    "door_wood_creaks",
+    "can_opening",
+    "washing_machine",
+    "vacuum_cleaner",
+    "clock_alarm",
+    "clock_tick",
+    "glass_breaking",
+    "helicopter",
+    "chainsaw",
+    "siren",
+    "car_horn",
+    "engine",
+    "train",
+    "church_bells",
+    "airplane",
+    "fireworks",
+    "hand_saw"
+  ],
+  "folds": [
+    1
+  ],
+  "rows": [
+    {
+      "fold": 1,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc50_phase1_dsconv2dh1_fold1_50ep/fold_1",
+      "has_metrics": true,
+      "has_analysis": false,
+      "dataset": "esc50",
+      "class_names": [
+        "dog",
+        "rooster",
+        "pig",
+        "cow",
+        "frog",
+        "cat",
+        "hen",
+        "insects",
+        "sheep",
+        "crow",
+        "rain",
+        "sea_waves",
+        "crackling_fire",
+        "crickets",
+        "chirping_birds",
+        "water_drops",
+        "wind",
+        "pouring_water",
+        "toilet_flush",
+        "thunderstorm",
+        "crying_baby",
+        "sneezing",
+        "clapping",
+        "breathing",
+        "coughing",
+        "footsteps",
+        "laughing",
+        "brushing_teeth",
+        "snoring",
+        "drinking_sipping",
+        "door_wood_knock",
+        "mouse_click",
+        "keyboard_typing",
+        "door_wood_creaks",
+        "can_opening",
+        "washing_machine",
+        "vacuum_cleaner",
+        "clock_alarm",
+        "clock_tick",
+        "glass_breaking",
+        "helicopter",
+        "chainsaw",
+        "siren",
+        "car_horn",
+        "engine",
+        "train",
+        "church_bells",
+        "airplane",
+        "fireworks",
+        "hand_saw"
+      ],
+      "num_classes": 50,
+      "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc50_phase1.json",
+      "params": 191314,
+      "macs_per_clip": 77426688,
+      "best_val_acc_pct": 2.5,
+      "best_val_test_acc_pct": 2.25,
+      "final_test_acc_pct": 2.0,
+      "ensemble_test_acc_pct": 2.0,
+      "final_cycle_test_acc_pct": null,
+      "final_cycle_val_acc_pct": null,
+      "planned_epochs": 50,
+      "completed_epochs": 50,
+      "early_stopped": false,
+      "final_per_class_pct": {},
+      "final_worst_class": null,
+      "final_worst_class_acc_pct": null
+    }
+  ],
+  "aggregate": {
+    "best_val_acc_pct": {
+      "mean": 2.5,
+      "std": 0.0
+    },
+    "best_val_test_acc_pct": {
+      "mean": 2.25,
+      "std": 0.0
+    },
+    "final_test_acc_pct": {
+      "mean": 2.0,
+      "std": 0.0
+    },
+    "ensemble_test_acc_pct": {
+      "mean": 2.0,
+      "std": 0.0
+    },
+    "final_cycle_test_acc_pct": {
+      "mean": null,
+      "std": null
+    },
+    "final_cycle_val_acc_pct": {
+      "mean": null,
+      "std": null
+    },
+    "final_worst_class_acc_pct": {
+      "mean": null,
+      "std": null
+    }
+  },
+  "per_class_final_test": {
+    "dog": {
+      "mean": null,
+      "std": null
+    },
+    "rooster": {
+      "mean": null,
+      "std": null
+    },
+    "pig": {
+      "mean": null,
+      "std": null
+    },
+    "cow": {
+      "mean": null,
+      "std": null
+    },
+    "frog": {
+      "mean": null,
+      "std": null
+    },
+    "cat": {
+      "mean": null,
+      "std": null
+    },
+    "hen": {
+      "mean": null,
+      "std": null
+    },
+    "insects": {
+      "mean": null,
+      "std": null
+    },
+    "sheep": {
+      "mean": null,
+      "std": null
+    },
+    "crow": {
+      "mean": null,
+      "std": null
+    },
+    "rain": {
+      "mean": null,
+      "std": null
+    },
+    "sea_waves": {
+      "mean": null,
+      "std": null
+    },
+    "crackling_fire": {
+      "mean": null,
+      "std": null
+    },
+    "crickets": {
+      "mean": null,
+      "std": null
+    },
+    "chirping_birds": {
+      "mean": null,
+      "std": null
+    },
+    "water_drops": {
+      "mean": null,
+      "std": null
+    },
+    "wind": {
+      "mean": null,
+      "std": null
+    },
+    "pouring_water": {
+      "mean": null,
+      "std": null
+    },
+    "toilet_flush": {
+      "mean": null,
+      "std": null
+    },
+    "thunderstorm": {
+      "mean": null,
+      "std": null
+    },
+    "crying_baby": {
+      "mean": null,
+      "std": null
+    },
+    "sneezing": {
+      "mean": null,
+      "std": null
+    },
+    "clapping": {
+      "mean": null,
+      "std": null
+    },
+    "breathing": {
+      "mean": null,
+      "std": null
+    },
+    "coughing": {
+      "mean": null,
+      "std": null
+    },
+    "footsteps": {
+      "mean": null,
+      "std": null
+    },
+    "laughing": {
+      "mean": null,
+      "std": null
+    },
+    "brushing_teeth": {
+      "mean": null,
+      "std": null
+    },
+    "snoring": {
+      "mean": null,
+      "std": null
+    },
+    "drinking_sipping": {
+      "mean": null,
+      "std": null
+    },
+    "door_wood_knock": {
+      "mean": null,
+      "std": null
+    },
+    "mouse_click": {
+      "mean": null,
+      "std": null
+    },
+    "keyboard_typing": {
+      "mean": null,
+      "std": null
+    },
+    "door_wood_creaks": {
+      "mean": null,
+      "std": null
+    },
+    "can_opening": {
+      "mean": null,
+      "std": null
+    },
+    "washing_machine": {
+      "mean": null,
+      "std": null
+    },
+    "vacuum_cleaner": {
+      "mean": null,
+      "std": null
+    },
+    "clock_alarm": {
+      "mean": null,
+      "std": null
+    },
+    "clock_tick": {
+      "mean": null,
+      "std": null
+    },
+    "glass_breaking": {
+      "mean": null,
+      "std": null
+    },
+    "helicopter": {
+      "mean": null,
+      "std": null
+    },
+    "chainsaw": {
+      "mean": null,
+      "std": null
+    },
+    "siren": {
+      "mean": null,
+      "std": null
+    },
+    "car_horn": {
+      "mean": null,
+      "std": null
+    },
+    "engine": {
+      "mean": null,
+      "std": null
+    },
+    "train": {
+      "mean": null,
+      "std": null
+    },
+    "church_bells": {
+      "mean": null,
+      "std": null
+    },
+    "airplane": {
+      "mean": null,
+      "std": null
+    },
+    "fireworks": {
+      "mean": null,
+      "std": null
+    },
+    "hand_saw": {
+      "mean": null,
+      "std": null
+    }
+  }
+}
