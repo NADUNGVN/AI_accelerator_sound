@@ -44,7 +44,7 @@ Speech Commands parser currently targets the raw v0.02 folder layout with `valid
 | Speech Commands | `speech_commands_phase1_official12_dsconv2dh1_30ep` | `speech_commands_v2_official12` | Best-val test `90.93%`; final test `91.07%`; ensemble `90.81%`. |
 | ESC-50 | `esc50_phase1_dsconv2dh1_5fold_120ep` | `esc50_3_1_1_foldk_valnext_v1` | Validation-selected test mean `43.90% +/- 1.85%`; final mean `43.20% +/- 2.56%`; ensemble mean `43.60% +/- 2.60%`. |
 | ESC-10 | `esc10_phase1_dsconv2dh1_5fold_120ep` | `esc10_3_1_1_foldk_valnext_v1` | Validation-selected test mean `68.50% +/- 7.00%`; final mean `68.50% +/- 1.66%`; ensemble mean `69.25% +/- 1.70%`. |
-| ESC-10 literature side table | pending | `esc10_official_4_1_cv` | Run this before comparing to published ESC-10 tables that use 4 folds for training and 1 fold for test. |
+| ESC-10 literature side table | `esc10_phase1_dsconv2dh1_official4fold_120ep` | `esc10_official_4_1_cv` | Final test mean `69.50% +/- 5.04%`; ensemble mean `69.00% +/- 4.64%`. This is a from-scratch raw-waveform baseline, not transfer/pretrained. |
 
 ## Phase 1 gates
 
