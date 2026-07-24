@@ -1,0 +1,1448 @@
+{
+  "best_val_model_predictions": [
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-151085-A-20.wav",
+      "clip_id": "5-151085-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-170338-A-41.wav",
+      "clip_id": "5-170338-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-170338-B-41.wav",
+      "clip_id": "5-170338-B-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-171653-A-41.wav",
+      "clip_id": "5-171653-A-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-A-40.wav",
+      "clip_id": "5-177957-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-B-40.wav",
+      "clip_id": "5-177957-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-C-40.wav",
+      "clip_id": "5-177957-C-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-D-40.wav",
+      "clip_id": "5-177957-D-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-E-40.wav",
+      "clip_id": "5-177957-E-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-181766-A-10.wav",
+      "clip_id": "5-181766-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-185579-A-41.wav",
+      "clip_id": "5-185579-A-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-185579-B-41.wav",
+      "clip_id": "5-185579-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-186924-A-12.wav",
+      "clip_id": "5-186924-A-12.wav",
+      "label": 4,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-187979-A-21.wav",
+      "clip_id": "5-187979-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-188655-A-10.wav",
+      "clip_id": "5-188655-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-189212-A-12.wav",
+      "clip_id": "5-189212-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-189237-A-12.wav",
+      "clip_id": "5-189237-A-12.wav",
+      "label": 4,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-191131-A-40.wav",
+      "clip_id": "5-191131-A-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193339-A-10.wav",
+      "clip_id": "5-193339-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193473-A-12.wav",
+      "clip_id": "5-193473-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193473-B-12.wav",
+      "clip_id": "5-193473-B-12.wav",
+      "label": 4,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194533-A-21.wav",
+      "clip_id": "5-194533-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194892-A-10.wav",
+      "clip_id": "5-194892-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194930-A-1.wav",
+      "clip_id": "5-194930-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194930-B-1.wav",
+      "clip_id": "5-194930-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-195710-A-10.wav",
+      "clip_id": "5-195710-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198321-A-10.wav",
+      "clip_id": "5-198321-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-A-20.wav",
+      "clip_id": "5-198411-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-B-20.wav",
+      "clip_id": "5-198411-B-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-C-20.wav",
+      "clip_id": "5-198411-C-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-D-20.wav",
+      "clip_id": "5-198411-D-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-E-20.wav",
+      "clip_id": "5-198411-E-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-F-20.wav",
+      "clip_id": "5-198411-F-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-G-20.wav",
+      "clip_id": "5-198411-G-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200334-A-1.wav",
+      "clip_id": "5-200334-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200334-B-1.wav",
+      "clip_id": "5-200334-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200339-A-1.wav",
+      "clip_id": "5-200339-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200461-A-11.wav",
+      "clip_id": "5-200461-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200461-B-11.wav",
+      "clip_id": "5-200461-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-201194-A-38.wav",
+      "clip_id": "5-201194-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-201274-A-21.wav",
+      "clip_id": "5-201274-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-202220-A-21.wav",
+      "clip_id": "5-202220-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-202898-A-10.wav",
+      "clip_id": "5-202898-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203128-A-0.wav",
+      "clip_id": "5-203128-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203128-B-0.wav",
+      "clip_id": "5-203128-B-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203739-A-10.wav",
+      "clip_id": "5-203739-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-205898-A-40.wav",
+      "clip_id": "5-205898-A-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208030-A-0.wav",
+      "clip_id": "5-208030-A-0.wav",
+      "label": 0,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208624-A-38.wav",
+      "clip_id": "5-208624-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208810-A-11.wav",
+      "clip_id": "5-208810-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208810-B-11.wav",
+      "clip_id": "5-208810-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-209698-A-38.wav",
+      "clip_id": "5-209698-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-209833-A-38.wav",
+      "clip_id": "5-209833-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-210571-A-38.wav",
+      "clip_id": "5-210571-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-212181-A-38.wav",
+      "clip_id": "5-212181-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-212454-A-0.wav",
+      "clip_id": "5-212454-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213077-A-11.wav",
+      "clip_id": "5-213077-A-11.wav",
+      "label": 3,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213802-A-12.wav",
+      "clip_id": "5-213802-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213855-A-0.wav",
+      "clip_id": "5-213855-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-215658-A-12.wav",
+      "clip_id": "5-215658-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-215658-B-12.wav",
+      "clip_id": "5-215658-B-12.wav",
+      "label": 4,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-216370-A-41.wav",
+      "clip_id": "5-216370-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-216370-B-41.wav",
+      "clip_id": "5-216370-B-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-217158-A-0.wav",
+      "clip_id": "5-217158-A-0.wav",
+      "label": 0,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219342-A-38.wav",
+      "clip_id": "5-219342-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-A-11.wav",
+      "clip_id": "5-219379-A-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-B-11.wav",
+      "clip_id": "5-219379-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-C-11.wav",
+      "clip_id": "5-219379-C-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220026-A-21.wav",
+      "clip_id": "5-220026-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220027-A-21.wav",
+      "clip_id": "5-220027-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220955-A-40.wav",
+      "clip_id": "5-220955-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-221518-A-21.wav",
+      "clip_id": "5-221518-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-221593-A-21.wav",
+      "clip_id": "5-221593-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-222524-A-41.wav",
+      "clip_id": "5-222524-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-231762-A-0.wav",
+      "clip_id": "5-231762-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-233160-A-1.wav",
+      "clip_id": "5-233160-A-1.wav",
+      "label": 1,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-234879-A-1.wav",
+      "clip_id": "5-234879-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-234879-B-1.wav",
+      "clip_id": "5-234879-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-235671-A-38.wav",
+      "clip_id": "5-235671-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-9032-A-0.wav",
+      "clip_id": "5-9032-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    }
+  ],
+  "last_snapshot_predictions": [
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-151085-A-20.wav",
+      "clip_id": "5-151085-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-170338-A-41.wav",
+      "clip_id": "5-170338-A-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-170338-B-41.wav",
+      "clip_id": "5-170338-B-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-171653-A-41.wav",
+      "clip_id": "5-171653-A-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-A-40.wav",
+      "clip_id": "5-177957-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-B-40.wav",
+      "clip_id": "5-177957-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-C-40.wav",
+      "clip_id": "5-177957-C-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-D-40.wav",
+      "clip_id": "5-177957-D-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-E-40.wav",
+      "clip_id": "5-177957-E-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-181766-A-10.wav",
+      "clip_id": "5-181766-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-185579-A-41.wav",
+      "clip_id": "5-185579-A-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-185579-B-41.wav",
+      "clip_id": "5-185579-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-186924-A-12.wav",
+      "clip_id": "5-186924-A-12.wav",
+      "label": 4,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-187979-A-21.wav",
+      "clip_id": "5-187979-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-188655-A-10.wav",
+      "clip_id": "5-188655-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-189212-A-12.wav",
+      "clip_id": "5-189212-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-189237-A-12.wav",
+      "clip_id": "5-189237-A-12.wav",
+      "label": 4,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-191131-A-40.wav",
+      "clip_id": "5-191131-A-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193339-A-10.wav",
+      "clip_id": "5-193339-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193473-A-12.wav",
+      "clip_id": "5-193473-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193473-B-12.wav",
+      "clip_id": "5-193473-B-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194533-A-21.wav",
+      "clip_id": "5-194533-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194892-A-10.wav",
+      "clip_id": "5-194892-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194930-A-1.wav",
+      "clip_id": "5-194930-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194930-B-1.wav",
+      "clip_id": "5-194930-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-195710-A-10.wav",
+      "clip_id": "5-195710-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198321-A-10.wav",
+      "clip_id": "5-198321-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-A-20.wav",
+      "clip_id": "5-198411-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-B-20.wav",
+      "clip_id": "5-198411-B-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-C-20.wav",
+      "clip_id": "5-198411-C-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-D-20.wav",
+      "clip_id": "5-198411-D-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-E-20.wav",
+      "clip_id": "5-198411-E-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-F-20.wav",
+      "clip_id": "5-198411-F-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-G-20.wav",
+      "clip_id": "5-198411-G-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200334-A-1.wav",
+      "clip_id": "5-200334-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200334-B-1.wav",
+      "clip_id": "5-200334-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200339-A-1.wav",
+      "clip_id": "5-200339-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200461-A-11.wav",
+      "clip_id": "5-200461-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200461-B-11.wav",
+      "clip_id": "5-200461-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-201194-A-38.wav",
+      "clip_id": "5-201194-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-201274-A-21.wav",
+      "clip_id": "5-201274-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-202220-A-21.wav",
+      "clip_id": "5-202220-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-202898-A-10.wav",
+      "clip_id": "5-202898-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203128-A-0.wav",
+      "clip_id": "5-203128-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203128-B-0.wav",
+      "clip_id": "5-203128-B-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203739-A-10.wav",
+      "clip_id": "5-203739-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-205898-A-40.wav",
+      "clip_id": "5-205898-A-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208030-A-0.wav",
+      "clip_id": "5-208030-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208624-A-38.wav",
+      "clip_id": "5-208624-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208810-A-11.wav",
+      "clip_id": "5-208810-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208810-B-11.wav",
+      "clip_id": "5-208810-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-209698-A-38.wav",
+      "clip_id": "5-209698-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-209833-A-38.wav",
+      "clip_id": "5-209833-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-210571-A-38.wav",
+      "clip_id": "5-210571-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-212181-A-38.wav",
+      "clip_id": "5-212181-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-212454-A-0.wav",
+      "clip_id": "5-212454-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213077-A-11.wav",
+      "clip_id": "5-213077-A-11.wav",
+      "label": 3,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213802-A-12.wav",
+      "clip_id": "5-213802-A-12.wav",
+      "label": 4,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213855-A-0.wav",
+      "clip_id": "5-213855-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-215658-A-12.wav",
+      "clip_id": "5-215658-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-215658-B-12.wav",
+      "clip_id": "5-215658-B-12.wav",
+      "label": 4,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-216370-A-41.wav",
+      "clip_id": "5-216370-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-216370-B-41.wav",
+      "clip_id": "5-216370-B-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-217158-A-0.wav",
+      "clip_id": "5-217158-A-0.wav",
+      "label": 0,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219342-A-38.wav",
+      "clip_id": "5-219342-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-A-11.wav",
+      "clip_id": "5-219379-A-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-B-11.wav",
+      "clip_id": "5-219379-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-C-11.wav",
+      "clip_id": "5-219379-C-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220026-A-21.wav",
+      "clip_id": "5-220026-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220027-A-21.wav",
+      "clip_id": "5-220027-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220955-A-40.wav",
+      "clip_id": "5-220955-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-221518-A-21.wav",
+      "clip_id": "5-221518-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-221593-A-21.wav",
+      "clip_id": "5-221593-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-222524-A-41.wav",
+      "clip_id": "5-222524-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-231762-A-0.wav",
+      "clip_id": "5-231762-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-233160-A-1.wav",
+      "clip_id": "5-233160-A-1.wav",
+      "label": 1,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-234879-A-1.wav",
+      "clip_id": "5-234879-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-234879-B-1.wav",
+      "clip_id": "5-234879-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-235671-A-38.wav",
+      "clip_id": "5-235671-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-9032-A-0.wav",
+      "clip_id": "5-9032-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    }
+  ],
+  "ensemble_model_predictions": [
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-151085-A-20.wav",
+      "clip_id": "5-151085-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-170338-A-41.wav",
+      "clip_id": "5-170338-A-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-170338-B-41.wav",
+      "clip_id": "5-170338-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-171653-A-41.wav",
+      "clip_id": "5-171653-A-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-A-40.wav",
+      "clip_id": "5-177957-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-B-40.wav",
+      "clip_id": "5-177957-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-C-40.wav",
+      "clip_id": "5-177957-C-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-D-40.wav",
+      "clip_id": "5-177957-D-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-177957-E-40.wav",
+      "clip_id": "5-177957-E-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-181766-A-10.wav",
+      "clip_id": "5-181766-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-185579-A-41.wav",
+      "clip_id": "5-185579-A-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-185579-B-41.wav",
+      "clip_id": "5-185579-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-186924-A-12.wav",
+      "clip_id": "5-186924-A-12.wav",
+      "label": 4,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-187979-A-21.wav",
+      "clip_id": "5-187979-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-188655-A-10.wav",
+      "clip_id": "5-188655-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-189212-A-12.wav",
+      "clip_id": "5-189212-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-189237-A-12.wav",
+      "clip_id": "5-189237-A-12.wav",
+      "label": 4,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-191131-A-40.wav",
+      "clip_id": "5-191131-A-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193339-A-10.wav",
+      "clip_id": "5-193339-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193473-A-12.wav",
+      "clip_id": "5-193473-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-193473-B-12.wav",
+      "clip_id": "5-193473-B-12.wav",
+      "label": 4,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194533-A-21.wav",
+      "clip_id": "5-194533-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194892-A-10.wav",
+      "clip_id": "5-194892-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194930-A-1.wav",
+      "clip_id": "5-194930-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-194930-B-1.wav",
+      "clip_id": "5-194930-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-195710-A-10.wav",
+      "clip_id": "5-195710-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198321-A-10.wav",
+      "clip_id": "5-198321-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-A-20.wav",
+      "clip_id": "5-198411-A-20.wav",
+      "label": 5,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-B-20.wav",
+      "clip_id": "5-198411-B-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-C-20.wav",
+      "clip_id": "5-198411-C-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-D-20.wav",
+      "clip_id": "5-198411-D-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-E-20.wav",
+      "clip_id": "5-198411-E-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-F-20.wav",
+      "clip_id": "5-198411-F-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-198411-G-20.wav",
+      "clip_id": "5-198411-G-20.wav",
+      "label": 5,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200334-A-1.wav",
+      "clip_id": "5-200334-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200334-B-1.wav",
+      "clip_id": "5-200334-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200339-A-1.wav",
+      "clip_id": "5-200339-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200461-A-11.wav",
+      "clip_id": "5-200461-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-200461-B-11.wav",
+      "clip_id": "5-200461-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-201194-A-38.wav",
+      "clip_id": "5-201194-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-201274-A-21.wav",
+      "clip_id": "5-201274-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-202220-A-21.wav",
+      "clip_id": "5-202220-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-202898-A-10.wav",
+      "clip_id": "5-202898-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203128-A-0.wav",
+      "clip_id": "5-203128-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203128-B-0.wav",
+      "clip_id": "5-203128-B-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-203739-A-10.wav",
+      "clip_id": "5-203739-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-205898-A-40.wav",
+      "clip_id": "5-205898-A-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208030-A-0.wav",
+      "clip_id": "5-208030-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208624-A-38.wav",
+      "clip_id": "5-208624-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208810-A-11.wav",
+      "clip_id": "5-208810-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-208810-B-11.wav",
+      "clip_id": "5-208810-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-209698-A-38.wav",
+      "clip_id": "5-209698-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-209833-A-38.wav",
+      "clip_id": "5-209833-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-210571-A-38.wav",
+      "clip_id": "5-210571-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-212181-A-38.wav",
+      "clip_id": "5-212181-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-212454-A-0.wav",
+      "clip_id": "5-212454-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213077-A-11.wav",
+      "clip_id": "5-213077-A-11.wav",
+      "label": 3,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213802-A-12.wav",
+      "clip_id": "5-213802-A-12.wav",
+      "label": 4,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-213855-A-0.wav",
+      "clip_id": "5-213855-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-215658-A-12.wav",
+      "clip_id": "5-215658-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-215658-B-12.wav",
+      "clip_id": "5-215658-B-12.wav",
+      "label": 4,
+      "predicted": 8
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-216370-A-41.wav",
+      "clip_id": "5-216370-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-216370-B-41.wav",
+      "clip_id": "5-216370-B-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-217158-A-0.wav",
+      "clip_id": "5-217158-A-0.wav",
+      "label": 0,
+      "predicted": 5
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219342-A-38.wav",
+      "clip_id": "5-219342-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-A-11.wav",
+      "clip_id": "5-219379-A-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-B-11.wav",
+      "clip_id": "5-219379-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-219379-C-11.wav",
+      "clip_id": "5-219379-C-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220026-A-21.wav",
+      "clip_id": "5-220026-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220027-A-21.wav",
+      "clip_id": "5-220027-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-220955-A-40.wav",
+      "clip_id": "5-220955-A-40.wav",
+      "label": 8,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-221518-A-21.wav",
+      "clip_id": "5-221518-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-221593-A-21.wav",
+      "clip_id": "5-221593-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-222524-A-41.wav",
+      "clip_id": "5-222524-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-231762-A-0.wav",
+      "clip_id": "5-231762-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-233160-A-1.wav",
+      "clip_id": "5-233160-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-234879-A-1.wav",
+      "clip_id": "5-234879-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-234879-B-1.wav",
+      "clip_id": "5-234879-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-235671-A-38.wav",
+      "clip_id": "5-235671-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/data/raw/ESC-50/audio/5-9032-A-0.wav",
+      "clip_id": "5-9032-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    }
+  ]
+}
