@@ -1,0 +1,967 @@
+{
+  "best_val_model_predictions": [],
+  "last_snapshot_predictions": [
+    {
+      "path": "data/raw/ESC-50/audio/1-100032-A-0.wav",
+      "clip_id": "1-100032-A-0.wav",
+      "label": 0,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-110389-A-0.wav",
+      "clip_id": "1-110389-A-0.wav",
+      "label": 0,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-116765-A-41.wav",
+      "clip_id": "1-116765-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17150-A-12.wav",
+      "clip_id": "1-17150-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-A-40.wav",
+      "clip_id": "1-172649-A-40.wav",
+      "label": 8,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-B-40.wav",
+      "clip_id": "1-172649-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-C-40.wav",
+      "clip_id": "1-172649-C-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-D-40.wav",
+      "clip_id": "1-172649-D-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-E-40.wav",
+      "clip_id": "1-172649-E-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-F-40.wav",
+      "clip_id": "1-172649-F-40.wav",
+      "label": 8,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17367-A-10.wav",
+      "clip_id": "1-17367-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17565-A-12.wav",
+      "clip_id": "1-17565-A-12.wav",
+      "label": 4,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17742-A-12.wav",
+      "clip_id": "1-17742-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17808-A-12.wav",
+      "clip_id": "1-17808-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17808-B-12.wav",
+      "clip_id": "1-17808-B-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-181071-A-40.wav",
+      "clip_id": "1-181071-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-181071-B-40.wav",
+      "clip_id": "1-181071-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-187207-A-20.wav",
+      "clip_id": "1-187207-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-19898-A-41.wav",
+      "clip_id": "1-19898-A-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-19898-B-41.wav",
+      "clip_id": "1-19898-B-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-19898-C-41.wav",
+      "clip_id": "1-19898-C-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-211527-A-20.wav",
+      "clip_id": "1-211527-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-211527-B-20.wav",
+      "clip_id": "1-211527-B-20.wav",
+      "label": 5,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-211527-C-20.wav",
+      "clip_id": "1-211527-C-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-21189-A-10.wav",
+      "clip_id": "1-21189-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-21934-A-38.wav",
+      "clip_id": "1-21934-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-21935-A-38.wav",
+      "clip_id": "1-21935-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-22694-A-20.wav",
+      "clip_id": "1-22694-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-22694-B-20.wav",
+      "clip_id": "1-22694-B-20.wav",
+      "label": 5,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-26143-A-21.wav",
+      "clip_id": "1-26143-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-26222-A-10.wav",
+      "clip_id": "1-26222-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-26806-A-1.wav",
+      "clip_id": "1-26806-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-27724-A-1.wav",
+      "clip_id": "1-27724-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-28135-A-11.wav",
+      "clip_id": "1-28135-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-28135-B-11.wav",
+      "clip_id": "1-28135-B-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-29561-A-10.wav",
+      "clip_id": "1-29561-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-29680-A-21.wav",
+      "clip_id": "1-29680-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-30226-A-0.wav",
+      "clip_id": "1-30226-A-0.wav",
+      "label": 0,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-30344-A-0.wav",
+      "clip_id": "1-30344-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-31748-A-21.wav",
+      "clip_id": "1-31748-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-32318-A-0.wav",
+      "clip_id": "1-32318-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-34119-A-1.wav",
+      "clip_id": "1-34119-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-34119-B-1.wav",
+      "clip_id": "1-34119-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-35687-A-38.wav",
+      "clip_id": "1-35687-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-39901-A-11.wav",
+      "clip_id": "1-39901-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-39901-B-11.wav",
+      "clip_id": "1-39901-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-39923-A-1.wav",
+      "clip_id": "1-39923-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-40730-A-1.wav",
+      "clip_id": "1-40730-A-1.wav",
+      "label": 1,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-4211-A-12.wav",
+      "clip_id": "1-4211-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-42139-A-38.wav",
+      "clip_id": "1-42139-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-43382-A-1.wav",
+      "clip_id": "1-43382-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-43760-A-11.wav",
+      "clip_id": "1-43760-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-44831-A-1.wav",
+      "clip_id": "1-44831-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-46272-A-12.wav",
+      "clip_id": "1-46272-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47250-A-41.wav",
+      "clip_id": "1-47250-A-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47250-B-41.wav",
+      "clip_id": "1-47250-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47273-A-21.wav",
+      "clip_id": "1-47273-A-21.wav",
+      "label": 6,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47274-A-21.wav",
+      "clip_id": "1-47274-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-48413-A-38.wav",
+      "clip_id": "1-48413-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-50060-A-10.wav",
+      "clip_id": "1-50060-A-10.wav",
+      "label": 2,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-54505-A-21.wav",
+      "clip_id": "1-54505-A-21.wav",
+      "label": 6,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-54958-A-10.wav",
+      "clip_id": "1-54958-A-10.wav",
+      "label": 2,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-56311-A-10.wav",
+      "clip_id": "1-56311-A-10.wav",
+      "label": 2,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-57163-A-38.wav",
+      "clip_id": "1-57163-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-59324-A-21.wav",
+      "clip_id": "1-59324-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-59513-A-0.wav",
+      "clip_id": "1-59513-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-60997-A-20.wav",
+      "clip_id": "1-60997-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-60997-B-20.wav",
+      "clip_id": "1-60997-B-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-61252-A-11.wav",
+      "clip_id": "1-61252-A-11.wav",
+      "label": 3,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-62849-A-38.wav",
+      "clip_id": "1-62849-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-62850-A-38.wav",
+      "clip_id": "1-62850-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-63871-A-10.wav",
+      "clip_id": "1-63871-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-64398-A-41.wav",
+      "clip_id": "1-64398-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-64398-B-41.wav",
+      "clip_id": "1-64398-B-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-7057-A-12.wav",
+      "clip_id": "1-7057-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-81883-A-21.wav",
+      "clip_id": "1-81883-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-85362-A-0.wav",
+      "clip_id": "1-85362-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-91359-A-11.wav",
+      "clip_id": "1-91359-A-11.wav",
+      "label": 3,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-91359-B-11.wav",
+      "clip_id": "1-91359-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-97392-A-0.wav",
+      "clip_id": "1-97392-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    }
+  ],
+  "ensemble_model_predictions": [
+    {
+      "path": "data/raw/ESC-50/audio/1-100032-A-0.wav",
+      "clip_id": "1-100032-A-0.wav",
+      "label": 0,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-110389-A-0.wav",
+      "clip_id": "1-110389-A-0.wav",
+      "label": 0,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-116765-A-41.wav",
+      "clip_id": "1-116765-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17150-A-12.wav",
+      "clip_id": "1-17150-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-A-40.wav",
+      "clip_id": "1-172649-A-40.wav",
+      "label": 8,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-B-40.wav",
+      "clip_id": "1-172649-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-C-40.wav",
+      "clip_id": "1-172649-C-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-D-40.wav",
+      "clip_id": "1-172649-D-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-E-40.wav",
+      "clip_id": "1-172649-E-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-172649-F-40.wav",
+      "clip_id": "1-172649-F-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17367-A-10.wav",
+      "clip_id": "1-17367-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17565-A-12.wav",
+      "clip_id": "1-17565-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17742-A-12.wav",
+      "clip_id": "1-17742-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17808-A-12.wav",
+      "clip_id": "1-17808-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-17808-B-12.wav",
+      "clip_id": "1-17808-B-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-181071-A-40.wav",
+      "clip_id": "1-181071-A-40.wav",
+      "label": 8,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-181071-B-40.wav",
+      "clip_id": "1-181071-B-40.wav",
+      "label": 8,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-187207-A-20.wav",
+      "clip_id": "1-187207-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-19898-A-41.wav",
+      "clip_id": "1-19898-A-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-19898-B-41.wav",
+      "clip_id": "1-19898-B-41.wav",
+      "label": 9,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-19898-C-41.wav",
+      "clip_id": "1-19898-C-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-211527-A-20.wav",
+      "clip_id": "1-211527-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-211527-B-20.wav",
+      "clip_id": "1-211527-B-20.wav",
+      "label": 5,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-211527-C-20.wav",
+      "clip_id": "1-211527-C-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-21189-A-10.wav",
+      "clip_id": "1-21189-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-21934-A-38.wav",
+      "clip_id": "1-21934-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-21935-A-38.wav",
+      "clip_id": "1-21935-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-22694-A-20.wav",
+      "clip_id": "1-22694-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-22694-B-20.wav",
+      "clip_id": "1-22694-B-20.wav",
+      "label": 5,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-26143-A-21.wav",
+      "clip_id": "1-26143-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-26222-A-10.wav",
+      "clip_id": "1-26222-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-26806-A-1.wav",
+      "clip_id": "1-26806-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-27724-A-1.wav",
+      "clip_id": "1-27724-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-28135-A-11.wav",
+      "clip_id": "1-28135-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-28135-B-11.wav",
+      "clip_id": "1-28135-B-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-29561-A-10.wav",
+      "clip_id": "1-29561-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-29680-A-21.wav",
+      "clip_id": "1-29680-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-30226-A-0.wav",
+      "clip_id": "1-30226-A-0.wav",
+      "label": 0,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-30344-A-0.wav",
+      "clip_id": "1-30344-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-31748-A-21.wav",
+      "clip_id": "1-31748-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-32318-A-0.wav",
+      "clip_id": "1-32318-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-34119-A-1.wav",
+      "clip_id": "1-34119-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-34119-B-1.wav",
+      "clip_id": "1-34119-B-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-35687-A-38.wav",
+      "clip_id": "1-35687-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-39901-A-11.wav",
+      "clip_id": "1-39901-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-39901-B-11.wav",
+      "clip_id": "1-39901-B-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-39923-A-1.wav",
+      "clip_id": "1-39923-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-40730-A-1.wav",
+      "clip_id": "1-40730-A-1.wav",
+      "label": 1,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-4211-A-12.wav",
+      "clip_id": "1-4211-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-42139-A-38.wav",
+      "clip_id": "1-42139-A-38.wav",
+      "label": 7,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-43382-A-1.wav",
+      "clip_id": "1-43382-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-43760-A-11.wav",
+      "clip_id": "1-43760-A-11.wav",
+      "label": 3,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-44831-A-1.wav",
+      "clip_id": "1-44831-A-1.wav",
+      "label": 1,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-46272-A-12.wav",
+      "clip_id": "1-46272-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47250-A-41.wav",
+      "clip_id": "1-47250-A-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47250-B-41.wav",
+      "clip_id": "1-47250-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47273-A-21.wav",
+      "clip_id": "1-47273-A-21.wav",
+      "label": 6,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-47274-A-21.wav",
+      "clip_id": "1-47274-A-21.wav",
+      "label": 6,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-48413-A-38.wav",
+      "clip_id": "1-48413-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-50060-A-10.wav",
+      "clip_id": "1-50060-A-10.wav",
+      "label": 2,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-54505-A-21.wav",
+      "clip_id": "1-54505-A-21.wav",
+      "label": 6,
+      "predicted": 1
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-54958-A-10.wav",
+      "clip_id": "1-54958-A-10.wav",
+      "label": 2,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-56311-A-10.wav",
+      "clip_id": "1-56311-A-10.wav",
+      "label": 2,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-57163-A-38.wav",
+      "clip_id": "1-57163-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-59324-A-21.wav",
+      "clip_id": "1-59324-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-59513-A-0.wav",
+      "clip_id": "1-59513-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-60997-A-20.wav",
+      "clip_id": "1-60997-A-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-60997-B-20.wav",
+      "clip_id": "1-60997-B-20.wav",
+      "label": 5,
+      "predicted": 5
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-61252-A-11.wav",
+      "clip_id": "1-61252-A-11.wav",
+      "label": 3,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-62849-A-38.wav",
+      "clip_id": "1-62849-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-62850-A-38.wav",
+      "clip_id": "1-62850-A-38.wav",
+      "label": 7,
+      "predicted": 7
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-63871-A-10.wav",
+      "clip_id": "1-63871-A-10.wav",
+      "label": 2,
+      "predicted": 2
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-64398-A-41.wav",
+      "clip_id": "1-64398-A-41.wav",
+      "label": 9,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-64398-B-41.wav",
+      "clip_id": "1-64398-B-41.wav",
+      "label": 9,
+      "predicted": 8
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-7057-A-12.wav",
+      "clip_id": "1-7057-A-12.wav",
+      "label": 4,
+      "predicted": 4
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-81883-A-21.wav",
+      "clip_id": "1-81883-A-21.wav",
+      "label": 6,
+      "predicted": 6
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-85362-A-0.wav",
+      "clip_id": "1-85362-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-91359-A-11.wav",
+      "clip_id": "1-91359-A-11.wav",
+      "label": 3,
+      "predicted": 9
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-91359-B-11.wav",
+      "clip_id": "1-91359-B-11.wav",
+      "label": 3,
+      "predicted": 3
+    },
+    {
+      "path": "data/raw/ESC-50/audio/1-97392-A-0.wav",
+      "clip_id": "1-97392-A-0.wav",
+      "label": 0,
+      "predicted": 0
+    }
+  ]
+}

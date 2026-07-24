@@ -1,0 +1,327 @@
+{
+  "exp_root": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep",
+  "dataset": "esc10",
+  "class_names": [
+    "dog",
+    "rooster",
+    "rain",
+    "sea_waves",
+    "crackling_fire",
+    "crying_baby",
+    "sneezing",
+    "clock_tick",
+    "helicopter",
+    "chainsaw"
+  ],
+  "folds": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "rows": [
+    {
+      "fold": 1,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_1",
+      "has_metrics": true,
+      "has_analysis": true,
+      "dataset": "esc10",
+      "class_names": [
+        "dog",
+        "rooster",
+        "rain",
+        "sea_waves",
+        "crackling_fire",
+        "crying_baby",
+        "sneezing",
+        "clock_tick",
+        "helicopter",
+        "chainsaw"
+      ],
+      "num_classes": 10,
+      "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc10_official4fold_phase1.json",
+      "params": 101674,
+      "macs_per_clip": 77337088,
+      "best_val_acc_pct": null,
+      "best_val_test_acc_pct": null,
+      "final_test_acc_pct": 61.25000000000001,
+      "ensemble_test_acc_pct": 62.5,
+      "final_cycle_test_acc_pct": 61.25000000000001,
+      "final_cycle_val_acc_pct": null,
+      "planned_epochs": 120,
+      "completed_epochs": 120,
+      "early_stopped": false,
+      "final_per_class_pct": {
+        "dog": 62.5,
+        "rooster": 87.5,
+        "rain": 62.5,
+        "sea_waves": 25.0,
+        "crackling_fire": 87.5,
+        "crying_baby": 75.0,
+        "sneezing": 62.5,
+        "clock_tick": 62.5,
+        "helicopter": 37.5,
+        "chainsaw": 50.0
+      },
+      "final_worst_class": "sea_waves",
+      "final_worst_class_acc_pct": 25.0
+    },
+    {
+      "fold": 2,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_2",
+      "has_metrics": true,
+      "has_analysis": true,
+      "dataset": "esc10",
+      "class_names": [
+        "dog",
+        "rooster",
+        "rain",
+        "sea_waves",
+        "crackling_fire",
+        "crying_baby",
+        "sneezing",
+        "clock_tick",
+        "helicopter",
+        "chainsaw"
+      ],
+      "num_classes": 10,
+      "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc10_official4fold_phase1.json",
+      "params": 101674,
+      "macs_per_clip": 77337088,
+      "best_val_acc_pct": null,
+      "best_val_test_acc_pct": null,
+      "final_test_acc_pct": 76.25,
+      "ensemble_test_acc_pct": 75.0,
+      "final_cycle_test_acc_pct": 76.25,
+      "final_cycle_val_acc_pct": null,
+      "planned_epochs": 120,
+      "completed_epochs": 120,
+      "early_stopped": false,
+      "final_per_class_pct": {
+        "dog": 75.0,
+        "rooster": 75.0,
+        "rain": 100.0,
+        "sea_waves": 100.0,
+        "crackling_fire": 75.0,
+        "crying_baby": 62.5,
+        "sneezing": 87.5,
+        "clock_tick": 100.0,
+        "helicopter": 37.5,
+        "chainsaw": 50.0
+      },
+      "final_worst_class": "helicopter",
+      "final_worst_class_acc_pct": 37.5
+    },
+    {
+      "fold": 3,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_3",
+      "has_metrics": true,
+      "has_analysis": true,
+      "dataset": "esc10",
+      "class_names": [
+        "dog",
+        "rooster",
+        "rain",
+        "sea_waves",
+        "crackling_fire",
+        "crying_baby",
+        "sneezing",
+        "clock_tick",
+        "helicopter",
+        "chainsaw"
+      ],
+      "num_classes": 10,
+      "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc10_official4fold_phase1.json",
+      "params": 101674,
+      "macs_per_clip": 77337088,
+      "best_val_acc_pct": null,
+      "best_val_test_acc_pct": null,
+      "final_test_acc_pct": 67.5,
+      "ensemble_test_acc_pct": 65.0,
+      "final_cycle_test_acc_pct": 67.5,
+      "final_cycle_val_acc_pct": null,
+      "planned_epochs": 120,
+      "completed_epochs": 120,
+      "early_stopped": false,
+      "final_per_class_pct": {
+        "dog": 62.5,
+        "rooster": 75.0,
+        "rain": 50.0,
+        "sea_waves": 37.5,
+        "crackling_fire": 100.0,
+        "crying_baby": 75.0,
+        "sneezing": 75.0,
+        "clock_tick": 100.0,
+        "helicopter": 37.5,
+        "chainsaw": 62.5
+      },
+      "final_worst_class": "sea_waves",
+      "final_worst_class_acc_pct": 37.5
+    },
+    {
+      "fold": 4,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_4",
+      "has_metrics": true,
+      "has_analysis": true,
+      "dataset": "esc10",
+      "class_names": [
+        "dog",
+        "rooster",
+        "rain",
+        "sea_waves",
+        "crackling_fire",
+        "crying_baby",
+        "sneezing",
+        "clock_tick",
+        "helicopter",
+        "chainsaw"
+      ],
+      "num_classes": 10,
+      "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc10_official4fold_phase1.json",
+      "params": 101674,
+      "macs_per_clip": 77337088,
+      "best_val_acc_pct": null,
+      "best_val_test_acc_pct": null,
+      "final_test_acc_pct": 72.5,
+      "ensemble_test_acc_pct": 70.0,
+      "final_cycle_test_acc_pct": 72.5,
+      "final_cycle_val_acc_pct": null,
+      "planned_epochs": 120,
+      "completed_epochs": 120,
+      "early_stopped": false,
+      "final_per_class_pct": {
+        "dog": 87.5,
+        "rooster": 87.5,
+        "rain": 75.0,
+        "sea_waves": 50.0,
+        "crackling_fire": 62.5,
+        "crying_baby": 75.0,
+        "sneezing": 75.0,
+        "clock_tick": 87.5,
+        "helicopter": 75.0,
+        "chainsaw": 50.0
+      },
+      "final_worst_class": "sea_waves",
+      "final_worst_class_acc_pct": 50.0
+    },
+    {
+      "fold": 5,
+      "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_5",
+      "has_metrics": true,
+      "has_analysis": true,
+      "dataset": "esc10",
+      "class_names": [
+        "dog",
+        "rooster",
+        "rain",
+        "sea_waves",
+        "crackling_fire",
+        "crying_baby",
+        "sneezing",
+        "clock_tick",
+        "helicopter",
+        "chainsaw"
+      ],
+      "num_classes": 10,
+      "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc10_official4fold_phase1.json",
+      "params": 101674,
+      "macs_per_clip": 77337088,
+      "best_val_acc_pct": null,
+      "best_val_test_acc_pct": null,
+      "final_test_acc_pct": 70.0,
+      "ensemble_test_acc_pct": 72.5,
+      "final_cycle_test_acc_pct": 70.0,
+      "final_cycle_val_acc_pct": null,
+      "planned_epochs": 120,
+      "completed_epochs": 120,
+      "early_stopped": false,
+      "final_per_class_pct": {
+        "dog": 75.0,
+        "rooster": 100.0,
+        "rain": 87.5,
+        "sea_waves": 75.0,
+        "crackling_fire": 62.5,
+        "crying_baby": 50.0,
+        "sneezing": 50.0,
+        "clock_tick": 87.5,
+        "helicopter": 87.5,
+        "chainsaw": 25.0
+      },
+      "final_worst_class": "chainsaw",
+      "final_worst_class_acc_pct": 25.0
+    }
+  ],
+  "aggregate": {
+    "best_val_acc_pct": {
+      "mean": null,
+      "std": null
+    },
+    "best_val_test_acc_pct": {
+      "mean": null,
+      "std": null
+    },
+    "final_test_acc_pct": {
+      "mean": 69.5,
+      "std": 5.037360419902469
+    },
+    "ensemble_test_acc_pct": {
+      "mean": 69.0,
+      "std": 4.636809247747852
+    },
+    "final_cycle_test_acc_pct": {
+      "mean": 69.5,
+      "std": 5.037360419902469
+    },
+    "final_cycle_val_acc_pct": {
+      "mean": null,
+      "std": null
+    },
+    "final_worst_class_acc_pct": {
+      "mean": 35.0,
+      "std": 9.354143466934854
+    }
+  },
+  "per_class_final_test": {
+    "dog": {
+      "mean": 72.5,
+      "std": 9.354143466934854
+    },
+    "rooster": {
+      "mean": 85.0,
+      "std": 9.354143466934854
+    },
+    "rain": {
+      "mean": 75.0,
+      "std": 17.67766952966369
+    },
+    "sea_waves": {
+      "mean": 57.5,
+      "std": 26.92582403567252
+    },
+    "crackling_fire": {
+      "mean": 77.5,
+      "std": 14.577379737113251
+    },
+    "crying_baby": {
+      "mean": 67.5,
+      "std": 10.0
+    },
+    "sneezing": {
+      "mean": 70.0,
+      "std": 12.747548783981962
+    },
+    "clock_tick": {
+      "mean": 87.5,
+      "std": 13.693063937629153
+    },
+    "helicopter": {
+      "mean": 55.0,
+      "std": 21.79449471770337
+    },
+    "chainsaw": {
+      "mean": 47.5,
+      "std": 12.24744871391589
+    }
+  }
+}

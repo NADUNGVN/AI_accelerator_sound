@@ -1,0 +1,7465 @@
+{
+  "exp_dir": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_1",
+  "fold": 1,
+  "dataset": "esc10",
+  "class_names": [
+    "dog",
+    "rooster",
+    "rain",
+    "sea_waves",
+    "crackling_fire",
+    "crying_baby",
+    "sneezing",
+    "clock_tick",
+    "helicopter",
+    "chainsaw"
+  ],
+  "model": "all_cycles",
+  "metrics": {
+    "fold": 1,
+    "protocol": "esc10_official_4_1_cv",
+    "random_split_algorithm": null,
+    "source_group_split_algorithm": null,
+    "uses_validation": false,
+    "dataset": "esc10",
+    "data_dir": "data/raw/ESC-50",
+    "class_names": [
+      "dog",
+      "rooster",
+      "rain",
+      "sea_waves",
+      "crackling_fire",
+      "crying_baby",
+      "sneezing",
+      "clock_tick",
+      "helicopter",
+      "chainsaw"
+    ],
+    "num_classes": 10,
+    "official_train_folds": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "val_fold": null,
+    "test_fold": 1,
+    "official_test_folds": [
+      1
+    ],
+    "source_label_overlap_train_test": {
+      "count": 0,
+      "examples": []
+    },
+    "train_clip_count": 320,
+    "val_clip_count": 0,
+    "test_clip_count": 80,
+    "train_frame_count": 320,
+    "val_frame_count": 0,
+    "model_name": "ds_conv2d_h1_pyramid",
+    "model_params": {
+      "params_with_bias": 101674,
+      "params_trainable": 101674,
+      "params_no_bias": 100400
+    },
+    "model_conv_linear_macs_per_input": 77337088,
+    "model_conv_linear_macs_per_clip_eval": 77337088,
+    "deployment_budget": {
+      "max_params": 300000,
+      "max_macs_per_clip": 300000000,
+      "flops_equivalent_convention": "FLOPs = 2 * MACs"
+    },
+    "input_features": "waveform",
+    "classifier_input_channels": 1,
+    "classifier_input_length": 80000,
+    "frame_length": 80000,
+    "frame_hop": 80000,
+    "frames_per_clip": 1,
+    "drop_silent_tail_frames": false,
+    "eval_drop_silent_tail_frames": false,
+    "epochs": 120,
+    "completed_epochs": 120,
+    "cycles": 4,
+    "snapshot_epochs": [
+      30,
+      60,
+      90,
+      120
+    ],
+    "last_snapshot_epoch": 120,
+    "early_stopping": null,
+    "early_stopped": false,
+    "early_stop_epoch": null,
+    "early_stopping_best_val_acc": null,
+    "seed": 83,
+    "loss_type": "crossentropy",
+    "focal_gamma": null,
+    "label_smoothing": 0.02,
+    "class_weighting": "none",
+    "class_weight_multipliers": null,
+    "weighted_sampler": {
+      "enabled": false
+    },
+    "source_aware_batch_sampler": null,
+    "pool_type": "pyramid_avgmax",
+    "pool_bins": [
+      1,
+      2,
+      4
+    ],
+    "stem_type": "single",
+    "extra_late_blocks": 0,
+    "mixup": {
+      "enabled": false,
+      "alpha": 0.2,
+      "prob": 0.0
+    },
+    "supervised_contrastive": null,
+    "hard_negative_margin": null,
+    "distillation": null,
+    "initial_checkpoint": null,
+    "initial_checkpoint_path": null,
+    "teacher_checkpoint_path": null,
+    "teacher_config_path": null,
+    "ema": {
+      "enabled": false,
+      "decay": 0.995,
+      "use_for_validation": false
+    },
+    "use_ema_for_validation": false,
+    "amp": true,
+    "gradient_clip": 5.0,
+    "optimizer": "adamw",
+    "weight_decay": 0.0002,
+    "adam_eps": 1e-08,
+    "momentum": 0.9,
+    "nesterov": false,
+    "lr_schedule": {
+      "type": "cosine_restart"
+    },
+    "batch_size": 32,
+    "accum_steps": 1,
+    "max_train_clips": null,
+    "max_val_clips": null,
+    "max_test_clips": null,
+    "config_path": "configs/main/student_ds_conv2d_h1_pyramid_esc10_official4fold_phase1.json",
+    "git_commit": "6fd5c97eac143dfa665026914b7da7d731e72dc9",
+    "best_val_clip_acc": null,
+    "test_acc_best_val_model": null,
+    "test_acc_last_snapshot": 0.6125,
+    "test_acc_ensemble": 0.625
+  },
+  "final_train_frame_acc": 0.9125,
+  "cycles": [
+    {
+      "cycle": 1,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_1/checkpoints/tcam_fold_1_cycle_1.pt",
+      "test": {
+        "accuracy": 0.5,
+        "clip_count": 80,
+        "confusion_matrix": [
+          [
+            4,
+            2,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            5,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            6,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            7,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            5,
+            0,
+            0,
+            2,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            3,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            4,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            3,
+            0,
+            0,
+            4,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            1,
+            4
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "dog",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "rooster",
+                "count": 2
+              },
+              {
+                "predicted": "sneezing",
+                "count": 1
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "rooster",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 9,
+            "top_confusions": [
+              {
+                "predicted": "crackling_fire",
+                "count": 2
+              },
+              {
+                "predicted": "dog",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "rain",
+            "support": 8,
+            "correct": 6,
+            "accuracy": 0.75,
+            "predicted_count": 19,
+            "top_confusions": [
+              {
+                "predicted": "sea_waves",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "sea_waves",
+            "support": 8,
+            "correct": 1,
+            "accuracy": 0.125,
+            "predicted_count": 9,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 7
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "crackling_fire",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 10,
+            "top_confusions": [
+              {
+                "predicted": "clock_tick",
+                "count": 2
+              },
+              {
+                "predicted": "rain",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "crying_baby",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 4,
+            "top_confusions": [
+              {
+                "predicted": "sea_waves",
+                "count": 3
+              },
+              {
+                "predicted": "dog",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "sneezing",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 5,
+            "top_confusions": [
+              {
+                "predicted": "rooster",
+                "count": 2
+              },
+              {
+                "predicted": "dog",
+                "count": 1
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 7,
+            "class_name": "clock_tick",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "crackling_fire",
+                "count": 3
+              },
+              {
+                "predicted": "rain",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "helicopter",
+            "support": 8,
+            "correct": 3,
+            "accuracy": 0.375,
+            "predicted_count": 4,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 3
+              },
+              {
+                "predicted": "sea_waves",
+                "count": 1
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "chainsaw",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 5,
+            "top_confusions": [
+              {
+                "predicted": "sea_waves",
+                "count": 2
+              },
+              {
+                "predicted": "rain",
+                "count": 1
+              },
+              {
+                "predicted": "helicopter",
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.5,
+          "clip_count": 80,
+          "correct": 40,
+          "confusion_matrix": [
+            [
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              3,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              4,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              3,
+              0,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 19,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.5,
+          "clip_count": 80,
+          "correct": 40,
+          "confusion_matrix": [
+            [
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              3,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              4,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              3,
+              0,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 19,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.5,
+          "clip_count": 80,
+          "correct": 40,
+          "confusion_matrix": [
+            [
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              3,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              4,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              3,
+              0,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 19,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.5,
+          "clip_count": 80,
+          "correct": 40,
+          "confusion_matrix": [
+            [
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              3,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              4,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              3,
+              0,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 19,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.5,
+          "clip_count": 80,
+          "correct": 40,
+          "confusion_matrix": [
+            [
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              3,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              4,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              3,
+              0,
+              0,
+              4,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 19,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 7
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 2
+                },
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 4,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    },
+    {
+      "cycle": 2,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_1/checkpoints/tcam_fold_1_cycle_2.pt",
+      "test": {
+        "accuracy": 0.65,
+        "clip_count": 80,
+        "confusion_matrix": [
+          [
+            4,
+            1,
+            0,
+            0,
+            0,
+            0,
+            2,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            7,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            6,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            2,
+            4
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "dog",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 6,
+            "top_confusions": [
+              {
+                "predicted": "sneezing",
+                "count": 2
+              },
+              {
+                "predicted": "rooster",
+                "count": 1
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "rooster",
+            "support": 8,
+            "correct": 7,
+            "accuracy": 0.875,
+            "predicted_count": 9,
+            "top_confusions": [
+              {
+                "predicted": "dog",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "rain",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 13,
+            "top_confusions": [
+              {
+                "predicted": "sea_waves",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "sea_waves",
+            "support": 8,
+            "correct": 1,
+            "accuracy": 0.125,
+            "predicted_count": 5,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 5
+              },
+              {
+                "predicted": "helicopter",
+                "count": 1
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "crackling_fire",
+            "support": 8,
+            "correct": 7,
+            "accuracy": 0.875,
+            "predicted_count": 10,
+            "top_confusions": [
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "crying_baby",
+            "support": 8,
+            "correct": 7,
+            "accuracy": 0.875,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "dog",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "sneezing",
+            "support": 8,
+            "correct": 6,
+            "accuracy": 0.75,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "rooster",
+                "count": 1
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 7,
+            "class_name": "clock_tick",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "crackling_fire",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "helicopter",
+            "support": 8,
+            "correct": 6,
+            "accuracy": 0.75,
+            "predicted_count": 9,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "chainsaw",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 5,
+            "top_confusions": [
+              {
+                "predicted": "helicopter",
+                "count": 2
+              },
+              {
+                "predicted": "rain",
+                "count": 1
+              },
+              {
+                "predicted": "sea_waves",
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.65,
+          "clip_count": 80,
+          "correct": 52,
+          "confusion_matrix": [
+            [
+              4,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 13,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.65,
+          "clip_count": 80,
+          "correct": 52,
+          "confusion_matrix": [
+            [
+              4,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 13,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.65,
+          "clip_count": 80,
+          "correct": 52,
+          "confusion_matrix": [
+            [
+              4,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 13,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.65,
+          "clip_count": 80,
+          "correct": 52,
+          "confusion_matrix": [
+            [
+              4,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 13,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.65,
+          "clip_count": 80,
+          "correct": 52,
+          "confusion_matrix": [
+            [
+              4,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              7,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              2,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 13,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "helicopter",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 10,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 9,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 2
+                },
+                {
+                  "predicted": "rain",
+                  "count": 1
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    },
+    {
+      "cycle": 3,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_1/checkpoints/tcam_fold_1_cycle_3.pt",
+      "test": {
+        "accuracy": 0.625,
+        "clip_count": 80,
+        "confusion_matrix": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            6,
+            0,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            5,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            3,
+            4
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "dog",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "sneezing",
+                "count": 2
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "rooster",
+            "support": 8,
+            "correct": 6,
+            "accuracy": 0.75,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "crackling_fire",
+                "count": 1
+              },
+              {
+                "predicted": "crying_baby",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "rain",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 12,
+            "top_confusions": [
+              {
+                "predicted": "sea_waves",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "sea_waves",
+            "support": 8,
+            "correct": 1,
+            "accuracy": 0.125,
+            "predicted_count": 5,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 5
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "crackling_fire",
+            "support": 8,
+            "correct": 8,
+            "accuracy": 1.0,
+            "predicted_count": 12,
+            "top_confusions": []
+          },
+          {
+            "class_id": 5,
+            "class_name": "crying_baby",
+            "support": 8,
+            "correct": 6,
+            "accuracy": 0.75,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "dog",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "sneezing",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "dog",
+                "count": 1
+              },
+              {
+                "predicted": "rooster",
+                "count": 1
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 7,
+            "class_name": "clock_tick",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "crackling_fire",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "helicopter",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 2
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "chainsaw",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "helicopter",
+                "count": 3
+              },
+              {
+                "predicted": "sea_waves",
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.625,
+          "clip_count": 80,
+          "correct": 50,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                },
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 8,
+              "accuracy": 1.0,
+              "predicted_count": 12,
+              "top_confusions": []
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.625,
+          "clip_count": 80,
+          "correct": 50,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                },
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 8,
+              "accuracy": 1.0,
+              "predicted_count": 12,
+              "top_confusions": []
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.625,
+          "clip_count": 80,
+          "correct": 50,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                },
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 8,
+              "accuracy": 1.0,
+              "predicted_count": 12,
+              "top_confusions": []
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.625,
+          "clip_count": 80,
+          "correct": 50,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                },
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 8,
+              "accuracy": 1.0,
+              "predicted_count": 12,
+              "top_confusions": []
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.625,
+          "clip_count": 80,
+          "correct": 50,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                },
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 1,
+              "accuracy": 0.125,
+              "predicted_count": 5,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 5
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 8,
+              "accuracy": 1.0,
+              "predicted_count": 12,
+              "top_confusions": []
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    },
+    {
+      "cycle": 4,
+      "checkpoint": "/home/ubuntu/Dung_TDTU/AI_accelerator_sound_source_tests/experiments/esc10_phase1_dsconv2dh1_official4fold_120ep/fold_1/checkpoints/tcam_fold_1_cycle_4.pt",
+      "test": {
+        "accuracy": 0.6125,
+        "clip_count": 80,
+        "confusion_matrix": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            7,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            5,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            4,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            6,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            5,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            3,
+            4
+          ]
+        ],
+        "per_class": [
+          {
+            "class_id": 0,
+            "class_name": "dog",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "sneezing",
+                "count": 2
+              },
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "rooster",
+            "support": 8,
+            "correct": 7,
+            "accuracy": 0.875,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "crying_baby",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 2,
+            "class_name": "rain",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 12,
+            "top_confusions": [
+              {
+                "predicted": "sea_waves",
+                "count": 2
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 3,
+            "class_name": "sea_waves",
+            "support": 8,
+            "correct": 2,
+            "accuracy": 0.25,
+            "predicted_count": 6,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 4
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 2
+              }
+            ]
+          },
+          {
+            "class_id": 4,
+            "class_name": "crackling_fire",
+            "support": 8,
+            "correct": 7,
+            "accuracy": 0.875,
+            "predicted_count": 11,
+            "top_confusions": [
+              {
+                "predicted": "clock_tick",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 5,
+            "class_name": "crying_baby",
+            "support": 8,
+            "correct": 6,
+            "accuracy": 0.75,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "dog",
+                "count": 1
+              },
+              {
+                "predicted": "sneezing",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 6,
+            "class_name": "sneezing",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "dog",
+                "count": 1
+              },
+              {
+                "predicted": "rooster",
+                "count": 1
+              },
+              {
+                "predicted": "crackling_fire",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 7,
+            "class_name": "clock_tick",
+            "support": 8,
+            "correct": 5,
+            "accuracy": 0.625,
+            "predicted_count": 7,
+            "top_confusions": [
+              {
+                "predicted": "crackling_fire",
+                "count": 3
+              }
+            ]
+          },
+          {
+            "class_id": 8,
+            "class_name": "helicopter",
+            "support": 8,
+            "correct": 3,
+            "accuracy": 0.375,
+            "predicted_count": 6,
+            "top_confusions": [
+              {
+                "predicted": "rain",
+                "count": 3
+              },
+              {
+                "predicted": "sea_waves",
+                "count": 1
+              },
+              {
+                "predicted": "chainsaw",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "class_id": 9,
+            "class_name": "chainsaw",
+            "support": 8,
+            "correct": 4,
+            "accuracy": 0.5,
+            "predicted_count": 8,
+            "top_confusions": [
+              {
+                "predicted": "helicopter",
+                "count": 3
+              },
+              {
+                "predicted": "sea_waves",
+                "count": 1
+              }
+            ]
+          }
+        ]
+      },
+      "test_modes": {
+        "sum_all": {
+          "accuracy": 0.6125,
+          "clip_count": 80,
+          "correct": 49,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              7,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 2,
+              "accuracy": 0.25,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 4
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 11,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_all": {
+          "accuracy": 0.6125,
+          "clip_count": 80,
+          "correct": 49,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              7,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 2,
+              "accuracy": 0.25,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 4
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 11,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "sum_nonzero": {
+          "accuracy": 0.6125,
+          "clip_count": 80,
+          "correct": 49,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              7,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 2,
+              "accuracy": 0.25,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 4
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 11,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "majority_nonzero": {
+          "accuracy": 0.6125,
+          "clip_count": 80,
+          "correct": 49,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              7,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 2,
+              "accuracy": 0.25,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 4
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 11,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "max_frame_conf": {
+          "accuracy": 0.6125,
+          "clip_count": 80,
+          "correct": 49,
+          "confusion_matrix": [
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              7,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              4,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              7,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              6,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              4
+            ]
+          ],
+          "per_class": [
+            {
+              "class_id": 0,
+              "class_name": "dog",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "sneezing",
+                  "count": 2
+                },
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 1,
+              "class_name": "rooster",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "crying_baby",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 2,
+              "class_name": "rain",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 12,
+              "top_confusions": [
+                {
+                  "predicted": "sea_waves",
+                  "count": 2
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 3,
+              "class_name": "sea_waves",
+              "support": 8,
+              "correct": 2,
+              "accuracy": 0.25,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 4
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "class_id": 4,
+              "class_name": "crackling_fire",
+              "support": 8,
+              "correct": 7,
+              "accuracy": 0.875,
+              "predicted_count": 11,
+              "top_confusions": [
+                {
+                  "predicted": "clock_tick",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 5,
+              "class_name": "crying_baby",
+              "support": 8,
+              "correct": 6,
+              "accuracy": 0.75,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "sneezing",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 6,
+              "class_name": "sneezing",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "dog",
+                  "count": 1
+                },
+                {
+                  "predicted": "rooster",
+                  "count": 1
+                },
+                {
+                  "predicted": "crackling_fire",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 7,
+              "class_name": "clock_tick",
+              "support": 8,
+              "correct": 5,
+              "accuracy": 0.625,
+              "predicted_count": 7,
+              "top_confusions": [
+                {
+                  "predicted": "crackling_fire",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "class_id": 8,
+              "class_name": "helicopter",
+              "support": 8,
+              "correct": 3,
+              "accuracy": 0.375,
+              "predicted_count": 6,
+              "top_confusions": [
+                {
+                  "predicted": "rain",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                },
+                {
+                  "predicted": "chainsaw",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "class_id": 9,
+              "class_name": "chainsaw",
+              "support": 8,
+              "correct": 4,
+              "accuracy": 0.5,
+              "predicted_count": 8,
+              "top_confusions": [
+                {
+                  "predicted": "helicopter",
+                  "count": 3
+                },
+                {
+                  "predicted": "sea_waves",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        "valid_frame_count": {
+          "average": 1.0,
+          "min": 1,
+          "max": 1,
+          "zero_threshold": 1e-08
+        }
+      }
+    }
+  ]
+}
