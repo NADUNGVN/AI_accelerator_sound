@@ -133,7 +133,7 @@ download_esc50() {
   extract_zip_with_python "$archive" "$extract_root"
 
   local extracted
-  extracted="$(find "$extract_root" -maxdepth 2 -type f -path '*/meta/esc50.csv' -print -quit)"
+  extracted="$(find "$extract_root" -maxdepth 4 -type f -path '*/meta/esc50.csv' -print -quit)"
   if [[ -z "$extracted" ]]; then
     echo "ESC-50 archive extraction did not contain meta/esc50.csv" >&2
     exit 1
