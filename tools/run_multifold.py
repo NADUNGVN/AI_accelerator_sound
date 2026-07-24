@@ -121,9 +121,19 @@ def collect_fold(exp_root, fold):
     for item in per_class:
         row["final_per_class_pct"][item["class_name"]] = pct(item.get("accuracy"))
     if per_class:
-        class_values = list(row["final_per_class_pct"].values())
-        row["final_worst_class"] = min(row["final_per_class_pct"], key=row["final_per_class_pct"].get)
-        row["final_worst_class_acc_pct"] = min(class_values)
+        valid_class_items = [
+            (class_name, value)
+            for class_name, value in row["final_per_class_pct"].items()
+            if value is not None
+        ]
+        if valid_class_items:
+            row["final_worst_class"], row["final_worst_class_acc_pct"] = min(
+                valid_class_items,
+                key=lambda item: item[1],
+            )
+        else:
+            row["final_worst_class"] = None
+            row["final_worst_class_acc_pct"] = None
     else:
         row["final_worst_class"] = None
         row["final_worst_class_acc_pct"] = None
