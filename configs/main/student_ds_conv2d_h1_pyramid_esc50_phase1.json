@@ -3,7 +3,7 @@
   "protocol": "esc50_3_1_1_foldk_valnext_v1",
   "model_name": "ds_conv2d_h1_pyramid",
   "width_mult": 1.0,
-  "dropout": 0.25,
+  "dropout": 0.15,
   "pool_type": "pyramid_avgmax",
   "pool_bins": [1, 2, 4],
   "stem_type": "single",
@@ -14,10 +14,10 @@
   },
   "batch_size": 64,
   "accum_steps": 1,
-  "epochs": 50,
-  "lr": 0.001,
+  "epochs": 120,
+  "lr": 0.0005,
   "optimizer": "adamw",
-  "weight_decay": 0.0008,
+  "weight_decay": 0.0002,
   "num_workers": 6,
   "sample_rate": 16000,
   "clip_seconds": 5.0,
@@ -32,37 +32,37 @@
   "gradient_clip": 5.0,
   "adam_eps": 1e-8,
   "loss": "crossentropy",
-  "label_smoothing": 0.04,
-  "class_weighting": "balanced",
+  "label_smoothing": 0.02,
+  "class_weighting": "none",
   "weighted_sampler": {
     "enabled": false
   },
   "mixup": {
-    "enabled": true,
+    "enabled": false,
     "alpha": 0.2,
-    "prob": 0.7
+    "prob": 0.0
   },
   "ema": {
-    "enabled": true,
+    "enabled": false,
     "decay": 0.995,
-    "use_for_validation": true
+    "use_for_validation": false
   },
   "augment": {
     "enabled": true,
-    "gain_db": 5.0,
-    "noise_prob": 0.25,
-    "noise_snr_db_min": 20.0,
-    "noise_snr_db_max": 38.0,
-    "shift_prob": 0.5,
-    "shift_max_fraction": 0.08,
-    "polarity_prob": 0.1,
-    "time_mask_prob": 0.18,
-    "time_mask_max_fraction": 0.06
+    "gain_db": 2.0,
+    "noise_prob": 0.1,
+    "noise_snr_db_min": 26.0,
+    "noise_snr_db_max": 42.0,
+    "shift_prob": 0.3,
+    "shift_max_fraction": 0.04,
+    "polarity_prob": 0.0,
+    "time_mask_prob": 0.08,
+    "time_mask_max_fraction": 0.025
   },
   "notes": {
-    "role": "Phase 1 ESC-50 deployable waveform-student config",
+    "role": "Phase 1 ESC-50 deployable waveform-student config, light augmentation/no mixup",
     "protocol": "5-fold ESC-50 contract: test fold k, validation next fold, train remaining 3 folds",
     "metric": "Report mean/std of validation-selected test accuracy only after all 5 folds are complete",
-    "status": "Loader/config smoke first; no paper accuracy claim yet"
+    "status": "Promoted after fold-1 gate: best-val test improved from 2.25% collapsed baseline to 45.50%."
   }
 }

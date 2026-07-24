@@ -225,10 +225,10 @@ run_esc50() {
         --epochs 1 --max_train_clips 64 --max_val_clips 32 --max_test_clips 32
       ;;
     full-first)
-      run_multifold "$ESC50_CONFIG" "esc50_phase1_dsconv2dh1_fold1_50ep" "1" "$data_dir"
+      run_multifold "$ESC50_CONFIG" "esc50_phase1_dsconv2dh1_fold1_120ep" "1" "$data_dir"
       ;;
     full-all)
-      run_multifold "$ESC50_CONFIG" "esc50_phase1_dsconv2dh1_5fold_50ep" "1-5" "$data_dir"
+      run_multifold "$ESC50_CONFIG" "esc50_phase1_dsconv2dh1_5fold_120ep" "1-5" "$data_dir"
       ;;
   esac
 }
