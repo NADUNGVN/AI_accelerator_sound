@@ -853,7 +853,7 @@ def main():
     )
     parser.add_argument("--data_dir", type=str, default=None, help="Path to dataset folder; defaults by config dataset")
     parser.add_argument("--config", type=str, default="configs/rtx3090_config.json", help="Path to RTX 3090 config JSON")
-    parser.add_argument("--fold", type=int, default=1, help="Test fold/bucket. US8K uses 1-10; ESC-50 uses 1-5; Speech Commands uses 1.")
+    parser.add_argument("--fold", type=int, default=1, help="Test fold/bucket. US8K uses 1-10; ESC-10/ESC-50 use 1-5; Speech Commands uses 1.")
     parser.add_argument("--epochs", type=int, default=None, help="Number of training epochs (overrides config)")
     parser.add_argument("--batch_size", type=int, default=None, help="Physical batch size (overrides config)")
     parser.add_argument("--lr", type=float, default=None, help="Learning rate (overrides config)")
@@ -871,11 +871,13 @@ def main():
             "random_clip_9_1",
             "source_group_9_1",
             "source_group_8_1_1",
+            "esc10_3_1_1_foldk_valnext_v1",
+            "esc10_official_4_1_cv",
             "esc50_3_1_1_foldk_valnext_v1",
             "esc50_official_4_1_cv",
             "speech_commands_v2_official12",
         ],
-        help="Evaluation protocol. US8K protocols remain unchanged; ESC-50 and Speech Commands protocols are Phase 1 dataset contracts."
+        help="Evaluation protocol. US8K protocols remain unchanged; ESC-10, ESC-50, and Speech Commands protocols are Phase 1 dataset contracts."
     )
     args = parser.parse_args()
 
@@ -917,6 +919,8 @@ def main():
         "random_clip_9_1",
         "source_group_9_1",
         "source_group_8_1_1",
+        "esc10_3_1_1_foldk_valnext_v1",
+        "esc10_official_4_1_cv",
         "esc50_3_1_1_foldk_valnext_v1",
         "esc50_official_4_1_cv",
         "speech_commands_v2_official12",
@@ -925,6 +929,7 @@ def main():
         raise ValueError(
             f"Unsupported protocol '{protocol}'. Use 'paper_9_1', 'clean_8_1_1', "
             "'random_clip_9_1', 'source_group_9_1', 'source_group_8_1_1', "
+            "'esc10_3_1_1_foldk_valnext_v1', 'esc10_official_4_1_cv', "
             "'esc50_3_1_1_foldk_valnext_v1', 'esc50_official_4_1_cv', "
             "or 'speech_commands_v2_official12'."
         )
