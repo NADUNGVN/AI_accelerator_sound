@@ -49,7 +49,7 @@ def default_data_dir(dataset_name="urbansound8k"):
             os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "UrbanSound8K")),
         ]
         marker = os.path.join("metadata", "UrbanSound8K.csv")
-    elif dataset_name == "esc50":
+    elif dataset_name in {"esc50", "esc10"}:
         candidates = [
             os.path.join(REPO_ROOT, "data", "raw", "ESC-50"),
             os.path.abspath(os.path.join(REPO_ROOT, "..", "..", "..", "data", "ESC-50")),
@@ -669,18 +669,20 @@ def main():
         train_records = [r for r in clip_records if r["fold"] != args.fold and r["fold"] != val_fold]
         val_records = [r for r in clip_records if r["fold"] == val_fold]
         print(f"Reconstructed clean_8_1_1 split with test fold={args.fold}, val fold={val_fold}.")
-    elif protocol == "esc50_3_1_1_foldk_valnext_v1":
+    elif protocol in {"esc50_3_1_1_foldk_valnext_v1", "esc10_3_1_1_foldk_valnext_v1"}:
         split_fold = int((metrics or {}).get("test_fold", args.fold))
         val_fold = (split_fold % 5) + 1
         test_records = [r for r in clip_records if r["fold"] == split_fold]
         val_records = [r for r in clip_records if r["fold"] == val_fold]
         train_records = [r for r in clip_records if r["fold"] not in {split_fold, val_fold}]
-        print(f"Reconstructed esc50_3_1_1 split with test fold={split_fold}, val fold={val_fold}.")
-    elif protocol == "esc50_official_4_1_cv":
+        prefix = "esc10" if protocol.startswith("esc10") else "esc50"
+        print(f"Reconstructed {prefix}_3_1_1 split with test fold={split_fold}, val fold={val_fold}.")
+    elif protocol in {"esc50_official_4_1_cv", "esc10_official_4_1_cv"}:
         split_fold = int((metrics or {}).get("test_fold", args.fold))
         test_records = [r for r in clip_records if r["fold"] == split_fold]
         train_records = [r for r in clip_records if r["fold"] != split_fold]
-        print(f"Reconstructed esc50_official_4_1_cv split with test fold={split_fold}.")
+        prefix = "esc10" if protocol.startswith("esc10") else "esc50"
+        print(f"Reconstructed {prefix}_official_4_1_cv split with test fold={split_fold}.")
     elif protocol == "speech_commands_v2_official12":
         train_records = [r for r in clip_records if r.get("split") == "train"]
         val_records = [r for r in clip_records if r.get("split") == "validation"]

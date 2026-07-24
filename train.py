@@ -57,7 +57,7 @@ def default_data_dir(dataset_name="urbansound8k"):
             os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "UrbanSound8K")),
         ]
         marker = os.path.join("metadata", "UrbanSound8K.csv")
-    elif dataset_name == "esc50":
+    elif dataset_name in {"esc50", "esc10"}:
         candidates = [
             os.path.join(repo_root, "data", "raw", "ESC-50"),
             os.path.abspath(os.path.join(repo_root, "..", "..", "..", "data", "ESC-50")),
@@ -262,9 +262,14 @@ def sorted_unique(values):
 
 
 def validate_fold_for_protocol(protocol, fold):
-    if protocol in {"esc50_3_1_1_foldk_valnext_v1", "esc50_official_4_1_cv"}:
+    if protocol in {
+        "esc50_3_1_1_foldk_valnext_v1",
+        "esc50_official_4_1_cv",
+        "esc10_3_1_1_foldk_valnext_v1",
+        "esc10_official_4_1_cv",
+    }:
         if not 1 <= fold <= 5:
-            raise ValueError(f"--fold must be in [1, 5] for ESC-50 protocols, got {fold}")
+            raise ValueError(f"--fold must be in [1, 5] for ESC protocols, got {fold}")
     elif protocol == "speech_commands_v2_official12":
         if fold != 1:
             raise ValueError("Speech Commands official split is not fold-based; use --fold 1.")
@@ -322,21 +327,25 @@ def build_dataset_split(clip_records, dataset_name, protocol, fold, seed):
             f"Train=8 buckets, Val=bucket {val_fold}, Test=bucket {fold}, "
             f"seed={seed}, split_algorithm={SOURCE_GROUP_SPLIT_ALGORITHM}."
         )
-    elif protocol == "esc50_3_1_1_foldk_valnext_v1":
-        if dataset_name != "esc50":
-            raise ValueError(f"Protocol {protocol} requires dataset='esc50'.")
+    elif protocol in {"esc50_3_1_1_foldk_valnext_v1", "esc10_3_1_1_foldk_valnext_v1"}:
+        required_dataset = "esc10" if protocol.startswith("esc10") else "esc50"
+        if dataset_name != required_dataset:
+            raise ValueError(f"Protocol {protocol} requires dataset='{required_dataset}'.")
         val_fold = (fold % 5) + 1
         test_records = [r for r in clip_records if r["fold"] == fold]
         val_clips = [r for r in clip_records if r["fold"] == val_fold]
         train_clips = [r for r in clip_records if r["fold"] not in {fold, val_fold}]
         uses_validation = True
-        description = f"esc50_3_1_1 | Train=3 folds, Val=fold {val_fold}, Test=fold {fold}."
-    elif protocol == "esc50_official_4_1_cv":
-        if dataset_name != "esc50":
-            raise ValueError(f"Protocol {protocol} requires dataset='esc50'.")
+        description = (
+            f"{required_dataset}_3_1_1 | Train=3 folds, Val=fold {val_fold}, Test=fold {fold}."
+        )
+    elif protocol in {"esc50_official_4_1_cv", "esc10_official_4_1_cv"}:
+        required_dataset = "esc10" if protocol.startswith("esc10") else "esc50"
+        if dataset_name != required_dataset:
+            raise ValueError(f"Protocol {protocol} requires dataset='{required_dataset}'.")
         test_records = [r for r in clip_records if r["fold"] == fold]
         train_clips = [r for r in clip_records if r["fold"] != fold]
-        description = f"esc50_official_4_1_cv | Train=4 folds, Test=fold {fold}, no validation."
+        description = f"{required_dataset}_official_4_1_cv | Train=4 folds, Test=fold {fold}, no validation."
     elif protocol == "speech_commands_v2_official12":
         if dataset_name != "speech_commands":
             raise ValueError(f"Protocol {protocol} requires dataset='speech_commands'.")

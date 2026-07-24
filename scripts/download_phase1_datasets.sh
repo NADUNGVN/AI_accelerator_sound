@@ -15,7 +15,7 @@ Usage:
   bash scripts/download_phase1_datasets.sh [options]
 
 Options:
-  --dataset NAME      all | esc50 | speech_commands. Default: all
+  --dataset NAME      all | esc10 | esc50 | speech_commands. Default: all
   --data-root PATH    Dataset root. Default: data/raw
   -h, --help          Show this help.
 
@@ -55,9 +55,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$DATASET" in
-  all|esc50|speech_commands) ;;
+  all|esc10|esc50|speech_commands) ;;
   *)
-    echo "Unsupported --dataset '$DATASET'. Use all, esc50, or speech_commands." >&2
+    echo "Unsupported --dataset '$DATASET'. Use all, esc10, esc50, or speech_commands." >&2
     exit 2
     ;;
 esac
@@ -117,10 +117,37 @@ verify_esc50() {
   echo "ESC-50 ready: $target ($wav_count wav files)"
 }
 
+verify_esc10_subset() {
+  local target="$1"
+  python - "$target/meta/esc50.csv" <<'PY'
+import csv
+import sys
+from collections import Counter
+
+csv_path = sys.argv[1]
+with open(csv_path, "r", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
+
+subset = [
+    row for row in rows
+    if str(row.get("esc10", "")).strip().lower() in {"1", "true", "t", "yes", "y"}
+]
+classes = sorted({row["category"] for row in subset})
+fold_counts = Counter(int(row["fold"]) for row in subset)
+if len(subset) != 400 or len(classes) != 10 or sorted(fold_counts) != [1, 2, 3, 4, 5]:
+    raise SystemExit(
+        "ESC-10 subset verification failed: "
+        f"clips={len(subset)}, classes={len(classes)}, folds={dict(sorted(fold_counts.items()))}"
+    )
+print(f"ESC-10 subset ready: {len(subset)} clips, {len(classes)} classes, folds={dict(sorted(fold_counts.items()))}")
+PY
+}
+
 download_esc50() {
   local target="$DATA_ROOT/ESC-50"
   if [[ -f "$target/meta/esc50.csv" && -d "$target/audio" ]]; then
     verify_esc50 "$target"
+    verify_esc10_subset "$target"
     return
   fi
 
@@ -144,6 +171,7 @@ download_esc50() {
   mv "$extracted" "$target"
   rm -rf "$extract_root"
   verify_esc50 "$target"
+  verify_esc10_subset "$target"
 }
 
 verify_speech_commands() {
@@ -176,7 +204,7 @@ download_speech_commands() {
   verify_speech_commands "$target"
 }
 
-if [[ "$DATASET" == "all" || "$DATASET" == "esc50" ]]; then
+if [[ "$DATASET" == "all" || "$DATASET" == "esc50" || "$DATASET" == "esc10" ]]; then
   download_esc50
 fi
 

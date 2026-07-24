@@ -53,6 +53,7 @@ def normalize_dataset_name(name):
         "urban_sound_8k": "urbansound8k",
         "urban_sound8k": "urbansound8k",
         "esc_50": "esc50",
+        "esc_10": "esc10",
         "speechcommands": "speech_commands",
         "speech_commands_v2": "speech_commands",
         "gsc": "speech_commands",
@@ -67,7 +68,7 @@ def get_default_class_names(dataset_name):
         return list(URBANSOUND8K_CLASS_NAMES)
     if dataset_name == "speech_commands":
         return list(SPEECH_COMMANDS_CLASS_NAMES)
-    if dataset_name == "esc50":
+    if dataset_name in {"esc50", "esc10"}:
         return None
     raise ValueError(f"Unsupported dataset '{dataset_name}'.")
 
@@ -88,6 +89,10 @@ def _read_path_list(path):
             if item:
                 values.add(item)
     return values
+
+
+def _metadata_flag_true(value):
+    return str(value).strip().lower() in {"1", "true", "t", "yes", "y"}
 
 
 def _speech_speaker_id(filename):
@@ -290,7 +295,7 @@ def parse_dataset(csv_path, audio_base_dir, class_names):
     return records
 
 
-def parse_esc50_dataset(data_dir):
+def parse_esc50_dataset(data_dir, esc10_only=False):
     csv_path = os.path.join(data_dir, "meta", "esc50.csv")
     audio_base_dir = os.path.join(data_dir, "audio")
     if not os.path.exists(csv_path):
@@ -301,6 +306,7 @@ def parse_esc50_dataset(data_dir):
     records = []
     target_to_category = {}
     missing_paths = []
+    dataset_label = "ESC-10" if esc10_only else "ESC-50"
     with open(csv_path, "r", encoding="utf-8") as f:
         r = csv.reader(f)
         header = next(r)
@@ -309,9 +315,12 @@ def parse_esc50_dataset(data_dir):
         target_idx = _required_csv_field(header, "target", csv_path)
         category_idx = _required_csv_field(header, "category", csv_path)
         src_file_idx = _required_csv_field(header, "src_file", csv_path)
+        esc10_idx = _required_csv_field(header, "esc10", csv_path) if esc10_only else None
         take_idx = header.index("take") if "take" in header else None
 
         for row in r:
+            if esc10_only and not _metadata_flag_true(row[esc10_idx]):
+                continue
             filename = row[filename_idx]
             fold = int(row[fold_idx])
             target = int(row[target_idx])
@@ -332,6 +341,7 @@ def parse_esc50_dataset(data_dir):
                 "classID": target,
                 "src_file": src_file,
                 "clip_id": filename,
+                "esc50_target": target,
             }
             if take_idx is not None:
                 record["take"] = row[take_idx]
@@ -340,18 +350,33 @@ def parse_esc50_dataset(data_dir):
     if missing_paths:
         examples = "\n".join(missing_paths[:20])
         raise RuntimeError(
-            f"ESC-50 metadata references {len(missing_paths)} missing audio files. "
+            f"{dataset_label} metadata references {len(missing_paths)} missing audio files. "
             f"First missing paths:\n{examples}"
         )
-    if len(records) != 2000:
-        raise RuntimeError(f"Expected 2000 ESC-50 clips, parsed {len(records)} from {csv_path}.")
-    if sorted(target_to_category) != list(range(50)):
-        raise RuntimeError(
-            f"Expected ESC-50 targets 0..49, found {sorted(target_to_category)}."
-        )
-
-    class_names = [target_to_category[idx] for idx in range(50)]
-    print("Parsed 2000 ESC-50 clips (50 classes, 5 folds).")
+    if esc10_only:
+        original_targets = sorted(target_to_category)
+        if len(records) != 400:
+            raise RuntimeError(f"Expected 400 ESC-10 clips, parsed {len(records)} from {csv_path}.")
+        if len(original_targets) != 10:
+            raise RuntimeError(
+                f"Expected 10 ESC-10 targets, found {len(original_targets)}: {original_targets}."
+            )
+        target_remap = {target: idx for idx, target in enumerate(original_targets)}
+        for record in records:
+            remapped = target_remap[record["esc50_target"]]
+            record["label"] = remapped
+            record["classID"] = remapped
+        class_names = [target_to_category[target] for target in original_targets]
+        print(f"Parsed 400 ESC-10 clips (10 classes, 5 folds): {class_names}.")
+    else:
+        if len(records) != 2000:
+            raise RuntimeError(f"Expected 2000 ESC-50 clips, parsed {len(records)} from {csv_path}.")
+        if sorted(target_to_category) != list(range(50)):
+            raise RuntimeError(
+                f"Expected ESC-50 targets 0..49, found {sorted(target_to_category)}."
+            )
+        class_names = [target_to_category[idx] for idx in range(50)]
+        print("Parsed 2000 ESC-50 clips (50 classes, 5 folds).")
     return records, class_names
 
 
@@ -479,6 +504,9 @@ def parse_audio_dataset(dataset_name, data_dir, class_names=None, sample_rate=16
     if dataset_name == "esc50":
         records, names = parse_esc50_dataset(data_dir)
         return records, names, dataset_name
+    if dataset_name == "esc10":
+        records, names = parse_esc50_dataset(data_dir, esc10_only=True)
+        return records, names, dataset_name
     if dataset_name == "speech_commands":
         records, names = parse_speech_commands_dataset(
             data_dir,
@@ -487,7 +515,7 @@ def parse_audio_dataset(dataset_name, data_dir, class_names=None, sample_rate=16
         )
         return records, names, dataset_name
     raise ValueError(
-        f"Unsupported dataset '{dataset_name}'. Use 'urbansound8k', 'esc50', or 'speech_commands'."
+        f"Unsupported dataset '{dataset_name}'. Use 'urbansound8k', 'esc10', 'esc50', or 'speech_commands'."
     )
 
 def generate_frame_records(

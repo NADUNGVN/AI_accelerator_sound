@@ -9,24 +9,27 @@ ANALYZE="1"
 EVAL_MODES="1"
 BATCH_SIZE=""
 ESC50_DATA="${ESC50_DATA:-}"
+ESC10_DATA="${ESC10_DATA:-${ESC50_DATA:-}}"
 SPEECH_DATA="${SPEECH_COMMANDS_DATA:-${SPEECH_DATA:-}}"
 
 ESC50_CONFIG="configs/main/student_ds_conv2d_h1_pyramid_esc50_phase1.json"
+ESC10_CONFIG="configs/main/student_ds_conv2d_h1_pyramid_esc10_phase1.json"
 SPEECH_CONFIG="configs/main/student_ds_conv2d_h1_pyramid_speech_commands_phase1.json"
 
 usage() {
   cat <<'USAGE'
-Run Phase 1 multi-dataset training for ESC-50 and Speech Commands.
+Run Phase 1 multi-dataset training for ESC-10, ESC-50, and Speech Commands.
 
 Usage:
   bash scripts/run_phase1_multidataset.sh [options]
 
 Options:
   --stage NAME          smoke | full-first | full-all. Default: smoke
-  --dataset NAME        all | esc50 | speech_commands. Default: all
+  --dataset NAME        all | esc10 | esc50 | speech_commands. Default: all
   --python PATH         Python executable. Default: python
   --batch-size N        Override config batch_size.
   --esc50-data PATH     Override ESC-50 root. Expected: meta/esc50.csv + audio/
+  --esc10-data PATH     Override ESC-10 root. Same layout as ESC-50; ESC-10 is metadata subset.
   --speech-data PATH    Override Speech Commands v0.02 root.
   --no-skip-existing    Re-run even if metrics/analysis already exist.
   --no-analyze          Do not run tools/analyze_experiment.py after train.
@@ -40,7 +43,7 @@ Examples:
   # Gate 2: first canonical train split for both datasets.
   bash scripts/run_phase1_multidataset.sh --stage full-first
 
-  # ESC-50 all five validation-selected test folds + Speech official split.
+  # ESC-10/ESC-50 all five validation-selected test folds + Speech official split.
   bash scripts/run_phase1_multidataset.sh --stage full-all
 USAGE
 }
@@ -65,6 +68,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --esc50-data)
       ESC50_DATA="$2"
+      shift 2
+      ;;
+    --esc10-data)
+      ESC10_DATA="$2"
       shift 2
       ;;
     --speech-data)
@@ -95,6 +102,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+if [[ -z "$ESC10_DATA" && -n "$ESC50_DATA" ]]; then
+  ESC10_DATA="$ESC50_DATA"
+fi
+
 case "$STAGE" in
   smoke|full-first|full-all) ;;
   *)
@@ -104,9 +115,9 @@ case "$STAGE" in
 esac
 
 case "$DATASET" in
-  all|esc50|speech_commands) ;;
+  all|esc10|esc50|speech_commands) ;;
   *)
-    echo "Unsupported --dataset '$DATASET'. Use all, esc50, or speech_commands." >&2
+    echo "Unsupported --dataset '$DATASET'. Use all, esc10, esc50, or speech_commands." >&2
     exit 2
     ;;
 esac
@@ -116,7 +127,7 @@ cd "$(dirname "$0")/.."
 export PYTHONUNBUFFERED=1
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 
-for path in "$ESC50_CONFIG" "$SPEECH_CONFIG" tools/run_multifold.py train.py tools/analyze_experiment.py; do
+for path in "$ESC10_CONFIG" "$ESC50_CONFIG" "$SPEECH_CONFIG" tools/run_multifold.py train.py tools/analyze_experiment.py; do
   if [[ ! -e "$path" ]]; then
     echo "Missing required file: $path" >&2
     exit 1
@@ -213,6 +224,26 @@ run_multifold() {
   "${command[@]}"
 }
 
+run_esc10() {
+  local data_dir
+  data_dir="$(resolve_data_dir esc10 "$ESC10_DATA")"
+  check_esc50_data "$data_dir"
+  echo "ESC-10 data: $data_dir (ESC-50 esc10 metadata subset)"
+
+  case "$STAGE" in
+    smoke)
+      run_multifold "$ESC10_CONFIG" "esc10_phase1_fold1_smoke_1ep" "1" "$data_dir" \
+        --epochs 1 --max_train_clips 64 --max_val_clips 32 --max_test_clips 32
+      ;;
+    full-first)
+      run_multifold "$ESC10_CONFIG" "esc10_phase1_dsconv2dh1_fold1_120ep" "1" "$data_dir"
+      ;;
+    full-all)
+      run_multifold "$ESC10_CONFIG" "esc10_phase1_dsconv2dh1_5fold_120ep" "1-5" "$data_dir"
+      ;;
+  esac
+}
+
 run_esc50() {
   local data_dir
   data_dir="$(resolve_data_dir esc50 "$ESC50_DATA")"
@@ -249,6 +280,10 @@ run_speech_commands() {
       ;;
   esac
 }
+
+if [[ "$DATASET" == "all" || "$DATASET" == "esc10" ]]; then
+  run_esc10
+fi
 
 if [[ "$DATASET" == "all" || "$DATASET" == "esc50" ]]; then
   run_esc50
